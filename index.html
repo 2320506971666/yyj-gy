@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Portfolio</title>
+    <style>
+        .swiper {
+    width: 100%;
+    height: 100vh;
+}
+
+.swiper-slide img, .swiper-slide video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 如果你希望左右切换按钮与分页指示点更醒目，可以调整颜色 */
+.swiper-button-next, .swiper-button-prev {
+    color: white;
+}
+
+.swiper-pagination-bullet {
+    background: white;
+}
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: white;
+            color: #111;
+            line-height: 1.6;
+        }
+        
+        /* Navigation */
+        header {
+            padding: 0.7rem 10%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            z-index: 100;
+            border-bottom: 1px solid #eee;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #111;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.6;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            margin-top: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            bottom: 5rem;
+            left: 5%;
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+        }
+        
+        .hero-overlay h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .hero-overlay p {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Gallery Section */
+        .gallery {
+            padding: 5rem 5%;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            height: 1px;
+            width: 100px;
+            background-color: #111;
+            bottom: -10px;
+            left: 0;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            height: 400px;
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.05);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+        
+        .gallery-overlay h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+        
+        .gallery-overlay p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Film Section */
+        .film-section {
+            padding: 5rem 5%;
+            background-color: #f8f8f8;
+        }
+        
+        .film-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 2rem;
+        }
+        
+        .film-item {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .film-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .film-item:hover .film-thumbnail {
+            transform: scale(1.05);
+        }
+        
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+        
+        .play-button:before {
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 24px solid #111;
+            margin-left: 5px;
+        }
+        
+        .film-item:hover .play-button {
+            background-color: rgba(255, 255, 255, 1);
+        }
+        
+        /* About Section */
+        .about {
+            padding: 5rem 5%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .about-image {
+            width: 90%;
+            height:490px;
+            object-fit: cover;
+        }
+        
+        .about-content h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+        
+        .about-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #111;
+            color: white;
+            padding: 5rem 5% 2rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            height: 1px;
+            width: 50px;
+            background-color: white;
+            bottom: -10px;
+            left: 0;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            text-decoration: none;
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border: 1px solid #555;
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background-color: white;
+            color: #111;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .about {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-overlay {
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                max-width: none;
+            }
+            
+            .hero-overlay h1 {
+                font-size: 2rem;
+            }
+            
+            .film-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Navigation -->
+    <header>
+        <nav>
+            <div class="logo">JYWF</div>
+            <ul class="nav-links">
+                <li><a href="#explore">Explore</a></li>
+                <li><a href="#film">Film</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#work">Work</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                <!-- 幻灯片1：视频 -->
+                <div class="swiper-slide">
+                    <video autoplay muted loop class="hero-image">
+                        <source src="artistweb/vedios/video1.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <!-- 幻灯片2：视频 -->
+                <div class="swiper-slide">
+                    <video autoplay muted loop class="hero-image">
+                        <source src="artistweb/vedios/video2.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <!-- 幻灯片3：视频 -->
+                <div class="swiper-slide">
+                    <video autoplay muted loop class="hero-image">
+                        <source src="artistweb/vedios/video3.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <!-- 可选的左右切换按钮 -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <!-- 可选的分页指示点 -->
+            <div class="swiper-pagination"></div>
+        </div>
+        
+        <!-- 保留或修改 hero-overlay 文字展示（可选） -->
+        <div class="hero-overlay">
+            <h1>额尔古纳河</h1>
+            <p>Exploring the boundaries between reality and imagination through various media and artistic expressions.</p>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <h2 class="section-title">Gallery</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src=artistweb/images/dji_export_20250215_photo_0001.jpeg alt="Artwork 1" class="gallery-image">
+                <div class="gallery-overlay">
+                    <h3>Ephemeral Light</h3>
+                    <p>Mixed media on canvas, 2023</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src=artistweb/images/dji_export_20250216_photo_0001.jpeg alt="Artwork 2" class="gallery-image">
+                <div class="gallery-overlay">
+                    <h3>Urban Fragments</h3>
+                    <p>Photography series, 2022</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src=artistweb/images/dji_export_20250216_photo_0007.jpeg alt="Artwork 3" class="gallery-image">
+                <div class="gallery-overlay">
+                    <h3>Silence in Motion</h3>
+                    <p>Digital art, 2023</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="/api/placeholder/600/800" alt="Artwork 4" class="gallery-image">
+                <div class="gallery-overlay">
+                    <h3>Contemplation</h3>
+                    <p>Oil on canvas, 2022</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Film Section -->
+    <section class="film-section" id="film">
+        <h2 class="section-title">Film</h2>
+        <div class="film-container">
+            <div class="film-item">
+                <img src="/api/placeholder/800/450" alt="Film Thumbnail 1" class="film-thumbnail">
+                <div class="play-button"></div>
+            </div>
+            <div class="film-item">
+                <img src="/api/placeholder/800/450" alt="Film Thumbnail 2" class="film-thumbnail">
+                <div class="play-button"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <img src="artistweb/images/Portrait.jpeg" alt="Artist about" class="about-image">
+        <div class="about-content">
+            <h2>About the Me</h2>
+            <p>I am a multidisciplinary artist based in Shanghai, exploring the intersection of traditional and digital media. My work examines the relationship between urban environments and human experiences, seeking to capture moments of contemplation and connection in our fast-paced world.</p>
+            <p>With a background in fine arts and experimental filmmaking, I create immersive visual narratives that invite viewers to pause and reflect on the beauty found in everyday experiences. My practice includes painting, photography, digital art, and short films.</p>
+            <p>My work has been exhibited in galleries across Asia and Europe, and I have collaborated with numerous brands and publications on creative projects that push the boundaries of visual storytelling.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Contact</h3>
+                <p>studio@artist.com</p>
+                <p>+86 123 4567 8910</p>
+                <p>Shanghai, China</p>
+            </div>
+            <div class="footer-column">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="#explore">Explore</a></li>
+                    <li><a href="#film">Film</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#work">Work</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Connect</h3>
+                <p>Follow my work and creative journey</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">YT</a>
+                    <a href="#" class="social-link">BL</a>
+                    <a href="#" class="social-link">IG</a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Artist Portfolio. All rights reserved.
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var swiper = new Swiper(".mySwiper", {
+                loop: true,  // 开启无限循环
+                autoplay: {
+                    delay: 4000,             // 每4秒切换一次
+                    disableOnInteraction: false, // 用户操作后继续自动播放
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                // 可选：若想要滑动切换动画，可改为 "slide"
+                effect: "fade",
+            });
+        });
+    </script>
+</body>
+</html>

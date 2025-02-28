@@ -1,16 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <!-- Swiper CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 添加这三行 Google Fonts 链接 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- 添加 Adobe Fonts 链接 -->
+    <script>
+      (function(d) {
+        var config = {
+          kitId: 'YOUR_KIT_ID',
+          scriptTimeout: 3000,
+          async: true
+        },
+        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+      })(document);
+    </script>
+    
     <title>Artist Portfolio</title>
     <style>
         .swiper {
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 45px);
+    margin-top: 45px;
 }
 
 .swiper-slide img, .swiper-slide video {
@@ -19,20 +42,56 @@
     object-fit: cover;
 }
 
+.swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 /* 如果你希望左右切换按钮与分页指示点更醒目，可以调整颜色 */
 .swiper-button-next, .swiper-button-prev {
-    color: white;
+    color: rgb(255, 255, 255);
+    opacity: 0.7;
+    width: 35px; /* 增加箭头区域宽度 */
+}
+
+.swiper-button-next:after, .swiper-button-prev:after {
+    font-size: 35px; /* 增大箭头大小 */
+    font-weight: 100; /* 保持箭头细线条 */
+}
+
+/* 保持箭头位置不变 */
+.swiper-button-prev {
+    left: 50px;
+}
+
+.swiper-button-next {
+    right: 50px;
+}
+
+.swiper-pagination {
+    bottom: 50px !important; /* 调整分页指示点的位置，向上移动 */
 }
 
 .swiper-pagination-bullet {
     background: white;
+    opacity: 0.6;
+    width: 6px; /* 稍微调小圆点大小 */
+    height: 6px;
+}
+
+.swiper-pagination-bullet-active {
+    opacity: 1;
+}
+
+/* 保持悬停效果 */
+.swiper-button-next:hover, .swiper-button-prev:hover {
+    opacity: 1;
 }
         /* Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
         }
         
         body {
@@ -43,56 +102,78 @@
         
         /* Navigation */
         header {
-            padding: 0.7rem 10%;
             position: fixed;
             width: 100%;
             top: 0;
-            background-color: rgba(255, 255, 255, 0.95);
-            z-index: 100;
-            border-bottom: 1px solid #eee;
+            height: 45px;
+            background-color: black; /* 纯黑色背景 */
+            z-index: 1000;
+            padding: 0 5%;
         }
         
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            max-width: 1400px;
+            height: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
         }
         
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 2px;
+        .logo, .logo a {
+            font-family: 'Poiret One', cursive !important;
+            font-size: 1.8rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+        
+        .logo:hover {
+            opacity: 0.8;
         }
         
         .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 2.5rem;
         }
         
         .nav-links li {
-            margin-left: 2.5rem;
+            margin-left: 0;
         }
         
         .nav-links a {
             text-decoration: none;
-            color: #111;
+            color: #ffffff;
             font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: opacity 0.3s ease;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: capitalize;
+            transition: all 0.4s ease;
+            opacity: 0.9;
+            font-family: 'Poiret One', cursive !important;
+            position: relative;
         }
         
-        .nav-links a:hover {
-            opacity: 0.6;
+        .nav-links a:after {
+            display: none;
+        }
+        
+        .nav-links a.active:after {
+            display: none;
         }
         
         /* Hero Section */
         .hero {
             height: 100vh;
-            margin-top: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding-top: 0;
             position: relative;
             overflow: hidden;
         }
@@ -101,27 +182,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-        
-        .hero-overlay {
-            position: absolute;
-            bottom: 5rem;
-            left: 5%;
-            max-width: 600px;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 2rem;
-        }
-        
-        .hero-overlay h1 {
-            font-size: 2.5rem;
-            font-weight: 300;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-        
-        .hero-overlay p {
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
         }
         
         /* Gallery Section */
@@ -256,32 +316,6 @@
             background-color: rgba(255, 255, 255, 1);
         }
         
-        /* About Section */
-        .about {
-            padding: 5rem 5%;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-        
-        .about-image {
-            width: 90%;
-            height:490px;
-            object-fit: cover;
-        }
-        
-        .about-content h2 {
-            font-size: 2rem;
-            font-weight: 300;
-            margin-bottom: 2rem;
-        }
-        
-        .about-content p {
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-        
         /* Footer */
         footer {
             background-color: #111;
@@ -370,38 +404,121 @@
                 display: none;
             }
             
-            .about {
-                grid-template-columns: 1fr;
-            }
-            
-            .hero-overlay {
-                left: 0;
-                bottom: 0;
-                width: 100%;
-                max-width: none;
-            }
-            
-            .hero-overlay h1 {
-                font-size: 2rem;
-            }
-            
             .film-container {
                 grid-template-columns: 1fr;
             }
         }
+
+        /* 修改视频过渡效果 */
+        .swiper-slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.3s ease, opacity 1.5s ease;
+            opacity: 0;
+        }
+
+        .swiper-slide video.loaded {
+            opacity: 1;
+        }
+
+        /* 修改视频标题样式 */
+        .video-title {
+            position: absolute;
+            bottom: 15%;
+            left: 10%;
+            transform: translate(0, 0);
+            z-index: 2;
+            text-align: left;
+            opacity: 0;
+            animation: fadeInUp 2s ease forwards;
+        }
+
+        .video-title h1 {
+            font-family: 'Source Han Serif CN', 'Source Han Serif SC', 'Source Han Serif', serif;
+            color: white;
+            font-size: 7rem;
+            letter-spacing: 15px;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            line-height: 1.2;
+        }
+
+        .video-title p {
+            font-family: 'Source Han Serif CN', 'Source Han Serif SC', 'Source Han Serif', serif;
+            color: white;
+            font-size: 1.4rem;
+            letter-spacing: 4px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* 修改上浮动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @font-face {
+            font-family: 'Source Han Serif CN';
+            src: url('path/to/SourceHanSerifCN-Light.otf') format('opentype');
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        /* 修改过渡效果样式 */
+        .page-transition {
+            position: fixed;
+            top: 45px; /* 从导航栏下方开始 */
+            left: 0;
+            width: 100%;
+            height: calc(100% - 45px);
+            background-color: black;
+            z-index: 999; /* 确保在导航栏之下 */
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        .page-transition.fade-in {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 悬停效果 */
+        .nav-links a:hover {
+            opacity: 1;
+            letter-spacing: 4px;
+            color: #DE2910; /* 中国红色过渡效果 */
+        }
+
+        /* 激活状态样式 */
+        .nav-links a.active {
+            color: #DE2910;
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
+    <div class="page-transition"></div>
     <!-- Header with Navigation -->
     <header>
         <nav>
-            <div class="logo">JYWF</div>
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit;">JYWF</a>
+            </div>
             <ul class="nav-links">
                 <li><a href="#explore">Explore</a></li>
                 <li><a href="#film">Film</a></li>
                 <li><a href="#gallery">Gallery</a></li>
                 <li><a href="#work">Work</a></li>
-                <li><a href="#about">About</a></li>
+                <li><a href="about.html">About</a></li>
             </ul>
         </nav>
     </header>
@@ -413,19 +530,23 @@
                 <!-- 幻灯片1：视频 -->
                 <div class="swiper-slide">
                     <video autoplay muted loop class="hero-image">
-                        <source src="artistweb/vedios/video1.mp4" type="video/mp4">
+                        <source src="artistweb/videos/video1.mp4" type="video/mp4">
                     </video>
+                    <div class="video-title">
+                        <h1>额尔古纳河</h1>
+                        <p>Watch the film ></p>
+                    </div>
                 </div>
                 <!-- 幻灯片2：视频 -->
                 <div class="swiper-slide">
                     <video autoplay muted loop class="hero-image">
-                        <source src="artistweb/vedios/video2.mp4" type="video/mp4">
+                        <source src="artistweb/videos/video2.mp4" type="video/mp4">
                     </video>
                 </div>
                 <!-- 幻灯片3：视频 -->
                 <div class="swiper-slide">
                     <video autoplay muted loop class="hero-image">
-                        <source src="artistweb/vedios/video3.mp4" type="video/mp4">
+                        <source src="artistweb/videos/video3.mp4" type="video/mp4">
                     </video>
                 </div>
             </div>
@@ -435,12 +556,6 @@
             <!-- 可选的分页指示点 -->
             <div class="swiper-pagination"></div>
         </div>
-        
-        <!-- 保留或修改 hero-overlay 文字展示（可选） -->
-        <div class="hero-overlay">
-            <h1>额尔古纳河</h1>
-            <p>Exploring the boundaries between reality and imagination through various media and artistic expressions.</p>
-        </div>
     </section>
 
     <!-- Gallery Section -->
@@ -448,21 +563,21 @@
         <h2 class="section-title">Gallery</h2>
         <div class="gallery-grid">
             <div class="gallery-item">
-                <img src=artistweb/images/dji_export_20250215_photo_0001.jpeg alt="Artwork 1" class="gallery-image">
+                <img src="artistweb/images/dji_export_20250215_photo_0001.jpeg" alt="Artwork 1" class="gallery-image">
                 <div class="gallery-overlay">
                     <h3>Ephemeral Light</h3>
                     <p>Mixed media on canvas, 2023</p>
                 </div>
             </div>
             <div class="gallery-item">
-                <img src=artistweb/images/dji_export_20250216_photo_0001.jpeg alt="Artwork 2" class="gallery-image">
+                <img src="artistweb/images/dji_export_20250216_photo_0001.jpeg" alt="Artwork 2" class="gallery-image">
                 <div class="gallery-overlay">
                     <h3>Urban Fragments</h3>
                     <p>Photography series, 2022</p>
                 </div>
             </div>
             <div class="gallery-item">
-                <img src=artistweb/images/dji_export_20250216_photo_0007.jpeg alt="Artwork 3" class="gallery-image">
+                <img src="artistweb/images/dji_export_20250216_photo_0007.jpeg" alt="Artwork 3" class="gallery-image">
                 <div class="gallery-overlay">
                     <h3>Silence in Motion</h3>
                     <p>Digital art, 2023</p>
@@ -490,17 +605,6 @@
                 <img src="/api/placeholder/800/450" alt="Film Thumbnail 2" class="film-thumbnail">
                 <div class="play-button"></div>
             </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="about" id="about">
-        <img src="artistweb/images/Portrait.jpeg" alt="Artist about" class="about-image">
-        <div class="about-content">
-            <h2>About the Me</h2>
-            <p>I am a multidisciplinary artist based in Shanghai, exploring the intersection of traditional and digital media. My work examines the relationship between urban environments and human experiences, seeking to capture moments of contemplation and connection in our fast-paced world.</p>
-            <p>With a background in fine arts and experimental filmmaking, I create immersive visual narratives that invite viewers to pause and reflect on the beauty found in everyday experiences. My practice includes painting, photography, digital art, and short films.</p>
-            <p>My work has been exhibited in galleries across Asia and Europe, and I have collaborated with numerous brands and publications on creative projects that push the boundaries of visual storytelling.</p>
         </div>
     </section>
 
@@ -540,22 +644,72 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // 为所有视频添加加载完成事件
+            const videos = document.querySelectorAll('.swiper-slide video');
+            videos.forEach(video => {
+                video.addEventListener('loadeddata', function() {
+                    video.classList.add('loaded');
+                });
+            });
+
             var swiper = new Swiper(".mySwiper", {
-                loop: true,  // 开启无限循环
-                autoplay: {
-                    delay: 4000,             // 每4秒切换一次
-                    disableOnInteraction: false, // 用户操作后继续自动播放
-                },
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-                // 可选：若想要滑动切换动画，可改为 "slide"
-                effect: "fade",
+    loop: true,
+    autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+    },
+    lazy: true, // 仅在需要时加载图片，提高性能
+    pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+    },
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+    },
+    effect: "fade",
+});
+
+            // 添加滚动事件监听
+            window.addEventListener('scroll', function() {
+                const scrolled = window.scrollY;
+                const videos = document.querySelectorAll('.swiper-slide video');
+                const maxBlur = 20; // 最大模糊值（像素）
+                const scrollThreshold = 500; // 触发完全模糊效果的滚动距离
+                
+                // 计算模糊程度
+                const blurValue = Math.min((scrolled / scrollThreshold) * maxBlur, maxBlur);
+                
+                // 应用模糊效果到所有视频
+                videos.forEach(video => {
+                    video.style.filter = `blur(${blurValue}px)`;
+                });
+            });
+
+            // 页面加载时的淡出效果
+            const transition = document.querySelector('.page-transition');
+            setTimeout(() => {
+                transition.style.visibility = 'hidden';
+                transition.style.opacity = '0';
+            }, 500);
+
+            // 点击链接时的过渡效果
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.hostname === window.location.hostname) {
+                        e.preventDefault();
+                        const href = this.getAttribute('href');
+                        
+                        // 显示过渡层
+                        transition.style.visibility = 'visible';
+                        transition.style.opacity = '1';
+                        
+                        // 延迟导航以等待过渡效果完成
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 1000);
+                    }
+                });
             });
         });
     </script>

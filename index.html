@@ -6,6 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="artistweb/videos/video1.mp4" as="video" type="video/mp4">
+    <link rel="preload" href="artistweb/images/video1-poster.jpg" as="image">
+    
     <!-- 添加这三行 Google Fonts 链接 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,11 +33,46 @@
     </script>
     
     <title>Artist Portfolio</title>
+    <!-- 添加预加载脚本 -->
+    <script>
+        // 预加载首页视频
+        const videoUrls = [
+            'artistweb/videos/video1.mp4',
+            'artistweb/videos/video2.mp4',
+            'artistweb/videos/video3.mp4'
+        ];
+        
+        // 创建预加载对象
+        const preloadVideos = () => {
+            // 只预加载第一个视频，其他视频稍后加载
+            const firstVideo = new Image();
+            firstVideo.src = 'artistweb/images/video1-poster.jpg';
+            
+            // 使用fetch API预加载第一个视频
+            if ('fetch' in window) {
+                fetch(videoUrls[0], { method: 'HEAD' })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('首页视频预加载成功');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('视频预加载失败:', error);
+                    });
+            }
+        };
+        
+        // 页面加载前执行预加载
+        preloadVideos();
+    </script>
     <style>
         .swiper {
     width: 100%;
-    height: calc(100vh - 45px);
-    margin-top: 45px;
+    height: 100vh;
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .swiper-slide img, .swiper-slide video {
@@ -407,6 +446,182 @@
             .film-container {
                 grid-template-columns: 1fr;
             }
+
+            /* 移动端导航菜单按钮 */
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                right: 20px;
+                width: 30px;
+                height: 20px;
+                cursor: pointer;
+                z-index: 1001;
+            }
+
+            .mobile-menu-btn span {
+                display: block;
+                position: absolute;
+                height: 2px;
+                width: 100%;
+                background: white;
+                opacity: 1;
+                left: 0;
+                transform: rotate(0deg);
+                transition: .25s ease-in-out;
+            }
+
+            .mobile-menu-btn span:nth-child(1) {
+                top: 0px;
+            }
+
+            .mobile-menu-btn span:nth-child(2) {
+                top: 9px;
+            }
+
+            .mobile-menu-btn span:nth-child(3) {
+                top: 18px;
+            }
+
+            .mobile-menu-btn.open span:nth-child(1) {
+                top: 9px;
+                transform: rotate(135deg);
+            }
+
+            .mobile-menu-btn.open span:nth-child(2) {
+                opacity: 0;
+                left: -60px;
+            }
+
+            .mobile-menu-btn.open span:nth-child(3) {
+                top: 9px;
+                transform: rotate(-135deg);
+            }
+
+            /* 移动端菜单样式 */
+            .mobile-menu {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.95);
+                z-index: 999;
+                padding: 20px;
+                padding-top: 65px; /* 为顶栏留出空间 */
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .mobile-menu.open {
+                display: flex;
+            }
+
+            .mobile-menu a {
+                color: white;
+                font-size: 1.5rem;
+                margin: 15px 0;
+                text-decoration: none;
+                font-family: 'Poiret One', cursive;
+                letter-spacing: 3px;
+                transition: all 0.3s ease;
+            }
+
+            .mobile-menu a:hover {
+                color: #DE2910;
+                letter-spacing: 4px;
+            }
+
+            /* 调整视频标题大小和位置 */
+            .video-title h1 {
+                font-size: 3rem;
+                letter-spacing: 5px;
+            }
+
+            .video-title p {
+                font-size: 1rem;
+                letter-spacing: 2px;
+            }
+
+            /* 调整轮播箭头位置 */
+            .swiper-button-prev {
+                left: 10px;
+            }
+
+            .swiper-button-next {
+                right: 10px;
+            }
+
+            .swiper-button-next:after, .swiper-button-prev:after {
+                font-size: 25px;
+            }
+
+            /* 调整画廊网格 */
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .gallery-item {
+                height: 300px;
+            }
+
+            /* 调整电影部分 */
+            .film-container {
+                grid-template-columns: 1fr;
+            }
+
+            .film-item {
+                height: 200px;
+            }
+
+            /* 调整页脚 */
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        /* 针对iPhone的特定调整 */
+        @media (max-width: 480px) {
+            .video-title {
+                bottom: 25%;
+                left: 5%;
+            }
+
+            .video-title h1 {
+                font-size: 2.5rem;
+                letter-spacing: 3px;
+                margin-bottom: 0.8rem;
+            }
+
+            .video-title p {
+                font-size: 0.9rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .gallery, .film-section {
+                padding: 3rem 5%;
+            }
+
+            .play-button {
+                width: 50px;
+                height: 50px;
+            }
+
+            .play-button:before {
+                border-top: 10px solid transparent;
+                border-bottom: 10px solid transparent;
+                border-left: 16px solid #111;
+            }
+
+            .swiper-pagination {
+                bottom: 20px !important;
+            }
         }
 
         /* 修改视频过渡效果 */
@@ -428,7 +643,7 @@
             bottom: 15%;
             left: 10%;
             transform: translate(0, 0);
-            z-index: 2;
+            z-index: 3;
             text-align: left;
             opacity: 0;
             animation: fadeInUp 2s ease forwards;
@@ -475,10 +690,10 @@
         /* 修改过渡效果样式 */
         .page-transition {
             position: fixed;
-            top: 45px; /* 从导航栏下方开始 */
+            top: 0; /* 从页面顶部开始 */
             left: 0;
             width: 100%;
-            height: calc(100% - 45px);
+            height: 100%; /* 覆盖整个页面 */
             background-color: black;
             z-index: 999; /* 确保在导航栏之下 */
             opacity: 0;
@@ -503,6 +718,94 @@
             color: #DE2910;
             opacity: 1;
         }
+
+        /* 菜单打开时的body样式 */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* 确保视频在移动设备上正确显示 */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .swiper {
+                height: 100vh;
+            }
+
+            .swiper-slide video {
+                object-position: center;
+            }
+        }
+
+        /* 针对不同iPhone型号的特定调整 */
+        /* iPhone SE, 5, 5S, 5C */
+        @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+            .video-title h1 {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+        }
+
+        /* iPhone 6, 7, 8 */
+        @media only screen and (min-device-width: 375px) and (max-device-width: 667px) {
+            .video-title h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* iPhone X, XS, 11 Pro, 12 mini */
+        @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (-webkit-device-pixel-ratio: 3) {
+            .video-title {
+                bottom: 20%;
+            }
+        }
+
+        /* iPhone XR, 11, XS Max, 11 Pro Max */
+        @media only screen and (min-device-width: 414px) and (max-device-width: 896px) and (-webkit-device-pixel-ratio: 2) {
+            .video-title h1 {
+                font-size: 2.8rem;
+            }
+        }
+
+        /* iPhone 12, 12 Pro, 13, 13 Pro, 14, 14 Pro */
+        @media only screen and (min-device-width: 390px) and (max-device-width: 844px) and (-webkit-device-pixel-ratio: 3) {
+            .video-title h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* iPhone 12 Pro Max, 13 Pro Max, 14 Plus, 14 Pro Max */
+        @media only screen and (min-device-width: 428px) and (max-device-width: 926px) and (-webkit-device-pixel-ratio: 3) {
+            .video-title h1 {
+                font-size: 3rem;
+            }
+        }
+
+        /* 添加视频占位图样式 */
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+            opacity: 1;
+            transition: opacity 0.8s ease;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .swiper-slide video.loaded + .video-placeholder {
+            opacity: 0;
+        }
     </style>
 </head>
 <body>
@@ -515,13 +818,28 @@
             </div>
             <ul class="nav-links">
                 <li><a href="#explore">Explore</a></li>
-                <li><a href="#film">Film</a></li>
+                <li><a href="film.html">Film</a></li>
                 <li><a href="#gallery">Gallery</a></li>
                 <li><a href="#work">Work</a></li>
                 <li><a href="about.html">About</a></li>
             </ul>
+            <!-- 添加移动端菜单按钮 -->
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </nav>
     </header>
+
+    <!-- 移动端菜单 -->
+    <div class="mobile-menu">
+        <a href="#explore">Explore</a>
+        <a href="film.html">Film</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#work">Work</a>
+        <a href="about.html">About</a>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -529,9 +847,12 @@
             <div class="swiper-wrapper">
                 <!-- 幻灯片1：视频 -->
                 <div class="swiper-slide">
-                    <video autoplay muted loop class="hero-image">
-                        <source src="artistweb/videos/video1.mp4" type="video/mp4">
-                    </video>
+                    <div class="video-container">
+                        <video autoplay muted loop playsinline class="hero-image" preload="metadata" data-src="artistweb/videos/video1.mp4">
+                            <source type="video/mp4">
+                        </video>
+                        <div class="video-placeholder" style="background-image: url('artistweb/images/video1-poster.jpg');"></div>
+                    </div>
                     <div class="video-title">
                         <h1>额尔古纳河</h1>
                         <p>Watch the film ></p>
@@ -539,15 +860,21 @@
                 </div>
                 <!-- 幻灯片2：视频 -->
                 <div class="swiper-slide">
-                    <video autoplay muted loop class="hero-image">
-                        <source src="artistweb/videos/video2.mp4" type="video/mp4">
-                    </video>
+                    <div class="video-container">
+                        <video autoplay muted loop playsinline class="hero-image" preload="metadata" data-src="artistweb/videos/video2.mp4">
+                            <source type="video/mp4">
+                        </video>
+                        <div class="video-placeholder" style="background-image: url('artistweb/images/video2-poster.jpg');"></div>
+                    </div>
                 </div>
                 <!-- 幻灯片3：视频 -->
                 <div class="swiper-slide">
-                    <video autoplay muted loop class="hero-image">
-                        <source src="artistweb/videos/video3.mp4" type="video/mp4">
-                    </video>
+                    <div class="video-container">
+                        <video autoplay muted loop playsinline class="hero-image" preload="metadata" data-src="artistweb/videos/video3.mp4">
+                            <source type="video/mp4">
+                        </video>
+                        <div class="video-placeholder" style="background-image: url('artistweb/images/video3-poster.jpg');"></div>
+                    </div>
                 </div>
             </div>
             <!-- 可选的左右切换按钮 -->
@@ -621,7 +948,7 @@
                 <h3>Navigation</h3>
                 <ul class="footer-links">
                     <li><a href="#explore">Explore</a></li>
-                    <li><a href="#film">Film</a></li>
+                    <li><a href="film.html">Film</a></li>
                     <li><a href="#gallery">Gallery</a></li>
                     <li><a href="#work">Work</a></li>
                     <li><a href="#about">About</a></li>
@@ -644,31 +971,114 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // 预加载所有视频的第一帧
+            function preloadVideoFirstFrame(video) {
+                if (video.dataset.src) {
+                    // 创建一个临时视频元素来预加载第一帧
+                    const tempVideo = document.createElement('video');
+                    tempVideo.src = video.dataset.src;
+                    tempVideo.muted = true;
+                    tempVideo.preload = 'auto';
+                    tempVideo.style.display = 'none';
+                    
+                    // 监听loadeddata事件，表示视频的第一帧已加载
+                    tempVideo.addEventListener('loadeddata', function() {
+                        // 加载实际视频
+                        loadVideo(video);
+                        // 移除临时视频
+                        document.body.removeChild(tempVideo);
+                    });
+                    
+                    document.body.appendChild(tempVideo);
+                }
+            }
+
+            // 视频懒加载函数
+            function loadVideo(video) {
+                if (video.dataset.src) {
+                    const source = video.querySelector('source');
+                    source.src = video.dataset.src;
+                    video.load();
+                    
+                    // 移除data-src属性，防止重复加载
+                    video.removeAttribute('data-src');
+                    
+                    // 设置视频质量
+                    if (window.innerWidth <= 768) {
+                        // 移动设备使用较低质量
+                        video.setAttribute('playsinline', '');
+                    }
+                }
+            }
+
             // 为所有视频添加加载完成事件
             const videos = document.querySelectorAll('.swiper-slide video');
             videos.forEach(video => {
                 video.addEventListener('loadeddata', function() {
                     video.classList.add('loaded');
                 });
+                
+                // 添加错误处理
+                video.addEventListener('error', function() {
+                    // 如果视频加载失败，保持显示占位图
+                    console.log('视频加载失败，显示占位图');
+                });
             });
 
+            // 立即加载第一个视频
+            const firstVideo = document.querySelector('.swiper-slide:first-child video');
+            if (firstVideo) {
+                loadVideo(firstVideo);
+            }
+
             var swiper = new Swiper(".mySwiper", {
-    loop: true,
-    autoplay: {
-        delay: 4000,
-        disableOnInteraction: false,
-    },
-    lazy: true, // 仅在需要时加载图片，提高性能
-    pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-    },
-    navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-    },
-    effect: "fade",
-});
+                loop: true,
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                },
+                lazy: true, // 仅在需要时加载图片，提高性能
+                preloadImages: false, // 不预加载所有图片
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                effect: "fade",
+                speed: 800, // 过渡速度
+                on: {
+                    init: function() {
+                        // 初始化时加载当前幻灯片的视频
+                        const activeSlide = this.slides[this.activeIndex];
+                        if (activeSlide) {
+                            const video = activeSlide.querySelector('video');
+                            if (video) loadVideo(video);
+                        }
+                    },
+                    slideChange: function() {
+                        // 幻灯片切换时加载新幻灯片的视频
+                        const activeSlide = this.slides[this.activeIndex];
+                        if (activeSlide) {
+                            const video = activeSlide.querySelector('video');
+                            if (video) loadVideo(video);
+                        }
+                        
+                        // 预加载下一个幻灯片的视频
+                        const nextIndex = (this.activeIndex + 1) % this.slides.length;
+                        const nextSlide = this.slides[nextIndex];
+                        if (nextSlide) {
+                            const nextVideo = nextSlide.querySelector('video');
+                            if (nextVideo) {
+                                // 使用setTimeout延迟加载下一个视频，优先加载当前视频
+                                setTimeout(() => loadVideo(nextVideo), 1000);
+                            }
+                        }
+                    }
+                }
+            });
 
             // 添加滚动事件监听
             window.addEventListener('scroll', function() {
@@ -710,6 +1120,33 @@
                         }, 1000);
                     }
                 });
+            });
+
+            // 移动端菜单控制
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                this.classList.toggle('open');
+                mobileMenu.classList.toggle('open');
+                document.body.classList.toggle('menu-open');
+            });
+            
+            // 点击移动端菜单项关闭菜单
+            document.querySelectorAll('.mobile-menu a').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuBtn.classList.remove('open');
+                    mobileMenu.classList.remove('open');
+                    document.body.classList.remove('menu-open');
+                });
+            });
+            
+            // 检测设备方向变化，调整布局
+            window.addEventListener('orientationchange', function() {
+                // 重新计算swiper高度
+                setTimeout(() => {
+                    swiper.update();
+                }, 300);
             });
         });
     </script>

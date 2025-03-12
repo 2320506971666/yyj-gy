@@ -518,6 +518,70 @@
             font-size: 0.9rem;
             color: #777;
         }
+
+        /* Logo页面样式 */
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.8s ease;
+        }
+        
+        .big-logo {
+            font-family: 'Poiret One', cursive;
+            font-size: 5rem;
+            font-weight: 400;
+            letter-spacing: 10px;
+            color: #ffffff;
+            margin-bottom: 30px;
+            transition: all 0.5s ease;
+            text-align: center;
+        }
+        
+        .logo-tagline {
+            font-size: 1.2rem;
+            opacity: 0.7;
+            letter-spacing: 3px;
+            transition: all 0.5s ease;
+            text-align: center;
+        }
+        
+        .logo-container:hover .big-logo {
+            color: #DE2910;
+            transform: scale(1.05);
+        }
+        
+        .logo-container:hover .logo-tagline {
+            opacity: 1;
+        }
+        
+        .logo-container::after {
+            content: '点击查看作品';
+            position: absolute;
+            bottom: 100px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .logo-container:hover::after {
+            opacity: 0.7;
+        }
+        
+        .work-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .work-content.active {
+            display: block;
+            animation: fadeInUp 1.2s ease forwards;
+        }
     </style>
 </head>
 <body>
@@ -555,7 +619,14 @@
 
     <!-- Work页面内容 -->
     <div class="work-page">
-        <div class="work-content">
+        <!-- Logo容器 -->
+        <div class="logo-container" id="logoContainer">
+            <div class="big-logo">JYWF</div>
+            <div class="logo-tagline">创意与专业的交汇</div>
+        </div>
+        
+        <!-- 作品内容 -->
+        <div class="work-content" id="workContent">
             <div class="work-title">
                 <h1>工作历程</h1>
                 <p>记录创意与专业成长的时间轴</p>
@@ -694,6 +765,20 @@
                 transition.style.visibility = 'hidden';
                 transition.style.opacity = '0';
             }, 500);
+
+            // Logo点击事件
+            const logoContainer = document.getElementById('logoContainer');
+            const workContent = document.getElementById('workContent');
+            
+            logoContainer.addEventListener('click', function() {
+                logoContainer.style.opacity = '0';
+                setTimeout(() => {
+                    logoContainer.style.display = 'none';
+                    workContent.classList.add('active');
+                    // 初始检查滚动动画
+                    checkScroll();
+                }, 800);
+            });
 
             // 点击链接时的过渡效果
             document.querySelectorAll('a').forEach(link => {

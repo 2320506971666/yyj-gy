@@ -1,0 +1,18 @@
+.featured-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 4px;
+    transition: transform 0.3s ease;
+}
+
+.featured-image:hover {
+    transform: scale(1.02);
+}
+
+.image-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+} 

@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' font-family='Poiret One'>J</text></svg>">
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -87,7 +90,7 @@
             letter-spacing: 4px;
             color: #DE2910;
         }
-        
+
         .nav-links a.active {
             color: #DE2910;
             opacity: 1;
@@ -582,6 +585,132 @@
             display: block;
             animation: fadeInUp 1.2s ease forwards;
         }
+
+        /* 视频作品区域样式 */
+        .featured-video-section {
+            margin: 0 auto 120px;
+            max-width: 1000px;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .featured-video-title {
+            margin-bottom: 40px;
+            font-family: 'Poiret One', cursive;
+            letter-spacing: 3px;
+        }
+        
+        .featured-video-title h2 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+            color: #fff;
+            letter-spacing: 5px;
+        }
+        
+        .featured-video-title p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            max-width: 700px;
+            margin: 0 auto;
+            letter-spacing: 2px;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            background-color: #000;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .video-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+        }
+        
+        .featured-video {
+            width: 100%;
+            display: block;
+            background-color: #000;
+        }
+        
+        .video-caption {
+            margin-top: 25px;
+            font-size: 1rem;
+            opacity: 0.7;
+            font-style: italic;
+            letter-spacing: 1px;
+            transition: opacity 0.3s ease;
+        }
+        
+        .video-container:hover + .video-caption {
+            opacity: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .featured-video-section {
+                margin-bottom: 80px;
+                padding: 0 15px;
+            }
+            
+            .featured-video-title h2 {
+                font-size: 2rem;
+                letter-spacing: 3px;
+            }
+            
+            .featured-video-title p {
+                font-size: 1rem;
+            }
+        }
+
+        /* 时间轴内的视频容器样式 */
+        .timeline-content .video-container {
+            margin-bottom: 25px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            background-color: #000;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        
+        .timeline-content .video-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .timeline-content .featured-video {
+            width: 100%;
+            display: block;
+            background-color: #000;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-content .video-container {
+                margin-bottom: 20px;
+            }
+        }
+
+        .featured-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 4px;
+            transition: transform 0.3s ease;
+        }
+
+        .featured-image:hover {
+            transform: scale(1.02);
+        }
+
+        .image-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -617,6 +746,14 @@
         <a href="about.html">About</a>
     </div>
 
+    <!-- 插入在导航栏后的某处 -->
+    <main class="main-content">
+        <div class="image-container">
+            <img src="images/portrait2.jpg" alt="Portrait 2" class="featured-image">
+        </div>
+        <!-- 其他内容 -->
+    </main>
+
     <!-- Work页面内容 -->
     <div class="work-page">
         <!-- Logo容器 -->
@@ -638,13 +775,18 @@
                 <div class="timeline-item">
                     <div class="timeline-content">
                         <div class="timeline-year">2023</div>
-                        <img src="https://source.unsplash.com/random/800x500?landscape" alt="2023项目" class="timeline-image">
-                        <h3>自然风光摄影集</h3>
-                        <p>这是一个关于自然风光的摄影项目，探索了不同季节和地域的自然美景。通过独特的构图和光线处理，捕捉了大自然的壮丽与细腻。</p>
+                        <div class="video-container">
+                            <video class="featured-video" controls preload="metadata">
+                                <source src="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/caifang.mp4" type="video/mp4">
+                                您的浏览器不支持HTML5视频播放。
+                            </video>
+                        </div>
+                        <h3>采访纪录片</h3>
+                        <p>这是一个深度采访纪录片项目，通过镜头记录真实故事，探索人物背后的情感与温度。项目采用专业的影视制作流程，从前期策划到后期剪辑，全方位展现纪录片的艺术魅力。</p>
                         <div class="timeline-tags">
-                            <span class="timeline-tag">摄影</span>
-                            <span class="timeline-tag">自然</span>
-                            <span class="timeline-tag">风景</span>
+                            <span class="timeline-tag">纪录片</span>
+                            <span class="timeline-tag">采访</span>
+                            <span class="timeline-tag">剪辑</span>
                         </div>
                     </div>
                 </div>

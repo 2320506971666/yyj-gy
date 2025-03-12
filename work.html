@@ -698,7 +698,7 @@
             // 点击链接时的过渡效果
             document.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function(e) {
-                    if (this.hostname === window.location.hostname) {
+                    if (this.hostname === window.location.hostname && !this.getAttribute('href').startsWith('#')) {
                         e.preventDefault();
                         const href = this.getAttribute('href');
                         
@@ -706,10 +706,13 @@
                         transition.style.visibility = 'visible';
                         transition.style.opacity = '1';
                         
-                        // 延迟导航以等待过渡效果完成
-                        setTimeout(() => {
-                            window.location.href = href;
-                        }, 1000);
+                        // 立即记录要跳转的URL，防止被其他事件覆盖
+                        const targetUrl = href;
+                        
+                        // 延迟导航以等待过渡效果完成，但确保一定会执行
+                        setTimeout(function() {
+                            window.location.href = targetUrl;
+                        }, 300);
                     }
                 });
             });

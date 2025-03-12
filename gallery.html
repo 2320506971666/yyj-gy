@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <title>Gallery - JYWF</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: black;
+            color: white;
+            line-height: 1.6;
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        /* 导航栏样式 */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            height: 45px;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 0 5%;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            height: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-family: 'Poiret One', cursive;
+            font-size: 1.8rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+        
+        .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 2.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: capitalize;
+            transition: all 0.4s ease;
+            opacity: 0.9;
+            font-family: 'Poiret One', cursive;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            opacity: 1;
+            letter-spacing: 4px;
+            color: #DE2910;
+        }
+        
+        .nav-links a.active {
+            color: #DE2910;
+            opacity: 1;
+        }
+
+        /* Gallery页面特定样式 - 现代化改进 */
+        .gallery-page {
+            padding-top: 45px;
+            min-height: 100vh;
+            background-color: black;
+        }
+
+        .gallery-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 100px 3% 100px;
+        }
+
+        .gallery-title {
+            margin-bottom: 80px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards;
+        }
+
+        .gallery-title h1 {
+            font-size: 4.5rem;
+            font-weight: 300;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            font-family: 'Poiret One', cursive;
+            line-height: 1.2;
+        }
+
+        .gallery-title p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+            letter-spacing: 2px;
+        }
+
+        /* 现代化照片网格 - 采用Bento网格布局 */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            aspect-ratio: 1 / 1;
+            cursor: pointer;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.05);
+        }
+
+        /* 玻璃拟态效果覆盖层 */
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+            font-family: 'Poiret One', cursive;
+            letter-spacing: 1.5px;
+        }
+
+        .gallery-overlay p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
+        /* 现代化分类筛选 */
+        .gallery-filter {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            gap: 15px;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards;
+            animation-delay: 0.2s;
+        }
+
+        .filter-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 25px;
+            cursor: pointer;
+            font-family: 'Poiret One', cursive;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            border-radius: 30px;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #DE2910;
+            border-color: #DE2910;
+            box-shadow: 0 5px 15px rgba(222, 41, 16, 0.3);
+        }
+
+        /* 改进的灯箱效果 */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 30px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .lightbox.show {
+            opacity: 1;
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            transform: scale(0.9);
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .lightbox.show .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .lightbox-caption {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Poiret One', cursive;
+            letter-spacing: 1px;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .lightbox-prev, .lightbox-next {
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            padding: 0 20px;
+            opacity: 0.7;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .lightbox-prev:hover, .lightbox-next:hover {
+            opacity: 1;
+        }
+
+        .lightbox-prev:hover {
+            transform: translateX(-5px);
+        }
+
+        .lightbox-next:hover {
+            transform: translateX(5px);
+        }
+
+        /* 改进的动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .gallery-title h1 {
+                font-size: 2.5rem;
+                letter-spacing: 5px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            /* 移动端导航菜单按钮 */
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                right: 20px;
+                width: 30px;
+                height: 20px;
+                cursor: pointer;
+                z-index: 1001;
+            }
+
+            .mobile-menu-btn span {
+                display: block;
+                position: absolute;
+                height: 2px;
+                width: 100%;
+                background: white;
+                opacity: 1;
+                left: 0;
+                transform: rotate(0deg);
+                transition: .25s ease-in-out;
+            }
+
+            .mobile-menu-btn span:nth-child(1) {
+                top: 0px;
+            }
+
+            .mobile-menu-btn span:nth-child(2) {
+                top: 9px;
+            }
+
+            .mobile-menu-btn span:nth-child(3) {
+                top: 18px;
+            }
+
+            .mobile-menu-btn.open span:nth-child(1) {
+                top: 9px;
+                transform: rotate(135deg);
+            }
+
+            .mobile-menu-btn.open span:nth-child(2) {
+                opacity: 0;
+                left: -60px;
+            }
+
+            .mobile-menu-btn.open span:nth-child(3) {
+                top: 9px;
+                transform: rotate(-135deg);
+            }
+
+            /* 移动端菜单样式 */
+            .mobile-menu {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                z-index: 999;
+                padding: 20px;
+                padding-top: 65px;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .mobile-menu.open {
+                display: flex;
+            }
+
+            .mobile-menu a {
+                color: white;
+                font-size: 1.5rem;
+                margin: 15px 0;
+                text-decoration: none;
+                font-family: 'Poiret One', cursive;
+                letter-spacing: 3px;
+                transition: all 0.3s ease;
+            }
+
+            .mobile-menu a:hover {
+                color: #DE2910;
+                letter-spacing: 4px;
+            }
+
+            .mobile-menu a.active {
+                color: #DE2910;
+            }
+        }
+
+        /* 页面过渡效果 */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        .page-transition.fade-in {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 菜单打开时的body样式 */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: #111;
+            color: white;
+            padding: 5rem 5% 2rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            height: 1px;
+            width: 50px;
+            background-color: white;
+            bottom: -10px;
+            left: 0;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            text-decoration: none;
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-transition"></div>
+    <!-- 导航栏 -->
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit;">JYWF</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html#explore">Explore</a></li>
+                <li><a href="film.html">Film</a></li>
+                <li><a href="gallery.html" class="active">Gallery</a></li>
+                <li><a href="index.html#work">Work</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+            <!-- 添加移动端菜单按钮 -->
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 移动端菜单 -->
+    <div class="mobile-menu">
+        <a href="index.html#explore">Explore</a>
+        <a href="film.html">Film</a>
+        <a href="gallery.html" class="active">Gallery</a>
+        <a href="index.html#work">Work</a>
+        <a href="about.html">About</a>
+    </div>
+
+    <!-- Gallery页面内容 -->
+    <div class="gallery-page">
+        <div class="gallery-content">
+            <div class="gallery-title">
+                <h1>摄影作品集</h1>
+                <p>探索光影与情感的交织</p>
+            </div>
+            
+            <!-- 分类筛选按钮 -->
+            <div class="gallery-filter">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="portrait">人像</button>
+                <button class="filter-btn" data-filter="landscape">风景</button>
+                <button class="filter-btn" data-filter="street">街拍</button>
+                <button class="filter-btn" data-filter="abstract">抽象</button>
+            </div>
+            
+            <!-- 照片网格 -->
+            <div class="gallery-grid">
+                <!-- 原网站照片 -->
+                <div class="gallery-item" data-category="landscape">
+                    <img src="artistweb/images/dji_export_20250215_photo_0001.jpeg" alt="风景摄影" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <h3>Ephemeral Light</h3>
+                        <p>2023年 | 风景摄影</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="landscape">
+                    <img src="artistweb/images/dji_export_20250216_photo_0001.jpeg" alt="风景摄影" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <h3>Urban Fragments</h3>
+                        <p>2022年 | 风景摄影</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="landscape">
+                    <img src="artistweb/images/dji_export_20250216_photo_0007.jpeg" alt="风景摄影" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <h3>Silence in Motion</h3>
+                        <p>2023年 | 风景摄影</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="portrait">
+                    <img src="artistweb/images/Portrait.jpeg" alt="人像摄影" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <h3>人像艺术</h3>
+                        <p>2023年 | 人像摄影</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="portrait">
+                    <img src="artistweb/images/about.jpeg" alt="人像摄影" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <h3>光影人像</h3>
+                        <p>2023年 | 人像摄影</p>
+                    </div>
+                </div>
+                
+                <!-- 其他示例照片 -->
+                <div class="gallery-item" data-category="street">
+                    <img src="https://source.unsplash.com/random/600x600?street" alt="街拍" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <h3>城市瞬间</h3>
+                        <p>2022年 | 街头摄影</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="abstract">
+                    <img src="https://source.unsplash.com/random/600x600?abstract" alt="抽象摄影" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <h3>色彩构成</h3>
+                        <p>2023年 | 抽象摄影</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="street">
+                    <img src="https://source.unsplash.com/random/600x600?city" alt="街拍" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <h3>都市剪影</h3>
+                        <p>2023年 | 街头摄影</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="abstract">
+                    <img src="https://source.unsplash.com/random/600x600?texture" alt="抽象摄影" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <h3>纹理研究</h3>
+                        <p>2022年 | 抽象摄影</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="portrait">
+                    <img src="https://source.unsplash.com/random/600x600?man" alt="人像摄影" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <h3>黑白肖像</h3>
+                        <p>2022年 | 人像摄影</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="landscape">
+                    <img src="https://source.unsplash.com/random/600x600?sea" alt="风景摄影" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <h3>海天一色</h3>
+                        <p>2023年 | 风景摄影</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="street">
+                    <img src="https://source.unsplash.com/random/600x600?people" alt="街拍" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <h3>人间百态</h3>
+                        <p>2022年 | 街头摄影</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="abstract">
+                    <img src="https://source.unsplash.com/random/600x600?art" alt="抽象摄影" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <h3>抽象构图</h3>
+                        <p>2023年 | 抽象摄影</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 灯箱效果 -->
+    <div class="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close">&times;</span>
+            <img src="" alt="" class="lightbox-image">
+            <div class="lightbox-caption"></div>
+            <div class="lightbox-nav">
+                <span class="lightbox-prev">&#10094;</span>
+                <span class="lightbox-next">&#10095;</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Contact</h3>
+                <p>studio@artist.com</p>
+                <p>+86 123 4567 8910</p>
+                <p>Shanghai, China</p>
+            </div>
+            <div class="footer-column">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html#explore">Explore</a></li>
+                    <li><a href="film.html">Film</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="index.html#work">Work</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Connect</h3>
+                <p>Follow my work and creative journey</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">YT</a>
+                    <a href="#" class="social-link">BL</a>
+                    <a href="#" class="social-link">IG</a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Artist Portfolio. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 页面加载时的淡出效果
+            const transition = document.querySelector('.page-transition');
+            setTimeout(() => {
+                transition.style.visibility = 'hidden';
+                transition.style.opacity = '0';
+            }, 500);
+
+            // 点击链接时的过渡效果
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.hostname === window.location.hostname) {
+                        e.preventDefault();
+                        const href = this.getAttribute('href');
+                        
+                        // 显示过渡层
+                        transition.style.visibility = 'visible';
+                        transition.style.opacity = '1';
+                        
+                        // 延迟导航以等待过渡效果完成
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 1000);
+                    }
+                });
+            });
+
+            // 移动端菜单控制
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                this.classList.toggle('open');
+                mobileMenu.classList.toggle('open');
+                document.body.classList.toggle('menu-open');
+            });
+            
+            // 点击移动端菜单项关闭菜单
+            document.querySelectorAll('.mobile-menu a').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuBtn.classList.remove('open');
+                    mobileMenu.classList.remove('open');
+                    document.body.classList.remove('menu-open');
+                });
+            });
+
+            // 分类筛选功能
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // 为当前点击的按钮添加active类
+                    this.classList.add('active');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // 添加动画效果
+                    galleryItems.forEach(item => {
+                        item.style.opacity = '0';
+                        item.style.transform = 'scale(0.95)';
+                        
+                        setTimeout(() => {
+                            if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                                item.style.display = 'block';
+                                setTimeout(() => {
+                                    item.style.opacity = '1';
+                                    item.style.transform = 'scale(1)';
+                                }, 50);
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        }, 300);
+                    });
+                });
+            });
+
+            // 改进的灯箱功能
+            const lightbox = document.querySelector('.lightbox');
+            const lightboxImage = document.querySelector('.lightbox-image');
+            const lightboxCaption = document.querySelector('.lightbox-caption');
+            const lightboxClose = document.querySelector('.lightbox-close');
+            const lightboxPrev = document.querySelector('.lightbox-prev');
+            const lightboxNext = document.querySelector('.lightbox-next');
+            
+            let currentIndex = 0;
+            const visibleItems = () => Array.from(galleryItems).filter(item => item.style.display !== 'none');
+            
+            // 打开灯箱
+            galleryItems.forEach((item, index) => {
+                item.addEventListener('click', function() {
+                    const items = visibleItems();
+                    currentIndex = items.indexOf(this);
+                    
+                    const img = this.querySelector('img');
+                    const title = this.querySelector('h3').textContent;
+                    const desc = this.querySelector('p').textContent;
+                    
+                    lightboxImage.src = img.src;
+                    lightboxCaption.textContent = `${title} - ${desc}`;
+                    lightbox.style.display = 'flex';
+                    
+                    // 添加动画效果
+                    setTimeout(() => {
+                        lightbox.classList.add('show');
+                    }, 10);
+                });
+            });
+            
+            // 关闭灯箱
+            lightboxClose.addEventListener('click', () => {
+                lightbox.classList.remove('show');
+                setTimeout(() => {
+                    lightbox.style.display = 'none';
+                }, 500);
+            });
+            
+            // 点击灯箱背景关闭
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    lightboxClose.click();
+                }
+            });
+            
+            // 上一张/下一张
+            lightboxPrev.addEventListener('click', () => {
+                const items = visibleItems();
+                currentIndex = (currentIndex - 1 + items.length) % items.length;
+                updateLightbox(items[currentIndex]);
+            });
+            
+            lightboxNext.addEventListener('click', () => {
+                const items = visibleItems();
+                currentIndex = (currentIndex + 1) % items.length;
+                updateLightbox(items[currentIndex]);
+            });
+            
+            // 更新灯箱内容
+            function updateLightbox(item) {
+                const img = item.querySelector('img');
+                const title = item.querySelector('h3').textContent;
+                const desc = item.querySelector('p').textContent;
+                
+                // 添加过渡效果
+                lightboxImage.style.opacity = '0';
+                lightboxImage.style.transform = 'scale(0.95)';
+                
+                setTimeout(() => {
+                    lightboxImage.src = img.src;
+                    lightboxCaption.textContent = `${title} - ${desc}`;
+                    
+                    setTimeout(() => {
+                        lightboxImage.style.opacity = '1';
+                        lightboxImage.style.transform = 'scale(1)';
+                    }, 50);
+                }, 300);
+            }
+            
+            // 键盘导航
+            document.addEventListener('keydown', function(e) {
+                if (lightbox.classList.contains('show')) {
+                    if (e.key === 'Escape') {
+                        lightboxClose.click();
+                    } else if (e.key === 'ArrowLeft') {
+                        lightboxPrev.click();
+                    } else if (e.key === 'ArrowRight') {
+                        lightboxNext.click();
+                    }
+                }
+            });
+            
+            // 为gallery-item添加鼠标移动视差效果
+            galleryItems.forEach(item => {
+                item.addEventListener('mousemove', function(e) {
+                    const { left, top, width, height } = this.getBoundingClientRect();
+                    const x = (e.clientX - left) / width - 0.5;
+                    const y = (e.clientY - top) / height - 0.5;
+                    
+                    const image = this.querySelector('.gallery-image');
+                    image.style.transform = `scale(1.05) translate(${x * 10}px, ${y * 10}px)`;
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    const image = this.querySelector('.gallery-image');
+                    image.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

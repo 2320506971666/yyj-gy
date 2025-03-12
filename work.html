@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
     
-    <title>Film - JYWF</title>
+    <title>Work - JYWF</title>
     <style>
         /* 基础样式 */
         * {
@@ -32,7 +32,9 @@
             width: 100%;
             top: 0;
             height: 45px;
-            background-color: black;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: 1000;
             padding: 0 5%;
         }
@@ -91,100 +93,231 @@
             opacity: 1;
         }
 
-        /* 电影页面特定样式 */
-        .film-page {
+        /* Work页面特定样式 */
+        .work-page {
             padding-top: 45px;
             min-height: 100vh;
             background-color: black;
         }
 
-        .film-content {
+        .work-content {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 80px 5% 100px;
+            padding: 100px 5% 100px;
         }
 
-        .film-title {
-            margin-bottom: 40px;
+        .work-title {
+            margin-bottom: 80px;
             text-align: center;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards;
         }
 
-        .film-title h1 {
-            font-size: 3rem;
+        .work-title h1 {
+            font-size: 4rem;
             font-weight: 300;
-            letter-spacing: 5px;
-            margin-bottom: 10px;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            font-family: 'Poiret One', cursive;
+            line-height: 1.2;
         }
 
-        .film-title p {
-            font-size: 1.1rem;
+        .work-title p {
+            font-size: 1.2rem;
             opacity: 0.8;
             max-width: 600px;
             margin: 0 auto;
-        }
-
-        .video-container {
-            width: 100%;
-            max-width: 1000px;
-            margin: 0 auto;
-            position: relative;
-            padding-top: 56.25%; /* 16:9 宽高比 */
-            overflow: hidden;
-            background-color: #000;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .video-container video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .film-description {
-            max-width: 800px;
-            margin: 50px auto 0;
-            padding: 0 20px;
-        }
-
-        .film-description h2 {
-            font-size: 1.8rem;
-            font-weight: 300;
-            margin-bottom: 20px;
             letter-spacing: 2px;
         }
 
-        .film-description p {
-            font-size: 1.1rem;
+        /* 时间轴样式 */
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: rgba(255, 255, 255, 0.2);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            margin-bottom: 60px;
+        }
+
+        /* 左侧项目 */
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        /* 右侧项目 */
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        /* 时间轴圆点 */
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            right: -8px;
+            background-color: #DE2910;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* 右侧项目的圆点位置 */
+        .timeline-item:nth-child(even)::after {
+            left: -8px;
+        }
+
+        .timeline-content {
+            padding: 30px;
+            background-color: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .timeline-year {
+            position: absolute;
+            top: -40px;
+            font-size: 1.8rem;
+            font-family: 'Poiret One', cursive;
+            color: #DE2910;
+            opacity: 0.9;
+            letter-spacing: 2px;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-year {
+            right: 20px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-year {
+            left: 20px;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 15px;
+            font-family: 'Poiret One', cursive;
+            letter-spacing: 2px;
+        }
+
+        .timeline-content p {
+            font-size: 1rem;
             line-height: 1.8;
             margin-bottom: 20px;
             opacity: 0.9;
         }
 
-        .film-meta {
+        .timeline-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            transition: transform 0.5s ease;
+        }
+
+        .timeline-content:hover .timeline-image {
+            transform: scale(1.03);
+        }
+
+        .timeline-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 30px;
-            margin-top: 40px;
-            font-size: 0.9rem;
-            opacity: 0.7;
+            gap: 10px;
+            margin-top: 15px;
         }
 
-        .film-meta div {
-            margin-bottom: 10px;
+        .timeline-tag {
+            padding: 5px 12px;
+            background-color: rgba(222, 41, 16, 0.2);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 1px;
         }
 
-        .film-meta span {
-            font-weight: 500;
-            margin-right: 10px;
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* 移动端适配 */
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
+            }
+            
+            .work-title h1 {
+                font-size: 2.5rem;
+                letter-spacing: 5px;
+            }
+
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+                left: 0 !important;
+            }
+            
+            .timeline-item::after {
+                left: 23px !important;
+            }
+            
+            .timeline-item:nth-child(odd) .timeline-year,
+            .timeline-item:nth-child(even) .timeline-year {
+                left: 70px;
+                top: -30px;
+                font-size: 1.5rem;
             }
             
             /* 移动端导航菜单按钮 */
@@ -246,6 +379,8 @@
                 width: 100%;
                 height: 100%;
                 background-color: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
                 z-index: 999;
                 padding: 20px;
                 padding-top: 65px;
@@ -276,18 +411,6 @@
             .mobile-menu a.active {
                 color: #DE2910;
             }
-
-            .film-title h1 {
-                font-size: 2rem;
-            }
-
-            .film-description h2 {
-                font-size: 1.5rem;
-            }
-
-            .film-description p {
-                font-size: 1rem;
-            }
         }
 
         /* 页面过渡效果 */
@@ -314,7 +437,7 @@
             overflow: hidden;
         }
 
-        /* 添加页脚样式 */
+        /* 页脚样式 */
         footer {
             background-color: #111;
             color: white;
@@ -407,9 +530,9 @@
             </div>
             <ul class="nav-links">
                 <li><a href="index.html#explore">Explore</a></li>
-                <li><a href="film.html" class="active">Film</a></li>
-                <li><a href="index.html#gallery">Gallery</a></li>
-                <li><a href="index.html#work">Work</a></li>
+                <li><a href="film.html">Film</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="work.html" class="active">Work</a></li>
                 <li><a href="about.html">About</a></li>
             </ul>
             <!-- 添加移动端菜单按钮 -->
@@ -424,39 +547,105 @@
     <!-- 移动端菜单 -->
     <div class="mobile-menu">
         <a href="index.html#explore">Explore</a>
-        <a href="film.html" class="active">Film</a>
-        <a href="index.html#gallery">Gallery</a>
-        <a href="index.html#work">Work</a>
+        <a href="film.html">Film</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="work.html" class="active">Work</a>
         <a href="about.html">About</a>
     </div>
 
-    <!-- 电影页面内容 -->
-    <div class="film-page">
-        <div class="film-content">
-            <div class="film-title">
-                <h1>Summer Sense</h1>
-                <p>一部关于夏日感官体验的短片</p>
+    <!-- Work页面内容 -->
+    <div class="work-page">
+        <div class="work-content">
+            <div class="work-title">
+                <h1>工作历程</h1>
+                <p>记录创意与专业成长的时间轴</p>
             </div>
             
-            <div class="video-container">
-                <video controls preload="metadata" id="mainVideo">
-                    <source src="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/summer%20sense%EF%BC%88compress%EF%BC%89.mp4" type="video/mp4">
-                    您的浏览器不支持视频播放。
-                </video>
-            </div>
-            
-            <div class="film-description">
-                <h2>关于这部作品</h2>
-                <p>《Summer Sense》是一部探索夏日感官体验的短片。通过独特的视觉语言和声音设计，作品捕捉了夏季特有的光影、色彩和情绪，带领观众进入一个充满感官刺激的夏日世界。</p>
-                <p>影片采用了实验性的拍摄手法，将自然景观与人物情感相融合，创造出一种既真实又梦幻的视觉体验。每一个画面都经过精心构图，色彩饱和度的处理让夏日的温暖与活力跃然屏幕。</p>
+            <!-- 时间轴 -->
+            <div class="timeline">
+                <!-- 2023年项目 -->
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2023</div>
+                        <img src="https://source.unsplash.com/random/800x500?landscape" alt="2023项目" class="timeline-image">
+                        <h3>自然风光摄影集</h3>
+                        <p>这是一个关于自然风光的摄影项目，探索了不同季节和地域的自然美景。通过独特的构图和光线处理，捕捉了大自然的壮丽与细腻。</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">摄影</span>
+                            <span class="timeline-tag">自然</span>
+                            <span class="timeline-tag">风景</span>
+                        </div>
+                    </div>
+                </div>
                 
-                <div class="film-meta">
-                    <div><span>导演:</span> JYWF</div>
-                    <div><span>摄影:</span> JYWF</div>
-                    <div><span>剪辑:</span> JYWF</div>
-                    <div><span>音乐:</span> Original Score</div>
-                    <div><span>年份:</span> 2023</div>
-                    <div><span>时长:</span> 5分钟</div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2022</div>
+                        <img src="https://source.unsplash.com/random/800x500?portrait" alt="2022项目" class="timeline-image">
+                        <h3>城市人像系列</h3>
+                        <p>在这个项目中，我探索了城市环境中的人物肖像，通过光影和构图展现了城市生活的多样性和个体的独特性。</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">人像</span>
+                            <span class="timeline-tag">城市</span>
+                            <span class="timeline-tag">摄影</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2021</div>
+                        <img src="https://source.unsplash.com/random/800x500?film" alt="2021项目" class="timeline-image">
+                        <h3>短片《城市边缘》</h3>
+                        <p>这部短片探索了城市边缘地带的生活状态，通过纪实手法记录了这些区域的人文景观和社会现象，获得了多个独立电影节的关注。</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">电影</span>
+                            <span class="timeline-tag">纪录片</span>
+                            <span class="timeline-tag">社会</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2020</div>
+                        <img src="https://source.unsplash.com/random/800x500?abstract" alt="2020项目" class="timeline-image">
+                        <h3>抽象艺术展《形与色》</h3>
+                        <p>这是一个结合了摄影和数字艺术的展览项目，探索了形状、色彩和纹理的关系，通过抽象的视觉语言表达了对现代生活的思考。</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">艺术</span>
+                            <span class="timeline-tag">抽象</span>
+                            <span class="timeline-tag">展览</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2019</div>
+                        <img src="https://source.unsplash.com/random/800x500?commercial" alt="2019项目" class="timeline-image">
+                        <h3>商业摄影项目《品牌视觉》</h3>
+                        <p>为多个知名品牌提供了视觉创意和摄影服务，包括产品摄影、广告拍摄和品牌形象设计，帮助客户建立了独特的视觉识别系统。</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">商业</span>
+                            <span class="timeline-tag">品牌</span>
+                            <span class="timeline-tag">广告</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2018</div>
+                        <img src="https://source.unsplash.com/random/800x500?travel" alt="2018项目" class="timeline-image">
+                        <h3>旅行摄影集《远方的风景》</h3>
+                        <p>这个项目记录了我在亚洲多个国家的旅行经历，通过镜头捕捉了不同文化和自然景观的独特魅力，展现了旅行中的发现与感悟。</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">旅行</span>
+                            <span class="timeline-tag">文化</span>
+                            <span class="timeline-tag">摄影集</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -476,8 +665,8 @@
                 <ul class="footer-links">
                     <li><a href="index.html#explore">Explore</a></li>
                     <li><a href="film.html">Film</a></li>
-                    <li><a href="index.html#gallery">Gallery</a></li>
-                    <li><a href="index.html#work">Work</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="work.html">Work</a></li>
                     <li><a href="about.html">About</a></li>
                 </ul>
             </div>
@@ -505,9 +694,6 @@
                 transition.style.visibility = 'hidden';
                 transition.style.opacity = '0';
             }, 500);
-
-            // 视频元素
-            const video = document.getElementById('mainVideo');
 
             // 点击链接时的过渡效果
             document.querySelectorAll('a').forEach(link => {
@@ -546,6 +732,34 @@
                     document.body.classList.remove('menu-open');
                 });
             });
+            
+            // 滚动动画
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            
+            function checkScroll() {
+                timelineItems.forEach(item => {
+                    const itemTop = item.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (itemTop < windowHeight * 0.8) {
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }
+                });
+            }
+            
+            // 初始设置
+            timelineItems.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(40px)';
+                item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            });
+            
+            // 监听滚动事件
+            window.addEventListener('scroll', checkScroll);
+            
+            // 初始检查
+            checkScroll();
         });
     </script>
 </body>

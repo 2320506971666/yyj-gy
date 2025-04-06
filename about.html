@@ -11,8 +11,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
     
-    <title>About - JYWF</title>
+    <title>About - Triple-Y</title>
     <style>
         /* 基础样式 */
         * {
@@ -49,8 +51,8 @@
         }
         
         .logo {
-            font-family: 'Poiret One', cursive;
-            font-size: 1.8rem;
+            font-family: 'Reenie Beanie', cursive;
+            font-size: 2.2rem;
             font-weight: 400;
             letter-spacing: 3px;
             color: #ffffff;
@@ -97,7 +99,7 @@
 
         /* About 页面特定样式 */
         .about-page {
-            padding-top: 45px;
+            padding-top: 0;
             min-height: 100vh;
             background-color: black;
         }
@@ -410,38 +412,11 @@
 </head>
 <body>
     <div class="page-transition"></div>
-    <!-- 复制原有的导航栏 -->
-    <header>
-        <nav>
-            <div class="logo">
-                <a href="index.html" style="text-decoration: none; color: inherit;">JYWF</a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html#explore">Explore</a></li>
-                <li><a href="index.html#film">Film</a></li>
-                <li><a href="index.html#gallery">Gallery</a></li>
-                <li><a href="index.html#work">Work</a></li>
-                <li><a href="about.html" class="active">About</a></li>
-            </ul>
-            <!-- 添加移动端菜单按钮 -->
-            <div class="mobile-menu-btn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </nav>
-    </header>
-
-    <!-- 移动端菜单 -->
-    <div class="mobile-menu">
-        <a href="index.html#explore">Explore</a>
-        <a href="index.html#film">Film</a>
-        <a href="index.html#gallery">Gallery</a>
-        <a href="index.html#work">Work</a>
-        <a href="about.html" class="active">About</a>
-    </div>
-
-    <!-- About 页面内容 -->
+    
+    <!-- 导航栏容器 -->
+    <div id="nav-container"></div>
+    
+    <!-- About页面内容 -->
     <div class="about-page">
         <div class="about-content">
             <div class="about-grid">
@@ -490,7 +465,8 @@
         </div>
     </footer>
 
-    <!-- 添加JavaScript代码 -->
+    <!-- 加载统一导航栏脚本 -->
+    <script src="/shared/load-nav.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // 页面加载时的淡出效果

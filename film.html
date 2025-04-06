@@ -12,8 +12,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
     
-    <title>Film - JYWF</title>
+    <title>Film - Triple-Y</title>
     <style>
         /* 基础样式 */
         * {
@@ -51,8 +53,8 @@
         }
         
         .logo {
-            font-family: 'Poiret One', cursive;
-            font-size: 1.8rem;
+            font-family: 'Reenie Beanie', cursive;
+            font-size: 2.2rem;
             font-weight: 400;
             letter-spacing: 3px;
             color: #ffffff;
@@ -96,7 +98,7 @@
 
         /* 电影页面特定样式 */
         .film-page {
-            padding-top: 45px;
+            padding-top: 0;
             min-height: 100vh;
             background-color: black;
         }
@@ -402,37 +404,10 @@
 </head>
 <body>
     <div class="page-transition"></div>
-    <!-- 导航栏 -->
-    <header>
-        <nav>
-            <div class="logo">
-                <a href="index.html" style="text-decoration: none; color: inherit;">JYWF</a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html#explore">Explore</a></li>
-                <li><a href="film.html" class="active">Film</a></li>
-                <li><a href="index.html#gallery">Gallery</a></li>
-                <li><a href="index.html#work">Work</a></li>
-                <li><a href="about.html">About</a></li>
-            </ul>
-            <!-- 添加移动端菜单按钮 -->
-            <div class="mobile-menu-btn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </nav>
-    </header>
-
-    <!-- 移动端菜单 -->
-    <div class="mobile-menu">
-        <a href="index.html#explore">Explore</a>
-        <a href="film.html" class="active">Film</a>
-        <a href="index.html#gallery">Gallery</a>
-        <a href="index.html#work">Work</a>
-        <a href="about.html">About</a>
-    </div>
-
+    
+    <!-- 导航栏容器 -->
+    <div id="nav-container"></div>
+    
     <!-- 电影页面内容 -->
     <div class="film-page">
         <div class="film-content">
@@ -442,8 +417,8 @@
             </div>
             
             <div class="video-container">
-                <video controls preload="metadata" id="mainVideo">
-                    <source src="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/summer%20sense%EF%BC%88compress%EF%BC%89.mp4" type="video/mp4">
+                <video controls preload="metadata" id="mainVideo" controlsList="nodownload" disablePictureInPicture autoplay muted>
+                    <source src="https://st.ai55.cc/video/%E9%A1%BA%E4%B8%B0%E8%A7%86%E9%A2%91%EF%BC%88compress%EF%BC%89.webm" type="video/webm">
                     您的浏览器不支持视频播放。
                 </video>
             </div>
@@ -454,9 +429,9 @@
                 <p>影片采用了实验性的拍摄手法，将自然景观与人物情感相融合，创造出一种既真实又梦幻的视觉体验。每一个画面都经过精心构图，色彩饱和度的处理让夏日的温暖与活力跃然屏幕。</p>
                 
                 <div class="film-meta">
-                    <div><span>导演:</span> JYWF</div>
-                    <div><span>摄影:</span> JYWF</div>
-                    <div><span>剪辑:</span> JYWF</div>
+                    <div><span>导演:</span> Triple-Y</div>
+                    <div><span>摄影:</span> Triple-Y</div>
+                    <div><span>剪辑:</span> Triple-Y</div>
                     <div><span>音乐:</span> Original Score</div>
                     <div><span>年份:</span> 2023</div>
                     <div><span>时长:</span> 5分钟</div>
@@ -479,8 +454,8 @@
                 <ul class="footer-links">
                     <li><a href="index.html#explore">Explore</a></li>
                     <li><a href="film.html">Film</a></li>
-                    <li><a href="index.html#gallery">Gallery</a></li>
-                    <li><a href="index.html#work">Work</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="work.html">Work</a></li>
                     <li><a href="about.html">About</a></li>
                 </ul>
             </div>
@@ -499,7 +474,8 @@
         </div>
     </footer>
 
-    <!-- JavaScript -->
+    <!-- 加载统一导航栏脚本 -->
+    <script src="/shared/load-nav.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // 页面加载时的淡出效果
@@ -511,6 +487,20 @@
 
             // 视频元素
             const video = document.getElementById('mainVideo');
+            
+            // 确保视频自动播放
+            if(video) {
+                // 尝试播放视频
+                video.play().catch(error => {
+                    console.log('自动播放失败:', error);
+                    // 如果自动播放失败，尝试静音后播放
+                    video.muted = true;
+                    video.play();
+                });
+                
+                // 为用户提供取消静音的按钮或提示
+                // 您可以在这里添加一个取消静音的UI元素
+            }
 
             // 点击链接时的过渡效果
             document.querySelectorAll('a').forEach(link => {

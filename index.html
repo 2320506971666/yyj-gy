@@ -4,16 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <!-- SEO基础标签 -->
+    <title>Triple-Y | 摄影与影像艺术作品集</title>
+    <meta name="description" content="探索Triple-Y的摄影、影像与艺术作品集。以东方美学视角记录自然风光与人文故事，呈现额尔古纳河等中国壮丽风景。">
+    <meta name="keywords" content="摄影,影像艺术,作品集,额尔古纳河,中国风光,东方美学">
+    <meta name="author" content="Triple-Y">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yourdomain.com/">
+    
+    <!-- Open Graph / 社交分享标签 -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Triple-Y | 摄影与影像艺术作品集">
+    <meta property="og:description" content="探索Triple-Y的摄影、影像与艺术作品集。以东方美学视角记录自然风光与人文故事，呈现额尔古纳河等中国壮丽风景。">
+    <meta property="og:image" content="https://yourdomain.com/artistweb/images/og-image.jpg">
+    <meta property="og:url" content="https://yourdomain.com/">
+    <meta property="og:site_name" content="Triple-Y摄影作品集">
+    
+    <!-- Twitter卡片 -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Triple-Y | 摄影与影像艺术作品集">
+    <meta name="twitter:description" content="探索Triple-Y的摄影、影像与艺术作品集。以东方美学视角记录自然风光与人文故事。">
+    <meta name="twitter:image" content="https://yourdomain.com/artistweb/images/twitter-card.jpg">
+    
+    <!-- 微信分享优化 -->
+    <meta itemprop="name" content="Triple-Y | 摄影与影像艺术作品集">
+    <meta itemprop="description" content="探索Triple-Y的摄影、影像与艺术作品集。以东方美学视角记录自然风光与人文故事。">
+    <meta itemprop="image" content="https://yourdomain.com/artistweb/images/wechat-share.jpg">
+    
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' font-family='Poiret One'>J</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="artistweb/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="artistweb/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="artistweb/images/favicon-16x16.png">
     
     <!-- Google Fonts -->
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     
     <!-- 预加载关键资源 -->
-    <link rel="preload" href="artistweb/videos/video1.mp4" as="video" type="video/mp4">
+    <link rel="preload" href="artistweb/videos/video1.webm" as="video" type="video/webm">
     <link rel="preload" href="artistweb/images/video1-poster.jpg" as="image">
+    <link rel="preload" href="artistweb/images/video2-poster.jpg" as="image">
+    <link rel="preload" href="artistweb/images/video3-poster.jpg" as="image">
     
     <!-- 添加这三行 Google Fonts 链接 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,6 +56,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
     
     <!-- 添加 Adobe Fonts 链接 -->
     <script>
@@ -37,14 +71,14 @@
       })(document);
     </script>
     
-    <title>Artist Portfolio</title>
     <!-- 添加预加载脚本 -->
     <script>
         // 预加载首页视频
         const videoUrls = [
-            'artistweb/videos/video1.mp4',
-            'artistweb/videos/video2.mp4',
-            'artistweb/videos/video3.mp4'
+            'artistweb/videos/video1.webm',
+            'artistweb/videos/video2.webm',
+            'artistweb/videos/video3.webm',
+            'artistweb/videos/video4.webm'
         ];
         
         // 创建预加载对象
@@ -166,8 +200,8 @@
         }
         
         .logo, .logo a {
-            font-family: 'Poiret One', cursive !important;
-            font-size: 1.8rem;
+            font-family: 'Reenie Beanie', cursive !important;
+            font-size: 2.2rem;
             font-weight: 400;
             letter-spacing: 3px;
             color: #ffffff;
@@ -811,41 +845,68 @@
         .swiper-slide video.loaded + .video-placeholder {
             opacity: 0;
         }
+
+        /* 修改watch-film-link样式，将链接放在右下角 */
+        .watch-film-link {
+            position: absolute;
+            bottom: 10%;
+            right: 10%;
+            text-align: right;
+            z-index: 5;
+        }
+
+        .watch-film-link a {
+            color: rgba(206, 220, 255, 0.8);
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: letter-spacing 0.3s ease, color 0.3s ease;
+        }
+
+        .watch-film-link a:hover {
+            letter-spacing: 2px;
+            color: #ffffff;
+        }
+
+        /* triple-y 图片样式 */
+        .triple-y-container {
+            position: absolute;
+            top: 50%;
+            left: 54%;
+            transform: translate(-50%, -50%);
+            z-index: 4;
+            width: 90%;
+            max-width: 1000px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .triple-y-image {
+            width: 100%;
+            height: auto;
+            max-height: 90vh;
+            object-fit: contain;
+            opacity: 0.80;
+        }
+
+        /* 在移动设备上调整triple-y图片大小 */
+        @media (max-width: 768px) {
+            .triple-y-container {
+                width: 90%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="page-transition"></div>
-    <!-- Header with Navigation -->
-    <header>
-        <nav>
-            <div class="logo">
-                <a href="index.html" style="text-decoration: none; color: inherit;">JYWF</a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#explore">Explore</a></li>
-                <li><a href="film.html">Film</a></li>
-                <li><a href="gallery.html">Gallery</a></li>
-                <li><a href="work.html">Work</a></li>
-                <li><a href="about.html">About</a></li>
-            </ul>
-            <!-- 添加移动端菜单按钮 -->
-            <div class="mobile-menu-btn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </nav>
-    </header>
-
-    <!-- 移动端菜单 -->
-    <div class="mobile-menu">
-        <a href="#explore">Explore</a>
-        <a href="film.html">Film</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="work.html">Work</a>
-        <a href="about.html">About</a>
-    </div>
-
+    
+    <!-- 导航栏容器 -->
+    <div id="nav-container"></div>
+    
     <!-- Hero Section -->
     <section class="hero">
         <div class="swiper mySwiper">
@@ -853,10 +914,11 @@
                 <!-- 幻灯片1：视频 -->
                 <div class="swiper-slide">
                     <div class="video-container">
-                        <video autoplay muted loop playsinline class="hero-image" preload="metadata" data-src="artistweb/videos/video1.mp4">
-                            <source type="video/mp4">
+                        <video autoplay muted loop playsinline class="hero-image" preload="metadata" data-src="artistweb/videos/video1.webm" controlsList="nodownload" disablePictureInPicture>
+                            <source type="video/webm" src="artistweb/videos/video1.webm">
+                            Your browser does not support HTML5 video.
                         </video>
-                        <div class="video-placeholder" style="background-image: url('artistweb/images/video1-poster.jpg');"></div>
+                        <div class="video-placeholder" style="background-color: #000;"></div>
                     </div>
                     <div class="video-title">
                         <h1>额尔古纳河</h1>
@@ -866,19 +928,36 @@
                 <!-- 幻灯片2：视频 -->
                 <div class="swiper-slide">
                     <div class="video-container">
-                        <video autoplay muted loop playsinline class="hero-image" preload="metadata" data-src="artistweb/videos/video2.mp4">
-                            <source type="video/mp4">
+                        <video autoplay muted loop playsinline class="hero-image" preload="none" data-src="artistweb/videos/video2.webm" controlsList="nodownload" disablePictureInPicture>
+                            <source type="video/webm" data-src="artistweb/videos/video2.webm">
+                            Your browser does not support HTML5 video.
                         </video>
-                        <div class="video-placeholder" style="background-image: url('artistweb/images/video2-poster.jpg');"></div>
+                        <div class="video-placeholder" style="background-color: #000;"></div>
+                    </div>
+                    <div class="watch-film-link">
+                        <a href="film.html">watch the film ></a>
                     </div>
                 </div>
                 <!-- 幻灯片3：视频 -->
                 <div class="swiper-slide">
                     <div class="video-container">
-                        <video autoplay muted loop playsinline class="hero-image" preload="metadata" data-src="artistweb/videos/video3.mp4">
-                            <source type="video/mp4">
+                        <video autoplay muted loop playsinline class="hero-image" preload="none" data-src="artistweb/videos/video3.webm" controlsList="nodownload" disablePictureInPicture>
+                            <source type="video/webm" data-src="artistweb/videos/video3.webm">
                         </video>
-                        <div class="video-placeholder" style="background-image: url('artistweb/images/video3-poster.jpg');"></div>
+                        <div class="video-placeholder" style="background-color: #000;"></div>
+                    </div>
+                </div>
+                <!-- 幻灯片4：视频 -->
+                <div class="swiper-slide">
+                    <div class="video-container">
+                        <video autoplay muted loop playsinline class="hero-image" preload="none" data-src="artistweb/videos/video4.webm" controlsList="nodownload" disablePictureInPicture>
+                            <source type="video/webm" data-src="artistweb/videos/video4.webm">
+                        </video>
+                        <div class="video-placeholder" style="background-color: #000;"></div>
+                    </div>
+                    <!-- 添加triple-y.PNG图片 -->
+                    <div class="triple-y-container">
+                        <img src="artistweb/images/triple-y.PNG" alt="Triple Y" class="triple-y-image">
                     </div>
                 </div>
             </div>
@@ -887,56 +966,6 @@
             <div class="swiper-button-prev"></div>
             <!-- 可选的分页指示点 -->
             <div class="swiper-pagination"></div>
-        </div>
-    </section>
-
-    <!-- Gallery Section -->
-    <section class="gallery" id="gallery">
-        <h2 class="section-title">Gallery</h2>
-        <div class="gallery-grid">
-            <div class="gallery-item">
-                <img src="artistweb/images/dji_export_20250215_photo_0001.jpeg" alt="Artwork 1" class="gallery-image">
-                <div class="gallery-overlay">
-                    <h3>Ephemeral Light</h3>
-                    <p>Mixed media on canvas, 2023</p>
-                </div>
-            </div>
-            <div class="gallery-item">
-                <img src="artistweb/images/dji_export_20250216_photo_0001.jpeg" alt="Artwork 2" class="gallery-image">
-                <div class="gallery-overlay">
-                    <h3>Urban Fragments</h3>
-                    <p>Photography series, 2022</p>
-                </div>
-            </div>
-            <div class="gallery-item">
-                <img src="artistweb/images/dji_export_20250216_photo_0007.jpeg" alt="Artwork 3" class="gallery-image">
-                <div class="gallery-overlay">
-                    <h3>Silence in Motion</h3>
-                    <p>Digital art, 2023</p>
-                </div>
-            </div>
-            <div class="gallery-item">
-                <img src="/api/placeholder/600/800" alt="Artwork 4" class="gallery-image">
-                <div class="gallery-overlay">
-                    <h3>Contemplation</h3>
-                    <p>Oil on canvas, 2022</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Film Section -->
-    <section class="film-section" id="film">
-        <h2 class="section-title">Film</h2>
-        <div class="film-container">
-            <div class="film-item">
-                <img src="/api/placeholder/800/450" alt="Film Thumbnail 1" class="film-thumbnail">
-                <div class="play-button"></div>
-            </div>
-            <div class="film-item">
-                <img src="/api/placeholder/800/450" alt="Film Thumbnail 2" class="film-thumbnail">
-                <div class="play-button"></div>
-            </div>
         </div>
     </section>
 
@@ -973,46 +1002,39 @@
             © 2025 Artist Portfolio. All rights reserved.
         </div>
     </footer>
+    
+    <!-- 加载统一导航栏脚本 -->
+    <script src="/shared/load-nav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // 预加载所有视频的第一帧
-            function preloadVideoFirstFrame(video) {
-                if (video.dataset.src) {
-                    // 创建一个临时视频元素来预加载第一帧
-                    const tempVideo = document.createElement('video');
-                    tempVideo.src = video.dataset.src;
-                    tempVideo.muted = true;
-                    tempVideo.preload = 'auto';
-                    tempVideo.style.display = 'none';
-                    
-                    // 监听loadeddata事件，表示视频的第一帧已加载
-                    tempVideo.addEventListener('loadeddata', function() {
-                        // 加载实际视频
-                        loadVideo(video);
-                        // 移除临时视频
-                        document.body.removeChild(tempVideo);
-                    });
-                    
-                    document.body.appendChild(tempVideo);
-                }
-            }
-
-            // 视频懒加载函数
+            // 简化视频加载逻辑
             function loadVideo(video) {
-                if (video.dataset.src) {
-                    const source = video.querySelector('source');
-                    source.src = video.dataset.src;
-                    video.load();
-                    
-                    // 移除data-src属性，防止重复加载
-                    video.removeAttribute('data-src');
-                    
-                    // 设置视频质量
-                    if (window.innerWidth <= 768) {
-                        // 移动设备使用较低质量
-                        video.setAttribute('playsinline', '');
+                if (!video) return;
+                
+                // 如果视频已加载或正在加载中，不执行任何操作
+                if (video.currentSrc && video.readyState > 0) {
+                    // 确保视频正在播放
+                    video.play().catch(err => console.log('自动播放失败:', err));
+                    return;
+                }
+                
+                try {
+                    // 对于带有data-src的source标签，需要设置实际src
+                    const sources = video.querySelectorAll('source[data-src]');
+                    if (sources.length > 0) {
+                        sources.forEach(source => {
+                            if (source.dataset.src && !source.src) {
+                                source.src = source.dataset.src;
+                            }
+                        });
                     }
+                    
+                    video.load();
+                    video.play().catch(err => console.log('自动播放失败:', err));
+                    video.classList.add('loaded');
+                } catch (err) {
+                    console.log('视频加载失败:', err);
                 }
             }
 
@@ -1024,26 +1046,29 @@
                 });
                 
                 // 添加错误处理
-                video.addEventListener('error', function() {
-                    // 如果视频加载失败，保持显示占位图
-                    console.log('视频加载失败，显示占位图');
+                video.addEventListener('error', function(e) {
+                    console.log('视频加载失败，显示占位图', e);
+                    // 如果WebM格式加载失败，尝试使用MP4格式
+                    const source = video.querySelector('source');
+                    if (source && source.src.includes('.webm')) {
+                        source.src = source.src.replace('.webm', '.mp4');
+                        video.load();
+                    }
                 });
             });
 
-            // 立即加载第一个视频
-            const firstVideo = document.querySelector('.swiper-slide:first-child video');
-            if (firstVideo) {
-                loadVideo(firstVideo);
+            // 立即加载当前视频
+            const activeVideo = document.querySelector('.swiper-slide:first-child video');
+            if (activeVideo) {
+                loadVideo(activeVideo);
             }
 
             var swiper = new Swiper(".mySwiper", {
                 loop: true,
                 autoplay: {
-                    delay: 4000,
+                    delay: 5000,
                     disableOnInteraction: false,
                 },
-                lazy: true, // 仅在需要时加载图片，提高性能
-                preloadImages: false, // 不预加载所有图片
                 pagination: {
                     el: ".swiper-pagination",
                     clickable: true,
@@ -1053,7 +1078,7 @@
                     prevEl: ".swiper-button-prev",
                 },
                 effect: "fade",
-                speed: 800, // 过渡速度
+                speed: 1000,
                 on: {
                     init: function() {
                         // 初始化时加载当前幻灯片的视频
@@ -1063,24 +1088,22 @@
                             if (video) loadVideo(video);
                         }
                     },
-                    slideChange: function() {
-                        // 幻灯片切换时加载新幻灯片的视频
+                    slideChangeTransitionStart: function() {
+                        // 幻灯片开始切换时预加载下一个视频
                         const activeSlide = this.slides[this.activeIndex];
                         if (activeSlide) {
                             const video = activeSlide.querySelector('video');
-                            if (video) loadVideo(video);
-                        }
-                        
-                        // 预加载下一个幻灯片的视频
-                        const nextIndex = (this.activeIndex + 1) % this.slides.length;
-                        const nextSlide = this.slides[nextIndex];
-                        if (nextSlide) {
-                            const nextVideo = nextSlide.querySelector('video');
-                            if (nextVideo) {
-                                // 使用setTimeout延迟加载下一个视频，优先加载当前视频
-                                setTimeout(() => loadVideo(nextVideo), 1000);
+                            if (video) {
+                                loadVideo(video);
                             }
                         }
+                        
+                        // 暂停其他幻灯片中的视频
+                        videos.forEach(video => {
+                            if (video.parentElement.parentElement !== activeSlide && !video.paused) {
+                                video.pause();
+                            }
+                        });
                     }
                 }
             });
@@ -1108,23 +1131,50 @@
                 transition.style.opacity = '0';
             }, 500);
 
+            // 添加导航锁，防止快速重复点击
+            let isNavigating = false;
+
             // 点击链接时的过渡效果
             document.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function(e) {
-                    if (this.hostname === window.location.hostname && !this.getAttribute('href').startsWith('#')) {
+                    // 如果已经在导航中，阻止重复点击
+                    if (isNavigating) {
                         e.preventDefault();
-                        const href = this.getAttribute('href');
+                        e.stopPropagation();
+                        return;
+                    }
+                    
+                    // 如果链接包含协议或是锚点链接，则正常处理
+                    if (this.getAttribute('href').startsWith('#')) {
+                        return; // 正常处理页内锚点链接
+                    }
+                    
+                    // 处理相对路径链接和绝对路径链接
+                    if (this.getAttribute('href') && 
+                        !this.getAttribute('href').startsWith('javascript:') &&
+                        !this.getAttribute('href').startsWith('mailto:') &&
+                        this.getAttribute('href') !== '#') {
+                        
+                        e.preventDefault();
+                        
+                        // 设置导航锁，防止重复点击
+                        isNavigating = true;
+                        
+                        // 储存目标URL（在闭包范围内保存）
+                        const targetHref = this.getAttribute('href');
+                        
+                        // 禁用所有链接点击
+                        document.querySelectorAll('a').forEach(a => {
+                            a.style.pointerEvents = 'none';
+                        });
                         
                         // 显示过渡层
                         transition.style.visibility = 'visible';
                         transition.style.opacity = '1';
                         
-                        // 立即记录要跳转的URL，防止被其他事件覆盖
-                        const targetUrl = href;
-                        
-                        // 延迟导航以等待过渡效果完成，但确保一定会执行
+                        // 跳转到新页面，使用固定的延迟时间
                         setTimeout(function() {
-                            window.location.href = targetUrl;
+                            window.location.href = targetHref;
                         }, 300);
                     }
                 });
@@ -1160,3 +1210,4 @@
     </script>
 </body>
 </html>
+

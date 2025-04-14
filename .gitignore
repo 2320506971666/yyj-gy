@@ -32,4 +32,7 @@ Icon
 .idea/
 .vscode/
 *.sublime-project
-*.sublime-workspace 
+*.sublime-workspace
+
+# 特定文件忽略
+model.html 

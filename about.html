@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' font-family='Poiret One'>J</text></svg>">
+    <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +13,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- GSAP, Lenis, Barba.js 脚本 -->
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
+    <script src="https://unpkg.com/@barba/core"></script>
     
     <title>About - Triple-Y</title>
     <style>
@@ -101,7 +110,7 @@
         .about-page {
             padding-top: 0;
             min-height: 100vh;
-            background-color: black;
+            background-color: #f0f0f0;
         }
 
         .about-content {
@@ -130,23 +139,35 @@
             transform: translateY(30px);
             animation: fadeInUp 1.5s ease forwards;
             animation-delay: 0.5s;
-            color: rgba(255, 255, 255, 0.95);
+            color: #333;
         }
 
         .about-text h1 {
-            font-size: 2.5rem;
+            font-size: 3.2rem;
             margin-bottom: 2rem;
-            font-weight: 300;
+            font-weight: 600;
             letter-spacing: 3px;
-            color: white;
+            color: #222;
+            font-family: 'Noto Serif SC', serif;
+            opacity: 0;
+            filter: blur(15px);
+            transform: translateY(25px);
         }
 
         .about-text p {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             line-height: 1.8;
             margin-bottom: 1.5rem;
-            opacity: 0.9;
             letter-spacing: 1px;
+            font-family: 'Noto Serif SC', serif;
+            opacity: 0;
+            filter: blur(15px);
+            transform: translateY(25px);
+        }
+
+        .about-text p.animate {
+            opacity: 0.9;
+            transform: translateY(0);
         }
 
         /* 动画效果 */
@@ -250,6 +271,83 @@
             border-top: 1px solid #333;
             font-size: 0.9rem;
             color: #777;
+        }
+
+        /* 软件技能部分样式 */
+        .skills-section {
+            background-color: #f0f0f0;
+            padding: 5rem 5%;
+            text-align: center;
+        }
+
+        .skills-section .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .skills-section h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            margin-bottom: 3rem;
+            color: #333;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .skills-category {
+            margin-bottom: 3.5rem;
+        }
+        
+        .skills-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .skills-category h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .software-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            justify-content: center;
+        }
+
+        .software-item {
+            text-align: center;
+            opacity: 1;
+        }
+
+        .software-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 0.4rem;
+        }
+        
+        .software-item img.smaller-logo {
+            width: 54px;
+            height: 54px;
+            margin-bottom: calc(0.4rem + 6px);
+        }
+
+        .software-item p {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #555;
+            letter-spacing: 0.5px;
         }
 
         /* 修改过渡效果 */
@@ -377,14 +475,54 @@
             }
 
             .about-text p {
-                font-size: 1rem;
-                line-height: 1.6;
+                font-size: 0.95rem;
+                margin-bottom: 1.2rem;
             }
 
             /* 调整页脚 */
             .footer-content {
                 grid-template-columns: 1fr;
                 gap: 2rem;
+            }
+            
+            /* 调整软件技能部分 - 平板 */
+            .skills-section {
+                padding: 3.5rem 5%;
+            }
+            
+            .skills-section h2 {
+                font-size: 1.8rem;
+                margin-bottom: 2rem;
+            }
+            
+            .skills-category {
+                margin-bottom: 2.5rem;
+            }
+            
+            .skills-category h3 {
+                font-size: 1.1rem;
+                margin-bottom: 1.2rem;
+            }
+            
+            .software-grid {
+                grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+                gap: 1.2rem;
+                max-width: 700px;
+            }
+            
+            .software-item img {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .software-item img.smaller-logo {
+                width: 45px;
+                height: 45px;
+            }
+
+            /* 调整动画效果 - 平板 */
+            .software-item {
+                transform: translateY(15px);
             }
         }
 
@@ -402,34 +540,236 @@
                 font-size: 0.95rem;
                 margin-bottom: 1.2rem;
             }
+            
+            /* 调整软件技能部分 - 小屏幕 */
+            .skills-section {
+                padding: 2.5rem 5%;
+            }
+            
+            .skills-section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .skills-category {
+                margin-bottom: 2rem;
+            }
+            
+            .skills-category h3 {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .software-grid {
+                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+                gap: 1rem;
+                max-width: 400px;
+            }
+            
+            .software-item img {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .software-item img.smaller-logo {
+                width: 40px;
+                height: 40px;
+                margin-bottom: calc(0.7rem + 4px); /* 补偿高度差 */
+            }
+            
+            .software-item p {
+                font-size: 0.7rem;
+            }
+            
+            /* 调整动画效果 - 手机 */
+            .software-item {
+                transform: translateY(10px);
+            }
         }
 
         /* 菜单打开时的body样式 */
         body.menu-open {
             overflow: hidden;
         }
+
+        /* 技能分类样式 */
+        .skills-category {
+            margin-bottom: 3.5rem;
+        }
+        
+        .skills-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .skills-section h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            margin-bottom: 3rem;
+            color: #333;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .skills-category h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .software-item {
+            text-align: center;
+        }
+        
+        /* 动画类 */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .animate-on-scroll.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .software-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 0.4rem;
+        }
+        
+        .software-item img.smaller-logo {
+            width: 54px;
+            height: 54px;
+            margin-bottom: calc(0.4rem + 6px);
+        }
+
+        .software-item p {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #555;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
-<body>
+<body data-barba="wrapper">
     <div class="page-transition"></div>
     
     <!-- 导航栏容器 -->
     <div id="nav-container"></div>
     
-    <!-- About页面内容 -->
-    <div class="about-page">
-        <div class="about-content">
-            <div class="about-grid">
-                <img src="artistweb/images/Portrait.jpeg" alt="About" class="about-image">
-                <div class="about-text">
-                    <h1>About Me</h1>
-                    <p>I am a multidisciplinary artist based in Shanghai, exploring the intersection of traditional and digital media. My work examines the relationship between urban environments and human experiences, seeking to capture moments of contemplation and connection in our fast-paced world.</p>
-                    <p>With a background in fine arts and experimental filmmaking, I create immersive visual narratives that invite viewers to pause and reflect on the beauty found in everyday experiences. My practice includes painting, photography, digital art, and short films.</p>
-                    <p>My work has been exhibited in galleries across Asia and Europe, and I have collaborated with numerous brands and publications on creative projects that push the boundaries of visual storytelling.</p>
+    <!-- 主体内容，添加barba数据属性 -->
+    <main data-barba="container" data-barba-namespace="about">
+        <!-- About页面内容 -->
+        <div class="about-page">
+            <div class="about-content">
+                <div class="about-grid">
+                    <img src="artistweb/images/Portrait.jpeg" alt="About" class="about-image">
+                    <div class="about-text">
+                        <h1>我的片段</h1>
+                        <p>我来自浙江，是一名摄影师，我对视觉艺术有着浓厚的兴趣。闲暇时，我常常沉浸在电影、摄影画册和近代摄影史中，用不同的角度去感受影像的魅力。</p>
+                        <p>我将摄影视为一种观察与记录的方式，希望通过镜头捕捉生活中的微妙之处。平时也喜欢旅游和骑行，在不断的行走与体验中，发现更多美好的瞬间，为创作注入新的活力。</p>
+                        <p>正如十九世纪最有逻辑的唯美主义者马拉美所说："世界上的一切事物的存在，都是为了在一本书里终结。今天，一切事物的存在，都是为了在一张照片中终结。"每一次按下快门，都不仅是留住当下，更是一场与世界的对话，亦是与他人共享这份美好的过程。</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
+
+    <!-- 软件技能部分 -->
+    <section class="skills-section">
+        <div class="container">
+            <h2>My Skills</h2>
+            
+            <!-- 音视频剪辑与后期制作 -->
+            <div class="skills-category">
+                <h3>Video Editing & Post-production</h3>
+                <div class="software-grid" style="grid-template-columns: repeat(4, 1fr); max-width: 800px;">
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/DaVinci_Resolve_Studio.png" alt="DaVinci Resolve">
+                        <p>DaVinci Resolve</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/adobe-premiere-svgrepo-com.svg" alt="Adobe Premiere Pro">
+                        <p>Premiere Pro</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/adobe-after-effects-svgrepo-com.svg" alt="Adobe After Effects">
+                        <p>After Effects</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/final cut pro.png" alt="Final Cut Pro" class="smaller-logo">
+                        <p>Final Cut Pro</p>
+                    </div>
+                </div>
+                <div class="software-grid" style="grid-template-columns: repeat(3, 1fr); max-width: 600px; margin-top: 20px;">
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/Adobe_Audition_CC_icon_(2020).svg" alt="Adobe Audition" class="smaller-logo">
+                        <p>Adobe Audition</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/OBS_Studio_Logo.svg" alt="OBS Studio" class="smaller-logo">
+                        <p>OBS Studio</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/剪映.png" alt="剪映" class="smaller-logo">
+                        <p>剪映</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 图形与视觉设计 -->
+            <div class="skills-category">
+                <h3>Graphics & Visual Design</h3>
+                <div class="software-grid" style="grid-template-columns: repeat(3, 1fr); max-width: 600px;">
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/adobe-photoshop-svgrepo-com.svg" alt="Adobe Photoshop">
+                        <p>Photoshop</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/adobe-illustrator-svgrepo-com.svg" alt="Adobe Illustrator">
+                        <p>Illustrator</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/adobe-lightroom-svgrepo-com.svg" alt="Adobe Lightroom">
+                        <p>Lightroom</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 三维设计与建模 -->
+            <div class="skills-category">
+                <h3>3D Design & Modeling</h3>
+                <div class="software-grid" style="grid-template-columns: repeat(1, 1fr); max-width: 200px;">
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/blender-svgrepo-com.svg" alt="Blender">
+                        <p>Blender</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI辅助工具 -->
+            <div class="skills-category">
+                <h3>AI Tools</h3>
+                <div class="software-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 400px;">
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/cursor.svg" alt="Cursor">
+                        <p>Cursor</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/chatgpt-icon.svg" alt="ChatGPT">
+                        <p>ChatGPT</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- 在 body 末尾添加 footer -->
     <footer>
@@ -466,7 +806,9 @@
     </footer>
 
     <!-- 加载统一导航栏脚本 -->
-    <script src="/shared/load-nav.js"></script>
+    <script src="shared/load-nav.js"></script>
+    <!-- 加载动画框架脚本 -->
+    <script src="shared/animation.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // 页面加载时的淡出效果
@@ -499,20 +841,160 @@
             const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
             const mobileMenu = document.querySelector('.mobile-menu');
             
-            mobileMenuBtn.addEventListener('click', function() {
-                this.classList.toggle('open');
-                mobileMenu.classList.toggle('open');
-                document.body.classList.toggle('menu-open');
-            });
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    mobileMenu.classList.toggle('open');
+                    document.body.classList.toggle('menu-open');
+                });
+            }
             
             // 点击移动端菜单项关闭菜单
-            document.querySelectorAll('.mobile-menu a').forEach(link => {
-                link.addEventListener('click', function() {
-                    mobileMenuBtn.classList.remove('open');
-                    mobileMenu.classList.remove('open');
-                    document.body.classList.remove('menu-open');
+            if (mobileMenu) {
+                document.querySelectorAll('.mobile-menu a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenuBtn.classList.remove('open');
+                        mobileMenu.classList.remove('open');
+                        document.body.classList.remove('menu-open');
+                    });
                 });
-            });
+            }
+            
+            // About部分的段落文字动画
+            function animateAboutText() {
+                const title = document.querySelector('.about-text h1');
+                const paragraphs = document.querySelectorAll('.about-text p');
+                
+                // 检查是否在视口中
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            // 先动画标题
+                            if (title) {
+                                gsap.to(title, {
+                                    opacity: 1,
+                                    filter: "blur(0px)",
+                                    y: 0,
+                                    duration: 1.5,
+                                    ease: "power3.out"
+                                });
+                            }
+                            
+                            // 然后依次动画段落
+                            paragraphs.forEach((p, index) => {
+                                gsap.to(p, {
+                                    opacity: 0.9,
+                                    filter: "blur(0px)",
+                                    y: 0,
+                                    duration: 1.2,
+                                    delay: 0.6 + index * 0.4, // 标题后延迟，然后每段之间延迟
+                                    ease: "power3.out"
+                                });
+                            });
+                            observer.disconnect(); // 只执行一次
+                        }
+                    });
+                }, { threshold: 0.2 }); // 略微降低触发阈值，使动画更早开始
+                
+                // 观察about-text元素
+                const aboutText = document.querySelector('.about-text');
+                if (aboutText) {
+                    observer.observe(aboutText);
+                }
+                
+                // 如果用户已经滚动到了about部分，立即显示
+                if (aboutText && aboutText.getBoundingClientRect().top < window.innerHeight) {
+                    if (title) {
+                        gsap.to(title, {
+                            opacity: 1,
+                            filter: "blur(0px)",
+                            y: 0,
+                            duration: 1.5,
+                            ease: "power3.out"
+                        });
+                    }
+                    
+                    paragraphs.forEach((p, index) => {
+                        gsap.to(p, {
+                            opacity: 0.9,
+                            filter: "blur(0px)",
+                            y: 0,
+                            duration: 1.2,
+                            delay: 0.6 + index * 0.4,
+                            ease: "power3.out"
+                        });
+                    });
+                }
+            }
+            
+            // 初始化About文字动画
+            animateAboutText();
+            
+            // 初始化滚动动画
+            function initScrollAnimations() {
+                // 选择所有需要动画的元素
+                const mainTitle = document.querySelector('.skills-section h2');
+                const subTitles = document.querySelectorAll('.skills-category h3');
+                const items = document.querySelectorAll('.software-item');
+                
+                // 添加动画类
+                if (mainTitle) mainTitle.classList.add('animate-on-scroll');
+                subTitles.forEach(title => title.classList.add('animate-on-scroll'));
+                items.forEach(item => item.classList.add('animate-on-scroll'));
+                
+                // 创建Intersection Observer
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            // 元素进入视口时添加动画类
+                            setTimeout(() => {
+                                entry.target.classList.add('animate');
+                            }, entry.target.dataset.delay || 0);
+                            
+                            // 元素已经动画过，不再需要观察
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    root: null, // 使用视口作为根
+                    threshold: 0.05, // 降低阈值，使元素更快被检测到
+                    rootMargin: '0px 0px' // 移除向上偏移，使元素一进入视口就触发
+                });
+                
+                // 为标题添加延迟属性并观察
+                if (mainTitle) {
+                    mainTitle.dataset.delay = "0";
+                    observer.observe(mainTitle);
+                }
+                
+                // 为子标题添加延迟属性并观察
+                subTitles.forEach((title, index) => {
+                    title.dataset.delay = (300 + index * 150).toString();
+                    observer.observe(title);
+                });
+                
+                // 为图标添加延迟属性并观察
+                // 按类别分组处理，确保从上到下的顺序
+                const categories = document.querySelectorAll('.skills-category');
+                let globalDelay = 200; // 初始延迟
+                
+                categories.forEach((category) => {
+                    // 获取当前类别的所有图标
+                    const categoryItems = category.querySelectorAll('.software-item');
+                    
+                    // 为当前类别的图标设置延迟
+                    categoryItems.forEach((item, index) => {
+                        item.dataset.delay = (globalDelay + index * 50).toString();
+                        observer.observe(item);
+                    });
+                    
+                    // 增加全局延迟，确保下一个类别的图标在当前类别之后显示
+                    globalDelay += Math.max(categoryItems.length * 50, 200);
+                });
+            }
+            
+            // 初始化滚动动画
+            initScrollAnimations();
         });
     </script>
 </body>

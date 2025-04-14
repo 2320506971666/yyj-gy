@@ -5,11 +5,6 @@ alwaysApply: true
 ---
 
 # Your rule content
-# 页面结构与框架
-- Always use semantic HTML5 tags such as <main>, <header>, <footer>, <section>, and <article>.
-- Use Next.js file-based routing conventions when creating new pages.
-- Place all pages inside the `pages` directory, and components in `components`.
-- Use Tailwind CSS for all styling, avoid inline styles or external CSS files.
 
 # 命名规范
 - Use kebab-case for file names, PascalCase for React components, and camelCase for variables.
@@ -17,11 +12,7 @@ alwaysApply: true
 
 #  设计风格（以现代简约风为例）
 - Use a minimalist and clean design style.
-- Use responsive design principles with `flex`, `grid`, and Tailwind’s breakpoint classes.
 
-# SEO & Meta
-- For each page, always include <head> metadata: title, description, og:title, og:description, and favicon.
-Ensure each page has a unique and descriptive <title>.
 
 # 代码注释习惯
 - For each component, add a short comment block at the top explaining its role in the site.
@@ -29,9 +20,6 @@ Use `// TODO:` comments for any unfinished or planned feature sections.
 
 # 资源管理
 - Store all static images inside the `public/images` folder.
-- Use <Image> from `next/image` for image optimization.
-- Keep assets (icons, logos, etc.) organized by type in separate folders.
 
-# 可选：提升开发体验
-Suggest reusable components when similar UI patterns appear multiple times.
-Convert long CSS utility chains into reusable classNames or components.
+
+

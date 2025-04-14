@@ -5,167 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- SEO基础标签 -->
-    <title>Triple-Y | 摄影与影像艺术作品集</title>
-    <meta name="description" content="探索Triple-Y的摄影、影像与艺术作品集。以东方美学视角记录自然风光与人文故事，呈现额尔古纳河等中国壮丽风景。">
-    <meta name="keywords" content="摄影,影像艺术,作品集,额尔古纳河,中国风光,东方美学">
+    <title>Triple-Y | 首页</title>
+    <meta name="description" content="Triple-Y 官方网站首页，呈现互动3D模型体验。">
+    <meta name="keywords" content="3D模型,Three.js,互动展示,Triple-Y,首页">
     <meta name="author" content="Triple-Y">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://yourdomain.com/">
     
     <!-- Open Graph / 社交分享标签 -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Triple-Y | 摄影与影像艺术作品集">
-    <meta property="og:description" content="探索Triple-Y的摄影、影像与艺术作品集。以东方美学视角记录自然风光与人文故事，呈现额尔古纳河等中国壮丽风景。">
+    <meta property="og:title" content="Triple-Y | 首页">
+    <meta property="og:description" content="Triple-Y 官方网站首页，体验互动3D模型。">
     <meta property="og:image" content="https://yourdomain.com/artistweb/images/og-image.jpg">
-    <meta property="og:url" content="https://yourdomain.com/">
-    <meta property="og:site_name" content="Triple-Y摄影作品集">
-    
-    <!-- Twitter卡片 -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Triple-Y | 摄影与影像艺术作品集">
-    <meta name="twitter:description" content="探索Triple-Y的摄影、影像与艺术作品集。以东方美学视角记录自然风光与人文故事。">
-    <meta name="twitter:image" content="https://yourdomain.com/artistweb/images/twitter-card.jpg">
-    
-    <!-- 微信分享优化 -->
-    <meta itemprop="name" content="Triple-Y | 摄影与影像艺术作品集">
-    <meta itemprop="description" content="探索Triple-Y的摄影、影像与艺术作品集。以东方美学视角记录自然风光与人文故事。">
-    <meta itemprop="image" content="https://yourdomain.com/artistweb/images/wechat-share.jpg">
+    <meta property="og:url" content="https://yourdomain.com/index.html">
+    <meta property="og:site_name" content="Triple-Y">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="apple-touch-icon" sizes="180x180" href="artistweb/images/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="artistweb/images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="artistweb/images/favicon-16x16.png">
+    <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
     
     <!-- Google Fonts -->
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    
-    <!-- 预加载关键资源 -->
-    <link rel="preload" href="artistweb/videos/video1.webm" as="video" type="video/webm">
-    <link rel="preload" href="artistweb/images/video1-poster.jpg" as="image">
-    <link rel="preload" href="artistweb/images/video2-poster.jpg" as="image">
-    <link rel="preload" href="artistweb/images/video3-poster.jpg" as="image">
-    
-    <!-- 添加这三行 Google Fonts 链接 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
     
-    <!-- 添加 Adobe Fonts 链接 -->
-    <script>
-      (function(d) {
-        var config = {
-          kitId: 'YOUR_KIT_ID',
-          scriptTimeout: 3000,
-          async: true
-        },
-        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-      })(document);
+    <!-- GSAP, Lenis, Barba.js 脚本 -->
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
+    
+    <!-- Three.js 库 - 修改加载顺序和方式 -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
+    <!-- 使用ES模块版本代替传统版本 -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.157.0/examples/jsm/"
+        }
+    }
     </script>
     
-    <!-- 添加预加载脚本 -->
-    <script>
-        // 预加载首页视频
-        const videoUrls = [
-            'artistweb/videos/video1.webm',
-            'artistweb/videos/video2.webm',
-            'artistweb/videos/video3.webm',
-            'artistweb/videos/video4.webm'
-        ];
-        
-        // 创建预加载对象
-        const preloadVideos = () => {
-            // 只预加载第一个视频，其他视频稍后加载
-            const firstVideo = new Image();
-            firstVideo.src = 'artistweb/images/video1-poster.jpg';
-            
-            // 使用fetch API预加载第一个视频
-            if ('fetch' in window) {
-                fetch(videoUrls[0], { method: 'HEAD' })
-                    .then(response => {
-                        if (response.ok) {
-                            console.log('首页视频预加载成功');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('视频预加载失败:', error);
-                    });
-            }
-        };
-        
-        // 页面加载前执行预加载
-        preloadVideos();
-    </script>
     <style>
-        .swiper {
-    width: 100%;
-    height: 100vh;
-    margin-top: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.swiper-slide img, .swiper-slide video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.swiper-slide {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-/* 如果你希望左右切换按钮与分页指示点更醒目，可以调整颜色 */
-.swiper-button-next, .swiper-button-prev {
-    color: rgb(255, 255, 255);
-    opacity: 0.7;
-    width: 35px; /* 增加箭头区域宽度 */
-}
-
-.swiper-button-next:after, .swiper-button-prev:after {
-    font-size: 35px; /* 增大箭头大小 */
-    font-weight: 100; /* 保持箭头细线条 */
-}
-
-/* 保持箭头位置不变 */
-.swiper-button-prev {
-    left: 50px;
-}
-
-.swiper-button-next {
-    right: 50px;
-}
-
-.swiper-pagination {
-    bottom: 50px !important; /* 调整分页指示点的位置，向上移动 */
-}
-
-.swiper-pagination-bullet {
-    background: white;
-    opacity: 0.6;
-    width: 6px; /* 稍微调小圆点大小 */
-    height: 6px;
-}
-
-.swiper-pagination-bullet-active {
-    opacity: 1;
-}
-
-/* 保持悬停效果 */
-.swiper-button-next:hover, .swiper-button-prev:hover {
-    opacity: 1;
-}
-        /* Base Styles */
+        /* 基础样式 */
         * {
             margin: 0;
             padding: 0;
@@ -173,18 +55,20 @@
         }
         
         body {
-            background-color: white;
-            color: #111;
+            background-color: black;
+            color: #ffffff;
             line-height: 1.6;
+            font-family: 'Lato', sans-serif;
+            overflow-x: hidden;
         }
         
-        /* Navigation */
+        /* 导航栏样式 */
         header {
             position: fixed;
             width: 100%;
             top: 0;
             height: 45px;
-            background-color: black; /* 纯黑色背景 */
+            background-color: rgba(0, 0, 0, 0.8);
             z-index: 1000;
             padding: 0 5%;
         }
@@ -206,6 +90,7 @@
             letter-spacing: 3px;
             color: #ffffff;
             opacity: 0.9;
+            text-decoration: none;
         }
         
         .logo:hover {
@@ -240,664 +125,366 @@
             position: relative;
         }
         
-        .nav-links a:after {
-            display: none;
+        .nav-links a:hover {
+            opacity: 1;
         }
         
-        .nav-links a.active:after {
-            display: none;
-        }
-        
-        /* Hero Section */
-        .hero {
+        /* 3D模型容器 */
+        #model-container {
+            position: relative;
+            width: 100%;
             height: 100vh;
-            padding-top: 0;
-            position: relative;
-            overflow: hidden;
+            background: #f0f0f0; /* 设置背景为浅灰色 */
+            overflow: hidden; /* 确保内容不溢出 */
+            cursor: pointer; /* 显示为可点击状态 */
         }
         
-        .hero-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        /* Gallery Section */
-        .gallery {
-            padding: 5rem 5%;
-        }
-        
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 400;
-            margin-bottom: 3rem;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            height: 1px;
-            width: 100px;
-            background-color: #111;
-            bottom: -10px;
-            left: 0;
-        }
-        
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            height: 400px;
-        }
-        
-        .gallery-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        
-        .gallery-item:hover .gallery-image {
-            transform: scale(1.05);
-        }
-        
-        .gallery-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 1rem;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-        
-        .gallery-item:hover .gallery-overlay {
-            transform: translateY(0);
-        }
-        
-        .gallery-overlay h3 {
-            font-size: 1.2rem;
-            font-weight: 400;
-            margin-bottom: 0.5rem;
-        }
-        
-        .gallery-overlay p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-        
-        /* Film Section */
-        .film-section {
-            padding: 5rem 5%;
-            background-color: #f8f8f8;
-        }
-        
-        .film-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-            gap: 2rem;
-        }
-        
-        .film-item {
-            position: relative;
-            height: 300px;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        
-        .film-thumbnail {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        
-        .film-item:hover .film-thumbnail {
-            transform: scale(1.05);
-        }
-        
-        .play-button {
+        /* 加载进度指示器 */
+        #loader {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 70px;
-            height: 70px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s ease;
-        }
-        
-        .play-button:before {
-            content: '';
-            width: 0;
-            height: 0;
-            border-top: 15px solid transparent;
-            border-bottom: 15px solid transparent;
-            border-left: 24px solid #111;
-            margin-left: 5px;
-        }
-        
-        .film-item:hover .play-button {
-            background-color: rgba(255, 255, 255, 1);
-        }
-        
-        /* Footer */
-        footer {
-            background-color: #111;
-            color: white;
-            padding: 5rem 5% 2rem;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-        
-        .footer-column h3 {
+            color: #333;
             font-size: 1.2rem;
-            font-weight: 400;
-            margin-bottom: 1.5rem;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .footer-column h3::after {
-            content: '';
-            position: absolute;
-            height: 1px;
-            width: 50px;
-            background-color: white;
-            bottom: -10px;
-            left: 0;
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 0.8rem;
-        }
-        
-        .footer-links a {
-            text-decoration: none;
-            color: #ccc;
-            transition: color 0.3s ease;
-        }
-        
-        .footer-links a:hover {
-            color: white;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-        
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border: 1px solid #555;
-            border-radius: 50%;
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        
-        .social-link:hover {
-            background-color: white;
-            color: #111;
-        }
-        
-        .copyright {
+            font-family: 'Noto Serif SC', serif;
             text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid #333;
-            font-size: 0.9rem;
-            color: #777;
+            z-index: 10;
         }
         
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
-            .film-container {
-                grid-template-columns: 1fr;
-            }
-
-            /* 移动端导航菜单按钮 */
-            .mobile-menu-btn {
-                display: block;
-                position: absolute;
-                right: 20px;
-                width: 30px;
-                height: 20px;
-                cursor: pointer;
-                z-index: 1001;
-            }
-
-            .mobile-menu-btn span {
-                display: block;
-                position: absolute;
-                height: 2px;
-                width: 100%;
-                background: white;
-                opacity: 1;
-                left: 0;
-                transform: rotate(0deg);
-                transition: .25s ease-in-out;
-            }
-
-            .mobile-menu-btn span:nth-child(1) {
-                top: 0px;
-            }
-
-            .mobile-menu-btn span:nth-child(2) {
-                top: 9px;
-            }
-
-            .mobile-menu-btn span:nth-child(3) {
-                top: 18px;
-            }
-
-            .mobile-menu-btn.open span:nth-child(1) {
-                top: 9px;
-                transform: rotate(135deg);
-            }
-
-            .mobile-menu-btn.open span:nth-child(2) {
-                opacity: 0;
-                left: -60px;
-            }
-
-            .mobile-menu-btn.open span:nth-child(3) {
-                top: 9px;
-                transform: rotate(-135deg);
-            }
-
-            /* 移动端菜单样式 */
-            .mobile-menu {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.95);
-                z-index: 999;
-                padding: 20px;
-                padding-top: 65px; /* 为顶栏留出空间 */
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .mobile-menu.open {
-                display: flex;
-            }
-
-            .mobile-menu a {
-                color: white;
-                font-size: 1.5rem;
-                margin: 15px 0;
-                text-decoration: none;
-                font-family: 'Poiret One', cursive;
-                letter-spacing: 3px;
-                transition: all 0.3s ease;
-            }
-
-            .mobile-menu a:hover {
-                color: #DE2910;
-                letter-spacing: 4px;
-            }
-
-            /* 调整视频标题大小和位置 */
-            .video-title h1 {
-                font-size: 3rem;
-                letter-spacing: 5px;
-            }
-
-            .video-title p {
-                font-size: 1rem;
-                letter-spacing: 2px;
-            }
-
-            /* 调整轮播箭头位置 */
-            .swiper-button-prev {
-                left: 10px;
-            }
-
-            .swiper-button-next {
-                right: 10px;
-            }
-
-            .swiper-button-next:after, .swiper-button-prev:after {
-                font-size: 25px;
-            }
-
-            /* 调整画廊网格 */
-            .gallery-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .gallery-item {
-                height: 300px;
-            }
-
-            /* 调整电影部分 */
-            .film-container {
-                grid-template-columns: 1fr;
-            }
-
-            .film-item {
-                height: 200px;
-            }
-
-            /* 调整页脚 */
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-        }
-
-        /* 针对iPhone的特定调整 */
-        @media (max-width: 480px) {
-            .video-title {
-                bottom: 25%;
-                left: 5%;
-            }
-
-            .video-title h1 {
-                font-size: 2.5rem;
-                letter-spacing: 3px;
-                margin-bottom: 0.8rem;
-            }
-
-            .video-title p {
-                font-size: 0.9rem;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-            }
-
-            .gallery, .film-section {
-                padding: 3rem 5%;
-            }
-
-            .play-button {
-                width: 50px;
-                height: 50px;
-            }
-
-            .play-button:before {
-                border-top: 10px solid transparent;
-                border-bottom: 10px solid transparent;
-                border-left: 16px solid #111;
-            }
-
-            .swiper-pagination {
-                bottom: 20px !important;
-            }
-        }
-
-        /* 修改视频过渡效果 */
-        .swiper-slide video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: filter 0.3s ease, opacity 1.5s ease;
-            opacity: 0;
-        }
-
-        .swiper-slide video.loaded {
-            opacity: 1;
-        }
-
-        /* 修改视频标题样式 */
-        .video-title {
-            position: absolute;
-            bottom: 15%;
-            left: 10%;
-            transform: translate(0, 0);
-            z-index: 3;
-            text-align: left;
-            opacity: 0;
-            animation: fadeInUp 2s ease forwards;
-        }
-
-        .video-title h1 {
-            font-family: 'Source Han Serif CN', 'Source Han Serif SC', 'Source Han Serif', serif;
-            color: white;
-            font-size: 7rem;
-            letter-spacing: 15px;
-            margin-bottom: 1.5rem;
-            font-weight: 300;
-            line-height: 1.2;
-        }
-
-        .video-title p {
-            font-family: 'Source Han Serif CN', 'Source Han Serif SC', 'Source Han Serif', serif;
-            color: white;
-            font-size: 1.4rem;
-            letter-spacing: 4px;
-            opacity: 0.9;
-            font-weight: 300;
-        }
-
-        /* 修改上浮动画 */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @font-face {
-            font-family: 'Source Han Serif CN';
-            src: url('path/to/SourceHanSerifCN-Light.otf') format('opentype');
-            font-weight: 300;
-            font-style: normal;
-        }
-
-        /* 修改过渡效果样式 */
-        .page-transition {
-            position: fixed;
-            top: 0; /* 从页面顶部开始 */
-            left: 0;
-            width: 100%;
-            height: 100%; /* 覆盖整个页面 */
-            background-color: black;
-            z-index: 999; /* 确保在导航栏之下 */
-            opacity: 0;
-            visibility: hidden;
-            transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
-        }
-
-        .page-transition.fade-in {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* 悬停效果 */
-        .nav-links a:hover {
-            opacity: 1;
-            letter-spacing: 4px;
-            color: #DE2910; /* 中国红色过渡效果 */
-        }
-
-        /* 激活状态样式 */
-        .nav-links a.active {
-            color: #DE2910;
-            opacity: 1;
-        }
-
-        /* 菜单打开时的body样式 */
-        body.menu-open {
+        .loader-bar {
+            width: 200px;
+            height: 5px;
+            background-color: #ddd;
+            margin: 10px auto;
+            border-radius: 5px;
             overflow: hidden;
         }
-
-        /* 确保视频在移动设备上正确显示 */
-        @media (max-width: 768px) {
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .swiper {
-                height: 100vh;
-            }
-
-            .swiper-slide video {
-                object-position: center;
-            }
+        
+        .loader-progress {
+            height: 100%;
+            background-color: #666;
+            width: 0%;
+            transition: width 0.3s ease;
         }
-
-        /* 针对不同iPhone型号的特定调整 */
-        /* iPhone SE, 5, 5S, 5C */
-        @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
-            .video-title h1 {
-                font-size: 2rem;
-                letter-spacing: 2px;
-            }
-        }
-
-        /* iPhone 6, 7, 8 */
-        @media only screen and (min-device-width: 375px) and (max-device-width: 667px) {
-            .video-title h1 {
-                font-size: 2.2rem;
-            }
-        }
-
-        /* iPhone X, XS, 11 Pro, 12 mini */
-        @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (-webkit-device-pixel-ratio: 3) {
-            .video-title {
-                bottom: 20%;
-            }
-        }
-
-        /* iPhone XR, 11, XS Max, 11 Pro Max */
-        @media only screen and (min-device-width: 414px) and (max-device-width: 896px) and (-webkit-device-pixel-ratio: 2) {
-            .video-title h1 {
-                font-size: 2.8rem;
-            }
-        }
-
-        /* iPhone 12, 12 Pro, 13, 13 Pro, 14, 14 Pro */
-        @media only screen and (min-device-width: 390px) and (max-device-width: 844px) and (-webkit-device-pixel-ratio: 3) {
-            .video-title h1 {
-                font-size: 2.5rem;
-            }
-        }
-
-        /* iPhone 12 Pro Max, 13 Pro Max, 14 Plus, 14 Pro Max */
-        @media only screen and (min-device-width: 428px) and (max-device-width: 926px) and (-webkit-device-pixel-ratio: 3) {
-            .video-title h1 {
-                font-size: 3rem;
-            }
-        }
-
-        /* 添加视频占位图样式 */
-        .video-placeholder {
+        
+        /* 提示文本 */
+        .model-info {
             position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #333;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        .model-info.visible {
+            opacity: 0.8;
+            transform: translateY(0);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .model-info {
+                font-size: 0.9rem;
+                bottom: 20px;
+            }
+        }
+        
+        /* 页面过渡效果 */
+        .page-transition {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-size: cover;
-            background-position: center;
-            z-index: 1;
-            opacity: 1;
-            transition: opacity 0.8s ease;
-        }
-        
-        .video-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .swiper-slide video.loaded + .video-placeholder {
+            background-color: transparent; /* 改为透明背景 */
+            z-index: 999;
             opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.7, 0, 0.3, 1);
         }
-
-        /* 修改watch-film-link样式，将链接放在右下角 */
-        .watch-film-link {
-            position: absolute;
-            bottom: 10%;
-            right: 10%;
-            text-align: right;
-            z-index: 5;
+        
+        .page-transition.fade-in {
+            opacity: 1;
+            visibility: visible;
         }
-
-        .watch-film-link a {
-            color: rgba(206, 220, 255, 0.8);
-            font-family: Helvetica, Arial, sans-serif;
+        
+        /* Gallery按钮样式 */
+        .gallery-button {
+            position: fixed; /* 改为fixed定位 */
+            top: 26%; /* 相对于视口定位 */
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background-color: rgba(255, 255, 255, 0.15); /* 降低背景不透明度 */
+            backdrop-filter: blur(15px); /* 增加模糊效果 */
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2); /* 更微妙的边框 */
+            color: #ffffff; /* 基础颜色，将通过JS动态修改 */
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-family: 'Poiret One', cursive !important; /* 使用与导航栏相同的字体 */
             font-size: 0.9rem;
-            font-weight: 400;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: capitalize;
             text-decoration: none;
-            letter-spacing: 1px;
-            transition: letter-spacing 0.3s ease, color 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset; /* 增强阴影效果 */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            z-index: 1000; /* 增加z-index确保按钮位于所有元素之上 */
+            cursor: pointer; /* 确保鼠标显示为可点击状态 */
+            pointer-events: auto; /* 确保元素可以接收点击事件 */
         }
-
-        .watch-film-link a:hover {
-            letter-spacing: 2px;
-            color: #ffffff;
+        
+        .gallery-button:hover {
+            background-color: rgba(255, 255, 255, 0.25); /* 悬停时略微提高不透明度 */
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 
+                        0 0 0 1px rgba(255, 255, 255, 0.1) inset; /* 悬停时增强阴影 */
         }
-
-        /* triple-y 图片样式 */
-        .triple-y-container {
-            position: absolute;
-            top: 50%;
-            left: 54%;
-            transform: translate(-50%, -50%);
-            z-index: 4;
-            width: 90%;
-            max-width: 1000px;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        
+        /* 点击按钮时的动画效果 */
+        .gallery-button:active {
+            transform: translate(-50%, -50%) scale(0.9);
+            transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
         }
-
-        .triple-y-image {
-            width: 100%;
-            height: auto;
-            max-height: 90vh;
-            object-fit: contain;
-            opacity: 0.80;
+        
+        /* 点击后的动画类 */
+        .gallery-button.clicked {
+            animation: clickPulse 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        /* 在移动设备上调整triple-y图片大小 */
-        @media (max-width: 768px) {
-            .triple-y-container {
-                width: 90%;
+        
+        @keyframes clickPulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
             }
+            40% {
+                transform: translate(-50%, -50%) scale(0.85);
+            }
+            80% {
+                transform: translate(-50%, -50%) scale(1.15);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        .gallery-button.visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        /* Work按钮样式 */
+        .work-button {
+            position: fixed; /* fixed定位 */
+            top: 50%; /* 垂直居中 */
+            right: 130px; /* 增加右侧距离，使按钮更靠左 */
+            transform: translateY(-50%) scale(0);
+            background-color: rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff; /* 基础颜色，将通过JS动态修改 */
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-family: 'Poiret One', cursive !important; /* 与导航栏相同的字体 */
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: capitalize;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            z-index: 1000;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+        
+        .work-button:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 
+                        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        }
+        
+        /* 点击按钮时的动画效果 */
+        .work-button:active {
+            transform: translateY(-50%) scale(0.9);
+            transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+        }
+        
+        /* 点击后的动画类 */
+        .work-button.clicked {
+            animation: workButtonPulse 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes workButtonPulse {
+            0% {
+                transform: translateY(-50%) scale(1);
+            }
+            40% {
+                transform: translateY(-50%) scale(0.85);
+            }
+            80% {
+                transform: translateY(-50%) scale(1.15);
+            }
+            100% {
+                transform: translateY(-50%) scale(1);
+            }
+        }
+        
+        .work-button.visible {
+            opacity: 1;
+            transform: translateY(-50%) scale(1);
+        }
+        
+        /* About按钮样式 */
+        .about-button {
+            position: fixed; /* fixed定位 */
+            bottom: 90px; /* 底部定位 */
+            left: 50%; /* 水平居中 */
+            transform: translateX(-50%) scale(0);
+            background-color: rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff; /* 基础颜色，将通过JS动态修改 */
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-family: 'Poiret One', cursive !important; /* 与导航栏相同的字体 */
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: capitalize;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            z-index: 1000;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+        
+        .about-button:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: translateX(-50%) scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 
+                        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        }
+        
+        /* 点击按钮时的动画效果 */
+        .about-button:active {
+            transform: translateX(-50%) scale(0.9);
+            transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+        }
+        
+        /* 点击后的动画类 */
+        .about-button.clicked {
+            animation: aboutButtonPulse 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes aboutButtonPulse {
+            0% {
+                transform: translateX(-50%) scale(1);
+            }
+            40% {
+                transform: translateX(-50%) scale(0.85);
+            }
+            80% {
+                transform: translateX(-50%) scale(1.15);
+            }
+            100% {
+                transform: translateX(-50%) scale(1);
+            }
+        }
+        
+        .about-button.visible {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+        
+        /* Explore按钮样式 */
+        .explore-button {
+            position: fixed; /* fixed定位 */
+            top: 50%; /* 垂直居中 */
+            left: 130px; /* 左侧定位 */
+            transform: translateY(-50%) scale(0);
+            background-color: rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff; /* 基础颜色，将通过JS动态修改 */
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-family: 'Poiret One', cursive !important; /* 与导航栏相同的字体 */
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: capitalize;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            z-index: 1000;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+        
+        .explore-button:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 
+                        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        }
+        
+        /* 点击按钮时的动画效果 */
+        .explore-button:active {
+            transform: translateY(-50%) scale(0.9);
+            transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+        }
+        
+        /* 点击后的动画类 */
+        .explore-button.clicked {
+            animation: exploreButtonPulse 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes exploreButtonPulse {
+            0% {
+                transform: translateY(-50%) scale(1);
+            }
+            40% {
+                transform: translateY(-50%) scale(0.85);
+            }
+            80% {
+                transform: translateY(-50%) scale(1.15);
+            }
+            100% {
+                transform: translateY(-50%) scale(1);
+            }
+        }
+        
+        .explore-button.visible {
+            opacity: 1;
+            transform: translateY(-50%) scale(1);
         }
     </style>
 </head>
@@ -907,233 +494,1206 @@
     <!-- 导航栏容器 -->
     <div id="nav-container"></div>
     
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="swiper mySwiper">
-            <div class="swiper-wrapper">
-                <!-- 幻灯片1：视频 -->
-                <div class="swiper-slide">
-                    <div class="video-container">
-                        <video autoplay muted loop playsinline class="hero-image" preload="metadata" data-src="artistweb/videos/video1.webm" controlsList="nodownload" disablePictureInPicture>
-                            <source type="video/webm" src="artistweb/videos/video1.webm">
-                            Your browser does not support HTML5 video.
-                        </video>
-                        <div class="video-placeholder" style="background-color: #000;"></div>
-                    </div>
-                    <div class="video-title">
-                        <h1>额尔古纳河</h1>
-                        <p>Watch the film ></p>
-                    </div>
-                </div>
-                <!-- 幻灯片2：视频 -->
-                <div class="swiper-slide">
-                    <div class="video-container">
-                        <video autoplay muted loop playsinline class="hero-image" preload="none" data-src="artistweb/videos/video2.webm" controlsList="nodownload" disablePictureInPicture>
-                            <source type="video/webm" data-src="artistweb/videos/video2.webm">
-                            Your browser does not support HTML5 video.
-                        </video>
-                        <div class="video-placeholder" style="background-color: #000;"></div>
-                    </div>
-                    <div class="watch-film-link">
-                        <a href="film.html">watch the film ></a>
-                    </div>
-                </div>
-                <!-- 幻灯片3：视频 -->
-                <div class="swiper-slide">
-                    <div class="video-container">
-                        <video autoplay muted loop playsinline class="hero-image" preload="none" data-src="artistweb/videos/video3.webm" controlsList="nodownload" disablePictureInPicture>
-                            <source type="video/webm" data-src="artistweb/videos/video3.webm">
-                        </video>
-                        <div class="video-placeholder" style="background-color: #000;"></div>
-                    </div>
-                </div>
-                <!-- 幻灯片4：视频 -->
-                <div class="swiper-slide">
-                    <div class="video-container">
-                        <video autoplay muted loop playsinline class="hero-image" preload="none" data-src="artistweb/videos/video4.webm" controlsList="nodownload" disablePictureInPicture>
-                            <source type="video/webm" data-src="artistweb/videos/video4.webm">
-                        </video>
-                        <div class="video-placeholder" style="background-color: #000;"></div>
-                    </div>
-                    <!-- 添加triple-y.PNG图片 -->
-                    <div class="triple-y-container">
-                        <img src="artistweb/images/triple-y.PNG" alt="Triple Y" class="triple-y-image">
-                    </div>
+    <!-- 主体内容容器 -->
+    <main>
+        <div id="model-container">
+            <!-- 加载指示器 -->
+            <div id="loader">
+                <p>加载模型中...</p>
+                <div class="loader-bar">
+                    <div class="loader-progress" id="progress-bar"></div>
                 </div>
             </div>
-            <!-- 可选的左右切换按钮 -->
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <!-- 可选的分页指示点 -->
-            <div class="swiper-pagination"></div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>Contact</h3>
-                <p>studio@artist.com</p>
-                <p>+86 123 4567 8910</p>
-                <p>Shanghai, China</p>
-            </div>
-            <div class="footer-column">
-                <h3>Navigation</h3>
-                <ul class="footer-links">
-                    <li><a href="#explore">Explore</a></li>
-                    <li><a href="film.html">Film</a></li>
-                    <li><a href="gallery.html">Gallery</a></li>
-                    <li><a href="work.html">Work</a></li>
-                    <li><a href="#about">About</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>Connect</h3>
-                <p>Follow my work and creative journey</p>
-                <div class="social-links">
-                    <a href="#" class="social-link">YT</a>
-                    <a href="#" class="social-link">BL</a>
-                    <a href="#" class="social-link">IG</a>
-                </div>
+            
+            <!-- 提示文本 -->
+            <div class="model-info" id="model-info">
+                <p></p>
             </div>
         </div>
-        <div class="copyright">
-            © 2025 Artist Portfolio. All rights reserved.
-        </div>
-    </footer>
+        
+        <!-- Gallery按钮 - 移到模型容器外部 -->
+        <a href="gallery.html" class="gallery-button" id="gallery-button">gallery</a>
+        
+        <!-- Work按钮 - 添加在右侧 -->
+        <a href="work.html" class="work-button" id="work-button">work</a>
+        
+        <!-- About按钮 - 添加在下方 -->
+        <a href="about.html" class="about-button" id="about-button">about</a>
+        
+        <!-- Explore按钮 - 添加在左侧 -->
+        <a href="explore.html" class="explore-button" id="explore-button">explore</a>
+    </main>
     
     <!-- 加载统一导航栏脚本 -->
-    <script src="/shared/load-nav.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // 简化视频加载逻辑
-            function loadVideo(video) {
-                if (!video) return;
-                
-                // 如果视频已加载或正在加载中，不执行任何操作
-                if (video.currentSrc && video.readyState > 0) {
-                    // 确保视频正在播放
-                    video.play().catch(err => console.log('自动播放失败:', err));
-                    return;
-                }
-                
-                try {
-                    // 对于带有data-src的source标签，需要设置实际src
-                    const sources = video.querySelectorAll('source[data-src]');
-                    if (sources.length > 0) {
-                        sources.forEach(source => {
-                            if (source.dataset.src && !source.src) {
-                                source.src = source.dataset.src;
-                            }
-                        });
-                    }
-                    
-                    video.load();
-                    video.play().catch(err => console.log('自动播放失败:', err));
-                    video.classList.add('loaded');
-                } catch (err) {
-                    console.log('视频加载失败:', err);
-                }
-            }
+    <script src="shared/load-nav.js"></script>
+    
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
-            // 为所有视频添加加载完成事件
-            const videos = document.querySelectorAll('.swiper-slide video');
-            videos.forEach(video => {
-                video.addEventListener('loadeddata', function() {
-                    video.classList.add('loaded');
-                });
-                
-                // 添加错误处理
-                video.addEventListener('error', function(e) {
-                    console.log('视频加载失败，显示占位图', e);
-                    // 如果WebM格式加载失败，尝试使用MP4格式
-                    const source = video.querySelector('source');
-                    if (source && source.src.includes('.webm')) {
-                        source.src = source.src.replace('.webm', '.mp4');
-                        video.load();
-                    }
-                });
+        // 初始化Three.js场景
+        let scene, camera, renderer, controls, model;
+        let clock;
+        let modelPath = './3dLOGOblend_副本.glb'; // 指定模型路径
+        let isWireframe = false; // 是否处于线框模式
+        
+        // 渐变颜色设置 - 默认风格（浅米色到淡绿色）
+        const color1_R = 253, color1_G = 250, color1_B = 246; // 浅米色
+        const color2_R = 153, color2_G = 188, color2_B = 133; // 淡绿色
+        let colorA = new THREE.Color(color1_R/255, color1_G/255, color1_B/255);
+        let colorB = new THREE.Color(color2_R/255, color2_G/255, color2_B/255);
+        
+        // 第二种渐变颜色设置 - 紫蓝风格
+        const blue1_R = 154, blue1_G = 203, blue1_B = 208;  // 蓝色
+        const blue2_R = 54, blue2_G = 116, blue2_B = 181; // 淡蓝色
+        let purpleBlueColorA = new THREE.Color(blue1_R/255, blue1_G/255, blue1_B/255);
+        let purpleBlueColorB = new THREE.Color(blue2_R/255, blue2_G/255, blue2_B/255);
+        
+        // 第三种渐变颜色设置 - 橙色风格
+        const orange1_R = 255, orange1_G = 169, orange1_B = 85;   // 橙色
+        const orange2_R = 232, orange2_G = 63, orange2_B = 37; // 浅橙色
+        let orangeColorA = new THREE.Color(orange1_R/255, orange1_G/255, orange1_B/255);
+        let orangeColorB = new THREE.Color(orange2_R/255, orange2_G/255, orange2_B/255);
+        
+        // DOM元素
+        const loader = document.getElementById('loader');
+        const progressBar = document.getElementById('progress-bar');
+        const modelInfo = document.getElementById('model-info');
+        const container = document.getElementById('model-container');
+        
+        // 原始材质存储
+        const originalMaterials = new Map();
+        
+        // 模型样式状态：0=默认渐变，1=紫蓝渐变，2=橙色渐变，3=线框
+        let modelStyleState = 0;
+        
+        // 存储动画状态变量
+        let isRotating = false;
+        let rotationProgress = 0;
+        let initialRotationY = 0; // 存储点击前的Y轴旋转值
+        let rotationPhase = 0; // 新增：旋转阶段标识，0=准备阶段（逆时针），1=主旋转阶段（顺时针）
+        let styleChangeApplied = false; // 新增：标记样式变化是否已应用
+        
+        // 鼠标交互状态
+        let mouseMoveEnabled = true; // 控制鼠标移动是否影响模型
+        
+        // 颜色过渡状态变量 - 删除
+        // let isColorTransitioning = false;
+        // let colorTransitionProgress = 0;
+        let currentModelStyleState = 0;
+        let targetModelStyleState = 0;
+        
+        // 各种颜色组合 - 用于颜色过渡
+        const colorSets = [
+            { colorA: new THREE.Color(color1_R/255, color1_G/255, color1_B/255), 
+              colorB: new THREE.Color(color2_R/255, color2_G/255, color2_B/255) },
+            { colorA: new THREE.Color(blue1_R/255, blue1_G/255, blue1_B/255), 
+              colorB: new THREE.Color(blue2_R/255, blue2_G/255, blue2_B/255) },
+            { colorA: new THREE.Color(orange1_R/255, orange1_G/255, orange1_B/255), 
+              colorB: new THREE.Color(orange2_R/255, orange2_G/255, orange2_B/255) }
+        ];
+        
+        // 初始化函数
+        function init() {
+            console.log('初始化Three.js场景');
+            
+            // 创建场景
+            scene = new THREE.Scene();
+            scene.background = null; // 使用透明背景允许CSS背景显示
+            
+            // 创建相机
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            const viewSize = 10;
+            camera = new THREE.OrthographicCamera(
+                -viewSize * aspectRatio / 2, 
+                viewSize * aspectRatio / 2, 
+                viewSize / 2, 
+                -viewSize / 2, 
+                0.1, 
+                1000
+            );
+            camera.position.z = 5;
+            
+            // 创建渲染器
+            renderer = new THREE.WebGLRenderer({ 
+                antialias: true, 
+                alpha: true 
             });
-
-            // 立即加载当前视频
-            const activeVideo = document.querySelector('.swiper-slide:first-child video');
-            if (activeVideo) {
-                loadVideo(activeVideo);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setClearColor(0x000000, 0); // 设置清除颜色为透明
+            
+            if (renderer.outputColorSpace !== undefined) {
+                renderer.outputColorSpace = THREE.SRGBColorSpace;
             }
+            
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            
+            // 将渲染器添加到DOM
+            container.appendChild(renderer.domElement);
+            
+            // 创建控制器
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.rotateSpeed = 0.5;
+            controls.autoRotate = false; // 禁用自动旋转
+            controls.enableRotate = false; // 禁用轨道控制器的旋转功能
+            controls.enableZoom = false; // 禁用缩放功能
+            controls.enablePan = false; // 禁用平移功能
+            
+            // 设置固定的视图大小
+            const fixedViewSize = 10; // 设置固定的视图大小
+            
+            // 设置缩放限制，确保无法改变缩放水平
+            controls.minZoom = 1.0;
+            controls.maxZoom = 1.0;
+            
+            // 添加灯光
+            addLights();
+            
+            // 加载模型
+            loadModel();
+            
+            // 添加时钟用于动画
+            clock = new THREE.Clock();
+            
+            // 监听窗口大小变化
+            window.addEventListener('resize', onWindowResize, false);
+            
+            // 添加点击事件
+            container.addEventListener('click', function(e) {
+                // 确保点击不是发生在Gallery按钮上
+                if (!e.target.closest('.gallery-button')) {
+                    toggleWireframe();
+                }
+            });
+            
+            // 动画循环
+            animate();
+        }
+        
+        // 添加灯光函数
+        function addLights() {
+            // 环境光
+            const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
+            scene.add(ambientLight);
+            
+            // 主要定向光
+            const mainLight = new THREE.DirectionalLight(0xffffff, 1.5);
+            mainLight.position.set(5, 5, 5);
+            mainLight.castShadow = true;
+            mainLight.shadow.mapSize.width = 2048;
+            mainLight.shadow.mapSize.height = 2048;
+            scene.add(mainLight);
+            
+            // 填充光
+            const fillLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            fillLight.position.set(-5, 2, -5);
+            scene.add(fillLight);
+            
+            // 背光
+            const backLight = new THREE.DirectionalLight(0xffffff, 0.7);
+            backLight.position.set(0, -5, -5);
+            scene.add(backLight);
+        }
+        
+        // 创建Z轴渐变材质函数
+        function createGradientMaterial() {
+            const vertexShader = `
+                varying vec2 vUv;
+                varying vec3 vPosition;
+                varying vec3 vNormal;
+                
+                void main() {
+                    vUv = uv;
+                    vPosition = position;
+                    vNormal = normalize(normalMatrix * normal);
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `;
 
-            var swiper = new Swiper(".mySwiper", {
-                loop: true,
-                autoplay: {
-                    delay: 5000,
-                    disableOnInteraction: false,
+            const fragmentShader = `
+                uniform vec3 colorA;
+                uniform vec3 colorB;
+                varying vec2 vUv;
+                varying vec3 vPosition;
+                varying vec3 vNormal;
+                
+                void main() {
+                    // Z轴渐变 (前->后)
+                    float t = (vPosition.z) * 0.5 + 0.5;
+                    
+                    // 添加一些法线信息增强渐变效果
+                    float normalFactor = vNormal.z * 0.5 + 0.5;
+                    
+                    // 混合几何系数和法线系数
+                    t = mix(t, normalFactor, 0.3);
+                    
+                    // 确保t在0和1之间
+                    t = clamp(t, 0.0, 1.0);
+                    
+                    // 混合两种颜色
+                    vec3 color = mix(colorA, colorB, t);
+                    
+                    gl_FragColor = vec4(color, 1.0);
+                }
+            `;
+
+            return new THREE.ShaderMaterial({
+                uniforms: {
+                    colorA: { value: colorA },
+                    colorB: { value: colorB }
                 },
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
+                vertexShader: vertexShader,
+                fragmentShader: fragmentShader,
+                side: THREE.DoubleSide
+            });
+        }
+        
+        // 创建紫蓝Z轴渐变材质函数
+        function createPurpleBlueGradientMaterial() {
+            const vertexShader = `
+                varying vec2 vUv;
+                varying vec3 vPosition;
+                varying vec3 vNormal;
+                
+                void main() {
+                    vUv = uv;
+                    vPosition = position;
+                    vNormal = normalize(normalMatrix * normal);
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `;
+
+            const fragmentShader = `
+                uniform vec3 colorA;
+                uniform vec3 colorB;
+                varying vec2 vUv;
+                varying vec3 vPosition;
+                varying vec3 vNormal;
+                
+                void main() {
+                    // Z轴渐变 (前->后)
+                    float t = (vPosition.z) * 0.5 + 0.5;
+                    
+                    // 添加一些法线信息增强渐变效果
+                    float normalFactor = vNormal.z * 0.5 + 0.5;
+                    
+                    // 混合几何系数和法线系数
+                    t = mix(t, normalFactor, 0.3);
+                    
+                    // 确保t在0和1之间
+                    t = clamp(t, 0.0, 1.0);
+                    
+                    // 混合两种颜色
+                    vec3 color = mix(colorA, colorB, t);
+                    
+                    gl_FragColor = vec4(color, 1.0);
+                }
+            `;
+
+            return new THREE.ShaderMaterial({
+                uniforms: {
+                    colorA: { value: purpleBlueColorA },
+                    colorB: { value: purpleBlueColorB }
                 },
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
+                vertexShader: vertexShader,
+                fragmentShader: fragmentShader,
+                side: THREE.DoubleSide
+            });
+        }
+        
+        // 创建橙色Z轴渐变材质函数
+        function createOrangeGradientMaterial() {
+            const vertexShader = `
+                varying vec2 vUv;
+                varying vec3 vPosition;
+                varying vec3 vNormal;
+                
+                void main() {
+                    vUv = uv;
+                    vPosition = position;
+                    vNormal = normalize(normalMatrix * normal);
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `;
+
+            const fragmentShader = `
+                uniform vec3 colorA;
+                uniform vec3 colorB;
+                varying vec2 vUv;
+                varying vec3 vPosition;
+                varying vec3 vNormal;
+                
+                void main() {
+                    // Z轴渐变 (前->后)
+                    float t = (vPosition.z) * 0.5 + 0.5;
+                    
+                    // 添加一些法线信息增强渐变效果
+                    float normalFactor = vNormal.z * 0.5 + 0.5;
+                    
+                    // 混合几何系数和法线系数
+                    t = mix(t, normalFactor, 0.3);
+                    
+                    // 确保t在0和1之间
+                    t = clamp(t, 0.0, 1.0);
+                    
+                    // 混合两种颜色
+                    vec3 color = mix(colorA, colorB, t);
+                    
+                    gl_FragColor = vec4(color, 1.0);
+                }
+            `;
+
+            return new THREE.ShaderMaterial({
+                uniforms: {
+                    colorA: { value: orangeColorA },
+                    colorB: { value: orangeColorB }
                 },
-                effect: "fade",
-                speed: 1000,
-                on: {
-                    init: function() {
-                        // 初始化时加载当前幻灯片的视频
-                        const activeSlide = this.slides[this.activeIndex];
-                        if (activeSlide) {
-                            const video = activeSlide.querySelector('video');
-                            if (video) loadVideo(video);
+                vertexShader: vertexShader,
+                fragmentShader: fragmentShader,
+                side: THREE.DoubleSide
+            });
+        }
+        
+        // 加载模型函数
+        function loadModel() {
+            console.log(`正在加载模型: ${modelPath}`);
+            
+            // 加载管理器
+            const manager = new THREE.LoadingManager();
+            manager.onProgress = function(item, loaded, total) {
+                console.log(`加载进度: ${loaded}/${total}`);
+                const progress = (loaded / total * 100);
+                progressBar.style.width = progress + '%';
+            };
+            
+            manager.onLoad = function() {
+                console.log('模型加载完成');
+                loader.style.display = 'none';
+                
+                // 不再显示提示文本
+                modelInfo.classList.add('visible');
+                
+                // 设置模型跟随鼠标移动交互
+                setupModelInteraction();
+                
+                // 设置初始按钮颜色
+                const galleryButton = document.getElementById('gallery-button');
+                if (galleryButton) {
+                    galleryButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
+                }
+                
+                // 设置Work按钮初始颜色
+                const workButton = document.getElementById('work-button');
+                if (workButton) {
+                    workButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
+                }
+                
+                // 设置About按钮初始颜色
+                const aboutButton = document.getElementById('about-button');
+                if (aboutButton) {
+                    aboutButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
+                }
+                
+                // 设置Explore按钮初始颜色
+                const exploreButton = document.getElementById('explore-button');
+                if (exploreButton) {
+                    exploreButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
+                }
+            };
+            
+            manager.onError = function(url) {
+                console.error('加载出错:', url);
+                loader.innerHTML = `<p>模型加载失败</p>`;
+            };
+            
+            // 创建GLTF加载器
+            const gltfLoader = new GLTFLoader(manager);
+            
+            // 加载模型
+            gltfLoader.load(
+                modelPath, 
+                function(gltf) {
+                    console.log('模型加载成功', gltf);
+                    model = gltf.scene;
+                    
+                    // 设置模型位置和比例
+                    model.position.set(0, 0, 0);
+                    
+                    // 自动缩放模型以适应视图
+                    const box = new THREE.Box3().setFromObject(model);
+                    const size = box.getSize(new THREE.Vector3()).length();
+                    const center = box.getCenter(new THREE.Vector3());
+                    
+                    model.position.x += (model.position.x - center.x);
+                    model.position.y += (model.position.y - center.y);
+                    model.position.z += (model.position.z - center.z);
+                    
+                    // 适应正交相机的缩放
+                    const scale = 10 / size; // 增加此值使模型变大
+                    model.scale.set(scale, scale, scale);
+                    
+                    // 遍历模型的所有材质，应用Z轴渐变材质
+                    const gradientMaterial = createGradientMaterial();
+                    
+                    model.traverse(function(child) {
+                        if (child.isMesh) {
+                            // 存储原始材质
+                            originalMaterials.set(child.uuid, child.material.clone());
+                            
+                            // 应用自定义渐变材质
+                            child.material = gradientMaterial.clone();
+                            
+                            // 激活阴影
+                            child.castShadow = true;
+                            child.receiveShadow = true;
                         }
-                    },
-                    slideChangeTransitionStart: function() {
-                        // 幻灯片开始切换时预加载下一个视频
-                        const activeSlide = this.slides[this.activeIndex];
-                        if (activeSlide) {
-                            const video = activeSlide.querySelector('video');
-                            if (video) {
-                                loadVideo(video);
+                    });
+                    
+                    scene.add(model);
+                    
+                    // 使相机对准模型
+                    controls.target.copy(center);
+                    controls.update();
+                    
+                    // 保存模型初始旋转值
+                    modelInitialRotation = {
+                        x: model.rotation.x,
+                        y: model.rotation.y,
+                        z: model.rotation.z
+                    };
+                },
+                function(xhr) {
+                    // 更新加载进度
+                    if (xhr.lengthComputable) {
+                        const progress = (xhr.loaded / xhr.total * 100);
+                        progressBar.style.width = progress + '%';
+                    }
+                },
+                function(error) {
+                    console.error(`模型加载错误:`, error);
+                    loader.innerHTML = `<p>模型加载失败</p>`;
+                }
+            );
+        }
+        
+        // 切换线框效果
+        function toggleWireframe() {
+            if (!model) return;
+            
+            // 如果已经在旋转，忽略点击
+            if (isRotating) return;
+            
+            // 开始旋转动画
+            startRotationAnimation();
+        }
+        
+        // 应用样式变化函数 - 现在负责更新UI而不是立即改变材质
+        function applyStyleChange() {
+            // 设置新的样式状态
+            modelStyleState = targetModelStyleState;
+            
+            // 仅在线框模式下直接应用，因为线框没有颜色过渡效果
+            if (modelStyleState === 3) {
+                applyWireframeMaterial();
+            } else if (currentModelStyleState === 3) {
+                // 如果是从线框模式切换出来，需要立即应用新的材质
+                switch(modelStyleState) {
+                    case 0:
+                        applyDefaultGradientMaterial();
+                        break;
+                    case 1:
+                        applyPurpleBlueGradientMaterial();
+                        break;
+                    case 2:
+                        applyOrangeGradientMaterial();
+                        break;
+                }
+            }
+            
+            // 同时更新Gallery按钮颜色
+            const galleryButton = document.getElementById('gallery-button');
+            if (galleryButton) {
+                // 根据当前模型样式状态设置文字颜色
+                switch(modelStyleState) {
+                    case 0: // 默认渐变风格 - 浅绿色
+                        galleryButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
+                        break;
+                    case 1: // 紫蓝渐变风格
+                        galleryButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
+                        break;
+                    case 2: // 橙色渐变风格
+                        galleryButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
+                        break;
+                    case 3: // 线框模式
+                        galleryButton.style.color = "#8B4513"; // 棕色
+                        break;
+                }
+            }
+            
+            // 同时更新Work按钮颜色
+            const workButton = document.getElementById('work-button');
+            if (workButton) {
+                // 根据当前模型样式状态设置文字颜色
+                switch(modelStyleState) {
+                    case 0: // 默认渐变风格 - 浅绿色
+                        workButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
+                        break;
+                    case 1: // 紫蓝渐变风格
+                        workButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
+                        break;
+                    case 2: // 橙色渐变风格
+                        workButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
+                        break;
+                    case 3: // 线框模式
+                        workButton.style.color = "#8B4513"; // 棕色
+                        break;
+                }
+            }
+            
+            // 同时更新About按钮颜色
+            const aboutButton = document.getElementById('about-button');
+            if (aboutButton) {
+                // 根据当前模型样式状态设置文字颜色
+                switch(modelStyleState) {
+                    case 0: // 默认渐变风格 - 浅绿色
+                        aboutButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
+                        break;
+                    case 1: // 紫蓝渐变风格
+                        aboutButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
+                        break;
+                    case 2: // 橙色渐变风格
+                        aboutButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
+                        break;
+                    case 3: // 线框模式
+                        aboutButton.style.color = "#8B4513"; // 棕色
+                        break;
+                }
+            }
+            
+            // 同时更新Explore按钮颜色
+            const exploreButton = document.getElementById('explore-button');
+            if (exploreButton) {
+                // 根据当前模型样式状态设置文字颜色
+                switch(modelStyleState) {
+                    case 0: // 默认渐变风格 - 浅绿色
+                        exploreButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
+                        break;
+                    case 1: // 紫蓝渐变风格
+                        exploreButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
+                        break;
+                    case 2: // 橙色渐变风格
+                        exploreButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
+                        break;
+                    case 3: // 线框模式
+                        exploreButton.style.color = "#8B4513"; // 棕色
+                        break;
+                }
+            }
+            
+            styleChangeApplied = true; // 标记样式变化已应用
+        }
+        
+        // 专门用于应用线框材质
+        function applyWireframeMaterial() {
+            model.traverse(function(child) {
+                if (child.isMesh) {
+                    if (originalMaterials.has(child.uuid)) {
+                        // 恢复原始材质并设置为线框
+                        const originalMat = originalMaterials.get(child.uuid).clone();
+                        originalMat.wireframe = true;
+                        child.material = originalMat;
+                    } else {
+                        // 如果没有原始材质，使用当前材质设置为线框
+                        const currentMat = child.material.clone();
+                        currentMat.wireframe = true;
+                        child.material = currentMat;
+                    }
+                }
+            });
+        }
+        
+        // 应用默认渐变材质
+        function applyDefaultGradientMaterial() {
+            const gradientMaterial = createGradientMaterial();
+            model.traverse(function(child) {
+                if (child.isMesh) {
+                    child.material = gradientMaterial;
+                }
+            });
+        }
+        
+        // 应用紫蓝渐变材质
+        function applyPurpleBlueGradientMaterial() {
+            const purpleBlueGradient = createPurpleBlueGradientMaterial();
+            model.traverse(function(child) {
+                if (child.isMesh) {
+                    child.material = purpleBlueGradient;
+                }
+            });
+        }
+        
+        // 应用橙色渐变材质
+        function applyOrangeGradientMaterial() {
+            const orangeGradient = createOrangeGradientMaterial();
+            model.traverse(function(child) {
+                if (child.isMesh) {
+                    child.material = orangeGradient;
+                }
+            });
+        }
+        
+        // 开始旋转动画函数
+        function startRotationAnimation() {
+            isRotating = true;
+            rotationProgress = 0;
+            rotationPhase = 0; // 从准备阶段开始
+            styleChangeApplied = false; // 重置样式变化标记
+            
+            // 存储点击前的旋转状态
+            initialRotationY = model.rotation.y;
+            
+            // 准备颜色过渡
+            currentModelStyleState = modelStyleState;
+            targetModelStyleState = (modelStyleState + 1) % 4;
+            
+            // 在旋转期间禁用鼠标跟随
+            mouseMoveEnabled = false;
+            
+            // 保存当前所有轴的旋转状态
+            initialRotationState = {
+                x: model.rotation.x,
+                y: model.rotation.y,
+                z: model.rotation.z
+            };
+        }
+        
+        // 窗口大小变化处理函数
+        function onWindowResize() {
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            const viewSize = 10; // 使用与初始化相同的固定视图大小
+            
+            camera.left = -viewSize * aspectRatio / 2;
+            camera.right = viewSize * aspectRatio / 2;
+            camera.top = viewSize / 2;
+            camera.bottom = -viewSize / 2;
+            
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // 定义鼠标交互变量
+        let targetRotationX = 0;
+        let targetRotationY = 0;
+        let targetRotationZ = 0;
+        let mouseActive = false;
+        let modelInitialRotation = { x: 0, y: 0, z: 0 };
+        let initialRotationState = { x: 0, y: 0, z: 0 }; // 存储旋转开始前的完整旋转状态
+        
+        // 角度转弧度常量
+        const DEG_TO_RAD = Math.PI / 180;
+        
+        // 设置最大倾斜角度（弧度）
+        const MAX_TILT = 15 * DEG_TO_RAD;
+        
+        // 存储动画帧ID，用于清理
+        let animationFrameId = null;
+        
+        // 动画循环函数
+        function animate() {
+            animationFrameId = requestAnimationFrame(animate);
+            controls.update();
+            
+            // 旋转动画逻辑
+            if (model && isRotating) {
+                // 根据不同阶段应用不同的旋转逻辑
+                if (rotationPhase === 0) {
+                    // 准备阶段 - 逆时针旋转一小段（约15度）
+                    rotationProgress += 0.025;
+                    const easeRotation = easeInOutCubic(rotationProgress);
+                    
+                    // 逆时针旋转一小段角度（约15度，π/12弧度）
+                    model.rotation.x = initialRotationState.x;
+                    model.rotation.y = initialRotationY - (Math.PI / 12 * easeRotation);
+                    model.rotation.z = initialRotationState.z;
+                    
+                    if (rotationProgress >= 1) {
+                        // 准备阶段结束，开始主旋转
+                        rotationPhase = 1;
+                        rotationProgress = 0;
+                        // 更新初始旋转值为当前值
+                        initialRotationY = model.rotation.y;
+                    }
+                } else if (rotationPhase === 1) {
+                    // 主旋转阶段 - 顺时针旋转一整圈多一点
+                    rotationProgress += 0.01;
+                    
+                    // 当旋转进行到50%时应用样式变化（提前到50%位置）
+                    if (rotationProgress >= 0.5 && !styleChangeApplied) {
+                        // 应用样式变化
+                        modelStyleState = targetModelStyleState;
+                        
+                        // 根据新的状态立即应用材质
+                        switch(modelStyleState) {
+                            case 0:
+                                applyDefaultGradientMaterial();
+                                break;
+                            case 1:
+                                applyPurpleBlueGradientMaterial();
+                                break;
+                            case 2:
+                                applyOrangeGradientMaterial();
+                                break;
+                            case 3:
+                                applyWireframeMaterial();
+                                break;
+                        }
+                        
+                        // 更新Gallery按钮颜色
+                        const galleryButton = document.getElementById('gallery-button');
+                        if (galleryButton) {
+                            // 根据当前模型样式状态设置文字颜色
+                            switch(modelStyleState) {
+                                case 0: // 默认渐变风格 - 浅绿色
+                                    galleryButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
+                                    break;
+                                case 1: // 紫蓝渐变风格
+                                    galleryButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
+                                    break;
+                                case 2: // 橙色渐变风格
+                                    galleryButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
+                                    break;
+                                case 3: // 线框模式
+                                    galleryButton.style.color = "#8B4513"; // 棕色
+                                    break;
                             }
                         }
                         
-                        // 暂停其他幻灯片中的视频
-                        videos.forEach(video => {
-                            if (video.parentElement.parentElement !== activeSlide && !video.paused) {
-                                video.pause();
+                        // 同时更新Work按钮颜色
+                        const workButton = document.getElementById('work-button');
+                        if (workButton) {
+                            // 根据当前模型样式状态设置文字颜色
+                            switch(modelStyleState) {
+                                case 0: // 默认渐变风格 - 浅绿色
+                                    workButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
+                                    break;
+                                case 1: // 紫蓝渐变风格
+                                    workButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
+                                    break;
+                                case 2: // 橙色渐变风格
+                                    workButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
+                                    break;
+                                case 3: // 线框模式
+                                    workButton.style.color = "#8B4513"; // 棕色
+                                    break;
                             }
-                        });
+                        }
+                        
+                        // 同时更新About按钮颜色
+                        const aboutButton = document.getElementById('about-button');
+                        if (aboutButton) {
+                            // 根据当前模型样式状态设置文字颜色
+                            switch(modelStyleState) {
+                                case 0: // 默认渐变风格 - 浅绿色
+                                    aboutButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
+                                    break;
+                                case 1: // 紫蓝渐变风格
+                                    aboutButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
+                                    break;
+                                case 2: // 橙色渐变风格
+                                    aboutButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
+                                    break;
+                                case 3: // 线框模式
+                                    aboutButton.style.color = "#8B4513"; // 棕色
+                                    break;
+                            }
+                        }
+                        
+                        // 同时更新Explore按钮颜色
+                        const exploreButton = document.getElementById('explore-button');
+                        if (exploreButton) {
+                            // 根据当前模型样式状态设置文字颜色
+                            switch(modelStyleState) {
+                                case 0: // 默认渐变风格 - 浅绿色
+                                    exploreButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
+                                    break;
+                                case 1: // 紫蓝渐变风格
+                                    exploreButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
+                                    break;
+                                case 2: // 橙色渐变风格
+                                    exploreButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
+                                    break;
+                                case 3: // 线框模式
+                                    exploreButton.style.color = "#8B4513"; // 棕色
+                                    break;
+                            }
+                        }
+                        
+                        styleChangeApplied = true; // 标记样式变化已应用
+                    }
+                    
+                    if (rotationProgress >= 1) {
+                        // 旋转完成
+                        isRotating = false;
+                        rotationProgress = 0;
+                        rotationPhase = 0;
+                        
+                        // 角度归一化：将Y轴旋转归一化到0-2π范围内，防止角度累积
+                        model.rotation.y = model.rotation.y % (Math.PI * 2);
+                        
+                        // 旋转结束后，恢复鼠标交互
+                        mouseMoveEnabled = true;
+                    } else {
+                        // 计算当前旋转角度 - 顺时针旋转一整圈多一点（加上之前的15度）
+                        const easeRotation = easeInOutCubic(rotationProgress);
+                        
+                        // 顺时针旋转一整圈加上之前的角度（π/12）
+                        const fullRotation = Math.PI * 2 + (Math.PI / 12);
+                        
+                        model.rotation.x = initialRotationState.x;
+                        model.rotation.y = initialRotationY + (fullRotation * easeRotation);
+                        model.rotation.z = initialRotationState.z;
                     }
                 }
+            }
+            
+            // 根据鼠标位置更新模型旋转 - 仅当旋转动画未进行且鼠标交互已启用时
+            if (model && mouseActive && !isRotating && mouseMoveEnabled) {
+                // 使用LERP平滑过渡到目标角度
+                model.rotation.x += (targetRotationX - model.rotation.x) * 0.05;
+                model.rotation.y += (targetRotationY - model.rotation.y) * 0.05;
+                model.rotation.z += (targetRotationZ - model.rotation.z) * 0.05;
+            }
+            
+            renderer.render(scene, camera);
+        }
+        
+        // 缓动函数 - 三次方缓入缓出
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+        
+        // 添加鼠标跟随交互功能
+        function setupModelInteraction() {
+            const container = document.getElementById('model-container');
+            
+            // 保存模型初始旋转值
+            if (model) {
+                modelInitialRotation = {
+                    x: model.rotation.x,
+                    y: model.rotation.y,
+                    z: model.rotation.z
+                };
+            }
+            
+            // 禁用滚轮事件，防止缩放
+            container.addEventListener('wheel', function(event) {
+                event.preventDefault();
+            }, { passive: false });
+            
+            // 将鼠标移动监听从容器移到document，这样即使鼠标在按钮上也能响应
+            document.addEventListener('mousemove', function(event) {
+                // 如果旋转动画正在进行，忽略鼠标移动
+                if (isRotating || !mouseMoveEnabled) return;
+                
+                // 获取容器位置信息
+                const rect = container.getBoundingClientRect();
+                
+                // 计算鼠标相对于容器中心点的位置
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const mouseX = event.clientX - rect.left;
+                const mouseY = event.clientY - rect.top;
+                
+                // 计算鼠标与中心的距离比例（-1到1之间）
+                const distX = (mouseX - centerX) / centerX; 
+                const distY = (mouseY - centerY) / centerY;
+                
+                // 计算距离中心点的距离（0到1之间）
+                const distance = Math.min(1, Math.sqrt(distX * distX + distY * distY));
+                
+                // 不再检查鼠标是否在容器内，始终应用倾斜效果
+                // 如果鼠标距离中心足够远，才应用倾斜效果
+                if (distance > 0.1) {
+                    mouseActive = true;
+                    
+                    // 根据鼠标位置计算倾斜角度
+                    // X轴旋转（前后倾斜）- 鼠标在下方时，模型向前倾斜（正值）
+                    targetRotationX = distY * MAX_TILT;
+                    
+                    // Y轴旋转（左右旋转）- 鼠标在右侧时，模型向右旋转（正值）
+                    targetRotationY = distX * MAX_TILT;
+                    
+                    // Z轴旋转（侧向倾斜）- 根据鼠标位置添加轻微的侧向倾斜
+                    // 当鼠标在右上/左下时为负，在左上/右下时为正
+                    targetRotationZ = (distX * distY) * (MAX_TILT * 0.3);
+                } else {
+                    // 当鼠标在中心区域时，恢复到初始状态
+                    mouseActive = false;
+                    targetRotationX = modelInitialRotation.x;
+                    targetRotationY = modelInitialRotation.y;
+                    targetRotationZ = modelInitialRotation.z;
+                }
             });
-
-            // 添加滚动事件监听
-            window.addEventListener('scroll', function() {
-                const scrolled = window.scrollY;
-                const videos = document.querySelectorAll('.swiper-slide video');
-                const maxBlur = 20; // 最大模糊值（像素）
-                const scrollThreshold = 500; // 触发完全模糊效果的滚动距离
+            
+            // 鼠标离开页面时，恢复模型初始状态
+            document.addEventListener('mouseleave', function() {
+                // 如果旋转动画正在进行，忽略鼠标移动
+                if (isRotating) return;
                 
-                // 计算模糊程度
-                const blurValue = Math.min((scrolled / scrollThreshold) * maxBlur, maxBlur);
-                
-                // 应用模糊效果到所有视频
-                videos.forEach(video => {
-                    video.style.filter = `blur(${blurValue}px)`;
+                mouseActive = false;
+                targetRotationX = modelInitialRotation.x;
+                targetRotationY = modelInitialRotation.y;
+                targetRotationZ = modelInitialRotation.z;
+            });
+        }
+        
+        // 清理Three.js资源的函数
+        function cleanupThreeJS() {
+            // 取消动画循环
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            
+            // 如果存在渲染器，则进行清理
+            if (renderer) {
+                renderer.dispose();
+                // 从DOM中移除canvas
+                const canvas = renderer.domElement;
+                if (canvas && canvas.parentNode) {
+                    canvas.parentNode.removeChild(canvas);
+                }
+            }
+            
+            // 清理场景中的对象
+            if (scene) {
+                scene.traverse(object => {
+                    if (object.geometry) {
+                        object.geometry.dispose();
+                    }
+                    
+                    if (object.material) {
+                        if (Array.isArray(object.material)) {
+                            object.material.forEach(material => material.dispose());
+                        } else {
+                            object.material.dispose();
+                        }
+                    }
                 });
-            });
+            }
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('load', init);
+    </script>
 
+    <script>
+        // 传统页面过渡效果
+        document.addEventListener('DOMContentLoaded', function() {
             // 页面加载时的淡出效果
             const transition = document.querySelector('.page-transition');
             setTimeout(() => {
                 transition.style.visibility = 'hidden';
                 transition.style.opacity = '0';
             }, 500);
-
+            
             // 添加导航锁，防止快速重复点击
             let isNavigating = false;
-
+            
+            // 处理Gallery按钮的显示和隐藏
+            const galleryButton = document.getElementById('gallery-button');
+            const workButton = document.getElementById('work-button');
+            const aboutButton = document.getElementById('about-button');
+            const exploreButton = document.getElementById('explore-button');
+            const modelContainer = document.getElementById('model-container');
+            
+            // 鼠标移动时显示或隐藏按钮
+            document.addEventListener('mousemove', function(e) {
+                // 获取视窗尺寸
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                
+                // 计算鼠标相对视窗比例位置
+                const mouseXRatio = e.clientX / viewportWidth;
+                const mouseYRatio = e.clientY / viewportHeight;
+                
+                // 更新按钮可见性
+                updateButtonVisibility(mouseXRatio, mouseYRatio);
+            });
+            
+            // 添加单独函数处理按钮可见性
+            function updateButtonVisibility(mouseXRatio, mouseYRatio) {
+                // 根据鼠标位置显示或隐藏Gallery按钮（当鼠标在上方区域时）
+                if (mouseYRatio < 0.3) {
+                    galleryButton.classList.add('visible');
+                } else {
+                    galleryButton.classList.remove('visible');
+                }
+                
+                // 根据鼠标位置显示或隐藏Work按钮（当鼠标在右侧区域时）
+                if (mouseXRatio > 0.7) {
+                    workButton.classList.add('visible');
+                } else {
+                    workButton.classList.remove('visible');
+                }
+                
+                // 根据鼠标位置显示或隐藏About按钮（当鼠标在下方区域时）
+                if (mouseYRatio > 0.7) {
+                    aboutButton.classList.add('visible');
+                } else {
+                    aboutButton.classList.remove('visible');
+                }
+                
+                // 根据鼠标位置显示或隐藏Explore按钮（当鼠标在左侧区域时）
+                if (mouseXRatio < 0.3) {
+                    exploreButton.classList.add('visible');
+                } else {
+                    exploreButton.classList.remove('visible');
+                }
+            }
+            
+            // 鼠标离开视窗时隐藏所有按钮
+            document.addEventListener('mouseleave', function() {
+                // 隐藏所有按钮
+                galleryButton.classList.remove('visible');
+                workButton.classList.remove('visible');
+                aboutButton.classList.remove('visible');
+                exploreButton.classList.remove('visible');
+            });
+            
+            // 为Gallery按钮添加点击事件处理
+            galleryButton.addEventListener('click', function(e) {
+                // 只阻止默认行为，允许事件继续冒泡
+                e.preventDefault();
+                
+                console.log('导航到Gallery页面');
+                
+                // 设置导航锁，防止重复点击
+                if (isNavigating) {
+                    return;
+                }
+                isNavigating = true;
+                
+                // 执行点击动画效果
+                galleryButton.classList.add('clicked');
+                
+                // 显示过渡层
+                const transition = document.querySelector('.page-transition');
+                transition.style.visibility = 'visible';
+                transition.style.opacity = '1';
+                
+                // 在导航前清理Three.js资源
+                if (typeof cleanupThreeJS === 'function') {
+                    cleanupThreeJS();
+                }
+                
+                // 使用延迟确保动画效果完成后再跳转
+                setTimeout(function() {
+                    window.location.href = 'gallery.html';
+                }, 300);
+            });
+            
+            // 为Work按钮添加点击事件处理
+            workButton.addEventListener('click', function(e) {
+                // 只阻止默认行为，允许事件继续冒泡
+                e.preventDefault();
+                
+                console.log('导航到Work页面');
+                
+                // 设置导航锁，防止重复点击
+                if (isNavigating) {
+                    return;
+                }
+                isNavigating = true;
+                
+                // 执行点击动画效果
+                workButton.classList.add('clicked');
+                
+                // 显示过渡层
+                const transition = document.querySelector('.page-transition');
+                transition.style.visibility = 'visible';
+                transition.style.opacity = '1';
+                
+                // 在导航前清理Three.js资源
+                if (typeof cleanupThreeJS === 'function') {
+                    cleanupThreeJS();
+                }
+                
+                // 使用延迟确保动画效果完成后再跳转
+                setTimeout(function() {
+                    window.location.href = 'work.html';
+                }, 300);
+            });
+            
+            // 为About按钮添加点击事件处理
+            aboutButton.addEventListener('click', function(e) {
+                // 只阻止默认行为，允许事件继续冒泡
+                e.preventDefault();
+                
+                console.log('导航到About页面');
+                
+                // 设置导航锁，防止重复点击
+                if (isNavigating) {
+                    return;
+                }
+                isNavigating = true;
+                
+                // 执行点击动画效果
+                aboutButton.classList.add('clicked');
+                
+                // 显示过渡层
+                const transition = document.querySelector('.page-transition');
+                transition.style.visibility = 'visible';
+                transition.style.opacity = '1';
+                
+                // 在导航前清理Three.js资源
+                if (typeof cleanupThreeJS === 'function') {
+                    cleanupThreeJS();
+                }
+                
+                // 使用延迟确保动画效果完成后再跳转
+                setTimeout(function() {
+                    window.location.href = 'about.html';
+                }, 300);
+            });
+            
+            // 为Explore按钮添加点击事件处理
+            exploreButton.addEventListener('click', function(e) {
+                // 只阻止默认行为，允许事件继续冒泡
+                e.preventDefault();
+                
+                console.log('导航到Explore页面');
+                
+                // 设置导航锁，防止重复点击
+                if (isNavigating) {
+                    return;
+                }
+                isNavigating = true;
+                
+                // 执行点击动画效果
+                exploreButton.classList.add('clicked');
+                
+                // 显示过渡层
+                const transition = document.querySelector('.page-transition');
+                transition.style.visibility = 'visible';
+                transition.style.opacity = '1';
+                
+                // 在导航前清理Three.js资源
+                if (typeof cleanupThreeJS === 'function') {
+                    cleanupThreeJS();
+                }
+                
+                // 使用延迟确保动画效果完成后再跳转
+                setTimeout(function() {
+                    window.location.href = 'explore.html';
+                }, 300);
+            });
+            
             // 点击链接时的过渡效果
             document.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function(e) {
@@ -1168,6 +1728,9 @@
                             a.style.pointerEvents = 'none';
                         });
                         
+                        // 在导航前清理Three.js资源
+                        cleanupThreeJS();
+                        
                         // 显示过渡层
                         transition.style.visibility = 'visible';
                         transition.style.opacity = '1';
@@ -1179,35 +1742,7 @@
                     }
                 });
             });
-
-            // 移动端菜单控制
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-            const mobileMenu = document.querySelector('.mobile-menu');
-            
-            mobileMenuBtn.addEventListener('click', function() {
-                this.classList.toggle('open');
-                mobileMenu.classList.toggle('open');
-                document.body.classList.toggle('menu-open');
-            });
-            
-            // 点击移动端菜单项关闭菜单
-            document.querySelectorAll('.mobile-menu a').forEach(link => {
-                link.addEventListener('click', function() {
-                    mobileMenuBtn.classList.remove('open');
-                    mobileMenu.classList.remove('open');
-                    document.body.classList.remove('menu-open');
-                });
-            });
-            
-            // 检测设备方向变化，调整布局
-            window.addEventListener('orientationchange', function() {
-                // 重新计算swiper高度
-                setTimeout(() => {
-                    swiper.update();
-                }, 300);
-            });
         });
     </script>
 </body>
-</html>
-
+</html> 

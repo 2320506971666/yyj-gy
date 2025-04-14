@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' font-family='Poiret One'>J</text></svg>">
+    <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,6 +14,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+    
+    <!-- GSAP, Lenis, Barba.js 脚本 -->
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
+    <script src="https://unpkg.com/@barba/core"></script>
     
     <title>Videos - Triple-Y</title>
     <style>
@@ -25,8 +30,8 @@
         }
         
         body {
-            background-color: #0a0a0a;
-            color: white;
+            background-color: #f5f5f5;
+            color: #333;
             line-height: 1.6;
             font-family: 'Noto Serif SC', serif;
             overflow-x: hidden;
@@ -38,7 +43,7 @@
             width: 100%;
             top: 0;
             height: 45px;
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(245, 245, 245, 0.8);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             z-index: 1000;
@@ -245,136 +250,173 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 80px 0;
-            background-color: #0a0a0a;
+            padding: 60px 0 80px;
+            background-color: #f5f5f5;
         }
 
-        .video-title {
-            margin-top: 50px;
-            margin-bottom: 70px;
-            text-align: center;
+        .carousel-container {
+            margin-top: 60px;
+        }
+
+        /* 3D轮播样式 */
+        .carousel-container {
+            position: relative;
             width: 100%;
+            height: 500px;
+            margin: 0 auto;
+            perspective: 1500px;
+            overflow: hidden;
         }
 
-        .video-title h1 {
-            font-size: 3.5rem;
-            font-weight: 300;
-            letter-spacing: 6px;
-            margin-bottom: 15px;
-            font-family: 'Poiret One', cursive;
-            color: #ffffff;
-            opacity: 0;
-            animation: fadeInTitle 1.2s ease forwards 0.5s;
-        }
-
-        @keyframes fadeInTitle {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 0.9;
-                transform: translateY(0);
-            }
-        }
-
-        /* 视频条样式修改 */
-        .video-strips-container {
+        .carousel {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.215, 0.610, 0.355, 1.000);
             display: flex;
-            flex-wrap: nowrap;
             align-items: center;
             justify-content: center;
-            width: 100%;
-            max-width: 1600px;
-            margin: 0 auto;
-            height: 450px;
-            position: relative;
-            overflow: hidden;
-            padding: 0 20px;
         }
 
-        .video-strip {
-            height: 100%;
-            width: 170px;
-            margin: 0 6px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        .carousel-item {
+            position: absolute;
+            width: 520px;
+            height: 360px;
+            transition: all 0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000);
             opacity: 0;
-            animation: fadeIn 0.8s ease forwards;
-            animation-delay: calc(var(--index) * 0.08s);
-            transform-origin: center;
-            will-change: transform, width, opacity;
-            border-radius: 14px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            backface-visibility: hidden;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            will-change: transform, opacity;
+            transform-origin: center center;
+            transform: translateZ(0);
+            pointer-events: none;
         }
 
-        .video-strip:hover {
-            width: 190px;
+        .carousel-item.active {
+            opacity: 1;
             z-index: 10;
-            transform: scale(1.02) translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transform: translateX(0) translateZ(0) rotateY(0) !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+            pointer-events: auto;
+            width: 580px;
+            height: 400px;
         }
 
-        .video-thumbnail {
-            height: 100%;
+        .carousel-item.prev,
+        .carousel-item.next {
+            opacity: 0.8;
+            pointer-events: auto;
+            width: 460px;
+            height: 310px;
+        }
+
+        .carousel-item.prev {
+            transform: translateX(-60%) translateZ(-150px) rotateY(25deg);
+            z-index: 5;
+        }
+
+        .carousel-item.prev.more {
+            transform: translateX(-100%) translateZ(-280px) rotateY(35deg);
+            opacity: 0.6;
+            z-index: 4;
+            width: 420px;
+            height: 290px;
+        }
+
+        .carousel-item.next {
+            transform: translateX(60%) translateZ(-150px) rotateY(-25deg);
+            z-index: 5;
+        }
+
+        .carousel-item.next.more {
+            transform: translateX(100%) translateZ(-280px) rotateY(-35deg);
+            opacity: 0.6;
+            z-index: 4;
+            width: 420px;
+            height: 290px;
+        }
+
+        .carousel-item video {
             width: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-            filter: grayscale(0.7) contrast(1.2);
-        }
-
-        .video-strip:hover .video-thumbnail {
-            transform: scale(1.05);
-            filter: grayscale(0.2) contrast(1.1);
-        }
-        
-        /* 视频条内的视频样式 */
-        .strip-video {
             height: 100%;
-            width: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
-            filter: grayscale(0.2) contrast(1.1);
-        }
-        
-        .video-strip:hover .strip-video {
-            transform: scale(1.05);
-            filter: grayscale(0) contrast(1.1);
+            transition: all 0.5s;
+            position: relative;
         }
 
-        /* 被点击的视频放大效果 */
-        .video-strip.expanding {
-            width: 400px;
-            z-index: 50;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+        /* 轮播控制按钮样式 */
+        .carousel-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            z-index: 20;
+            display: none; /* 隐藏底部控制区 */
         }
 
-        /* 左侧视频被推效果 */
-        .video-strip.pushed-left {
-            transform: translateX(-130px);
-            opacity: 0.5;
+        /* 添加侧边切换箭头按钮 */
+        .side-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(80, 80, 80, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 30;
+            transition: all 0.3s ease;
         }
 
-        /* 右侧视频被推效果 */
-        .video-strip.pushed-right {
-            transform: translateX(130px);
-            opacity: 0.5;
+        .side-nav:hover {
+            background-color: rgba(80, 80, 80, 0.9);
+            transform: translateY(-50%) scale(1.1);
         }
 
-        /* 远离的视频几乎看不见 */
-        .video-strip.far-pushed {
-            opacity: 0.2;
-            transform: scale(0.8) translateX(-200px);
+        .side-nav.prev {
+            left: 30px;
         }
 
-        .video-strip.far-pushed-right {
-            opacity: 0.2;
-            transform: scale(0.8) translateX(200px);
+        .side-nav.next {
+            right: 30px;
         }
 
-        /* 重新设计视频播放器，确保视频内容可见 */
+        .side-nav svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .side-nav {
+                width: 40px;
+                height: 40px;
+            }
+
+            .side-nav.prev {
+                left: 15px;
+            }
+
+            .side-nav.next {
+                right: 15px;
+            }
+
+            .side-nav svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        /* 视频播放器 */
         .video-player {
             position: fixed;
             top: 0;
@@ -382,102 +424,134 @@
             width: 100%;
             height: 100%;
             z-index: 9999;
-            pointer-events: none;
-            transition: background-color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-            background-color: rgba(0, 0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
             visibility: hidden;
+            transition: all 0.5s ease;
         }
 
         .video-player.active {
-            pointer-events: all;
-            background-color: rgba(0, 0, 0, 0.9);
+            opacity: 1;
             visibility: visible;
         }
 
         .video-content {
-            position: absolute;
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 14px 60px rgba(0, 0, 0, 0.5);
-            transform-origin: center;
-            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-            will-change: transform, width, height, top, left, border-radius;
+            position: relative;
+            width: 80%;
+            max-width: 1000px;
+            aspect-ratio: 16/9;
         }
 
         .player-video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            background-color: black;
-            display: block;
+            object-fit: contain;
         }
 
         .close-video {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: rgba(30, 30, 30, 0.7);
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 1001;
+            top: -40px;
+            right: -40px;
             width: 40px;
             height: 40px;
-            border-radius: 20px;
+            cursor: pointer;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0;
-            transform: scale(0.8);
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-        
-        .video-player.active .close-video {
-            opacity: 1;
-            transform: scale(1);
-            transition-delay: 0.3s;
         }
 
         .close-video:hover {
-            background-color: rgba(80, 80, 80, 0.9);
+            background-color: rgba(0, 0, 0, 0.8);
             transform: scale(1.1);
         }
 
-        /* 控制按钮 */
-        .controls {
+        .close-video::before,
+        .close-video::after {
+            content: '';
             position: absolute;
-            bottom: 30px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+            width: 20px;
+            height: 2px;
+            background-color: white;
+            border-radius: 1px;
         }
 
-        .control-button {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .close-video::before {
+            transform: rotate(45deg);
         }
 
-        .control-button:hover {
-            background-color: rgba(222, 41, 16, 0.6);
+        .close-video::after {
+            transform: rotate(-45deg);
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 1200px) {
+            .carousel-item {
+                width: 320px;
+                height: 240px;
+                margin-left: -160px;
+                margin-top: -120px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .carousel-container {
+                height: 400px;
+            }
+            
+            .carousel-item {
+                width: 280px;
+                height: 210px;
+                margin-left: -140px;
+                margin-top: -105px;
+            }
+            
+            .close-video {
+                top: -30px;
+                right: -10px;
+            }
+            
+            .video-title h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .carousel-container {
+                height: 320px;
+            }
+            
+            .carousel-item {
+                width: 220px;
+                height: 165px;
+                margin-left: -110px;
+                margin-top: -82.5px;
+            }
+            
+            .video-title h1 {
+                font-size: 2rem;
+            }
+            
+            .carousel-controls {
+                bottom: 20px;
+                gap: 20px;
+            }
+            
+            .carousel-control {
+                width: 40px;
+                height: 40px;
+            }
         }
 
         /* 页脚样式 */
         footer {
-            background-color: #111;
-            color: white;
+            background-color: #e0e0e0;
+            color: #333;
             padding: 5rem 5% 2rem;
             width: 100%;
         }
@@ -502,7 +576,7 @@
             position: absolute;
             height: 1px;
             width: 50px;
-            background-color: white;
+            background-color: #333;
             bottom: -10px;
             left: 0;
         }
@@ -517,12 +591,12 @@
         
         .footer-links a {
             text-decoration: none;
-            color: #ccc;
+            color: #555;
             transition: color 0.3s ease;
         }
         
         .footer-links a:hover {
-            color: white;
+            color: #333;
         }
         
         .social-links {
@@ -537,16 +611,16 @@
             justify-content: center;
             width: 40px;
             height: 40px;
-            border: 1px solid #555;
+            border: 1px solid #777;
             border-radius: 50%;
-            color: white;
+            color: #333;
             text-decoration: none;
             transition: all 0.3s ease;
         }
         
         .social-link:hover {
-            background-color: white;
-            color: #111;
+            background-color: #333;
+            color: #f5f5f5;
         }
         
         .copyright {
@@ -556,717 +630,424 @@
             font-size: 0.9rem;
             color: #777;
         }
-
-        /* 响应式适配 */
-        @media (max-width: 1200px) {
-            .video-strips-container {
-                max-width: 95%;
-                height: 400px;
-            }
-            
-            .video-strip {
-                width: 140px;
-            }
-            
-            .video-strip:hover {
-                width: 180px;
-            }
+        
+        /* Lenis滚动相关样式 */
+        html.lenis {
+            height: auto;
         }
         
-        @media (max-width: 992px) {
-            .video-strips-container {
-                height: 350px;
-            }
-            
-            .video-strip {
-                width: 120px;
-            }
-            
-            .video-strip:hover {
-                width: 150px;
-            }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto;
         }
         
-        @media (max-width: 768px) {
-            .video-strips-container {
-                height: 300px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .video-strip {
-                width: 100px;
-                margin: 0 5px;
-                height: 150px;
-            }
-            
-            .video-strip:hover {
-                width: 120px;
-            }
-            
-            .video-title h1 {
-                font-size: 2.5rem;
-            }
-            
-            .video-content {
-                width: 95%;
-            }
-            
-            .arrow-down {
-                width: 15px;
-                height: 15px;
-            }
-            
-            .scroll-indicator {
-                bottom: 30px;
-            }
+        .lenis.lenis-stopped {
+            overflow: hidden;
         }
         
-        @media (max-width: 576px) {
-            .videos-page {
-                padding: 60px 0;
-            }
-            
-            .video-strips-container {
-                height: 240px;
-            }
-            
-            .video-strip {
-                width: 85px;
-                height: 130px;
-                margin: 0 3px;
-            }
-            
-            .video-strip:hover {
-                width: 100px;
-            }
-            
-            .video-title {
-                margin-top: 30px;
-                margin-bottom: 50px;
-            }
-            
-            .video-title h1 {
-                font-size: 2rem;
-                letter-spacing: 3px;
-            }
-            
-            .close-video {
-                top: -35px;
-                font-size: 26px;
-            }
-        }
-
-        /* 添加向下箭头指示器 */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            animation: fadeIn 1s ease forwards 1.5s;
-        }
-
-        .arrow-down {
-            width: 20px;
-            height: 20px;
-            border-right: 2px solid rgba(255, 255, 255, 0.7);
-            border-bottom: 2px solid rgba(255, 255, 255, 0.7);
-            transform: rotate(45deg);
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0) rotate(45deg);
-            }
-            40% {
-                transform: translateY(-10px) rotate(45deg);
-            }
-            60% {
-                transform: translateY(-5px) rotate(45deg);
-            }
-        }
-
-        /* 改善页面滚动行为 */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* 视频标题显示 */
-        .video-strip::after {
-            content: attr(data-title);
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 15px 10px;
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-            color: white;
-            font-size: 12px;
-            text-align: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .video-strip:hover::after {
+        /* 页面进入和退出动画 */
+        [data-barba="container"] {
             opacity: 1;
         }
-
-        /* 添加视频播放器标题样式 */
-        .video-title-display {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            color: white;
-            font-size: 1.2rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            font-family: 'Noto Serif SC', serif;
-            text-shadow: 0 1px 5px rgba(0,0,0,0.5);
-            padding: 0 20px;
-        }
-
-        .video-player.active .video-content {
-            transform: scale(1);
-            opacity: 1;
-            z-index: 1001;
-        }
-
-        /* 关闭视频时的过渡类 */
-        .video-strips-container.closing-video .video-strip {
-            transition: all 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
-        }
-
-        .video-strip.contracting {
-            width: 170px !important;
-            z-index: 50;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
-        }
-
-        /* 添加关闭安全保障样式 */
-        .video-closing .video-strip {
-            transition: opacity 0.4s ease !important;
-        }
-
-        .video-content.transitioning {
-            pointer-events: none;
-        }
-
-        /* 在样式部分添加新的过渡状态类 */
-        .video-transitioning {
-            pointer-events: none !important;
-        }
-
-        /* 添加备用样式 */
-        .fallback-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(30, 30, 30, 0.8);
-            color: white;
-            font-size: 12px;
-            text-align: center;
-            padding: 5px;
+        
+        [data-barba="container"].loaded .video-strip {
+            transition: all 0.5s ease;
         }
     </style>
 </head>
-<body>
+<body data-barba="wrapper">
     <div class="page-transition"></div>
     
     <!-- 导航栏容器 -->
     <div id="nav-container"></div>
     
-    <!-- Videos页面内容 -->
-    <div class="videos-page">
-        <div class="video-title">
-            <h1>CineStream</h1>
-        </div>
-        
-        <!-- 视频条容器 -->
-        <div class="video-strips-container">
-            <!-- 视频条目：快闪视频 -->
-            <div class="video-strip" style="--index: 0;" data-video="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/24-2-27-%E5%BF%AB%E9%97%AA.mp4" data-title="快闪视频">
-                <video class="strip-video" muted loop playsinline autoplay src="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/24-2-27-%E5%BF%AB%E9%97%AA.mp4"></video>
-                <div class="strip-title">快闪视频</div>
-            </div>
-            
-            <!-- 视频条目：采访纪录片 -->
-            <div class="video-strip" style="--index: 1;" data-video="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/caifang.mp4" data-title="采访纪录片">
-                <video class="strip-video" muted loop playsinline autoplay src="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/caifang.mp4"></video>
-                <div class="strip-title">采访纪录片</div>
-            </div>
-            
-            <!-- 视频条目：基地介绍视频 -->
-            <div class="video-strip" style="--index: 2;" data-video="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/%E5%9F%BA%E5%9C%B0%E4%BB%8B%E7%BB%8D%E8%A7%86%E9%A2%91.mp4" data-title="基地介绍视频">
-                <video class="strip-video" muted loop playsinline autoplay src="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/%E5%9F%BA%E5%9C%B0%E4%BB%8B%E7%BB%8D%E8%A7%86%E9%A2%91.mp4"></video>
-                <div class="strip-title">基地介绍视频</div>
-            </div>
-            
-            <!-- 视频条目：必上岸主题短片 -->
-            <div class="video-strip" style="--index: 3;" data-video="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/23-10-31-%E5%BF%85%E4%B8%8A%E5%B2%B8.mp4" data-title="《必上岸》主题短片">
-                <video class="strip-video" muted loop playsinline autoplay src="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/23-10-31-%E5%BF%85%E4%B8%8A%E5%B2%B8.mp4"></video>
-                <div class="strip-title">《必上岸》主题短片</div>
-            </div>
-            
-            <!-- 视频条目：黑白艺术短片 -->
-            <div class="video-strip" style="--index: 4;" data-video="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/%E9%BB%91%E7%99%BD.mp4" data-title="《黑白》艺术短片">
-                <video class="strip-video" muted loop playsinline autoplay src="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/%E9%BB%91%E7%99%BD.mp4"></video>
-                <div class="strip-title">《黑白》艺术短片</div>
-            </div>
-        </div>
-        
-        <!-- 添加向下箭头指示器 -->
-        <div class="scroll-indicator">
-            <div class="arrow-down"></div>
-        </div>
-    </div>
-    
-    <!-- 视频播放器 -->
-    <div class="video-player" id="videoPlayer">
-        <div class="video-content">
-            <video src="" class="player-video" id="playerVideo" controls></video>
-            <button class="close-video" id="closeVideo">×</button>
-        </div>
-        <div class="video-title-display" id="videoTitleDisplay"></div>
-    </div>
-
-    <!-- 页脚 -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>Contact</h3>
-                <p>studio@artist.com</p>
-                <p>+86 123 4567 8910</p>
-                <p>Shanghai, China</p>
-            </div>
-            <div class="footer-column">
-                <h3>Navigation</h3>
-                <ul class="footer-links">
-                    <li><a href="index.html#explore">Explore</a></li>
-                    <li><a href="film.html">Film</a></li>
-                    <li><a href="gallery.html">Gallery</a></li>
-                    <li><a href="work.html">Work</a></li>
-                    <li><a href="about.html">About</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>Connect</h3>
-                <p>Follow my work and creative journey</p>
-                <div class="social-links">
-                    <a href="#" class="social-link">YT</a>
-                    <a href="#" class="social-link">BL</a>
-                    <a href="#" class="social-link">IG</a>
+    <!-- 主体内容，添加barba数据属性 -->
+    <main data-barba="container" data-barba-namespace="videos">
+        <!-- Videos页面内容 -->
+        <div class="videos-page">
+            <!-- 3D视频轮播 -->
+            <div class="carousel-container">
+                <div class="carousel" id="videoCarousel">
+                    <!-- 视频将由JS动态生成 -->
+                </div>
+                
+                <!-- 侧边导航按钮 -->
+                <div class="side-nav prev" id="prevBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="side-nav next" id="nextBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 6L15 12L9 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                
+                <!-- 轮播控制按钮 (隐藏) -->
+                <div class="carousel-controls">
+                    <div class="carousel-control prev-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="carousel-control play-pause-btn" id="playPauseBtn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 9V15M14 9V15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="carousel-control next-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 6L15 12L9 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="copyright">
-            © 2025 Artist Portfolio. All rights reserved.
+        
+        <!-- 视频播放器 -->
+        <div class="video-player" id="videoPlayer">
+            <div class="video-content">
+                <video src="" class="player-video" id="playerVideo" controls></video>
+                <div class="close-video" id="closeVideo"></div>
+            </div>
         </div>
-    </footer>
+
+        <!-- 页脚 -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <p>studio@artist.com</p>
+                    <p>+86 123 4567 8910</p>
+                    <p>Shanghai, China</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Navigation</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html#explore">Explore</a></li>
+                        <li><a href="film.html">Film</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="work.html">Work</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Connect</h3>
+                    <p>Follow my work and creative journey</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">YT</a>
+                        <a href="#" class="social-link">BL</a>
+                        <a href="#" class="social-link">IG</a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Artist Portfolio. All rights reserved.
+            </div>
+        </footer>
+    </main>
 
     <!-- 加载统一导航栏脚本 -->
     <script src="shared/load-nav.js"></script>
+    <!-- 加载动画框架脚本 -->
+    <script src="shared/animation.js"></script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 页面加载时的淡出效果
-            const transition = document.querySelector('.page-transition');
-            setTimeout(() => {
-                transition.style.visibility = 'hidden';
-                transition.style.opacity = '0';
-            }, 500);
-
-            // 点击链接时的过渡效果
-            document.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    if (this.hostname === window.location.hostname && !this.getAttribute('href').startsWith('#')) {
-                        e.preventDefault();
-                        const href = this.getAttribute('href');
-                        
-                        // 显示过渡层
-                        transition.style.visibility = 'visible';
-                        transition.style.opacity = '1';
-                        
-                        // 立即记录要跳转的URL，防止被其他事件覆盖
-                        const targetUrl = href;
-                        
-                        // 延迟导航以等待过渡效果完成，但确保一定会执行
-                        setTimeout(function() {
-                            window.location.href = targetUrl;
-                        }, 300);
-                    }
-                });
-            });
-
-            // 移动端菜单控制
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-            const mobileMenu = document.querySelector('.mobile-menu');
+            // 视频数据
+            const videoData = [
+                {
+                    src: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/24-2-27-%E5%BF%AB%E9%97%AA.mp4",
+                    title: "快闪视频"
+                },
+                {
+                    src: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/caifang.mp4",
+                    title: "采访纪录片"
+                },
+                {
+                    src: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/%E5%9F%BA%E5%9C%B0%E4%BB%8B%E7%BB%8D%E8%A7%86%E9%A2%91.mp4", 
+                    title: "基地介绍视频"
+                },
+                {
+                    src: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/23-10-31-%E5%BF%85%E4%B8%8A%E5%B2%B8.mp4",
+                    title: "《必上岸》主题短片"
+                },
+                {
+                    src: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/%E9%BB%91%E7%99%BD.mp4",
+                    title: "《黑白》艺术短片"
+                }
+            ];
             
-            if (mobileMenuBtn) {
-                mobileMenuBtn.addEventListener('click', function() {
-                    this.classList.toggle('open');
-                    mobileMenu.classList.toggle('open');
-                    document.body.classList.toggle('menu-open');
-                });
-            }
-            
-            // 点击移动端菜单项关闭菜单
-            document.querySelectorAll('.mobile-menu a').forEach(link => {
-                link.addEventListener('click', function() {
-                    mobileMenuBtn.classList.remove('open');
-                    mobileMenu.classList.remove('open');
-                    document.body.classList.remove('menu-open');
-                });
-            });
-            
-            // 视频播放功能
-            const videoStrips = document.querySelectorAll('.video-strip');
+            const carousel = document.getElementById('videoCarousel');
             const videoPlayer = document.getElementById('videoPlayer');
             const playerVideo = document.getElementById('playerVideo');
-            const closeVideo = document.getElementById('closeVideo');
-            const videoTitleDisplay = document.getElementById('videoTitleDisplay');
-            const videoContent = document.querySelector('.video-content');
+            const closeVideoBtn = document.getElementById('closeVideo');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const playPauseBtn = document.getElementById('playPauseBtn');
             
-            // 初始化视频条内视频
-            const stripVideos = document.querySelectorAll('.strip-video');
-            stripVideos.forEach(video => {
-                // 优化视频加载
-                video.preload = "metadata";
+            let currentIndex = 0;
+            let isAutoplay = true;
+            let autoplayInterval;
+            const totalItems = videoData.length;
+            let carouselInitialized = false;
+            
+            // 初始化轮播DOM - 只在首次加载时执行一次
+            function initCarouselDOM() {
+                if (carouselInitialized) return;
                 
-                // 处理视频加载错误
-                video.addEventListener('error', function() {
-                    // 如果视频加载失败，可以显示备用内容
-                    const videoStrip = this.closest('.video-strip');
-                    if (videoStrip) {
-                        // 创建备用内容
-                        const fallbackDiv = document.createElement('div');
-                        fallbackDiv.className = 'fallback-content';
-                        fallbackDiv.textContent = videoStrip.getAttribute('data-title');
-                        videoStrip.appendChild(fallbackDiv);
-                        // 隐藏错误的视频元素
-                        this.style.display = 'none';
-                    }
-                });
-            });
-            
-            // 重写点击视频部分，简化过渡动画，防止卡死
-            videoStrips.forEach((strip, index) => {
-                strip.addEventListener('click', function(e) {
-                    try {
-                        const videoUrl = this.getAttribute('data-video');
-                        const videoTitle = this.getAttribute('data-title');
-                        
-                        // 防止重复点击
-                        if (videoPlayer.classList.contains('active') || 
-                            document.body.classList.contains('video-transitioning')) {
-                            return;
-                        }
-                        
-                        // 标记过渡状态
-                        document.body.classList.add('video-transitioning');
-                        
-                        // 防止页面滚动
-                        document.body.style.overflow = 'hidden';
-                        
-                        // 记录当前点击的视频条
-                        const allStrips = document.querySelectorAll('.video-strip');
-                        const rect = this.getBoundingClientRect();
-                        
-                        // 简化过渡 - 直接设置初始位置和尺寸
-                        videoContent.style.cssText = `
-                            width: ${rect.width}px;
-                            height: ${rect.height}px;
-                            top: ${rect.top}px;
-                            left: ${rect.left}px;
-                            border-radius: 14px;
-                            transition: none;
-                        `;
-                        
-                        // 设置视频源
-                        playerVideo.src = videoUrl;
-                        playerVideo.style.display = 'block';
-                        playerVideo.style.opacity = '1';
-                        
-                        // 显示播放器
-                        videoPlayer.style.visibility = 'visible';
-                        
-                        // 隐藏当前点击的视频条
-                        this.style.opacity = '0';
-                        
-                        // 使用更简单的方式开始过渡
-                        setTimeout(() => {
-                            // 激活播放器
-                            videoPlayer.classList.add('active');
-                            
-                            // 计算最终尺寸
-                            const finalWidth = Math.min(window.innerWidth * 0.9, 1600);
-                            const aspectRatio = 16/9;
-                            const finalHeight = finalWidth / aspectRatio;
-                            const finalTop = (window.innerHeight - finalHeight) / 2;
-                            const finalLeft = (window.innerWidth - finalWidth) / 2;
-                            
-                            // 设置过渡效果
-                            videoContent.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-                            
-                            // 扩展到全屏
-                            videoContent.style.width = `${finalWidth}px`;
-                            videoContent.style.height = `${finalHeight}px`;
-                            videoContent.style.top = `${finalTop}px`;
-                            videoContent.style.left = `${finalLeft}px`;
-                            videoContent.style.borderRadius = '8px';
-                            
-                            // 简化对其他视频条的处理
-                            allStrips.forEach(otherStrip => {
-                                if (otherStrip !== this) {
-                                    otherStrip.style.opacity = '0.3';
-                                }
-                            });
-                            
-                            // 尝试播放视频
-                            setTimeout(() => {
-                                try {
-                                    playerVideo.play();
-                                    
-                                    // 显示标题
-                                    if (videoTitleDisplay) {
-                                        videoTitleDisplay.textContent = videoTitle;
-                                        videoTitleDisplay.style.opacity = '1';
-                                    }
-                                    
-                                    // 完成过渡
-                                    document.body.classList.remove('video-transitioning');
-                                } catch (err) {
-                                    console.error('视频播放错误', err);
-                                    // 即使播放失败也完成过渡
-                                    document.body.classList.remove('video-transitioning');
-                                }
-                            }, 500);
-                        }, 50);
-                    } catch (error) {
-                        console.error('视频打开过程出错', error);
-                        // 错误恢复
-                        resetVideoState();
-                    }
-                });
-            });
-            
-            // 修改关闭视频播放器的逻辑
-            closeVideo.addEventListener('click', function() {
-                try {
-                    // 防止重复点击
-                    if (document.body.classList.contains('video-transitioning')) {
-                        return;
+                // 创建视频项
+                videoData.forEach((video, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'carousel-item';
+                    item.setAttribute('data-index', index);
+                    
+                    const videoElement = document.createElement('video');
+                    videoElement.muted = true;
+                    videoElement.loop = true;
+                    videoElement.playsinline = true;
+                    videoElement.preload = "auto";
+                    videoElement.setAttribute('data-src', video.src);
+                    
+                    if (index <= 2) {
+                        videoElement.src = video.src;
                     }
                     
-                    // 标记过渡状态
-                    document.body.classList.add('video-transitioning');
+                    const titleElement = document.createElement('div');
+                    titleElement.className = 'carousel-title';
+                    titleElement.textContent = video.title;
                     
-                    // 获取当前正在播放的视频URL
-                    const currentVideoUrl = playerVideo.src;
+                    item.appendChild(videoElement);
+                    item.appendChild(titleElement);
+                    carousel.appendChild(item);
                     
-                    // 寻找对应的视频条
-                    const allStrips = document.querySelectorAll('.video-strip');
-                    let targetStrip = null;
-                    let targetIndex = -1;
-                    
-                    allStrips.forEach((strip, index) => {
-                        if (strip.getAttribute('data-video') === currentVideoUrl) {
-                            targetStrip = strip;
-                            targetIndex = index;
+                    // 添加点击事件
+                    item.addEventListener('click', function() {
+                        if (item.classList.contains('active')) {
+                            openFullVideo(video.src);
+                        } else {
+                            // 如果点击的不是当前视频，则切换到该视频
+                            const clickedIndex = parseInt(item.getAttribute('data-index'));
+                            goToSlide(clickedIndex);
                         }
                     });
-                    
-                    // 停止视频播放
-                    playerVideo.pause();
-                    
-                    // 隐藏控制元素
-                    this.style.opacity = '0';
-                    if (videoTitleDisplay) {
-                        videoTitleDisplay.style.opacity = '0';
-                    }
-                    
-                    if (targetStrip) {
-                        const rect = targetStrip.getBoundingClientRect();
-                        
-                        // 恢复所有视频条可见
-                        allStrips.forEach(strip => {
-                            strip.style.opacity = '1';
-                            strip.style.transform = '';
-                        });
-                        
-                        // 设置过渡到视频条位置
-                        videoContent.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-                        videoContent.style.width = `${rect.width}px`;
-                        videoContent.style.height = `${rect.height}px`;
-                        videoContent.style.top = `${rect.top}px`;
-                        videoContent.style.left = `${rect.left}px`;
-                        videoContent.style.borderRadius = '14px';
-                        
-                        // 添加过渡结束监听器，确保在过渡完成后再修改样式
-                        function handleTransitionEnd(e) {
-                            if (e.target === videoContent) {
-                                // 移除监听器
-                                videoContent.removeEventListener('transitionend', handleTransitionEnd);
-                                
-                                // 完全隐藏播放器，确保在修改样式前先设为不可见
-                                videoPlayer.style.visibility = 'hidden';
-                                
-                                // 重置所有样式和状态，使用相同的延迟策略
-                                setTimeout(() => {
-                                    requestAnimationFrame(() => {
-                                        playerVideo.style.display = 'none';
-                                        playerVideo.src = '';
-                                        videoContent.style.cssText = ''; // 放在第二帧执行
-                                        document.body.style.overflow = '';
-                                        document.body.classList.remove('video-transitioning');
-                                    });
-                                }, 50);
-                            }
-                        }
-                        
-                        // 添加过渡结束事件监听
-                        videoContent.addEventListener('transitionend', handleTransitionEnd);
-                        
-                        // 延迟一帧后移除激活状态，确保过渡动画启动
-                        requestAnimationFrame(() => {
-                            // 移除播放器激活状态
-                            videoPlayer.classList.remove('active');
-                        });
-                        
-                        // 防止过渡事件没有触发的情况，添加备用定时器
-                        const fallbackTimer = setTimeout(() => {
-                            // 检查过渡状态是否仍然存在
-                            if (document.body.classList.contains('video-transitioning')) {
-                                console.log('过渡事件没有触发，使用备用定时器');
-                                videoContent.removeEventListener('transitionend', handleTransitionEnd);
-                                
-                                // 完全隐藏播放器
-                                videoPlayer.style.visibility = 'hidden';
-                                
-                                // 重置样式和状态，使用相同的延迟策略
-                                setTimeout(() => {
-                                    requestAnimationFrame(() => {
-                                        playerVideo.style.display = 'none';
-                                        playerVideo.src = '';
-                                        videoContent.style.cssText = ''; // 放在第二帧执行
-                                        document.body.style.overflow = '';
-                                        document.body.classList.remove('video-transitioning');
-                                    });
-                                }, 50);
-                            }
-                        }, 600); // 稍微长于过渡时间
-                    } else {
-                        // 如果没找到对应的视频条，直接关闭
-                        videoPlayer.classList.remove('active');
-                        
-                        setTimeout(() => {
-                            videoPlayer.style.visibility = 'hidden';
-                            playerVideo.src = '';
-                            document.body.style.overflow = '';
-                            document.body.classList.remove('video-transitioning');
-                        }, 300);
-                    }
-                } catch (error) {
-                    console.error('视频关闭过程出错', error);
-                    // 错误恢复
-                    resetVideoState();
+                });
+                
+                carouselInitialized = true;
+                
+                // 初始更新类名
+                updateCarouselClasses();
+                
+                // 开始自动播放
+                if (isAutoplay) {
+                    startAutoplay();
                 }
-            });
-
-            // 添加视频播放紧急恢复功能
-            function resetVideoState() {
-                console.log('执行紧急恢复');
-                
-                // 先隐藏播放器
-                videoPlayer.classList.remove('active');
-                videoPlayer.style.visibility = 'hidden';
-                
-                // 使用延迟和双重帧更新确保没有闪烁
-                setTimeout(() => {
-                    requestAnimationFrame(() => {
-                        // 恢复所有基本状态
-                        document.body.classList.remove('video-transitioning');
-                        document.body.style.overflow = '';
-                        
-                        // 重置视频元素
-                        playerVideo.pause();
-                        playerVideo.style.display = 'none';
-                        playerVideo.src = '';
-                        
-                        // 重置视频内容样式
-                        videoContent.style.cssText = '';
-                        
-                        // 恢复所有视频条
-                        const allStrips = document.querySelectorAll('.video-strip');
-                        allStrips.forEach(strip => {
-                            strip.style.cssText = '';
-                            strip.style.opacity = '1';
-                        });
-                        
-                        // 重置标题
-                        if (videoTitleDisplay) {
-                            videoTitleDisplay.style.opacity = '0';
-                        }
-                        
-                        // 重置关闭按钮
-                        closeVideo.style.opacity = '0';
-                    });
-                }, 50);
             }
-
-            // 添加双击恢复功能（当视频卡死时用户可双击恢复）
-            document.addEventListener('dblclick', function() {
-                if (document.body.classList.contains('video-transitioning')) {
-                    resetVideoState();
+            
+            // 仅加载必要的视频src，实现懒加载
+            function updateVideoSources() {
+                const items = document.querySelectorAll('.carousel-item');
+                
+                items.forEach((item, index) => {
+                    const video = item.querySelector('video');
+                    if (!video) return;
+                    
+                    const dataSrc = video.getAttribute('data-src');
+                    if (!dataSrc) return;
+                    
+                    // 只为当前可见的视频（active、prev、next）加载src
+                    const isVisible = item.classList.contains('active') || 
+                                     item.classList.contains('prev') || 
+                                     item.classList.contains('next');
+                    
+                    if (isVisible && !video.src) {
+                        video.src = dataSrc;
+                    }
+                });
+            }
+            
+            // 播放当前激活的视频，暂停其他视频
+            function playActiveVideo() {
+                const items = document.querySelectorAll('.carousel-item');
+                items.forEach((item) => {
+                    const video = item.querySelector('video');
+                    if (!video) return;
+                    
+                    if (item.classList.contains('active')) {
+                        if (video.src) {
+                            video.play().catch(err => {
+                                console.log('视频自动播放被阻止:', err);
+                            });
+                        }
+                    } else {
+                        video.pause();
+                        video.currentTime = 0;
+                    }
+                });
+            }
+            
+            // 转到特定幻灯片
+            function goToSlide(index) {
+                if (index === currentIndex) return;
+                
+                currentIndex = index;
+                updateCarouselClasses();
+                
+                if (isAutoplay) {
+                    startAutoplay();
+                }
+            }
+            
+            // 更新轮播类 - 仅更新类名而不重建DOM
+            function updateCarouselClasses() {
+                const items = document.querySelectorAll('.carousel-item');
+                
+                items.forEach((item, index) => {
+                    // 移除所有类
+                    item.classList.remove('active', 'prev', 'next', 'more');
+                    
+                    // 添加适当的类
+                    if (index === currentIndex) {
+                        item.classList.add('active');
+                    } else if (index === getPrevIndex(currentIndex)) {
+                        item.classList.add('prev');
+                    } else if (index === getPrevIndex(getPrevIndex(currentIndex))) {
+                        item.classList.add('prev', 'more');
+                    } else if (index === getNextIndex(currentIndex)) {
+                        item.classList.add('next');
+                    } else if (index === getNextIndex(getNextIndex(currentIndex))) {
+                        item.classList.add('next', 'more');
+                    }
+                });
+                
+                // 更新要加载的视频源
+                updateVideoSources();
+                
+                // 播放当前激活的视频，暂停其他视频
+                playActiveVideo();
+            }
+            
+            // 获取前一个索引
+            function getPrevIndex(index) {
+                return (index - 1 + totalItems) % totalItems;
+            }
+            
+            // 获取后一个索引
+            function getNextIndex(index) {
+                return (index + 1) % totalItems;
+            }
+            
+            // 上一个
+            function prevSlide() {
+                currentIndex = getPrevIndex(currentIndex);
+                updateCarouselClasses();
+            }
+            
+            // 下一个
+            function nextSlide() {
+                currentIndex = getNextIndex(currentIndex);
+                updateCarouselClasses();
+            }
+            
+            // 自动播放
+            function startAutoplay() {
+                stopAutoplay();
+                if (isAutoplay) {
+                    autoplayInterval = setInterval(nextSlide, 4000);
+                    // 暂停/播放按钮不再可见，但保留逻辑以防将来需要
+                } else {
+                    // 暂停/播放按钮不再可见，但保留逻辑以防将来需要
+                }
+            }
+            
+            // 停止自动播放
+            function stopAutoplay() {
+                if (autoplayInterval) {
+                    clearInterval(autoplayInterval);
+                    autoplayInterval = null;
+                }
+            }
+            
+            // 打开全屏视频
+            function openFullVideo(src) {
+                playerVideo.src = src;
+                videoPlayer.classList.add('active');
+                playerVideo.play().catch(err => {
+                    console.log('视频播放被阻止:', err);
+                });
+                stopAutoplay();
+            }
+            
+            // 关闭全屏视频
+            function closeFullVideo() {
+                videoPlayer.classList.remove('active');
+                playerVideo.pause();
+                setTimeout(() => {
+                    playerVideo.src = '';
+                }, 300);
+                
+                if (isAutoplay) {
+                    startAutoplay();
+                }
+            }
+            
+            // 事件监听
+            prevBtn.addEventListener('click', function() {
+                prevSlide();
+                if (isAutoplay) {
+                    startAutoplay();
                 }
             });
-
-            // 添加超时检测，防止过渡状态卡死
-            document.addEventListener('click', function() {
-                if (document.body.classList.contains('video-transitioning')) {
-                    // 检查是否过渡状态持续超过3秒
-                    if (!window.transitionTimer) {
-                        window.transitionTimer = setTimeout(() => {
-                            if (document.body.classList.contains('video-transitioning')) {
-                                console.log('检测到过渡卡住，执行恢复');
-                                resetVideoState();
-                            }
-                            window.transitionTimer = null;
-                        }, 3000);
+            
+            nextBtn.addEventListener('click', function() {
+                nextSlide();
+                if (isAutoplay) {
+                    startAutoplay();
+                }
+            });
+            
+            playPauseBtn.addEventListener('click', function() {
+                isAutoplay = !isAutoplay;
+                startAutoplay();
+            });
+            
+            closeVideoBtn.addEventListener('click', closeFullVideo);
+            
+            // 键盘控制
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                    if (isAutoplay) startAutoplay();
+                } else if (e.key === 'ArrowRight') {
+                    nextSlide();
+                    if (isAutoplay) startAutoplay();
+                } else if (e.key === 'Escape' && videoPlayer.classList.contains('active')) {
+                    closeFullVideo();
+                }
+            });
+            
+            // 初始化轮播 - 只调用一次DOM初始化
+            initCarouselDOM();
+            
+            // 处理窗口大小变化 - 不再重新初始化DOM，只更新类
+            window.addEventListener('resize', function() {
+                // 仅更新类，不重建DOM
+                updateCarouselClasses();
+            });
+            
+            // 处理视频错误
+            document.addEventListener('error', function(e) {
+                if (e.target.tagName === 'VIDEO') {
+                    console.log('视频加载失败:', e.target.src);
+                    // 可以在这里添加备用内容
+                    const item = e.target.closest('.carousel-item');
+                    if (item) {
+                        const fallback = document.createElement('div');
+                        fallback.className = 'video-fallback';
+                        fallback.textContent = item.querySelector('.carousel-title').textContent;
+                        item.appendChild(fallback);
                     }
                 }
-            });
-
-            // 添加背景点击和按键关闭事件监听
-
-            // 点击背景关闭视频
-            videoPlayer.addEventListener('click', function(e) {
-                // 确保点击的是背景而不是视频内容
-                if (e.target === videoPlayer && !document.body.classList.contains('video-transitioning')) {
-                    closeVideo.click();
-                }
-            });
-
-            // 使用ESC键关闭视频
-            document.addEventListener('keydown', function(e) {
-                if (e.key === "Escape" && 
-                    videoPlayer.classList.contains('active') && 
-                    !document.body.classList.contains('video-transitioning')) {
-                    closeVideo.click();
-                }
-            });
+            }, true);
         });
     </script>
 </body>

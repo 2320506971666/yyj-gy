@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' font-family='Poiret One'>J</text></svg>">
+    <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,6 +14,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+    
+    <!-- GSAP, Lenis, Barba.js 脚本 -->
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
+    <script src="https://unpkg.com/@barba/core"></script>
     
     <title>Film - Triple-Y</title>
     <style>
@@ -402,43 +407,46 @@
         }
     </style>
 </head>
-<body>
+<body data-barba="wrapper">
     <div class="page-transition"></div>
     
     <!-- 导航栏容器 -->
     <div id="nav-container"></div>
     
-    <!-- 电影页面内容 -->
-    <div class="film-page">
-        <div class="film-content">
-            <div class="film-title">
-                <h1>Summer Sense</h1>
-                <p>一部关于夏日感官体验的短片</p>
-            </div>
-            
-            <div class="video-container">
-                <video controls preload="metadata" id="mainVideo" controlsList="nodownload" disablePictureInPicture autoplay muted>
-                    <source src="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/summer%20sense%EF%BC%88compress%EF%BC%89.mp4" type="video/mp4">
-                    您的浏览器不支持视频播放。
-                </video>
-            </div>
-            
-            <div class="film-description">
-                <h2>关于这部作品</h2>
-                <p>《Summer Sense》是一部探索夏日感官体验的短片。通过独特的视觉语言和声音设计，作品捕捉了夏季特有的光影、色彩和情绪，带领观众进入一个充满感官刺激的夏日世界。</p>
-                <p>影片采用了实验性的拍摄手法，将自然景观与人物情感相融合，创造出一种既真实又梦幻的视觉体验。每一个画面都经过精心构图，色彩饱和度的处理让夏日的温暖与活力跃然屏幕。</p>
+    <!-- 主体内容，添加barba数据属性 -->
+    <main data-barba="container" data-barba-namespace="film">
+        <!-- 电影页面内容 -->
+        <div class="film-page">
+            <div class="film-content">
+                <div class="film-title">
+                    <h1>Summer Sense</h1>
+                    <p>一部关于夏日感官体验的短片</p>
+                </div>
                 
-                <div class="film-meta">
-                    <div><span>导演:</span> Triple-Y</div>
-                    <div><span>摄影:</span> Triple-Y</div>
-                    <div><span>剪辑:</span> Triple-Y</div>
-                    <div><span>音乐:</span> Original Score</div>
-                    <div><span>年份:</span> 2023</div>
-                    <div><span>时长:</span> 5分钟</div>
+                <div class="video-container">
+                    <video controls preload="metadata" id="mainVideo" controlsList="nodownload" disablePictureInPicture autoplay muted>
+                        <source src="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/summer%20sense%EF%BC%88compress%EF%BC%89.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                </div>
+                
+                <div class="film-description">
+                    <h2>关于这部作品</h2>
+                    <p>《Summer Sense》是一部探索夏日感官体验的短片。通过独特的视觉语言和声音设计，作品捕捉了夏季特有的光影、色彩和情绪，带领观众进入一个充满感官刺激的夏日世界。</p>
+                    <p>影片采用了实验性的拍摄手法，将自然景观与人物情感相融合，创造出一种既真实又梦幻的视觉体验。每一个画面都经过精心构图，色彩饱和度的处理让夏日的温暖与活力跃然屏幕。</p>
+                    
+                    <div class="film-meta">
+                        <div><span>导演:</span> Triple-Y</div>
+                        <div><span>摄影:</span> Triple-Y</div>
+                        <div><span>剪辑:</span> Triple-Y</div>
+                        <div><span>音乐:</span> Original Score</div>
+                        <div><span>年份:</span> 2023</div>
+                        <div><span>时长:</span> 5分钟</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <!-- 页脚 -->
     <footer>
@@ -476,6 +484,8 @@
 
     <!-- 加载统一导航栏脚本 -->
     <script src="shared/load-nav.js"></script>
+    <!-- 加载动画框架脚本 -->
+    <script src="shared/animation.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // 页面加载时的淡出效果

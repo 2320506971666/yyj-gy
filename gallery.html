@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jomhuria&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jim+Nightshade&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <!-- 预设字体缩放因子，避免页面加载过程中的闪烁 -->
+    <script>
+        // 在页面加载前就设置--scale-factor变量
+        (function() {
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+            let scaleFactor = 1;
+            
+            if (vw <= 360) {
+                scaleFactor = 0.22;
+            } else if (vw <= 480) {
+                scaleFactor = 0.3;
+            } else if (vw <= 768) {
+                scaleFactor = 0.4;
+            }
+            
+            document.documentElement.style.setProperty('--scale-factor', scaleFactor);
+        })();
+    </script>
+    
+    <!-- GSAP, Lenis, Barba.js 脚本 -->
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
+    <script src="https://unpkg.com/@barba/core"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <title>Gallery - Triple-Y</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --scale-factor: 1;
+        }
+        
+        body {
+            overflow-x: hidden;
+            background-color: black;
+            color: white;
+            line-height: 1.6;
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        /* 导航栏样式 */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            height: 45px;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 0 5%;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            height: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-family: 'Reenie Beanie', cursive;
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+        
+        .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 2.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: capitalize;
+            transition: all 0.4s ease;
+            opacity: 0.9;
+            font-family: 'Poiret One', cursive;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            opacity: 1;
+            letter-spacing: 4px;
+            color: #DE2910;
+        }
+
+        .nav-links a.active {
+            color: #DE2910;
+            opacity: 1;
+        }
+
+        /* Gallery页面特定样式 - 现代化改进 */
+        .gallery-page {
+            padding-top: 0;
+            min-height: 100vh;
+            background-color: black;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .gallery-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .gallery-title {
+            margin-bottom: 0;
+            text-align: center;
+            opacity: 1;
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        /* 添加Swiper相关样式 */
+        .swiper {
+            width: 100%;
+            height: 100vh;
+            margin-top: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .swiper-slide img, .swiper-slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .swiper-slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 左右切换按钮与分页指示点样式 */
+        .swiper-button-next, .swiper-button-prev {
+            color: rgb(255, 255, 255);
+            opacity: 0.7;
+            width: 35px; /* 增加箭头区域宽度 */
+        }
+
+        .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 35px; /* 增大箭头大小 */
+            font-weight: 100; /* 保持箭头细线条 */
+        }
+
+        /* 箭头位置 */
+        .swiper-button-prev {
+            left: 50px;
+        }
+
+        .swiper-button-next {
+            right: 50px;
+        }
+
+        .swiper-pagination {
+            bottom: 50px !important; /* 调整分页指示点的位置，向上移动 */
+        }
+
+        .swiper-pagination-bullet {
+            background: white;
+            opacity: 0.6;
+            width: 6px; /* 圆点大小 */
+            height: 6px;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+        }
+
+        .swiper-button-next:hover, .swiper-button-prev:hover {
+            opacity: 1;
+        }
+        
+        /* 视频容器样式 */
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+            opacity: 1;
+            transition: opacity 0.8s ease;
+        }
+        
+        .swiper-slide video.loaded + .video-placeholder {
+            opacity: 0;
+        }
+        
+        /* 视频标题样式 */
+        .video-title {
+            position: absolute;
+            bottom: 15%;
+            left: 10%;
+            transform: translate(0, 0);
+            z-index: 3;
+            text-align: left;
+            opacity: 0;
+            animation: fadeInUp 2s ease forwards;
+        }
+        
+        .video-title h1 {
+            color: #ffffff;
+            font-size: 3.5rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* 观看影片链接样式 */
+        .watch-film-link {
+            position: absolute;
+            bottom: 10%;
+            right: 10%;
+            text-align: right;
+            z-index: 5;
+        }
+
+        .watch-film-link a {
+            color: rgba(206, 220, 255, 0.8);
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: letter-spacing 0.3s ease, color 0.3s ease;
+        }
+
+        .watch-film-link a:hover {
+            letter-spacing: 2px;
+            color: #ffffff;
+        }
+        
+        /* 修改视频过渡效果 */
+        .swiper-slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.3s ease, opacity 1.5s ease;
+            opacity: 0;
+        }
+
+        .swiper-slide video.loaded {
+            opacity: 1;
+        }
+        
+        .gallery-title img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            margin-top: 0;
+            margin-left: 0;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .gallery-title h1 {
+            display: none;
+        }
+        
+        /* Gallery标题的特殊样式 */
+        .gallery-title .gallery-text {
+            position: absolute;
+            top: 18%;
+            left: 49%;
+            transform: translate(-50%, -50%) scale(var(--scale-factor, 1));
+            display: flex;
+            align-items: baseline;
+            color: #FFD900;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.58);
+            z-index: 2;
+            line-height: 0.8;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards 0.3s;
+            transition: opacity 0.8s ease;
+        }
+        
+        .gallery-title .gallery-text span {
+            transform: translateY(30px);
+            opacity: 0;
+            display: inline-block;
+        }
+        
+        .gallery-title .gallery-text .g {
+            font-family: 'Jomhuria', cursive;
+            font-size: 200px;
+            animation: letterFadeIn 0.4s ease forwards 0.4s;
+        }
+        
+        .gallery-title .gallery-text .a {
+            font-family: 'Jomhuria', cursive;
+            font-size: 200px;
+            animation: letterFadeIn 0.4s ease forwards 0.5s;
+        }
+        
+        .gallery-title .gallery-text .l1 {
+            font-family: 'Jim Nightshade', cursive;
+            font-size: 200px;
+            animation: letterFadeIn 0.4s ease forwards 0.6s;
+        }
+        
+        .gallery-title .gallery-text .l2 {
+            font-family: 'Jomhuria', cursive;
+            font-size: 200px;
+            animation: letterFadeIn 0.4s ease forwards 0.7s;
+        }
+        
+        .gallery-title .gallery-text .e {
+            font-family: 'Josefin Slab', serif;
+            font-size: 130px;
+            font-weight: 600;
+            animation: letterFadeIn 0.4s ease forwards 0.8s;
+        }
+        
+        .gallery-title .gallery-text .r {
+            font-family: 'Josefin Slab', serif;
+            font-size: 130px;
+            font-weight: 600;
+            animation: letterFadeIn 0.4s ease forwards 0.9s;
+        }
+        
+        .gallery-title .gallery-text .y {
+            font-family: 'Reenie Beanie', cursive;
+            font-size: 230px;
+            animation: letterFadeIn 0.4s ease forwards 1.0s;
+        }
+        
+        .gallery-title .welcome {
+            position: absolute;
+            top: 27%;
+            left: 49%;
+            transform: translateX(-50%) scale(var(--scale-factor, 1));
+            font-family: 'Reenie Beanie', sans-serif;
+            font-size: 50px;
+            font-weight: 200;
+            color: #c30101;
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.25);
+            z-index: 2;
+            opacity: 0;
+            visibility: hidden;
+            animation: fadeInDown 1.2s ease forwards 1.2s;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        
+        @keyframes letterFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                visibility: visible;
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                visibility: visible;
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* 现代化照片网格 - 采用Bento网格布局 */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            aspect-ratio: 1 / 1;
+            cursor: pointer;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.05);
+        }
+
+        /* 玻璃拟态效果覆盖层 */
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+            font-family: 'Poiret One', cursive;
+            letter-spacing: 1.5px;
+        }
+
+        .gallery-overlay p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
+        /* 现代化分类筛选 */
+        .gallery-filter {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            gap: 15px;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards;
+            animation-delay: 0.2s;
+        }
+
+        .filter-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 25px;
+            cursor: pointer;
+            font-family: 'Poiret One', cursive;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            border-radius: 30px;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #DE2910;
+            border-color: #DE2910;
+            box-shadow: 0 5px 15px rgba(222, 41, 16, 0.3);
+        }
+
+        /* 改进的灯箱效果 */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 30px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .lightbox.show {
+            opacity: 1;
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            transform: scale(0.9);
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .lightbox.show .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .lightbox-caption {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Poiret One', cursive;
+            letter-spacing: 1px;
+            display: none; /* 隐藏图片标题文字 */
+        }
+
+        .lightbox-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .lightbox-prev, .lightbox-next {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 50px;
+            cursor: pointer;
+            background-color: transparent;
+            pointer-events: auto;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .lightbox.show .lightbox-prev,
+        .lightbox.show .lightbox-next {
+            opacity: 0.7;
+        }
+
+        .lightbox-prev:hover, .lightbox-next:hover {
+            opacity: 1 !important;
+        }
+
+        .lightbox-prev {
+            left: 40px;
+        }
+
+        .lightbox-next {
+            right: 40px;
+        }
+
+        /* 添加点赞按钮和全屏按钮样式 */
+        .lightbox-actions {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .lightbox-action-btn {
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .lightbox-action-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .like-btn .heart-icon {
+            fill: transparent;
+            stroke: white;
+            stroke-width: 2;
+            transition: all 0.3s ease;
+        }
+
+        .like-btn.active .heart-icon {
+            fill: #FF5252;
+            stroke: #FF5252;
+        }
+
+        .like-btn:hover .heart-icon {
+            transform: scale(1.1);
+        }
+
+        .fullscreen-btn svg {
+            transition: all 0.3s ease;
+        }
+
+        .fullscreen-btn:hover svg {
+            transform: scale(1.1);
+        }
+
+        /* 改进的动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                visibility: visible;
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                visibility: visible;
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .gallery-title {
+                height: 85vh;
+                margin-bottom: 0; /* 重置负边距 */
+            }
+            
+            .gallery-title img {
+                width: 100%;
+                height: 85%;
+                object-position: 47% top;
+                object-fit: cover;
+                margin: 0;
+                display: block;
+            }
+            
+            .gallery-title .gallery-text {
+                top: 18%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(var(--scale-factor, 0.63));
+            }
+            
+            .gallery-title .welcome {
+                font-size: 45px;
+                top: 24%;
+                left: 50%;
+                transform: translateX(-50%) scale(var(--scale-factor, 0.8));
+            }
+            
+            /* 移动菜单按钮调整 */
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                right: 20px;
+                top: 12px;
+                width: 30px;
+                height: 20px;
+                cursor: pointer;
+                z-index: 1001;
+            }
+
+            /* 调整图片间距，与顶部空隙保持一致 */
+            .bento-grid {
+                gap: 20px;
+                padding-top: 0; /* 移除顶部内边距 */
+            }
+            
+            /* 设置主图与下方图片之间的距离与图片间距一致 */
+            .art-gallery-showcase {
+                padding-top: 0;
+                margin-top: 20px; /* 设置与图片间相同的间距 */
+            }
+        }
+        
+        /* 小屏手机适配 */
+        @media (max-width: 480px) {
+            .gallery-title {
+                height: 80vh;
+                margin-bottom: 0; /* 重置负边距 */
+            }
+            
+            .gallery-title .gallery-text {
+                top: 18%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(var(--scale-factor, 0.63));
+                width: 100%;
+            }
+            
+            .gallery-title img {
+                width: 100%;
+                height: 80%;
+                object-fit: cover;
+                object-position: 47% top;
+                margin: 0;
+            }
+            
+            .gallery-title .welcome {
+                font-size: 40px;
+                top: 24%;
+                left: 50%;
+                transform: translateX(-50%) scale(var(--scale-factor, 0.7));
+            }
+
+            /* 设置主图与下方图片之间的距离与图片间距一致 */
+            .art-gallery-showcase {
+                padding-top: 0;
+                margin-top: 20px; /* 设置与图片间相同的间距 */
+            }
+        }
+        
+        /* 超小屏幕 */
+        @media (max-width: 360px) {
+            .gallery-title {
+                height: 75vh;
+                margin-bottom: 0; /* 重置负边距 */
+            }
+            
+            .gallery-title .gallery-text {
+                top: 18%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(var(--scale-factor, 0.6));
+            }
+            
+            .gallery-title img {
+                width: 100%;
+                height: 75%;
+                object-fit: cover;
+                object-position: 46% top;
+                margin: 0;
+            }
+            
+            .gallery-title .welcome {
+                font-size: 35px;
+                top: 24%;
+                left: 50%;
+                transform: translateX(-50%) scale(var(--scale-factor, 0.65));
+            }
+
+            /* 设置主图与下方图片之间的距离与图片间距一致 */
+            .art-gallery-showcase {
+                padding-top: 0;
+                margin-top: 20px; /* 设置与图片间相同的间距 */
+            }
+        }
+
+        /* 页面过渡效果 */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        .page-transition.fade-in {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 菜单打开时的body样式 */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* 页脚样式 */
+        footer {
+            background-color: #111;
+            color: white;
+            padding: 5rem 5% 2rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            height: 1px;
+            width: 50px;
+            background-color: white;
+            bottom: -10px;
+            left: 0;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            text-decoration: none;
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* 让字体动画在横屏和竖屏模式都保持良好显示 */
+        @media screen and (orientation: portrait) {
+            .gallery-title .gallery-text {
+                top: 15%;
+            }
+            
+            .gallery-title .welcome {
+                top: 25%;
+            }
+        }
+        
+        @media screen and (orientation: landscape) and (max-height: 500px) {
+            .gallery-title .gallery-text {
+                top: 20%;
+                transform: translate(-50%, -50%) scale(var(--scale-factor, 0.35));
+            }
+            
+            .gallery-title .welcome {
+                top: 32%;
+                transform: translateX(-50%) scale(var(--scale-factor, 0.35));
+            }
+        }
+        
+        /* 探索区域样式 */
+        .explore-section {
+            display: block;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            background-color: #000;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .explore-image-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .explore-image {
+            width: 100%;
+            display: block;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+        
+        .explore-content {
+            position: absolute;
+            bottom: 10%;
+            right: 10%;
+            z-index: 5;
+        }
+        
+        .explore-link {
+            display: inline-block;
+            padding: 15px 40px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #FFD900;
+            color: #FFD900;
+            font-family: 'Poiret One', cursive;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        .explore-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 217, 0, 0.2);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+        
+        .explore-link:hover {
+            color: #fff;
+            border-color: #fff;
+            letter-spacing: 5px;
+        }
+        
+        .explore-link:hover::before {
+            left: 0;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .explore-section {
+                padding: 0;
+            }
+            
+            .explore-content {
+                bottom: 5%;
+                right: 5%;
+            }
+            
+            .explore-link {
+                padding: 10px 25px;
+                font-size: 1rem;
+            }
+        }
+
+        /* 图片网格展示 - 个人作品 */
+        .art-gallery-showcase {
+            padding: 0 20px 20px;
+            margin: 0;
+            margin-top: 20px; /* 设置与图片间相同的间距 */
+            background-color: #000;
+            width: 100%;
+        }
+        
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: #000;
+            padding-top: 0; /* 移除顶部内边距 */
+        }
+        
+        .three-images-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            grid-column: 1 / -1;
+            margin: 0;
+        }
+        
+        .three-images-row .bento-item {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        
+        .three-images-row img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* 最后一行高度一致 */
+        .last-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 两列等宽 */
+            gap: 20px;
+            grid-column: 1 / -1;
+            /* 确保与上方图片的间距与左右间距一致 */
+        }
+        
+        .last-row .bento-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000; /* 确保背景为黑色 */
+            overflow: hidden; /* 防止内容溢出 */
+        }
+        
+        /* 右侧图片的样式(12.jpg) - 保持原样 */
+        .last-row .bento-item:last-child {
+            height: 350px;
+        }
+        
+        .last-row .bento-item:last-child img {
+            max-width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+        }
+        
+        /* 左侧图片的样式(11.jpg) - 调整使其变大 */
+        .last-row .bento-item:first-child {
+            height: 350px;
+        }
+        
+        .last-row .bento-item:first-child img {
+            min-width: 500px; /* 设置最小宽度使图片显示更大 */
+            height: 350px;
+            object-fit: cover; /* 使用cover确保填充整个区域 */
+        }
+        
+        /* 去除特殊样式，让两个图片使用相同的样式 */
+        .smaller-image {
+            /* 移除所有特殊设置，使用与其他图片相同的规则 */
+        }
+        
+        .bento-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0;
+            box-shadow: none;
+            cursor: pointer;
+            background-color: #000;
+            width: 100%;
+            height: auto;
+            text-align: center;
+            margin: 0;
+        }
+        
+        .bento-item img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+            display: block;
+            margin: 0;
+        }
+        
+        .bento-item:hover img {
+            transform: scale(1.01);
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .three-images-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin: 0;
+            }
+            
+            .last-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .last-row img {
+                height: auto;
+            }
+        }
+
+        /* 观看影片链接样式 */
+        .watch-film-link {
+            position: absolute;
+            bottom: 10%;
+            right: 10%;
+            text-align: right;
+            z-index: 5;
+        }
+
+        .watch-film-link a {
+            color: rgba(206, 220, 255, 0.8);
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: letter-spacing 0.3s ease, color 0.3s ease;
+        }
+
+        .watch-film-link a:hover {
+            letter-spacing: 2px;
+            color: #ffffff;
+        }
+        
+        /* Learn more链接样式 */
+        .learn-more-link {
+            position: absolute;
+            bottom: 10%;    
+            right: 10%;
+            text-align: right;
+            z-index: 5;
+        }
+        
+        .learn-more-link a {
+            color: rgb(255, 225, 118);
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            text-decoration: none;
+            letter-spacing: 1px;    
+            transition: letter-spacing 0.3s ease, color 0.3s ease;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 添加黑色投影 */
+        }
+        
+        .learn-more-link a:hover {
+            letter-spacing: 2px;
+            color: #ffffff; 
+        }
+        
+        /* 修改视频过渡效果 */
+        .swiper-slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.3s ease, opacity 1.5s ease;
+            opacity: 0;
+        }
+
+        .swiper-slide video.loaded {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body data-barba="wrapper">
+    <div class="page-transition"></div>
+    
+    <!-- 导航栏容器 -->
+    <div id="nav-container"></div>
+    
+    <!-- 主体内容，添加barba数据属性 -->
+    <main data-barba="container" data-barba-namespace="gallery">
+        <!-- Gallery页面内容 -->
+        <div class="gallery-page">
+            <div class="gallery-content">
+                <div class="gallery-title">
+                    <div class="swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            <!-- 幻灯片1：静态图片 -->
+                            <div class="swiper-slide">
+                    <img src="artistweb/images/个人图片作品/IMG_0082.jpg" alt="Gallery Header Image">
+                    <h1>Gallery</h1>
+                    <div class="welcome"><span style="text-decoration: none; color: #c30101; display: inline-block; padding: 8px;">Awaits</span></div>
+                    <div class="gallery-text">
+                        <span class="g">G</span>
+                        <span class="a">a</span>
+                        <span class="l1">l</span>
+                        <span class="l2">l</span>
+                        <span class="e">e</span>
+                        <span class="r">r</span>
+                        <span class="y">y</span>
+                    </div>
+                                <div class="learn-more-link">
+                                    <a href="tibet.html">learn more ></a>
+                </div>
+                        </div>
+                            <!-- 幻灯片2：视频 -->
+                            <div class="swiper-slide">
+                                <div class="video-container">
+                                    <video muted playsinline class="hero-image" preload="metadata" data-src="artistweb/videos/video1.webm" controlsList="nodownload" disablePictureInPicture>
+                                        <source type="video/webm" src="artistweb/videos/video1.webm">
+                                        Your browser does not support HTML5 video.
+                                    </video>
+                                    <div class="video-placeholder" style="background-color: #000;"></div>
+                        </div>
+                                <div class="video-title">
+                                    <h1>额尔古纳河</h1>
+                                </div>
+                                <div class="learn-more-link">
+                                    <a href="north.html" style="color: #ffe957;">learn more ></a>
+                                </div>
+                        </div>
+                            <!-- 幻灯片3：视频 -->
+                            <div class="swiper-slide">
+                                <div class="video-container">
+                                    <video muted playsinline class="hero-image" preload="none" data-src="artistweb/videos/video2.webm" controlsList="nodownload" disablePictureInPicture>
+                                        <source type="video/webm" data-src="artistweb/videos/video2.webm">
+                                        Your browser does not support HTML5 video.
+                                    </video>
+                                    <div class="video-placeholder" style="background-color: #000;"></div>
+                                </div>
+                                <div class="watch-film-link">
+                                    <a href="film.html">watch the film ></a>
+                                </div>
+                            </div>
+                            <!-- 幻灯片4：视频 -->
+                            <div class="swiper-slide">
+                                <div class="video-container">
+                                    <video muted playsinline class="hero-image" preload="none" data-src="artistweb/videos/video3.webm" controlsList="nodownload" disablePictureInPicture>
+                                        <source type="video/webm" data-src="artistweb/videos/video3.webm">
+                                    </video>
+                                    <div class="video-placeholder" style="background-color: #000;"></div>
+                                </div>
+                                <div class="learn-more-link">
+                                    <a href="sanya.html" style="color: #acffaf;">learn more ></a>
+                                </div>
+                            </div>
+                            </div>
+                        <!-- 可选的左右切换按钮 -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <!-- 可选的分页指示点 -->
+                        <div class="swiper-pagination"></div>
+                            </div>
+                        </div>
+                        
+                <!-- 移除图片网格部分 -->
+                
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- 灯箱效果 -->
+    <div class="lightbox">
+        <div class="lightbox-content">
+            <div class="lightbox-actions">
+                <div class="lightbox-action-btn like-btn" title="点赞">
+                    <svg class="heart-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                </div>
+                <div class="lightbox-action-btn fullscreen-btn" title="全屏">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+                    </svg>
+                </div>
+            </div>
+            <span class="lightbox-close">&times;</span>
+            <img src="" alt="" class="lightbox-image">
+            <div class="lightbox-caption"></div>
+        </div>
+        <!-- 将导航箭头移到lightbox-content外部 -->
+        <div class="lightbox-nav">
+            <span class="lightbox-prev">&#8249;</span>
+            <span class="lightbox-next">&#8250;</span>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Contact</h3>
+                <p>studio@artist.com</p>
+                <p>+86 123 4567 8910</p>
+                <p>Shanghai, China</p>
+            </div>
+            <div class="footer-column">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html#explore">Explore</a></li>
+                    <li><a href="film.html">Film</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="work.html">Work</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Connect</h3>
+                <p>Follow my work and creative journey</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">YT</a>
+                    <a href="#" class="social-link">BL</a>
+                    <a href="#" class="social-link">IG</a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Artist Portfolio. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- 加载统一导航栏脚本 -->
+    <script src="shared/load-nav.js"></script>
+    <!-- 加载动画框架脚本 -->
+    <script src="shared/animation.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 处理字体动画适配不同设备
+            function adjustFontSizes() {
+                const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+                const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+                
+                let scaleFactor = 1;
+                
+                if (vw <= 360) {
+                    scaleFactor = 0.6; // 进一步缩小
+                } else if (vw <= 480) {
+                    scaleFactor = 0.63; // 进一步缩小
+                } else if (vw <= 768) {
+                    scaleFactor = 0.63; // 进一步缩小
+                }
+                
+                document.documentElement.style.setProperty('--scale-factor', scaleFactor);
+                
+                // 调整welcome文字大小和位置，确保与gallery文字比例一致
+                const welcomeText = document.querySelector('.gallery-title .welcome');
+                const galleryText = document.querySelector('.gallery-title .gallery-text');
+                
+                if (welcomeText) {
+                    // 根据屏幕大小设置更大的字体
+                    if (vw <= 360) {
+                        welcomeText.style.fontSize = '35px';
+                        welcomeText.style.top = '24%';
+                    } else if (vw <= 480) {
+                        welcomeText.style.fontSize = '40px';
+                        welcomeText.style.top = '24%';
+                    } else if (vw <= 768) {
+                        welcomeText.style.fontSize = '45px';
+                        welcomeText.style.top = '24%';
+                    } else {
+                        welcomeText.style.fontSize = '50px';
+                        welcomeText.style.top = '27%';
+                    }
+                    welcomeText.style.left = '50%';
+                }
+                
+                if (galleryText) {
+                    // 确保Gallery文字位置在不同设备上保持一致
+                    if (vw <= 768) {
+                        galleryText.style.top = '18%';
+                        galleryText.style.left = '50%';
+                    } else {
+                        galleryText.style.top = '18%';
+                        galleryText.style.left = '49%';
+                    }
+                }
+            }
+            
+            // 确保字体和动画元素在页面完全准备好前不可见
+            const welcomeText = document.querySelector('.gallery-title .welcome');
+            const galleryText = document.querySelector('.gallery-title .gallery-text');
+            if (welcomeText) welcomeText.style.visibility = 'hidden';
+            if (galleryText) galleryText.style.visibility = 'hidden';
+            
+            // 立即调用一次以确保初始加载时就能正确设置位置
+            adjustFontSizes();
+            
+            // 添加窗口大小变化的监听器
+            window.addEventListener('resize', adjustFontSizes);
+            
+            // 跟踪每个视频的播放状态
+            const videoPlaybackStates = {};
+            
+            // 视频加载与播放控制
+            function handleVideo(video) {
+                if (!video) return;
+                
+                // 获取视频的唯一标识符
+                const videoId = video.dataset.src;
+                
+                // 如果是第一次处理这个视频，初始化它的状态
+                if (!videoPlaybackStates[videoId]) {
+                    videoPlaybackStates[videoId] = {
+                        played: false,   // 是否播放过
+                        completed: false  // 是否播放完成
+                    };
+                    
+                    // 监听视频播放结束事件
+                    video.addEventListener('ended', function() {
+                        videoPlaybackStates[videoId].completed = true;
+                        // 视频播放完毕后自动切换到下一张幻灯片
+                        swiper.slideNext();
+                    });
+                }
+                
+                // 加载视频源
+                if (!video.currentSrc || video.readyState === 0) {
+                    const sources = video.querySelectorAll('source[data-src]');
+                    if (sources.length > 0) {
+                        sources.forEach(source => {
+                            if (source.dataset.src && !source.src) {
+                                source.src = source.dataset.src;
+                            }
+                        });
+                    }
+                    video.load();
+                    video.classList.add('loaded');
+                }
+                
+                // 决定是否播放视频
+                const state = videoPlaybackStates[videoId];
+                
+                // 如果视频已经播放完毕，但用户再次回到这个幻灯片，重新开始播放
+                if (state.completed) {
+                    video.currentTime = 0;
+                    state.completed = false;
+                }
+                
+                // 播放视频
+                video.play().catch(err => console.log('视频播放失败:', err));
+            }
+
+            // 为所有视频添加加载完成事件
+            const videos = document.querySelectorAll('.swiper-slide video');
+            videos.forEach(video => {
+                video.addEventListener('loadeddata', function() {
+                    video.classList.add('loaded');
+                });
+                
+                // 添加错误处理
+                video.addEventListener('error', function(e) {
+                    console.log('视频加载失败，显示占位图', e);
+                    // 如果WebM格式加载失败，尝试使用MP4格式
+                    const source = video.querySelector('source');
+                    if (source && source.src.includes('.webm')) {
+                        source.src = source.src.replace('.webm', '.mp4');
+                        video.load();
+                    }
+                });
+            });
+
+            // 初始化Swiper
+            var swiper = new Swiper(".mySwiper", {
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                effect: "fade",
+                speed: 1000,
+                on: {
+                    init: function() {
+                        // 初始化时处理当前幻灯片
+                        const activeSlide = this.slides[this.activeIndex];
+                        if (activeSlide) {
+                            const video = activeSlide.querySelector('video');
+                            if (video) handleVideo(video);
+                            
+                            // 如果是静态图片幻灯片，显示标题和欢迎文字
+                            if (activeSlide.querySelector('.gallery-text')) {
+                                setTimeout(() => {
+                                    if (galleryText) galleryText.style.visibility = '';
+                                    if (welcomeText) welcomeText.style.visibility = '';
+                                }, 100);
+                            }
+                        }
+                    },
+                    slideChangeTransitionStart: function() {
+                        // 幻灯片开始切换时处理当前幻灯片
+                        const activeSlide = this.slides[this.activeIndex];
+                        if (activeSlide) {
+                            const video = activeSlide.querySelector('video');
+                            if (video) {
+                                handleVideo(video);
+                            }
+                            
+                            // 如果是静态图片幻灯片，显示标题和欢迎文字
+                            if (activeSlide.querySelector('.gallery-text')) {
+                                setTimeout(() => {
+                                    if (galleryText) {
+                                        galleryText.style.visibility = '';
+                                        galleryText.style.opacity = '1';
+                                    }
+                                    if (welcomeText) {
+                                        welcomeText.style.visibility = 'visible';
+                                        welcomeText.style.opacity = '1';
+                                    }
+                                }, 100);
+                            } else {
+                                // 添加渐隐效果，而不是立即隐藏
+                                if (galleryText) {
+                                    galleryText.style.opacity = '0';
+                                    // 延迟隐藏，等待渐隐动画完成
+                                    setTimeout(() => {
+                                        galleryText.style.visibility = 'hidden';
+                                    }, 800);
+                                }
+                                if (welcomeText) {
+                                    welcomeText.style.opacity = '0';
+                                    // 延迟隐藏，等待渐隐动画完成
+                                    setTimeout(() => {
+                                        welcomeText.style.visibility = 'hidden';
+                                    }, 800);
+                                }
+                            }
+                        }
+                        
+                        // 暂停其他幻灯片中的视频
+                        videos.forEach(video => {
+                            if (video.parentElement.parentElement !== activeSlide && !video.paused) {
+                                video.pause();
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- GSAP, Lenis 脚本 -->
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
+    <script src="https://unpkg.com/@barba/core"></script>
+    
+    <title>Tibet Gallery - Triple-Y</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            overflow-x: hidden;
+            background-color: black;
+            color: white;
+            line-height: 1.6;
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        /* 导航栏样式 */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            height: 45px;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 0 5%;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            height: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-family: 'Reenie Beanie', cursive;
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+        
+        .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 2.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: capitalize;
+            transition: all 0.4s ease;
+            opacity: 0.9;
+            font-family: 'Poiret One', cursive;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            opacity: 1;
+            letter-spacing: 4px;
+            color: #DE2910;
+        }
+        
+        .nav-links a.active {
+            color: #DE2910;
+            opacity: 1;
+        }
+        
+        /* Tibet页面标题样式 */
+        .tibet-header {
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: url('artistweb/images/个人图片作品/tibet/header.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            padding-top: 70px;
+            text-align: center;
+        }
+        
+        .tibet-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .tibet-title {
+            position: relative;
+            z-index: 2;
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 1rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+        
+        .tibet-subtitle {
+            position: relative;
+            z-index: 2;
+            font-family: 'Poiret One', cursive;
+            font-size: 1.5rem;
+            color: #f1f1f1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 图片网格展示 */
+        .gallery-container {
+            padding: 50px 5%;
+            background-color: #000;
+        }
+        
+        .gallery-intro {
+            max-width: 800px;
+            margin: 0 auto 50px;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .gallery-intro p {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ddd;
+        }
+        
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: #000;
+        }
+        
+        .three-images-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            grid-column: 1 / -1;
+        }
+        
+        .three-images-row .bento-item {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        
+        .three-images-row img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* 最后一行高度一致 */
+        .last-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            grid-column: 1 / -1;
+        }
+        
+        .last-row .bento-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+            overflow: hidden;
+        }
+        
+        /* 右侧图片的样式(12.jpg) */
+        .last-row .bento-item:last-child {
+            height: 350px;
+        }
+        
+        .last-row .bento-item:last-child img {
+            max-width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+        }
+        
+        /* 左侧图片的样式(11.jpg) */
+        .last-row .bento-item:first-child {
+            height: 350px;
+        }
+        
+        .last-row .bento-item:first-child img {
+            min-width: 500px;
+            height: 350px;
+            object-fit: cover;
+        }
+        
+        .bento-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0;
+            box-shadow: none;
+            cursor: pointer;
+            background-color: #000;
+            width: 100%;
+            height: auto;
+            text-align: center;
+            margin: 0;
+        }
+        
+        .bento-item img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+            display: block;
+            margin: 0;
+        }
+        
+        .bento-item:hover img {
+            transform: scale(1.01);
+        }
+        
+        /* 灯箱效果 */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 30px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .lightbox.show {
+            opacity: 1;
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            transform: scale(0.9);
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .lightbox.show .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .lightbox-caption {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Poiret One', cursive;
+            letter-spacing: 1px;
+        }
+
+        .lightbox-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .lightbox-prev, .lightbox-next {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 50px;
+            cursor: pointer;
+            background-color: transparent;
+            pointer-events: auto;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .lightbox.show .lightbox-prev,
+        .lightbox.show .lightbox-next {
+            opacity: 0.7;
+        }
+
+        .lightbox-prev:hover, .lightbox-next:hover {
+            opacity: 1 !important;
+        }
+
+        .lightbox-prev {
+            left: 40px;
+        }
+
+        .lightbox-next {
+            right: 40px;
+        }
+
+        /* 添加点赞按钮和全屏按钮样式 */
+        .lightbox-actions {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .lightbox-action-btn {
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .lightbox-action-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .like-btn .heart-icon {
+            fill: transparent;
+            stroke: white;
+            stroke-width: 2;
+            transition: all 0.3s ease;
+        }
+
+        .like-btn.active .heart-icon {
+            fill: #FF5252;
+            stroke: #FF5252;
+        }
+
+        .like-btn:hover .heart-icon {
+            transform: scale(1.1);
+        }
+
+        .fullscreen-btn svg {
+            transition: all 0.3s ease;
+        }
+
+        .fullscreen-btn:hover svg {
+            transform: scale(1.1);
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background-color: #111;
+            color: white;
+            padding: 5rem 5% 2rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            height: 1px;
+            width: 50px;
+            background-color: white;
+            bottom: -10px;
+            left: 0;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            text-decoration: none;
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .tibet-title {
+                font-size: 3rem;
+            }
+            
+            .tibet-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .bento-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .three-images-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .last-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .last-row .bento-item:first-child img,
+            .last-row .bento-item:last-child img {
+                min-width: auto;
+                height: auto;
+            }
+            
+            .last-row .bento-item:first-child,
+            .last-row .bento-item:last-child {
+                height: auto;
+            }
+            
+            .lightbox-prev {
+                left: 10px;
+            }
+            
+            .lightbox-next {
+                right: 10px;
+            }
+        }
+        
+        /* 页面过渡效果 */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        .page-transition.fade-in {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body data-barba="wrapper">
+    <div class="page-transition"></div>
+    
+    <!-- 导航栏容器 -->
+    <div id="nav-container"></div>
+    
+    <!-- 主体内容，添加barba数据属性 -->
+    <main data-barba="container" data-barba-namespace="tibet">
+        <!-- Tibet页面内容 -->
+        <div class="tibet-header">
+            <h1 class="tibet-title">Tibet</h1>
+            <p class="tibet-subtitle">A journey through the mystical landscapes and spiritual culture of Tibet</p>
+        </div>
+        
+        <div class="gallery-container">
+            <div class="gallery-intro">
+                <p>西藏是一片神秘而壮丽的土地，高耸入云的雪山、广袤的草原、圣洁的湖泊以及丰富的文化遗产，构成了这个世界屋脊独特的魅力。这组照片记录了我在西藏旅行时的所见所感，希望能带您领略这片圣洁土地的美丽与神秘。</p>
+            </div>
+            
+            <!-- 个人图片作品展示 - 艺术排版 -->
+            <div class="bento-grid">
+                <!-- 第一行 -->
+                <div class="bento-item">
+                    <img src="artistweb/images/个人图片作品/tibet/1.jpg" alt="西藏风景">
+                </div>
+                
+                <div class="bento-item">
+                    <img src="artistweb/images/个人图片作品/tibet/2.jpg" alt="西藏风景">
+                </div>
+                
+                <!-- 第二行 -->
+                <div class="bento-item">
+                    <img src="artistweb/images/个人图片作品/tibet/3.jpg" alt="西藏风景">
+                </div>
+                
+                <div class="bento-item">
+                    <img src="artistweb/images/个人图片作品/tibet/4.jpg" alt="西藏风景">
+                </div>
+                
+                <!-- 特殊三图行 - 第一组 -->
+                <div class="three-images-row">
+                    <div class="bento-item">
+                        <img src="artistweb/images/个人图片作品/tibet/5.jpg" alt="西藏风景">
+                    </div>
+                    
+                    <div class="bento-item">
+                        <img src="artistweb/images/个人图片作品/tibet/6.jpg" alt="西藏风景">
+                    </div>
+                    
+                    <div class="bento-item">
+                        <img src="artistweb/images/个人图片作品/tibet/7.jpg" alt="西藏风景">
+                    </div>
+                </div>
+                
+                <!-- 特殊三图行 - 第二组 -->
+                <div class="three-images-row">
+                    <div class="bento-item">
+                        <img src="artistweb/images/个人图片作品/tibet/8.jpg" alt="西藏风景">
+                    </div>
+                    
+                    <div class="bento-item">
+                        <img src="artistweb/images/个人图片作品/tibet/9.jpg" alt="西藏风景">
+                    </div>
+                    
+                    <div class="bento-item">
+                        <img src="artistweb/images/个人图片作品/tibet/10.jpg" alt="西藏风景">
+                    </div>
+                </div>
+                
+                <!-- 最后一行使用选择器区分样式 -->
+                <div class="last-row">
+                    <div class="bento-item">
+                        <img src="artistweb/images/个人图片作品/tibet/11.jpg" alt="西藏风景">
+                    </div>
+                    
+                    <div class="bento-item">
+                        <img src="artistweb/images/个人图片作品/tibet/12.jpg" alt="西藏风景">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 灯箱效果 -->
+    <div class="lightbox">
+        <div class="lightbox-content">
+            <div class="lightbox-actions">
+                <div class="lightbox-action-btn like-btn" title="点赞">
+                    <svg class="heart-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                </div>
+                <div class="lightbox-action-btn fullscreen-btn" title="全屏">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+                    </svg>
+                </div>
+            </div>
+            <span class="lightbox-close">&times;</span>
+            <img src="" alt="" class="lightbox-image">
+            <div class="lightbox-caption"></div>
+        </div>
+        <!-- 将导航箭头移到lightbox-content外部 -->
+        <div class="lightbox-nav">
+            <span class="lightbox-prev">&#8249;</span>
+            <span class="lightbox-next">&#8250;</span>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Contact</h3>
+                <p>studio@artist.com</p>
+                <p>+86 123 4567 8910</p>
+                <p>Shanghai, China</p>
+            </div>
+            <div class="footer-column">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html#explore">Explore</a></li>
+                    <li><a href="film.html">Film</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="work.html">Work</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Connect</h3>
+                <p>Follow my work and creative journey</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">YT</a>
+                    <a href="#" class="social-link">BL</a>
+                    <a href="#" class="social-link">IG</a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Artist Portfolio. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- 加载统一导航栏脚本 -->
+    <script src="shared/load-nav.js"></script>
+    <!-- 加载动画框架脚本 -->
+    <script src="shared/animation.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 页面加载时的淡出效果
+            const transition = document.querySelector('.page-transition');
+            setTimeout(() => {
+                transition.style.visibility = 'hidden';
+                transition.style.opacity = '0';
+            }, 500);
+
+            // 点击链接时的过渡效果
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.hostname === window.location.hostname && !this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const href = this.getAttribute('href');
+                        
+                        // 显示过渡层
+                        transition.style.visibility = 'visible';
+                        transition.style.opacity = '1';
+                        
+                        // 立即记录要跳转的URL，防止被其他事件覆盖
+                        const targetUrl = href;
+                        
+                        // 延迟导航以等待过渡效果完成，但确保一定会执行
+                        setTimeout(function() {
+                            window.location.href = targetUrl;
+                        }, 300);
+                    }
+                });
+            });
+
+            // 移动端菜单控制
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    mobileMenu.classList.toggle('open');
+                    document.body.classList.toggle('menu-open');
+                });
+                
+                // 点击移动端菜单项关闭菜单
+                document.querySelectorAll('.mobile-menu a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenuBtn.classList.remove('open');
+                        mobileMenu.classList.remove('open');
+                        document.body.classList.remove('menu-open');
+                    });
+                });
+            }
+
+            // Bento网格灯箱效果处理
+            const bentoItems = document.querySelectorAll('.bento-item');
+            const lightbox = document.querySelector('.lightbox');
+            const lightboxImage = document.querySelector('.lightbox-image');
+            const lightboxCaption = document.querySelector('.lightbox-caption');
+            const lightboxClose = document.querySelector('.lightbox-close');
+            const lightboxPrev = document.querySelector('.lightbox-prev');
+            const lightboxNext = document.querySelector('.lightbox-next');
+            const likeBtn = document.querySelector('.like-btn');
+            const fullscreenBtn = document.querySelector('.fullscreen-btn');
+            
+            let currentBentoIndex = 0;
+            // 存储已点赞的图片索引
+            const likedImages = new Set();
+            
+            // 给bento-item添加标题
+            bentoItems.forEach((item, index) => {
+                if (!item.querySelector('h3')) {
+                    const img = item.querySelector('img');
+                    const title = document.createElement('h3');
+                    title.style.display = 'none';
+                    title.textContent = img.alt || `西藏风景 ${index + 1}`;
+                    item.appendChild(title);
+                }
+            });
+            
+            // 打开灯箱
+            bentoItems.forEach((item, index) => {
+                item.addEventListener('click', function() {
+                    currentBentoIndex = index;
+                    
+                    const img = this.querySelector('img');
+                    const title = this.querySelector('h3')?.textContent || img.alt || '';
+                    
+                    lightboxImage.src = img.src;
+                    lightboxCaption.textContent = title;
+                    lightbox.style.display = 'flex';
+                    
+                    // 检查当前图片是否被点赞
+                    if (likedImages.has(index)) {
+                        likeBtn.classList.add('active');
+                    } else {
+                        likeBtn.classList.remove('active');
+                    }
+                    
+                    // 添加动画效果
+                    setTimeout(() => {
+                        lightbox.classList.add('show');
+                    }, 10);
+                });
+            });
+            
+            // 关闭灯箱
+            lightboxClose.addEventListener('click', () => {
+                lightbox.classList.remove('show');
+                setTimeout(() => {
+                    lightbox.style.display = 'none';
+                }, 500);
+            });
+            
+            // 点击灯箱背景关闭
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    lightboxClose.click();
+                }
+            });
+            
+            // 上一张/下一张
+            lightboxPrev.addEventListener('click', () => {
+                currentBentoIndex = (currentBentoIndex - 1 + bentoItems.length) % bentoItems.length;
+                updateLightbox();
+            });
+            
+            lightboxNext.addEventListener('click', () => {
+                currentBentoIndex = (currentBentoIndex + 1) % bentoItems.length;
+                updateLightbox();
+            });
+            
+            // 点赞功能
+            likeBtn.addEventListener('click', function() {
+                this.classList.toggle('active');
+                
+                if (this.classList.contains('active')) {
+                    likedImages.add(currentBentoIndex);
+                    // 可以在这里添加点赞动画效果
+                    gsap.fromTo(this, 
+                        {scale: 1}, 
+                        {scale: 1.4, yoyo: true, repeat: 1, duration: 0.3}
+                    );
+                } else {
+                    likedImages.delete(currentBentoIndex);
+                }
+            });
+            
+            // 全屏功能
+            fullscreenBtn.addEventListener('click', function() {
+                if (!document.fullscreenElement) {
+                    // 进入全屏模式
+                    if (lightboxImage.requestFullscreen) {
+                        lightboxImage.requestFullscreen();
+                    } else if (lightboxImage.webkitRequestFullscreen) { /* Safari */
+                        lightboxImage.webkitRequestFullscreen();
+                    } else if (lightboxImage.msRequestFullscreen) { /* IE11 */
+                        lightboxImage.msRequestFullscreen();
+                    }
+                } else {
+                    // 退出全屏模式
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) { /* Safari */
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) { /* IE11 */
+                        document.msExitFullscreen();
+                    }
+                }
+            });
+            
+            // 更新灯箱内容
+            function updateLightbox() {
+                const item = bentoItems[currentBentoIndex];
+                const img = item.querySelector('img');
+                const title = item.querySelector('h3')?.textContent || img.alt || '';
+                
+                // 添加过渡效果
+                lightboxImage.style.opacity = '0';
+                lightboxImage.style.transform = 'scale(0.95)';
+                
+                setTimeout(() => {
+                    lightboxImage.src = img.src;
+                    lightboxCaption.textContent = title;
+                    
+                    // 检查当前图片是否被点赞
+                    if (likedImages.has(currentBentoIndex)) {
+                        likeBtn.classList.add('active');
+                    } else {
+                        likeBtn.classList.remove('active');
+                    }
+                    
+                    setTimeout(() => {
+                        lightboxImage.style.opacity = '1';
+                        lightboxImage.style.transform = 'scale(1)';
+                    }, 50);
+                }, 300);
+            }
+            
+            // 键盘导航
+            document.addEventListener('keydown', function(e) {
+                if (lightbox.classList.contains('show')) {
+                    if (e.key === 'Escape') {
+                        lightboxClose.click();
+                    } else if (e.key === 'ArrowLeft') {
+                        lightboxPrev.click();
+                    } else if (e.key === 'ArrowRight') {
+                        lightboxNext.click();
+                    } else if (e.key === 'l' || e.key === 'L') {
+                        // 快捷键L点赞
+                        likeBtn.click();
+                    } else if (e.key === 'f' || e.key === 'F') {
+                        // 快捷键F全屏
+                        fullscreenBtn.click();
+                    }
+                }
+            });
+
+            // 为Bento网格项添加鼠标移动视差效果
+            bentoItems.forEach(item => {
+                item.addEventListener('mousemove', function(e) {
+                    const { left, top, width, height } = this.getBoundingClientRect();
+                    const x = (e.clientX - left) / width - 0.5;
+                    const y = (e.clientY - top) / height - 0.5;
+                    
+                    const image = this.querySelector('img');
+                    image.style.transform = `scale(1.05) translate(${x * 10}px, ${y * 10}px)`;
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    const image = this.querySelector('img');
+                    image.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

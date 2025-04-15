@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- 引入Three.js库 -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.150.0/build/three.min.js"></script>
+    
+    <!-- 引入Lenis平滑滚动库 -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.19/dist/lenis.min.js"></script>
+    
+    <!-- 引入GSAP动画库 -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    
+    <title>3D卡片展示 - 水平滚动效果</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #f0f0f0; /* 改为与about.html相同的灰色 */
+            color: #333;
+            font-family: 'Arial', sans-serif;
+            overscroll-behavior: none; /* 防止过度滚动 */
+            overflow-x: hidden;
+            height: 100vh; /* 确保有完整高度 */
+            margin: 0; /* 确保没有边距 */
+            padding: 0; /* 确保没有内边距 */
+        }
+        
+        #canvas { 
+            position: fixed;
+            top: 45px; /* 调整以适应导航栏高度 */
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            height: calc(100% - 45px); /* 调整以适应导航栏高度 */
+        }
+        
+        #content {
+            position: relative;
+            z-index: 2;
+            pointer-events: all; /* 允许滚动触发 */
+            padding-top: 45px; /* 为导航栏腾出空间 */
+        }
+        
+        /* 创建可滚动高度 */
+        #scroll-height {
+            height: 500vh; /* 减小高度，使滚动更容易 */
+            width: 100%;
+        }
+        
+        /* 加载指示器 */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f0f0f0; /* 改为与body背景相同的灰色 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+        
+        #loader.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loader-content {
+            text-align: center;
+        }
+        
+        .loader-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333; /* 改为深色文字 */
+        }
+        
+        .progress-bar {
+            width: 200px;
+            height: 3px;
+            background: #ddd; /* 修改进度条背景色 */
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            background: #555; /* 修改进度条填充色 */
+            transition: width 0.3s ease;
+        }
+        
+        /* 导航栏样式 */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            height: 45px;
+            background-color: black;
+            z-index: 1000;
+            padding: 0; /* 移除水平内边距 */
+            margin: 0; /* 确保没有外边距 */
+            left: 0; /* 确保从左侧开始 */
+            right: 0; /* 确保延伸到右侧 */
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            height: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-family: 'Reenie Beanie', cursive;
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #ffffff; /* 修改为白色，与黑色背景搭配 */
+            opacity: 0.9;
+        }
+        
+        .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 2.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #ffffff; /* 修改为白色，与黑色背景搭配 */
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: capitalize;
+            transition: all 0.4s ease;
+            opacity: 0.9;
+            font-family: 'Poiret One', cursive;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            opacity: 1;
+            letter-spacing: 4px;
+        }
+
+        .nav-links a.active {
+            color: #DE2910;
+            opacity: 1;
+        }
+
+        .nav-links a.active:after {
+            display: none; /* 移除下划线 */
+        }
+        
+        /* 移动端适配样式 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            /* 移动端导航菜单按钮 */
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                right: 20px;
+                width: 30px;
+                height: 20px;
+                cursor: pointer;
+                z-index: 1001;
+            }
+
+            .mobile-menu-btn span {
+                display: block;
+                position: absolute;
+                height: 2px;
+                width: 100%;
+                background: white; /* 修改为白色，与黑色背景搭配 */
+                opacity: 1;
+                left: 0;
+                transform: rotate(0deg);
+                transition: .25s ease-in-out;
+            }
+
+            .mobile-menu-btn span:nth-child(1) {
+                top: 0px;
+            }
+
+            .mobile-menu-btn span:nth-child(2) {
+                top: 9px;
+            }
+
+            .mobile-menu-btn span:nth-child(3) {
+                top: 18px;
+            }
+
+            .mobile-menu-btn.open span:nth-child(1) {
+                top: 9px;
+                transform: rotate(135deg);
+            }
+
+            .mobile-menu-btn.open span:nth-child(2) {
+                opacity: 0;
+                left: -60px;
+            }
+
+            .mobile-menu-btn.open span:nth-child(3) {
+                top: 9px;
+                transform: rotate(-135deg);
+            }
+
+            /* 移动端菜单样式 */
+            .mobile-menu {
+                display: none;
+                position: fixed;
+                top: 45px;
+                left: 0;
+                width: 100%;
+                height: calc(100% - 45px);
+                background-color: rgba(0, 0, 0, 0.95); /* 修改为黑色背景 */
+                z-index: 999;
+                padding: 20px;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .mobile-menu.open {
+                display: flex;
+            }
+
+            .mobile-menu a {
+                color: white; /* 修改为白色 */
+                font-size: 1.5rem;
+                margin: 15px 0;
+                text-decoration: none;
+                font-family: 'Poiret One', cursive;
+                letter-spacing: 3px;
+                transition: all 0.3s ease;
+            }
+
+            .mobile-menu a:hover {
+                color: #DE2910;
+                letter-spacing: 4px;
+            }
+
+            .mobile-menu a.active {
+                color: #DE2910;
+            }
+        }
+
+        /* 添加 nav-container 样式 */
+        #nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 45px;
+            background-color: black;
+            z-index: 1000;
+        }
+        
+        /* 添加箭头按钮样式 */
+        .arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 50%;
+            z-index: 100;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .arrow:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .left-arrow {
+            left: 30px;
+        }
+
+        .right-arrow {
+            right: 30px;
+        }
+
+        /* 为按钮添加点击效果 */
+        .arrow:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        
+        /* 添加卡片描述区域样式 */
+        .card-description {
+            position: fixed;
+            left: 50%;
+            top: 80px; /* 修改位置到上方 */
+            transform: translateX(-50%);
+            width: 40%; /* 减小宽度 */
+            max-width: 400px;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 15px; /* 减少内边距 */
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            z-index: 90;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none; /* 防止遮挡模型交互 */
+            text-align: center; /* 居中文字 */
+        }
+
+        .card-description.active {
+            opacity: 1;
+            transform: translateX(-50%);
+        }
+        
+        .card-title {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1.8rem;
+            margin: 0; /* 移除边距 */
+            color: #333;
+        }
+        
+        .card-text {
+            display: none; /* 隐藏描述文本 */
+        }
+        
+        /* 在较小屏幕上调整说明文字区域 */
+        @media (max-width: 1024px) {
+            .card-description {
+                width: 70%;
+                padding: 20px;
+            }
+            
+            .card-title {
+                font-size: 1.5rem;
+            }
+            
+            .card-text {
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* 在移动设备上调整位置 */
+        @media (max-width: 768px) {
+            .card-description {
+                top: 80px;
+                width: 85%;
+                max-width: 400px;
+            }
+        }
+        
+        /* 添加卡片悬停时的播放按钮样式 */
+        .play-button-overlay {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 100;
+        }
+        
+        .play-button-overlay.visible {
+            opacity: 1;
+        }
+        
+        .play-button-overlay::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 25px solid white;
+            margin-left: 5px;
+        }
+        
+        /* 视频模态框样式 */
+        .video-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: hidden;
+        }
+        
+        .video-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 1000px;
+            margin: 60px auto;
+            height: 80%;
+        }
+        
+        #video-player {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载指示器 -->
+    <div id="loader">
+        <div class="loader-content">
+            <div class="loader-text">载入中...</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 导航栏容器 -->
+    <div id="nav-container"></div>
+    
+    <!-- 添加左右箭头控制按钮 -->
+    <div class="arrow left-arrow">&lt;</div>
+    <div class="arrow right-arrow">&gt;</div>
+    
+    <!-- 添加左侧卡片描述区域 -->
+    <div class="card-description">
+        <h2 class="card-title">项目一</h2>
+        <p class="card-text">项目描述内容将在这里显示，随着卡片的切换而更新。这里可以放置项目的详细介绍、创作背景等内容。</p>
+    </div>
+    
+    <!-- 添加播放按钮悬停效果 -->
+    <div class="play-button-overlay" id="play-button-overlay"></div>
+    
+    <!-- 添加视频模态框 -->
+    <div class="video-modal" id="video-modal">
+        <div class="video-modal-content">
+            <span class="close-modal">&times;</span>
+            <video id="video-player" controls></video>
+        </div>
+    </div>
+    
+    <!-- Three.js Canvas容器 -->
+    <div id="canvas"></div>
+    
+    <!-- 创建滚动空间 -->
+    <div id="content">
+        <div id="scroll-height"></div>
+    </div>
+
+    <!-- 加载统一导航栏脚本 -->
+    <script src="shared/load-nav.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始化变量
+            let scene, camera, renderer;
+            let cards = [];
+            let cardMeshes = [];
+            let group;
+            let lenis;
+            let currentScroll = 0;
+            let targetScroll = 0;
+            let isScrolling = false;
+            let loadedTexturesCount = 0;
+            let totalTexturesToLoad = 0;
+            let autoRotate = true; // 默认开启自动旋转
+            let autoRotateSpeed = 0.001;
+            let autoRotateTime = 0; // 自动旋转计时器
+            let currentCardIndex = 0; // 当前显示的卡片索引
+            let autoRotateInterval = null; // 自动旋转定时器
+            
+            // 添加Raycaster用于检测点击
+            let raycaster = new THREE.Raycaster();
+            let mouse = new THREE.Vector2();
+            let isClickable = true; // 标记是否可点击（防止动画过程中点击）
+            
+            // 惯性旋转相关变量
+            let rotationVelocity = 0;
+            let lastScrollSpeed = 0;
+            let targetRotation = 0;
+            let currentRotation = 0;
+            let dampingFactor = 0.45; 
+            let springStrength = 0.01; 
+            let scrollMultiplier = 1000; // 极大增加滚动响应
+            let overShootFactor = 2.5; // 极大的过冲因子
+            let isSnapping = false; // 是否正在对齐到卡片
+            
+            // 卡片配置
+            const totalCards = 6; // 严格六边形的六个顶点
+            const cardWidth = 7.5; // 保持卡片宽度
+            const cardHeight = 4.22; // 16:9比例的高度
+            const radius = 7.4; // 适中的半径，使卡片更聚拢但不挤在一起
+            const totalWidth = cardWidth * totalCards;
+            
+            // 卡片数据 - 替换为你的实际图片和项目信息
+            const cardData = [
+                {
+                    title: "快闪视频",
+                    image: "artistweb/images/video-posters/快闪视频_4.3.1.jpg", 
+                    description: "这是项目一的详细描述。这里可以介绍项目的背景、创作理念、制作过程等内容。观众可以通过这段文字更好地理解作品。",
+                    videoUrl: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/%E9%BB%91%E7%99%BD.mp4" // 快闪视频链接
+                },
+                {
+                    title: "采访视频",
+                    image: "artistweb/images/video-posters/caifang-poster.jpg", 
+                    description: "这是项目二的详细描述。每个项目都有其独特的故事和意义，通过文字说明可以让观众更深入地了解创作者的想法和项目的价值。",
+                    videoUrl: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/caifang.mp4" // 采访视频链接
+                },
+                {
+                    title: "笔尚感视频",
+                    image: "artistweb/images/video-posters/bishangan-poster.jpg", 
+                    description: "这是项目三的详细描述。优秀的项目不仅仅是视觉上的享受，更是思想和情感的传递。这段文字可以帮助建立与观众的情感连接。",
+                    videoUrl: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/23-10-31-%E5%BF%85%E4%B8%8A%E5%B2%B8.mp4" // 笔尚感视频链接
+                },
+                {
+                    title: "教研视频",
+                    image: "artistweb/images/video-posters/教研视频_4.1.1.jpg", 
+                    description: "这是项目四的详细描述。每个项目背后都有一个故事，一段经历，或者一个想法。通过这段文字，可以让观众更好地理解创作的初衷。",
+                    videoUrl: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/24-5-15-%E6%95%99%E7%A0%94%E8%A7%86%E9%A2%91.mp4" // 教研视频链接
+                },
+                {
+                    title: "博饼视频",
+                    image: "artistweb/images/video-posters/博饼_2.1.1.jpg", 
+                    description: "这是项目五的详细描述。好的作品总是能引起共鸣，而详细的文字说明则能帮助建立这种共鸣，让观众产生更深的理解和感受。",
+                    videoUrl: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/24-9-13-%E5%8D%9A%E9%A5%BC%E6%B4%BB%E5%8A%A8.mp4" // 博饼视频链接
+                },
+                {
+                    title: "基地视频",
+                    image: "artistweb/images/video-posters/jidi-poster.jpg", 
+                    description: "这是项目六的详细描述。作品的意义往往需要通过文字来阐释，这样才能让观众了解创作者的想法，以及作品所要表达的主题和情感。",
+                    videoUrl: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/%E5%9F%BA%E5%9C%B0%E4%BB%8B%E7%BB%8D%E8%A7%86%E9%A2%91.mp4" // 基地视频链接
+                }
+            ];
+            
+            // 如果cardData数量不足，复制已有数据填充
+            while (cardData.length < totalCards) {
+                const originalLength = Math.min(cardData.length, 6);
+                for (let i = 0; i < originalLength && cardData.length < totalCards; i++) {
+                    cardData.push({...cardData[i]});
+                }
+            }
+            
+            // 获取DOM元素
+            const loader = document.getElementById('loader');
+            const progressFill = document.getElementById('progress-fill');
+            const cardDescription = document.querySelector('.card-description');
+            const cardTitle = document.querySelector('.card-title');
+            const cardText = document.querySelector('.card-text');
+            
+            // 更新加载进度
+            function updateProgress(percent) {
+                progressFill.style.width = `${percent}%`;
+                if (percent >= 100) {
+                    setTimeout(() => {
+                        loader.classList.add('hide');
+                        console.log("加载器已隐藏");
+                    }, 500);
+                }
+            }
+            
+            // 优化动画性能设置
+            const gsapDefaults = {
+                force3D: true, // 强制3D加速
+                overwrite: true, // 防止动画冲突
+                lazy: false, // 立即更新
+                immediateRender: true // 立即渲染第一帧
+            };
+
+            // 设置GSAP默认值
+            gsap.defaults(gsapDefaults);
+            
+            // 初始化场景
+            function init() {
+                console.log("初始化3D场景...");
+                
+                // 创建THREE.js场景
+                scene = new THREE.Scene();
+                scene.background = new THREE.Color(0xf0f0f0); // 改为和背景一样的灰色
+                
+                // 创建相机
+                const aspect = window.innerWidth / window.innerHeight;
+                camera = new THREE.PerspectiveCamera(40, aspect, 0.1, 100);
+                camera.position.z = 21; // 适当调整相机距离
+                camera.position.y = 0; // 正对中心
+                camera.position.x = 11; // 与模型组position.x保持一致，确保正对卡片
+                console.log("相机位置设置为：", camera.position);
+                
+                // 创建渲染器 - 添加优化设置
+                renderer = new THREE.WebGLRenderer({ 
+                    antialias: true,
+                    powerPreference: 'high-performance',
+                    precision: 'highp'
+                });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // 限制像素比以提高性能
+                document.getElementById('canvas').appendChild(renderer.domElement);
+                
+                // 创建一个组来容纳所有卡片
+                group = new THREE.Group();
+                scene.add(group);
+                
+                // 将整个模型向右移动
+                group.position.x = 11; // 大幅向右偏移40个单位
+                console.log("模型组位置设置为：", group.position);
+                
+                // 创建卡片
+                createCards();
+                
+                // 初始化左侧描述文字
+                updateCardDescription(0);
+                setTimeout(() => {
+                    cardDescription.classList.add('active');
+                }, 1000);
+                
+                // 初始化Lenis平滑滚动
+                initLenis();
+                
+                // 添加事件监听器
+                window.addEventListener('resize', onWindowResize);
+                
+                // 开始动画循环
+                animate();
+                
+                // 启动自动旋转功能
+                startAutoRotate();
+                
+                console.log("场景初始化完成");
+            }
+            
+            // 启动自动旋转
+            function startAutoRotate() {
+                // 清除可能存在的定时器
+                if (autoRotateInterval) {
+                    clearInterval(autoRotateInterval);
+                }
+                
+                // 设置每1.5秒旋转到下一个卡片（加速一倍）
+                autoRotateInterval = setInterval(() => {
+                    if (!isSnapping) { // 如果不在动画过程中
+                        goToNextCard(); // 切换到下一张卡片
+                    }
+                }, 1500); // 1.5秒一次，加快一倍
+                
+                console.log("自动旋转已启动");
+            }
+            
+            // 停止自动旋转
+            function stopAutoRotate() {
+                if (autoRotateInterval) {
+                    clearInterval(autoRotateInterval);
+                    autoRotateInterval = null;
+                    console.log("自动旋转已停止");
+                }
+            }
+            
+            // 创建卡片
+            function createCards() {
+                const textureLoader = new THREE.TextureLoader();
+                totalTexturesToLoad = cardData.length;
+                
+                console.log(`开始加载${totalTexturesToLoad}个纹理...`);
+                
+                // 计算六边形的角度
+                const angleStep = (Math.PI * 2) / totalCards;
+                
+                cardData.forEach((data, index) => {
+                    // 计算当前卡片的角度 - 从右侧开始，顺时针排列
+                    const angle = index * angleStep;
+                    
+                    // 首先使用默认材质（纹理加载失败时使用）
+                    const defaultMaterial = new THREE.MeshBasicMaterial({ 
+                        color: 0x333333,
+                        side: THREE.DoubleSide
+                    });
+                    
+                    // 创建几何体 - 使用16:9比例
+                    const geometry = new THREE.PlaneGeometry(cardWidth, cardHeight);
+                    
+                    // 创建网格(使用默认材质)
+                    const card = new THREE.Mesh(geometry, defaultMaterial);
+                    
+                    // 沿六边形顶点放置卡片
+                    card.position.x = radius * Math.sin(angle); // 恢复原来的位置计算，不额外偏移
+                    card.position.z = radius * Math.cos(angle);
+                    card.position.y = 0; // 保持同一高度
+                    
+                    // 修改卡片朝向，使其面向相机/观众而非中心
+                    // 首先面向中心以获取基本朝向
+                    card.lookAt(0, 0, 0);
+                    // 然后旋转180度，使图片朝向外侧（面向观众）
+                    card.rotateY(Math.PI);
+                    
+                    // 存储卡片初始位置和角度用于动画
+                    card.userData = {
+                        initialX: card.position.x,
+                        initialZ: card.position.z,
+                        angle: angle,
+                        index: index,
+                        data: data // 确保完整的数据对象被存储，包含videoUrl
+                    };
+                    
+                    // 将卡片添加到组和数组中
+                    group.add(card);
+                    cardMeshes.push(card);
+                    cards.push({
+                        mesh: card,
+                        data: data
+                    });
+                    
+                    // 加载纹理并在就绪时更新材质
+                    textureLoader.load(
+                        data.image, 
+                        function(texture) {
+                            // 创建带纹理的材质 - 确保纹理不被拉伸
+                            const material = new THREE.MeshBasicMaterial({ 
+                                map: texture,
+                                side: THREE.DoubleSide
+                            });
+                            
+                            // 调整纹理映射以保持原始比例 - 防止拉伸
+                            const imageAspect = texture.image.width / texture.image.height;
+                            const geometryAspect = cardWidth / cardHeight;
+                            
+                            if (imageAspect > geometryAspect) {
+                                // 图像比卡片更宽，需要裁剪左右
+                                const scale = geometryAspect / imageAspect;
+                                texture.repeat.set(scale, 1);
+                                texture.offset.set((1 - scale) / 2, 0);
+                            } else {
+                                // 图像比卡片更高，需要裁剪上下
+                                const scale = imageAspect / geometryAspect;
+                                texture.repeat.set(1, scale);
+                                texture.offset.set(0, (1 - scale) / 2);
+                            }
+                            
+                            // 替换默认材质
+                            card.material.dispose();
+                            card.material = material;
+                            
+                            // 更新加载计数和进度
+                            loadedTexturesCount++;
+                            const progressPercent = (loadedTexturesCount / totalTexturesToLoad) * 100;
+                            updateProgress(progressPercent);
+                            
+                            console.log(`已加载 ${loadedTexturesCount}/${totalTexturesToLoad} 纹理 (${Math.round(progressPercent)}%)`);
+                        },
+                        null,
+                        function(error) {
+                            console.error(`加载纹理错误 ${index}:`, error);
+                            
+                            // 记录错误但仍更新计数器
+                            loadedTexturesCount++;
+                            updateProgress((loadedTexturesCount / totalTexturesToLoad) * 100);
+                        }
+                    );
+                });
+                
+                // 确保即使加载失败也会显示卡片
+                setTimeout(() => {
+                    if (loadedTexturesCount < totalTexturesToLoad) {
+                        updateProgress(100);
+                        console.log("部分纹理加载超时，但仍然显示内容");
+                    }
+                }, 5000);
+            }
+            
+            // 初始化Lenis平滑滚动
+            function initLenis() {
+                console.log("初始化Lenis平滑滚动...");
+                
+                try {
+                    lenis = new Lenis({
+                        duration: 1.2,
+                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                        direction: 'vertical',
+                        gestureDirection: 'vertical',
+                        smooth: true,
+                        smoothTouch: true,
+                        touchMultiplier: 3
+                    });
+                    
+                    // 上一次滚动位置
+                    let prevScroll = 0;
+                    
+                    // 获取Lenis的滚动值
+                    lenis.on('scroll', (e) => {
+                        // 如果正在对齐中，不响应滚动
+                        if (isSnapping) return;
+                        
+                        // 计算滚动速度
+                        const scrollDelta = e.scroll - prevScroll;
+                        prevScroll = e.scroll;
+                        
+                        // 记录目标滚动位置
+                        targetScroll = e.scroll;
+                        
+                        // 滚动处理 - 直接触发卡片切换而非连续旋转
+                        if (Math.abs(scrollDelta) > 5) {
+                            // 判断滚动方向并触发相应的卡片切换
+                            if (scrollDelta > 0) {
+                                goToNextCard();
+                            } else {
+                                goToPrevCard();
+                            }
+                        }
+                    });
+                    
+                    function raf(time) {
+                        lenis.raf(time);
+                        requestAnimationFrame(raf);
+                    }
+                    
+                    requestAnimationFrame(raf);
+                    
+                    // 根据卡片数量设置滚动高度
+                    const scrollHeight = 500;
+                    document.getElementById('scroll-height').style.height = `${scrollHeight}vh`;
+                    
+                    console.log("Lenis初始化完成");
+                } catch (error) {
+                    console.log(`Lenis初始化失败: ${error.message}`);
+                }
+            }
+            
+            // 更新组旋转 - 根据滚动位置旋转整个卡片组
+            function updateGroupRotation() {
+                const maxScroll = document.body.scrollHeight - window.innerHeight;
+                const scrollProgress = targetScroll / maxScroll;
+                
+                // 计算目标旋转角度 - 完整的一周旋转
+                targetRotation = scrollProgress * Math.PI * 2;
+            }
+            
+            // 自动对齐到最近的卡片
+            let scrollEndTimer;
+            function snapToNearestCard() {
+                if (isScrolling || isSnapping) return;
+                
+                isSnapping = true; // 标记正在对齐中
+                
+                // 计算当前旋转角度最接近哪个卡片
+                const currentAngle = group.rotation.y % (Math.PI * 2);
+                const normalizedAngle = currentAngle < 0 ? currentAngle + Math.PI * 2 : currentAngle;
+                
+                // 卡片角度间隔
+                const cardAngleStep = (Math.PI * 2) / totalCards;
+                
+                // 找到最近的卡片索引
+                const cardIndex = Math.round(normalizedAngle / cardAngleStep) % totalCards;
+                
+                // 计算目标旋转角度
+                const targetAngle = (cardIndex * cardAngleStep) % (Math.PI * 2);
+                
+                // 计算目标角度与当前角度的差异
+                let angleDiff = targetAngle - normalizedAngle;
+                // 确保选择最短路径
+                if (Math.abs(angleDiff) > Math.PI) {
+                    angleDiff = angleDiff > 0 ? angleDiff - Math.PI * 2 : angleDiff + Math.PI * 2;
+                }
+                
+                // 如果差异很小，使用简单的弹性动画
+                if (Math.abs(angleDiff) < 0.1) {
+                    gsap.to(group.rotation, {
+                        y: targetAngle,
+                        duration: 0.5,
+                        ease: "elastic.out(1.2, 0.5)",
+                        onUpdate: function() {
+                            isScrolling = true;
+                        },
+                        onComplete: function() {
+                            isSnapping = false;
+                            isScrolling = false;
+                        }
+                    });
+                    return;
+                }
+                
+                // 创建复杂的多阶段动画，模拟非线性动势
+                const tl = gsap.timeline({
+                    onComplete: function() {
+                        isSnapping = false;
+                        isScrolling = false;
+                    }
+                });
+                
+                // 第1阶段：加速
+                tl.to(group.rotation, {
+                    y: normalizedAngle + angleDiff * 0.4, // 移动40%的距离
+                    duration: 0.25,
+                    ease: "power2.in" // 加速效果
+                });
+                
+                // 第2阶段：快速移动
+                tl.to(group.rotation, {
+                    y: normalizedAngle + angleDiff * 0.9, // 移动到90%的位置
+                    duration: 0.2,
+                    ease: "power1.inOut" // 平滑的快速移动
+                });
+                
+                // 第3阶段：减速并超过目标
+                tl.to(group.rotation, {
+                    y: targetAngle + Math.sign(angleDiff) * 0.15, // 略微超过目标位置
+                    duration: 0.25,
+                    ease: "power2.out" // 减速效果
+                });
+                
+                // 第4阶段：反弹回目标位置
+                tl.to(group.rotation, {
+                    y: targetAngle,
+                    duration: 0.4,
+                    ease: "elastic.out(1.2, 0.5)" // 弹性反弹效果
+                });
+            }
+            
+            // 处理窗口调整大小
+            function onWindowResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+            
+            // 主动画循环 - 优化渲染
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                // 应用旋转 - 仅在需要时渲染
+                if (!isSnapping) {
+                    group.rotation.y = currentRotation;
+                }
+                
+                // 渲染场景
+                renderer.render(scene, camera);
+            }
+            
+            // 更新卡片描述内容
+            function updateCardDescription(index) {
+                // 保存当前索引
+                currentCardIndex = index;
+                
+                // 获取卡片数据
+                const card = cardData[index];
+                
+                // 更新描述内容 - 只显示标题
+                cardTitle.textContent = card.title;
+                // 不再显示描述文本
+                
+                // 触发淡入淡出效果
+                cardDescription.classList.remove('active');
+                setTimeout(() => {
+                    cardDescription.classList.add('active');
+                }, 300);
+            }
+            
+            // 切换到下一张卡片，带动势效果
+            function goToNextCard() {
+                if (isSnapping) return;
+                
+                // 暂停自动旋转
+                stopAutoRotate();
+                
+                isSnapping = true;
+                
+                // 计算当前旋转角度
+                const currentAngle = group.rotation.y % (Math.PI * 2);
+                const normalizedAngle = currentAngle < 0 ? currentAngle + Math.PI * 2 : currentAngle;
+                
+                // 卡片角度间隔
+                const cardAngleStep = (Math.PI * 2) / totalCards;
+                
+                // 找到当前卡片索引
+                const currentCardIndex = Math.round(normalizedAngle / cardAngleStep) % totalCards;
+                
+                // 计算下一张卡片索引
+                const nextCardIndex = (currentCardIndex + 1) % totalCards;
+                
+                // 更新描述文字
+                updateCardDescription(nextCardIndex);
+                
+                // 使用两阶段动画，无回弹效果，增强非线性感
+                const tl = gsap.timeline({
+                    onComplete: function() {
+                        isSnapping = false;
+                        currentRotation = (nextCardIndex * cardAngleStep) % (Math.PI * 2); // 更新当前旋转
+                        
+                        // 用户主动切换卡片后，10秒内没有新操作才恢复自动旋转
+                        setTimeout(startAutoRotate, 10000);
+                    }
+                });
+                
+                // 第1阶段：费力加速阶段（初始很慢，逐渐变快）
+                tl.to(group.rotation, {
+                    y: normalizedAngle + ((nextCardIndex * cardAngleStep - normalizedAngle) * 0.4), // 移动40%的距离
+                    duration: 1.5, // 大幅增加时间，减缓整体速度
+                    ease: "power3.in", // 较缓和的加速效果
+                    ...gsapDefaults
+                });
+                
+                // 第2阶段：到达并逐渐减速
+                tl.to(group.rotation, {
+                    y: (nextCardIndex * cardAngleStep) % (Math.PI * 2), // 直接到目标位置，不超过
+                    duration: 0.8, // 增加时间，让减速过程更明显
+                    ease: "power3.out", // 较平滑的减速效果
+                    ...gsapDefaults
+                });
+            }
+            
+            // 切换到上一张卡片，带动势效果
+            function goToPrevCard() {
+                if (isSnapping) return;
+                
+                // 暂停自动旋转
+                stopAutoRotate();
+                
+                isSnapping = true;
+                
+                // 计算当前旋转角度
+                const currentAngle = group.rotation.y % (Math.PI * 2);
+                const normalizedAngle = currentAngle < 0 ? currentAngle + Math.PI * 2 : currentAngle;
+                
+                // 卡片角度间隔
+                const cardAngleStep = (Math.PI * 2) / totalCards;
+                
+                // 找到当前卡片索引
+                const currentCardIndex = Math.round(normalizedAngle / cardAngleStep) % totalCards;
+                
+                // 计算上一张卡片索引
+                const prevCardIndex = (currentCardIndex - 1 + totalCards) % totalCards;
+                
+                // 更新描述文字
+                updateCardDescription(prevCardIndex);
+                
+                // 使用两阶段动画，无回弹效果，增强非线性感
+                const tl = gsap.timeline({
+                    onComplete: function() {
+                        isSnapping = false;
+                        currentRotation = (prevCardIndex * cardAngleStep) % (Math.PI * 2); // 更新当前旋转
+                        
+                        // 用户主动切换卡片后，10秒内没有新操作才恢复自动旋转
+                        setTimeout(startAutoRotate, 10000);
+                    }
+                });
+                
+                // 第1阶段：费力加速阶段（初始很慢，逐渐变快）
+                tl.to(group.rotation, {
+                    y: normalizedAngle + ((prevCardIndex * cardAngleStep - normalizedAngle) * 0.4), // 移动40%的距离
+                    duration: 1.5, // 大幅增加时间，减缓整体速度
+                    ease: "power3.in", // 较缓和的加速效果
+                    ...gsapDefaults
+                });
+                
+                // 第2阶段：到达并逐渐减速
+                tl.to(group.rotation, {
+                    y: (prevCardIndex * cardAngleStep) % (Math.PI * 2), // 直接到目标位置，不超过
+                    duration: 0.8, // 增加时间，让减速过程更明显
+                    ease: "power3.out", // 较平滑的减速效果
+                    ...gsapDefaults
+                });
+            }
+            
+            // 添加键盘事件监听器
+            window.addEventListener('keydown', function(event) {
+                if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+                    goToNextCard();
+                } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+                    goToPrevCard();
+                }
+            });
+            
+            // 添加鼠标点击事件监听器，用于卡片点击
+            window.addEventListener('click', handleCardClick);
+            
+            // 添加鼠标移动事件监听，实现悬停效果
+            window.addEventListener('mousemove', handleMouseMove);
+            
+            // 添加触摸滑动和鼠标滑动事件
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            // 触摸事件
+            window.addEventListener('touchstart', function(event) {
+                touchStartX = event.touches[0].clientX;
+            });
+            
+            window.addEventListener('touchend', function(event) {
+                touchEndX = event.changedTouches[0].clientX;
+                handleSwipe();
+            });
+            
+            // 鼠标事件
+            let isMouseDown = false;
+            let mouseStartX = 0;
+            let mouseEndX = 0;
+            
+            window.addEventListener('mousedown', function(event) {
+                isMouseDown = true;
+                mouseStartX = event.clientX;
+            });
+            
+            window.addEventListener('mouseup', function(event) {
+                if (isMouseDown) {
+                    mouseEndX = event.clientX;
+                    isMouseDown = false;
+                    handleMouseSwipe();
+                }
+            });
+            
+            // 处理触摸滑动
+            function handleSwipe() {
+                const swipeThreshold = 50; // 滑动阈值
+                const swipeDistance = touchEndX - touchStartX;
+                
+                if (swipeDistance > swipeThreshold) {
+                    // 向右滑动，显示上一张卡片
+                    goToPrevCard();
+                } else if (swipeDistance < -swipeThreshold) {
+                    // 向左滑动，显示下一张卡片
+                    goToNextCard();
+                }
+            }
+            
+            // 处理鼠标滑动
+            function handleMouseSwipe() {
+                const swipeThreshold = 50; // 滑动阈值
+                const swipeDistance = mouseEndX - mouseStartX;
+                
+                if (swipeDistance > swipeThreshold) {
+                    // 向右滑动，显示上一张卡片
+                    goToPrevCard();
+                } else if (swipeDistance < -swipeThreshold) {
+                    // 向左滑动，显示下一张卡片
+                    goToNextCard();
+                }
+            }
+            
+            // 处理卡片点击事件
+            function handleCardClick(event) {
+                // 如果正在动画中或不可点击，则忽略点击
+                if (isSnapping || !isClickable) return;
+                
+                // 暂停自动旋转
+                stopAutoRotate();
+                
+                // 计算鼠标归一化坐标
+                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+                
+                // 更新射线
+                raycaster.setFromCamera(mouse, camera);
+                
+                // 检测射线与卡片的相交
+                const intersects = raycaster.intersectObjects(cardMeshes);
+                
+                if (intersects.length > 0) {
+                    // 获取点击的卡片
+                    const clickedCard = intersects[0].object;
+                    const cardIndex = clickedCard.userData.index;
+                    const cardData = clickedCard.userData.data;
+                    
+                    // 打开视频模态框
+                    if (cardData && cardData.videoUrl) {
+                        // 获取模态框和视频播放器元素
+                        const modal = document.getElementById('video-modal');
+                        const videoPlayer = document.getElementById('video-player');
+                        
+                        // 设置视频源
+                        videoPlayer.src = cardData.videoUrl;
+                        
+                        // 显示模态框
+                        modal.style.display = 'block';
+                        
+                        // 播放视频
+                        videoPlayer.play();
+                    }
+                }
+                
+                // 10秒后恢复自动旋转
+                setTimeout(startAutoRotate, 10000);
+            }
+            
+            // 添加鼠标移动事件监听，实现悬停效果
+            function handleMouseMove(event) {
+                // 计算鼠标归一化坐标
+                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+                
+                // 更新射线
+                raycaster.setFromCamera(mouse, camera);
+                
+                // 检测射线与卡片的相交
+                const intersects = raycaster.intersectObjects(cardMeshes);
+                
+                // 获取播放按钮元素
+                const playButton = document.getElementById('play-button-overlay');
+                
+                // 重置所有卡片的样式
+                cardMeshes.forEach(card => {
+                    // 恢复原始缩放
+                    if (card.userData.isHovered) {
+                        card.scale.set(1, 1, 1);
+                        card.userData.isHovered = false;
+                    }
+                });
+                
+                // 如果有卡片被悬停，变更鼠标样式并高亮卡片
+                if (intersects.length > 0) {
+                    document.body.style.cursor = 'pointer';
+                    const hoveredCard = intersects[0].object;
+                    
+                    // 稍微放大卡片
+                    hoveredCard.scale.set(1.05, 1.05, 1.05);
+                    hoveredCard.userData.isHovered = true;
+                    
+                    // 显示播放按钮并跟随鼠标
+                    playButton.style.left = event.clientX - 40 + 'px'; // 居中
+                    playButton.style.top = event.clientY - 40 + 'px'; // 居中
+                    playButton.classList.add('visible');
+                } else {
+                    document.body.style.cursor = 'auto';
+                    // 隐藏播放按钮
+                    playButton.classList.remove('visible');
+                }
+            }
+            
+            // 初始化一切
+            setTimeout(() => {
+                init();
+                
+                // 添加箭头按钮事件
+                const leftArrow = document.querySelector('.left-arrow');
+                const rightArrow = document.querySelector('.right-arrow');
+                
+                leftArrow.addEventListener('click', goToPrevCard);
+                rightArrow.addEventListener('click', goToNextCard);
+                
+                // 添加键盘事件监听器
+                window.addEventListener('keydown', function(event) {
+                    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+                        goToNextCard();
+                    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+                        goToPrevCard();
+                    }
+                });
+                
+                // 添加模态框关闭事件
+                const modal = document.getElementById('video-modal');
+                const closeBtn = document.querySelector('.close-modal');
+                const videoPlayer = document.getElementById('video-player');
+                
+                // 点击关闭按钮
+                closeBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    videoPlayer.pause();
+                    videoPlayer.src = '';
+                });
+                
+                // 点击模态框外部区域
+                window.addEventListener('click', function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = 'none';
+                        videoPlayer.pause();
+                        videoPlayer.src = '';
+                    }
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html> 

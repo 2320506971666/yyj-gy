@@ -1,0 +1,38 @@
+# macOS 系统文件
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# 缩略图
+.Spotlight-V100
+.Trashes
+
+# 可能的临时文件
+*.swp
+*.swo
+*~
+
+# 视频和大型媒体文件（考虑使用 Git LFS 来管理这些文件）
+# 如果您决定使用 Git LFS，请取消下面的注释
+# *.mp4
+# *.mov
+# *.avi
+# *.wmv
+# *.flv
+# *.webm
+# *.jpg
+# *.jpeg
+# *.png
+# *.gif
+# *.tiff
+
+# IDE 和编辑器文件
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# 特定文件忽略
+model.html 

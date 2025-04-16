@@ -584,7 +584,7 @@
         // 初始化Three.js场景
         let scene, camera, renderer, controls, model;
         let clock;
-        let modelPath = './3dLOGOblend_副本.glb'; // 指定模型路径
+        let modelPath = './3dLOGOblend_副本_draco.glb'; // 指定模型路径
         let isWireframe = false; // 是否处于线框模式
         
         // 渐变颜色设置 - 默认风格（浅米色到淡绿色）
@@ -966,6 +966,12 @@
             
             // 创建GLTF加载器
             const gltfLoader = new GLTFLoader(manager);
+            
+            // 配置DRACO解压器
+            const dracoLoader = new DRACOLoader();
+            dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+            dracoLoader.setDecoderConfig({type: 'js'}); // 使用JavaScript解码器
+            gltfLoader.setDRACOLoader(dracoLoader);
             
             // 加载模型
             gltfLoader.load(

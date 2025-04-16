@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Favicon -->
-    <link rel="icon" href="/images/灰蓝渐变-噪点.jpg">
+    <link rel="icon" href="images/灰蓝渐变-噪点.jpg">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,6 +22,38 @@
     <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
     <script src="https://unpkg.com/@barba/core"></script>
+    
+    <!-- 路径处理脚本 -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const isGitHub = window.location.hostname.includes("github.io") || window.location.hostname === "tripley.cn";
+        const prefix = isGitHub ? "/yyj-gy/" : "./";
+
+        // 替换所有 img 标签路径
+        document.querySelectorAll("img").forEach(img => {
+            if (img.getAttribute("src") && !img.src.startsWith("http")) {
+                const src = img.getAttribute("src");
+                img.setAttribute("src", prefix + src.replace(/^\.?\/*/, ""));
+            }
+        });
+
+        // 替换 favicon
+        const favicon = document.querySelector("link[rel='icon']");
+        if (favicon) {
+            const href = favicon.getAttribute("href");
+            favicon.setAttribute("href", prefix + href.replace(/^\.?\/*/, ""));
+        }
+        
+        // 处理其他资源
+        document.querySelectorAll("script[src], link[href]").forEach(el => {
+            const attr = el.tagName === "SCRIPT" ? "src" : "href";
+            const path = el.getAttribute(attr);
+            if (path && !path.startsWith("http")) {
+                el.setAttribute(attr, prefix + path.replace(/^\.?\/*/, ""));
+            }
+        });
+    });
+    </script>
     
     <title>About - Triple-Y</title>
     <style>
@@ -670,7 +702,7 @@
         <div class="about-page">
             <div class="about-content">
                 <div class="about-grid">
-                    <img src="/images/Portrait.jpeg" alt="About" class="about-image">
+                    <img src="images/Portrait.jpeg" alt="About" class="about-image">
                     <div class="about-text">
                         <h1>我的片段</h1>
                         <p>我来自浙江，是一名摄影师，我对视觉艺术有着浓厚的兴趣。闲暇时，我常常沉浸在电影、摄影画册和近代摄影史中，用不同的角度去感受影像的魅力。</p>
@@ -692,33 +724,33 @@
                 <h3>Video Editing & Post-production</h3>
                 <div class="software-grid" style="grid-template-columns: repeat(4, 1fr); max-width: 800px;">
                     <div class="software-item">
-                        <img src="/images/logo/DaVinci_Resolve_Studio.png" alt="DaVinci Resolve">
+                        <img src="images/logo/DaVinci_Resolve_Studio.png" alt="DaVinci Resolve">
                         <p>DaVinci Resolve</p>
                     </div>
                     <div class="software-item">
-                        <img src="/images/logo/adobe-premiere-svgrepo-com.svg" alt="Adobe Premiere Pro">
+                        <img src="images/logo/adobe-premiere-svgrepo-com.svg" alt="Adobe Premiere Pro">
                         <p>Premiere Pro</p>
                     </div>
                     <div class="software-item">
-                        <img src="/images/logo/adobe-after-effects-svgrepo-com.svg" alt="Adobe After Effects">
+                        <img src="images/logo/adobe-after-effects-svgrepo-com.svg" alt="Adobe After Effects">
                         <p>After Effects</p>
                     </div>
                     <div class="software-item">
-                        <img src="/images/logo/final cut pro.png" alt="Final Cut Pro" class="smaller-logo">
+                        <img src="images/logo/final cut pro.png" alt="Final Cut Pro" class="smaller-logo">
                         <p>Final Cut Pro</p>
                     </div>
                 </div>
                 <div class="software-grid" style="grid-template-columns: repeat(3, 1fr); max-width: 600px; margin-top: 20px;">
                     <div class="software-item">
-                        <img src="/images/logo/Adobe_Audition_CC_icon_(2020).svg" alt="Adobe Audition" class="smaller-logo">
+                        <img src="images/logo/Adobe_Audition_CC_icon_(2020).svg" alt="Adobe Audition" class="smaller-logo">
                         <p>Adobe Audition</p>
                     </div>
                     <div class="software-item">
-                        <img src="/images/logo/OBS_Studio_Logo.svg" alt="OBS Studio" class="smaller-logo">
+                        <img src="images/logo/OBS_Studio_Logo.svg" alt="OBS Studio" class="smaller-logo">
                         <p>OBS Studio</p>
                     </div>
                     <div class="software-item">
-                        <img src="/images/logo/剪映.png" alt="剪映" class="smaller-logo">
+                        <img src="images/logo/剪映.png" alt="剪映" class="smaller-logo">
                         <p>剪映</p>
                     </div>
                 </div>
@@ -729,15 +761,15 @@
                 <h3>Graphics & Visual Design</h3>
                 <div class="software-grid" style="grid-template-columns: repeat(3, 1fr); max-width: 600px;">
                     <div class="software-item">
-                        <img src="/images/logo/adobe-photoshop-svgrepo-com.svg" alt="Adobe Photoshop">
+                        <img src="images/logo/adobe-photoshop-svgrepo-com.svg" alt="Adobe Photoshop">
                         <p>Photoshop</p>
                     </div>
                     <div class="software-item">
-                        <img src="/images/logo/adobe-illustrator-svgrepo-com.svg" alt="Adobe Illustrator">
+                        <img src="images/logo/adobe-illustrator-svgrepo-com.svg" alt="Adobe Illustrator">
                         <p>Illustrator</p>
                     </div>
                     <div class="software-item">
-                        <img src="/images/logo/adobe-lightroom-svgrepo-com.svg" alt="Adobe Lightroom">
+                        <img src="images/logo/adobe-lightroom-svgrepo-com.svg" alt="Adobe Lightroom">
                         <p>Lightroom</p>
                     </div>
                 </div>
@@ -748,7 +780,7 @@
                 <h3>3D Design & Modeling</h3>
                 <div class="software-grid" style="grid-template-columns: repeat(1, 1fr); max-width: 200px;">
                     <div class="software-item">
-                        <img src="/images/logo/blender-svgrepo-com.svg" alt="Blender">
+                        <img src="images/logo/blender-svgrepo-com.svg" alt="Blender">
                         <p>Blender</p>
                     </div>
                 </div>
@@ -759,11 +791,11 @@
                 <h3>AI Tools</h3>
                 <div class="software-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 400px;">
                     <div class="software-item">
-                        <img src="/images/logo/cursor.svg" alt="Cursor">
+                        <img src="images/logo/cursor.svg" alt="Cursor">
                         <p>Cursor</p>
                     </div>
                     <div class="software-item">
-                        <img src="/images/logo/chatgpt-icon.svg" alt="ChatGPT">
+                        <img src="images/logo/chatgpt-icon.svg" alt="ChatGPT">
                         <p>ChatGPT</p>
                     </div>
                 </div>

@@ -2,31 +2,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // 获取当前页面名称
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     
-    // 加载导航栏样式
-    loadNavStyles();
-    
     // 处理导航栏逻辑
     setupMobileMenu();
     
     // 设置当前页面的active状态
     setActiveNavLink(currentPage);
 });
-
-// 加载导航栏样式
-function loadNavStyles() {
-    // 检查是否已经加载了样式
-    if (!document.getElementById('nav-styles')) {
-        const isGitHubPages = window.location.hostname.includes("github.io");
-        const isCustomDomain = window.location.hostname === "tripley.cn";
-        const prefix = isGitHubPages ? "/yyj-gy" : (isCustomDomain ? "" : ".");
-        
-        const navStyles = document.createElement('link');
-        navStyles.id = 'nav-styles';
-        navStyles.rel = 'stylesheet';
-        navStyles.href = `${prefix}/shared/nav-styles.css`;
-        document.head.appendChild(navStyles);
-    }
-}
 
 // 设置移动菜单功能
 function setupMobileMenu() {
@@ -53,16 +34,12 @@ function setupMobileMenu() {
 
 // 设置导航栏激活状态
 function setActiveNavLink(currentPage) {
-    const currentPath = window.location.pathname;
     const navLinks = document.querySelectorAll('.nav-link');
     const mobileLinks = document.querySelectorAll('.mobile-link');
     
-    // 提取当前页面名称
-    let currentPageName = currentPath.split('/').pop();
-    
     // 处理首页情况
-    if (currentPageName === '' || currentPageName === 'index.html') {
-        currentPageName = 'index.html';
+    if (currentPage === '' || currentPage === 'index.html') {
+        currentPage = 'index.html';
     }
     
     // 处理hash标记（如 #explore）

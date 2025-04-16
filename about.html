@@ -28,13 +28,37 @@
     document.addEventListener("DOMContentLoaded", function () {
         const isGitHubPages = window.location.hostname.includes("github.io");
         const isCustomDomain = window.location.hostname === "tripley.cn";
-        const prefix = isGitHubPages ? "/yyj-gy/" : (isCustomDomain ? "/" : "./");
+        const isLocalhost = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+        const prefix = isGitHubPages ? "/yyj-gy/" : 
+                      (isCustomDomain ? "/" : 
+                      (isLocalhost ? "" : "./"));
+        
+        console.log("当前环境:", window.location.hostname);
+        console.log("使用前缀:", prefix);
+
+        // 辅助函数：修复路径
+        function fixResourcePath(path) {
+            if (path && !path.startsWith("http")) {
+                // 清理路径
+                const cleanPath = path.replace(/^\.?\/*/, "");
+                // 构建带前缀的路径
+                let fixedPath = prefix + cleanPath;
+                // 移除双斜杠
+                fixedPath = fixedPath.replace(/\/\//g, '/');
+                
+                console.log(`资源路径修复: ${path} -> ${fixedPath}`);
+                return fixedPath;
+            }
+            return path;
+        }
 
         // 替换所有 img 标签路径
         document.querySelectorAll("img").forEach(img => {
             if (img.getAttribute("src") && !img.src.startsWith("http")) {
                 const src = img.getAttribute("src");
-                img.setAttribute("src", prefix + src.replace(/^\.?\/*/, ""));
+                const fixedSrc = fixResourcePath(src);
+                img.setAttribute("src", fixedSrc);
+                console.log(`修复图片: ${src} -> ${fixedSrc}`);
             }
         });
 
@@ -42,7 +66,7 @@
         const favicon = document.querySelector("link[rel='icon']");
         if (favicon) {
             const href = favicon.getAttribute("href");
-            favicon.setAttribute("href", prefix + href.replace(/^\.?\/*/, ""));
+            favicon.setAttribute("href", fixResourcePath(href));
         }
         
         // 处理其他资源
@@ -50,7 +74,7 @@
             const attr = el.tagName === "SCRIPT" ? "src" : "href";
             const path = el.getAttribute(attr);
             if (path && !path.startsWith("http")) {
-                el.setAttribute(attr, prefix + path.replace(/^\.?\/*/, ""));
+                el.setAttribute(attr, fixResourcePath(path));
             }
         });
     });
@@ -842,6 +866,7 @@
     <script src="shared/load-nav.js"></script>
     <!-- 加载动画框架脚本 -->
     <script src="shared/animation.js"></script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // 页面加载时的淡出效果
@@ -864,7 +889,7 @@
                         
                         // 延迟导航以等待过渡效果完成
                         setTimeout(() => {
-                            window.location.href = href;
+                            window.location.href = fixPath(href);
                         }, 1000);
                     }
                 });
@@ -895,6 +920,11 @@
             
             // About部分的段落文字动画
             function animateAboutText() {
+                if (typeof gsap === 'undefined') {
+                    console.warn('GSAP未加载，跳过文字动画');
+                    return;
+                }
+                
                 const title = document.querySelector('.about-text h1');
                 const paragraphs = document.querySelectorAll('.about-text p');
                 
@@ -961,7 +991,7 @@
             }
             
             // 初始化About文字动画
-            animateAboutText();
+            setTimeout(animateAboutText, 500); // 延迟执行以确保GSAP已加载
             
             // 初始化滚动动画
             function initScrollAnimations() {
@@ -1027,7 +1057,7 @@
             }
             
             // 初始化滚动动画
-            initScrollAnimations();
+            setTimeout(initScrollAnimations, 500); // 延迟执行以确保页面完全加载
         });
     </script>
 </body>

@@ -23,6 +23,29 @@
     <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
     <script src="https://unpkg.com/@barba/core"></script>
     
+    <!-- 图片路径处理脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查当前是否在GitHub Pages上
+            const isGitHubPages = window.location.hostname.includes('github.io');
+            
+            if (isGitHubPages) {
+                // 在GitHub Pages上，将所有图片路径中的"artistweb/"前缀去掉
+                document.querySelectorAll('img').forEach(img => {
+                    if (img.src.includes('artistweb/images/')) {
+                        img.src = img.src.replace('artistweb/images/', 'images/');
+                    }
+                });
+                
+                // 处理favicon
+                const favicon = document.querySelector('link[rel="icon"]');
+                if (favicon && favicon.href.includes('artistweb/images/')) {
+                    favicon.href = favicon.href.replace('artistweb/images/', 'images/');
+                }
+            }
+        });
+    </script>
+    
     <title>About - Triple-Y</title>
     <style>
         /* 基础样式 */

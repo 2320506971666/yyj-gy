@@ -16,10 +16,14 @@ document.addEventListener("DOMContentLoaded", function() {
 function loadNavStyles() {
     // 检查是否已经加载了样式
     if (!document.getElementById('nav-styles')) {
+        const isGitHubPages = window.location.hostname.includes("github.io");
+        const isCustomDomain = window.location.hostname === "tripley.cn";
+        const prefix = isGitHubPages ? "/yyj-gy" : (isCustomDomain ? "" : ".");
+        
         const navStyles = document.createElement('link');
         navStyles.id = 'nav-styles';
         navStyles.rel = 'stylesheet';
-        navStyles.href = '/shared/nav-styles.css';
+        navStyles.href = `${prefix}/shared/nav-styles.css`;
         document.head.appendChild(navStyles);
     }
 }

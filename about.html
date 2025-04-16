@@ -26,8 +26,9 @@
     <!-- 路径处理脚本 -->
     <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const isGitHub = window.location.hostname.includes("github.io") || window.location.hostname === "tripley.cn";
-        const prefix = isGitHub ? "/yyj-gy/" : "./";
+        const isGitHubPages = window.location.hostname.includes("github.io");
+        const isCustomDomain = window.location.hostname === "tripley.cn";
+        const prefix = isGitHubPages ? "/yyj-gy/" : (isCustomDomain ? "/" : "./");
 
         // 替换所有 img 标签路径
         document.querySelectorAll("img").forEach(img => {

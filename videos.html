@@ -337,31 +337,47 @@
         .card-description {
             position: fixed;
             left: 50%;
-            top: 80px; /* 修改位置到上方 */
+            top: 160px; /* 将位置下移，从80px改为120px */
             transform: translateX(-50%);
             width: 40%; /* 减小宽度 */
             max-width: 400px;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 15px; /* 减少内边距 */
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            background-color: transparent; /* 移除背景色 */
+            padding: 0; /* 移除内边距 */
             z-index: 90;
             opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            filter: blur(0px);
+            transition: opacity 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                        transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1),
+                        filter 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
             pointer-events: none; /* 防止遮挡模型交互 */
             text-align: center; /* 居中文字 */
+            display: block; /* 修改为始终显示，而是用opacity和filter控制可见性 */
         }
 
         .card-description.active {
             opacity: 1;
             transform: translateX(-50%);
+            filter: blur(0px);
+        }
+        
+        .card-description.fade-out {
+            opacity: 0;
+            filter: blur(8px);
+            transform: translateX(-50%) scale(0.95);
+        }
+        
+        .card-description.fade-in {
+            opacity: 1;
+            filter: blur(0px);
+            transform: translateX(-50%) scale(1);
         }
         
         .card-title {
-            font-family: 'Noto Sans SC', sans-serif;
-            font-size: 1.8rem;
+            font-family: 'Heiti SC', '黑体', 'SimHei', 'Microsoft YaHei', sans-serif; /* 使用黑体字体 */
+            font-size: 2.2rem; /* 保持字号 */
             margin: 0; /* 移除边距 */
             color: #333;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); /* 保留文字阴影 */
         }
         
         .card-text {
@@ -372,88 +388,92 @@
         @media (max-width: 1024px) {
             .card-description {
                 width: 70%;
-                padding: 20px;
+                padding: 0;
+                top: 100px; /* 在中等屏幕上稍微上移一点 */
             }
             
             .card-title {
-                font-size: 1.5rem;
-            }
-            
-            .card-text {
-                font-size: 0.9rem;
+                font-size: 1.8rem;
             }
         }
         
         /* 在移动设备上调整位置 */
         @media (max-width: 768px) {
             .card-description {
-                top: 80px;
+                top: 90px; /* 在小屏幕上进一步上移 */
                 width: 85%;
                 max-width: 400px;
             }
-        }
-        
-        /* 添加卡片悬停时的播放按钮样式 */
-        .play-button-overlay {
-            position: fixed;
-            width: 80px;
-            height: 80px;
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            z-index: 100;
-        }
-        
-        .play-button-overlay.visible {
-            opacity: 1;
-        }
-        
-        .play-button-overlay::after {
-            content: '';
-            width: 0;
-            height: 0;
-            border-top: 15px solid transparent;
-            border-bottom: 15px solid transparent;
-            border-left: 25px solid white;
-            margin-left: 5px;
+            
+            .card-title {
+                font-size: 1.5rem;
+            }
         }
         
         /* 视频模态框样式 */
         .video-modal {
-            display: none;
+            display: flex; /* 改为flex并默认隐藏 */
             position: fixed;
             z-index: 1000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0);
             overflow: hidden;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: background-color 0.8s cubic-bezier(0.165, 0.84, 0.44, 1),
+                        opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            padding: 0;
+        }
+        
+        .video-modal.active {
+            background-color: rgba(0, 0, 0, 0.9);
+            opacity: 1;
+            visibility: visible;
         }
         
         .video-modal-content {
             position: relative;
             width: 90%;
-            max-width: 1000px;
-            margin: 60px auto;
-            height: 80%;
+            max-width: 1200px;
+            height: auto;
+            max-height: 85vh;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: scale(0.5);
+            opacity: 0;
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1),
+                        opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .video-modal.active .video-modal-content {
+            transform: scale(1);
+            opacity: 1;
         }
         
         #video-player {
             width: 100%;
             height: 100%;
+            object-fit: contain;
             background-color: #000;
+            margin: 0;
+            padding: 0;
+            border: none;
         }
         
         .close-modal {
             position: absolute;
-            top: -40px;
-            right: 0;
+            top: 10px;
+            right: 20px;
             color: #f1f1f1;
             font-size: 40px;
             font-weight: bold;
@@ -485,9 +505,6 @@
         <h2 class="card-title">项目一</h2>
         <p class="card-text">项目描述内容将在这里显示，随着卡片的切换而更新。这里可以放置项目的详细介绍、创作背景等内容。</p>
     </div>
-    
-    <!-- 添加播放按钮悬停效果 -->
-    <div class="play-button-overlay" id="play-button-overlay"></div>
     
     <!-- 添加视频模态框 -->
     <div class="video-modal" id="video-modal">
@@ -522,10 +539,11 @@
             let loadedTexturesCount = 0;
             let totalTexturesToLoad = 0;
             let autoRotate = true; // 默认开启自动旋转
-            let autoRotateSpeed = 0.001;
+            let isAutoRotating = false; // 是否正在自动旋转中
             let autoRotateTime = 0; // 自动旋转计时器
             let currentCardIndex = 0; // 当前显示的卡片索引
-            let autoRotateInterval = null; // 自动旋转定时器
+            let lastAutoRotateTime = 0; // 上次自动旋转的时间戳
+            let autoRotateDelay = 1800; // 自动旋转间隔，毫秒（增加间隔时间）
             
             // 添加Raycaster用于检测点击
             let raycaster = new THREE.Raycaster();
@@ -553,37 +571,37 @@
             // 卡片数据 - 替换为你的实际图片和项目信息
             const cardData = [
                 {
-                    title: "快闪视频",
+                    title: "快闪",
                     image: "artistweb/images/video-posters/快闪视频_4.3.1.jpg", 
                     description: "这是项目一的详细描述。这里可以介绍项目的背景、创作理念、制作过程等内容。观众可以通过这段文字更好地理解作品。",
                     videoUrl: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/%E9%BB%91%E7%99%BD.mp4" // 快闪视频链接
                 },
                 {
-                    title: "采访视频",
+                    title: "基地介绍",
                     image: "artistweb/images/video-posters/caifang-poster.jpg", 
                     description: "这是项目二的详细描述。每个项目都有其独特的故事和意义，通过文字说明可以让观众更深入地了解创作者的想法和项目的价值。",
                     videoUrl: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/caifang.mp4" // 采访视频链接
                 },
                 {
-                    title: "笔尚感视频",
+                    title: "活动介绍",
                     image: "artistweb/images/video-posters/bishangan-poster.jpg", 
                     description: "这是项目三的详细描述。优秀的项目不仅仅是视觉上的享受，更是思想和情感的传递。这段文字可以帮助建立与观众的情感连接。",
                     videoUrl: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/23-10-31-%E5%BF%85%E4%B8%8A%E5%B2%B8.mp4" // 笔尚感视频链接
                 },
                 {
-                    title: "教研视频",
+                    title: "教研宣传",
                     image: "artistweb/images/video-posters/教研视频_4.1.1.jpg", 
                     description: "这是项目四的详细描述。每个项目背后都有一个故事，一段经历，或者一个想法。通过这段文字，可以让观众更好地理解创作的初衷。",
                     videoUrl: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/24-5-15-%E6%95%99%E7%A0%94%E8%A7%86%E9%A2%91.mp4" // 教研视频链接
                 },
                 {
-                    title: "博饼视频",
+                    title: "情感宣传",
                     image: "artistweb/images/video-posters/博饼_2.1.1.jpg", 
                     description: "这是项目五的详细描述。好的作品总是能引起共鸣，而详细的文字说明则能帮助建立这种共鸣，让观众产生更深的理解和感受。",
                     videoUrl: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/24-9-13-%E5%8D%9A%E9%A5%BC%E6%B4%BB%E5%8A%A8.mp4" // 博饼视频链接
                 },
                 {
-                    title: "基地视频",
+                    title: "采访",
                     image: "artistweb/images/video-posters/jidi-poster.jpg", 
                     description: "这是项目六的详细描述。作品的意义往往需要通过文字来阐释，这样才能让观众了解创作者的想法，以及作品所要表达的主题和情感。",
                     videoUrl: "https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/%E5%9F%BA%E5%9C%B0%E4%BB%8B%E7%BB%8D%E8%A7%86%E9%A2%91.mp4" // 基地视频链接
@@ -664,9 +682,9 @@
                 // 创建卡片
                 createCards();
                 
-                // 初始化左侧描述文字
-                updateCardDescription(0);
+                // 初始化左侧描述文字 - 仅在加载完成后显示
                 setTimeout(() => {
+                    updateCardDescription(0);
                     cardDescription.classList.add('active');
                 }, 1000);
                 
@@ -687,28 +705,15 @@
             
             // 启动自动旋转
             function startAutoRotate() {
-                // 清除可能存在的定时器
-                if (autoRotateInterval) {
-                    clearInterval(autoRotateInterval);
-                }
-                
-                // 设置每1.5秒旋转到下一个卡片（加速一倍）
-                autoRotateInterval = setInterval(() => {
-                    if (!isSnapping) { // 如果不在动画过程中
-                        goToNextCard(); // 切换到下一张卡片
-                    }
-                }, 1500); // 1.5秒一次，加快一倍
-                
+                isAutoRotating = true;
+                lastAutoRotateTime = performance.now();
                 console.log("自动旋转已启动");
             }
             
             // 停止自动旋转
             function stopAutoRotate() {
-                if (autoRotateInterval) {
-                    clearInterval(autoRotateInterval);
-                    autoRotateInterval = null;
-                    console.log("自动旋转已停止");
-                }
+                isAutoRotating = false;
+                console.log("自动旋转已停止");
             }
             
             // 创建卡片
@@ -775,6 +780,15 @@
                                 side: THREE.DoubleSide
                             });
                             
+                            // 设置纹理属性以便实现悬停缩放效果
+                            texture.matrixAutoUpdate = true; // 确保材质矩阵可以更新
+                            
+                            // 保存初始纹理设置，以便我们可以在悬停时缩放
+                            material.userData = {
+                                originalScale: {x: 1, y: 1},
+                                originalOffset: {x: 0, y: 0}
+                            };
+                            
                             // 调整纹理映射以保持原始比例 - 防止拉伸
                             const imageAspect = texture.image.width / texture.image.height;
                             const geometryAspect = cardWidth / cardHeight;
@@ -784,11 +798,19 @@
                                 const scale = geometryAspect / imageAspect;
                                 texture.repeat.set(scale, 1);
                                 texture.offset.set((1 - scale) / 2, 0);
+                                
+                                // 保存这些初始值
+                                material.userData.originalScale = {x: scale, y: 1};
+                                material.userData.originalOffset = {x: (1 - scale) / 2, y: 0};
                             } else {
                                 // 图像比卡片更高，需要裁剪上下
                                 const scale = imageAspect / geometryAspect;
                                 texture.repeat.set(1, scale);
                                 texture.offset.set(0, (1 - scale) / 2);
+                                
+                                // 保存这些初始值
+                                material.userData.originalScale = {x: 1, y: scale};
+                                material.userData.originalOffset = {x: 0, y: (1 - scale) / 2};
                             }
                             
                             // 替换默认材质
@@ -978,8 +1000,18 @@
             }
             
             // 主动画循环 - 优化渲染
-            function animate() {
+            function animate(time) {
                 requestAnimationFrame(animate);
+                
+                // 处理自动旋转
+                if (isAutoRotating && !isSnapping) {
+                    // 检查是否应该执行下一次旋转
+                    if (time - lastAutoRotateTime > autoRotateDelay) {
+                        lastAutoRotateTime = time;
+                        // 直接旋转到下一张卡片
+                        rotateToNextCard(true);
+                    }
+                }
                 
                 // 应用旋转 - 仅在需要时渲染
                 if (!isSnapping) {
@@ -990,6 +1022,62 @@
                 renderer.render(scene, camera);
             }
             
+            // 专门用于自动旋转的简化版旋转函数
+            function rotateToNextCard(isAuto) {
+                if (isSnapping) return;
+                
+                isSnapping = true;
+                
+                // 计算当前旋转角度
+                const normalizedAngle = group.rotation.y;
+                
+                // 卡片角度间隔
+                const cardAngleStep = (Math.PI * 2) / totalCards;
+                
+                // 找到当前卡片索引
+                const normalizedIndex = Math.round(normalizedAngle / cardAngleStep);
+                
+                // 计算下一张卡片索引
+                const nextCardIndex = normalizedIndex + 1;
+                
+                // 更新描述文字
+                updateCardDescription(nextCardIndex % totalCards);
+                
+                // 统一的动画参数，减慢旋转速度并减小过冲效果
+                const duration = 2.0; // 更长的动画持续时间
+                const overshoot = 0.05; // 大幅减小过冲量
+                const targetAngle = nextCardIndex * cardAngleStep;
+                
+                // 使用两阶段动画实现物理感动势，但更加温和
+                const tl = gsap.timeline({
+                    onComplete: function() {
+                        isSnapping = false;
+                        currentRotation = targetAngle;
+                        
+                        // 如果是手动旋转，设置定时恢复自动旋转
+                        if (!isAuto) {
+                            setTimeout(startAutoRotate, 10000);
+                        }
+                    }
+                });
+                
+                // 第1阶段：平滑加速到目标附近
+                tl.to(group.rotation, {
+                    y: targetAngle + (cardAngleStep * overshoot), // 轻微超过目标位置
+                    duration: duration * 0.8, // 80%的时间用于平滑移动
+                    ease: "power1.out", // 更平缓的加速过程
+                    ...gsapDefaults
+                });
+                
+                // 第2阶段：轻微回弹到最终位置
+                tl.to(group.rotation, {
+                    y: targetAngle,
+                    duration: duration * 0.2, // 20%的时间用于轻微回弹
+                    ease: "power2.out", // 几乎没有弹性，仅是平滑减速
+                    ...gsapDefaults
+                });
+            }
+            
             // 更新卡片描述内容
             function updateCardDescription(index) {
                 // 保存当前索引
@@ -998,15 +1086,23 @@
                 // 获取卡片数据
                 const card = cardData[index];
                 
-                // 更新描述内容 - 只显示标题
-                cardTitle.textContent = card.title;
-                // 不再显示描述文本
-                
-                // 触发淡入淡出效果
+                // 创建模糊淡出效果
                 cardDescription.classList.remove('active');
+                cardDescription.classList.remove('fade-in');
+                cardDescription.classList.add('fade-out');
+                
+                // 延迟更新内容，等待淡出完成
                 setTimeout(() => {
-                    cardDescription.classList.add('active');
-                }, 300);
+                    // 更新描述内容 - 只显示标题
+                    cardTitle.textContent = card.title;
+                    
+                    // 创建模糊淡入效果
+                    cardDescription.classList.remove('fade-out');
+                    cardDescription.classList.add('fade-in');
+                    setTimeout(() => {
+                        cardDescription.classList.add('active');
+                    }, 50);
+                }, 300); // 对应淡出动画时间
             }
             
             // 切换到下一张卡片，带动势效果
@@ -1016,50 +1112,11 @@
                 // 暂停自动旋转
                 stopAutoRotate();
                 
-                isSnapping = true;
+                // 使用统一的旋转函数，指定为手动旋转
+                rotateToNextCard(false);
                 
-                // 计算当前旋转角度
-                const currentAngle = group.rotation.y % (Math.PI * 2);
-                const normalizedAngle = currentAngle < 0 ? currentAngle + Math.PI * 2 : currentAngle;
-                
-                // 卡片角度间隔
-                const cardAngleStep = (Math.PI * 2) / totalCards;
-                
-                // 找到当前卡片索引
-                const currentCardIndex = Math.round(normalizedAngle / cardAngleStep) % totalCards;
-                
-                // 计算下一张卡片索引
-                const nextCardIndex = (currentCardIndex + 1) % totalCards;
-                
-                // 更新描述文字
-                updateCardDescription(nextCardIndex);
-                
-                // 使用两阶段动画，无回弹效果，增强非线性感
-                const tl = gsap.timeline({
-                    onComplete: function() {
-                        isSnapping = false;
-                        currentRotation = (nextCardIndex * cardAngleStep) % (Math.PI * 2); // 更新当前旋转
-                        
-                        // 用户主动切换卡片后，10秒内没有新操作才恢复自动旋转
-                        setTimeout(startAutoRotate, 10000);
-                    }
-                });
-                
-                // 第1阶段：费力加速阶段（初始很慢，逐渐变快）
-                tl.to(group.rotation, {
-                    y: normalizedAngle + ((nextCardIndex * cardAngleStep - normalizedAngle) * 0.4), // 移动40%的距离
-                    duration: 1.5, // 大幅增加时间，减缓整体速度
-                    ease: "power3.in", // 较缓和的加速效果
-                    ...gsapDefaults
-                });
-                
-                // 第2阶段：到达并逐渐减速
-                tl.to(group.rotation, {
-                    y: (nextCardIndex * cardAngleStep) % (Math.PI * 2), // 直接到目标位置，不超过
-                    duration: 0.8, // 增加时间，让减速过程更明显
-                    ease: "power3.out", // 较平滑的减速效果
-                    ...gsapDefaults
-                });
+                // 10秒后恢复自动旋转
+                setTimeout(startAutoRotate, 10000);
             }
             
             // 切换到上一张卡片，带动势效果
@@ -1072,45 +1129,49 @@
                 isSnapping = true;
                 
                 // 计算当前旋转角度
-                const currentAngle = group.rotation.y % (Math.PI * 2);
-                const normalizedAngle = currentAngle < 0 ? currentAngle + Math.PI * 2 : currentAngle;
+                const normalizedAngle = group.rotation.y;
                 
                 // 卡片角度间隔
                 const cardAngleStep = (Math.PI * 2) / totalCards;
                 
                 // 找到当前卡片索引
-                const currentCardIndex = Math.round(normalizedAngle / cardAngleStep) % totalCards;
+                const normalizedIndex = Math.round(normalizedAngle / cardAngleStep);
                 
                 // 计算上一张卡片索引
-                const prevCardIndex = (currentCardIndex - 1 + totalCards) % totalCards;
+                const prevCardIndex = normalizedIndex - 1;
                 
                 // 更新描述文字
-                updateCardDescription(prevCardIndex);
+                updateCardDescription((prevCardIndex % totalCards + totalCards) % totalCards);
                 
-                // 使用两阶段动画，无回弹效果，增强非线性感
+                // 设置动画参数 - 与rotateToNextCard保持一致
+                const duration = 2.0;
+                const overshoot = 0.05;
+                const targetAngle = prevCardIndex * cardAngleStep;
+                
+                // 使用两阶段动画实现物理感动势，但更加温和
                 const tl = gsap.timeline({
                     onComplete: function() {
                         isSnapping = false;
-                        currentRotation = (prevCardIndex * cardAngleStep) % (Math.PI * 2); // 更新当前旋转
+                        currentRotation = targetAngle;
                         
-                        // 用户主动切换卡片后，10秒内没有新操作才恢复自动旋转
+                        // 10秒后恢复自动旋转
                         setTimeout(startAutoRotate, 10000);
                     }
                 });
                 
-                // 第1阶段：费力加速阶段（初始很慢，逐渐变快）
+                // 第1阶段：平滑加速到目标附近
                 tl.to(group.rotation, {
-                    y: normalizedAngle + ((prevCardIndex * cardAngleStep - normalizedAngle) * 0.4), // 移动40%的距离
-                    duration: 1.5, // 大幅增加时间，减缓整体速度
-                    ease: "power3.in", // 较缓和的加速效果
+                    y: targetAngle - (cardAngleStep * overshoot), // 轻微超过目标位置（反方向）
+                    duration: duration * 0.8, // 80%的时间用于平滑移动
+                    ease: "power1.out", // 更平缓的加速过程
                     ...gsapDefaults
                 });
                 
-                // 第2阶段：到达并逐渐减速
+                // 第2阶段：轻微回弹到最终位置
                 tl.to(group.rotation, {
-                    y: (prevCardIndex * cardAngleStep) % (Math.PI * 2), // 直接到目标位置，不超过
-                    duration: 0.8, // 增加时间，让减速过程更明显
-                    ease: "power3.out", // 较平滑的减速效果
+                    y: targetAngle,
+                    duration: duration * 0.2, // 20%的时间用于轻微回弹
+                    ease: "power2.out", // 几乎没有弹性，仅是平滑减速
                     ...gsapDefaults
                 });
             }
@@ -1219,15 +1280,48 @@
                         // 获取模态框和视频播放器元素
                         const modal = document.getElementById('video-modal');
                         const videoPlayer = document.getElementById('video-player');
+                        const modalContent = document.querySelector('.video-modal-content');
                         
                         // 设置视频源
                         videoPlayer.src = cardData.videoUrl;
                         
-                        // 显示模态框
-                        modal.style.display = 'block';
+                        // 获取卡片在屏幕上的位置和尺寸
+                        const cardWorldPosition = new THREE.Vector3();
+                        clickedCard.getWorldPosition(cardWorldPosition);
+                        cardWorldPosition.project(camera);
                         
-                        // 播放视频
-                        videoPlayer.play();
+                        // 显示模态框并触发动画
+                        modal.style.visibility = 'visible';
+                        
+                        // 使用GSAP创建从卡片位置到全屏的平滑动画
+                        gsap.timeline()
+                            .to(modal, {
+                                opacity: 1,
+                                duration: 0.3,
+                                ease: "power2.inOut",
+                                onStart: function() {
+                                    modal.classList.add('active');
+                                }
+                            })
+                            .fromTo(modalContent, 
+                                { 
+                                    scale: 0.7,
+                                    opacity: 0,
+                                    duration: 0.5,
+                                    ease: "back.out(1.5)"
+                                },
+                                {
+                                    scale: 1,
+                                    opacity: 1,
+                                    duration: 0.5,
+                                    ease: "back.out(1.5)",
+                                    onComplete: function() {
+                                        // 播放视频
+                                        videoPlayer.play();
+                                    }
+                                }, 
+                                "-=0.2" // 略微重叠动画
+                            );
                     }
                 }
                 
@@ -1247,35 +1341,80 @@
                 // 检测射线与卡片的相交
                 const intersects = raycaster.intersectObjects(cardMeshes);
                 
-                // 获取播放按钮元素
-                const playButton = document.getElementById('play-button-overlay');
-                
                 // 重置所有卡片的样式
                 cardMeshes.forEach(card => {
-                    // 恢复原始缩放
-                    if (card.userData.isHovered) {
+                    // 恢复原始尺寸
+                    if (card.userData.isHovered && card.material.map) {
+                        // 重置卡片的缩放
                         card.scale.set(1, 1, 1);
+                        
+                        // 恢复纹理原始参数
+                        if (card.material.userData && card.material.userData.originalScale) {
+                            const origScale = card.material.userData.originalScale;
+                            const origOffset = card.material.userData.originalOffset;
+                            
+                            // 使用GSAP平滑过渡回原始状态
+                            gsap.to(card.material.map.repeat, {
+                                x: origScale.x,
+                                y: origScale.y,
+                                duration: 0.4,
+                                ease: "power2.out"
+                            });
+                            
+                            gsap.to(card.material.map.offset, {
+                                x: origOffset.x,
+                                y: origOffset.y,
+                                duration: 0.4,
+                                ease: "power2.out"
+                            });
+                        }
+                        
                         card.userData.isHovered = false;
                     }
                 });
                 
-                // 如果有卡片被悬停，变更鼠标样式并高亮卡片
+                // 如果有卡片被悬停，变更鼠标样式并处理纹理放大
                 if (intersects.length > 0) {
                     document.body.style.cursor = 'pointer';
                     const hoveredCard = intersects[0].object;
                     
-                    // 稍微放大卡片
-                    hoveredCard.scale.set(1.05, 1.05, 1.05);
+                    // 标记为悬停状态
                     hoveredCard.userData.isHovered = true;
                     
-                    // 显示播放按钮并跟随鼠标
-                    playButton.style.left = event.clientX - 40 + 'px'; // 居中
-                    playButton.style.top = event.clientY - 40 + 'px'; // 居中
-                    playButton.classList.add('visible');
+                    // 如果卡片有纹理和保存的原始数据
+                    if (hoveredCard.material && hoveredCard.material.map && 
+                        hoveredCard.material.userData && hoveredCard.material.userData.originalScale) {
+                        
+                        const texture = hoveredCard.material.map;
+                        const origScale = hoveredCard.material.userData.originalScale;
+                        const origOffset = hoveredCard.material.userData.originalOffset;
+                        
+                        // 计算放大比例 (稍微放大纹理，相当于缩小比例值)
+                        const zoomFactor = 0.9; // 缩放比例，调整此值可以改变放大程度
+                        const newScaleX = origScale.x * zoomFactor;
+                        const newScaleY = origScale.y * zoomFactor;
+                        
+                        // 计算新的偏移值，以保持图像居中
+                        const newOffsetX = origOffset.x + (origScale.x - newScaleX) / 2;
+                        const newOffsetY = origOffset.y + (origScale.y - newScaleY) / 2;
+                        
+                        // 使用GSAP平滑过渡到放大状态
+                        gsap.to(texture.repeat, {
+                            x: newScaleX,
+                            y: newScaleY,
+                            duration: 0.8,
+                            ease: "power2.out"
+                        });
+                        
+                        gsap.to(texture.offset, {
+                            x: newOffsetX,
+                            y: newOffsetY,
+                            duration: 0.8,
+                            ease: "power2.out"
+                        });
+                    }
                 } else {
                     document.body.style.cursor = 'auto';
-                    // 隐藏播放按钮
-                    playButton.classList.remove('visible');
                 }
             }
             
@@ -1306,17 +1445,55 @@
                 
                 // 点击关闭按钮
                 closeBtn.addEventListener('click', function() {
-                    modal.style.display = 'none';
-                    videoPlayer.pause();
-                    videoPlayer.src = '';
+                    // 使用GSAP创建平滑的关闭动画
+                    gsap.timeline()
+                        .to(document.querySelector('.video-modal-content'), {
+                            scale: 0.7,
+                            opacity: 0,
+                            duration: 0.4,
+                            ease: "power2.in"
+                        })
+                        .to(modal, {
+                            opacity: 0,
+                            duration: 0.3,
+                            ease: "power2.in",
+                            onComplete: function() {
+                                // 动画完成后才真正隐藏和重置
+                                modal.classList.remove('active');
+                                setTimeout(() => {
+                                    modal.style.visibility = 'hidden';
+                                    videoPlayer.pause();
+                                    videoPlayer.src = '';
+                                }, 50);
+                            }
+                        }, "-=0.2");
                 });
                 
                 // 点击模态框外部区域
                 window.addEventListener('click', function(event) {
                     if (event.target == modal) {
-                        modal.style.display = 'none';
-                        videoPlayer.pause();
-                        videoPlayer.src = '';
+                        // 使用与关闭按钮相同的动画
+                        gsap.timeline()
+                            .to(document.querySelector('.video-modal-content'), {
+                                scale: 0.7,
+                                opacity: 0,
+                                duration: 0.4,
+                                ease: "power2.in"
+                            })
+                            .to(modal, {
+                                opacity: 0,
+                                duration: 0.3,
+                                ease: "power2.in",
+                                onComplete: function() {
+                                    // 动画完成后才真正隐藏和重置
+                                    modal.classList.remove('active');
+                                    setTimeout(() => {
+                                        modal.style.visibility = 'hidden';
+                                        videoPlayer.pause();
+                                        videoPlayer.src = '';
+                                    }, 50);
+                                }
+                            }, "-=0.2");
                     }
                 });
             }, 100);

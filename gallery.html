@@ -67,6 +67,29 @@
             color: white;
             line-height: 1.6;
             font-family: 'Noto Serif SC', serif;
+            
+            /* 隐藏滚动条 */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+        
+        /* 针对 Chrome、Safari、Opera */
+        body::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+        
+        /* 隐藏所有可能的滚动容器的滚动条 */
+        ::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+        
+        * {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
         }
         
         /* 导航栏样式 */
@@ -214,10 +237,17 @@
             opacity: 0.6;
             width: 6px; /* 圆点大小 */
             height: 6px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
         }
 
         .swiper-pagination-bullet-active {
             opacity: 1;
+            width: 20px; /* 改为横向，宽度增加 */
+            height: 6px; /* 保持原有高度 */
+            border-radius: 3px;
+            background-color: white;
+            transform: scale(1);
         }
 
         .swiper-button-next:hover, .swiper-button-prev:hover {
@@ -1253,7 +1283,7 @@
                     <div class="swiper mySwiper">
                         <div class="swiper-wrapper">
                             <!-- 幻灯片1：静态图片 -->
-                            <div class="swiper-slide">
+                            <div class="swiper-slide" style="cursor: pointer;" onclick="window.location.href='tibet.html'">
                     <img src="artistweb/images/个人图片作品/IMG_0082.jpg" alt="Gallery Header Image">
                     <h1>Gallery</h1>
                     <div class="welcome"><span style="text-decoration: none; color: #c30101; display: inline-block; padding: 8px;">Awaits</span></div>
@@ -1266,12 +1296,9 @@
                         <span class="r">r</span>
                         <span class="y">y</span>
                     </div>
-                                <div class="learn-more-link">
-                                    <a href="tibet.html">learn more ></a>
-                </div>
                         </div>
                             <!-- 幻灯片2：视频 -->
-                            <div class="swiper-slide">
+                            <div class="swiper-slide" style="cursor: pointer;" onclick="window.location.href='north.html'">
                                 <div class="video-container">
                                     <video muted playsinline class="hero-image" preload="metadata" data-src="artistweb/videos/video1.webm" controlsList="nodownload" disablePictureInPicture>
                                         <source type="video/webm" src="artistweb/videos/video1.webm">
@@ -1282,12 +1309,9 @@
                                 <div class="video-title">
                                     <h1>额尔古纳河</h1>
                                 </div>
-                                <div class="learn-more-link">
-                                    <a href="north.html" style="color: #ffe957;">learn more ></a>
-                                </div>
                         </div>
                             <!-- 幻灯片3：视频 -->
-                            <div class="swiper-slide">
+                            <div class="swiper-slide" style="cursor: pointer;" onclick="window.location.href='film.html'">
                                 <div class="video-container">
                                     <video muted playsinline class="hero-image" preload="none" data-src="artistweb/videos/video2.webm" controlsList="nodownload" disablePictureInPicture>
                                         <source type="video/webm" data-src="artistweb/videos/video2.webm">
@@ -1295,20 +1319,14 @@
                                     </video>
                                     <div class="video-placeholder" style="background-color: #000;"></div>
                                 </div>
-                                <div class="watch-film-link">
-                                    <a href="film.html">watch the film ></a>
-                                </div>
                             </div>
                             <!-- 幻灯片4：视频 -->
-                            <div class="swiper-slide">
+                            <div class="swiper-slide" style="cursor: pointer;" onclick="window.location.href='sanya.html'">
                                 <div class="video-container">
                                     <video muted playsinline class="hero-image" preload="none" data-src="artistweb/videos/video3.webm" controlsList="nodownload" disablePictureInPicture>
                                         <source type="video/webm" data-src="artistweb/videos/video3.webm">
                                     </video>
                                     <div class="video-placeholder" style="background-color: #000;"></div>
-                                </div>
-                                <div class="learn-more-link">
-                                    <a href="sanya.html" style="color: #acffaf;">learn more ></a>
                                 </div>
                             </div>
                             </div>

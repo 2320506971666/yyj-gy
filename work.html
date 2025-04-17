@@ -24,11 +24,36 @@
             box-sizing: border-box;
         }
         
-        body {
+        html, body {
             background-color: black;
             color: white;
             line-height: 1.6;
             font-family: 'Noto Serif SC', serif;
+            overflow-y: scroll;
+            
+            /* 隐藏滚动条 */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+        
+        /* 针对 Chrome、Safari、Opera */
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+        
+        /* 隐藏所有可能的滚动容器的滚动条 */
+        ::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+        
+        * {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
         
         /* 导航栏样式 */
@@ -1452,7 +1477,7 @@
             <!-- 视频作品选项 -->
             <div class="work-category" id="videoWorks">
                 <video class="work-category-video" autoplay muted loop playsinline>
-                    <source src="https://pub-081bc2b6538242b7a0625df561b02d4d.r2.dev/24-2-27-%E5%BF%AB%E9%97%AA.mp4" type="video/mp4">
+                    <source src="https://assets.tripley.cn/24-2-27-%E5%BF%AB%E9%97%AA.mp4" type="video/mp4">
                     您的浏览器不支持HTML5视频播放。
                 </video>
                 <div class="work-category-overlay">

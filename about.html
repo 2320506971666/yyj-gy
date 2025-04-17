@@ -1158,14 +1158,29 @@
                     observer.observe(title);
                 });
 
-                // 为所有图标设置统一的延迟，使它们几乎同时出现
-                const allItems = document.querySelectorAll('.software-item');
+                // 按类别处理，确保每个类别中的标题先出现，然后是图标
+                const categories = document.querySelectorAll('.skills-category');
 
-                // 为所有图标设置小延迟，使它们出现的时间非常接近
-                allItems.forEach((item, index) => {
-                    // 设置小延迟，最多相差100ms
-                    item.dataset.delay = (200 + (index % 3) * 30).toString();
-                    observer.observe(item);
+                categories.forEach((category, categoryIndex) => {
+                    // 获取当前类别的标题和图标
+                    const categoryTitle = category.querySelector('h3');
+                    const categoryItems = category.querySelectorAll('.software-item');
+
+                    // 确保所有类别的标题和图标出现的时间接近
+                    // 但每个类别内部保持从上到下的顺序
+                    const baseCategoryDelay = 200;
+
+                    // 标题先出现
+                    if (categoryTitle && categoryTitle.dataset) {
+                        categoryTitle.dataset.delay = (baseCategoryDelay + 50).toString();
+                        observer.observe(categoryTitle);
+                    }
+
+                    // 然后是该类别的图标
+                    categoryItems.forEach((item, itemIndex) => {
+                        item.dataset.delay = (baseCategoryDelay + 150 + itemIndex * 30).toString();
+                        observer.observe(item);
+                    });
                 });
             }
 

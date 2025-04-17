@@ -218,35 +218,73 @@
                 bottom: 20px;
             }
 
+            /* 移动端按钮悬停和点击效果覆盖 */
+            .nav-button:hover {
+                transform: scale(1.1) !important;
+            }
+
+            .nav-button:active {
+                transform: scale(0.9) !important;
+            }
+
+            .nav-button.clicked {
+                animation: mobileButtonPulse 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+
+            @keyframes mobileButtonPulse {
+                0% { transform: scale(1); }
+                40% { transform: scale(0.85); }
+                80% { transform: scale(1.15); }
+                100% { transform: scale(1); }
+            }
+
+            .nav-button.visible {
+                transform: scale(1) !important;
+            }
+
             /* 移动端导航栏样式调整 */
             .nav-links {
                 display: none; /* 在移动端隐藏导航链接 */
             }
 
-            /* 移动端按钮位置调整 - 在移动设备上仍保持垂直排列 */
+            /* 移动端按钮布局 - 模型上下平行排列，不遮挡模型 */
             .nav-button {
-                right: 30px; /* 减小右侧距离 */
-                padding: 8px 15px;
-                font-size: 0.8rem;
-                transform: translateY(-50%) scale(1) !important; /* 确保按钮显示 */
+                position: fixed;
+                transform: translateY(0) scale(1) !important; /* 确保按钮显示 */
                 opacity: 1 !important; /* 确保按钮可见 */
-                min-width: 100px; /* 移动端稍微窄一点，但仍能容纳文字 */
+                width: 42%; /* 四个按钮大小一致 */
+                padding: 10px 0;
+                font-size: 0.8rem;
+                letter-spacing: 2px;
+                right: auto;
+                top: auto;
+                text-align: center;
+                margin: 0;
+                border-radius: 20px;
             }
 
+            /* 上方两个按钮 - 在导航栏下方，模型上方 */
             .gallery-button {
-                top: 40%;
+                top: 60px; /* 距离顶部足够距离，避开导航栏 */
+                left: 4%;
             }
 
             .work-button {
-                top: 50%;
+                top: 60px;
+                right: 4%;
+                left: auto;
             }
 
+            /* 下方两个按钮 - 在模型下方 */
             .about-button {
-                top: 60%;
+                bottom: 40px;
+                left: 4%;
             }
 
             .explore-button {
-                top: 70%;
+                bottom: 40px;
+                right: 4%;
+                left: auto;
             }
 
             /* 确保模型容器占满屏幕 */
@@ -529,9 +567,9 @@
             // 创建相机
             const aspectRatio = window.innerWidth / window.innerHeight;
             const viewSize = 10;
-            // 在移动设备上使用更大的视图尺寸
+            // 在移动设备上使用更小的视图尺寸，使模型看起来更小
             const isMobile = window.innerWidth <= 768;
-            const mobileViewSize = isMobile ? 15 : 10;
+            const mobileViewSize = isMobile ? 20 : 10; // 增大视图尺寸使模型看起来更小
 
             camera = new THREE.OrthographicCamera(
                 -mobileViewSize * aspectRatio / 2,
@@ -809,6 +847,9 @@
                 // 设置模型跟随鼠标移动交互
                 setupModelInteraction();
 
+                // 设置重力感应系统（移动端）
+                setupDeviceOrientation();
+
                 // 设置初始按钮颜色
                 const galleryButton = document.getElementById('gallery-button');
                 if (galleryButton) {
@@ -879,8 +920,16 @@
                     model.position.y += (model.position.y - center.y);
                     model.position.z += (model.position.z - center.z);
 
+                    // 检查是否为移动设备
+                    const isMobile = window.innerWidth <= 768;
+
+                    // 如果是移动设备，将模型向上移动一点
+                    if (isMobile) {
+                        model.position.y = 1.0; // 向上移动，使模型在屏幕中心偏上位置
+                    }
+
                     // 适应正交相机的缩放
-                    const scale = 10 / size; // 增加此值使模型变大
+                    const scale = (isMobile ? 7 : 10) / size; // 移动端使用更小的比例
                     model.scale.set(scale, scale, scale);
 
                     // 遍历模型的所有材质，应用Z轴渐变材质
@@ -1121,9 +1170,9 @@
         // 窗口大小变化处理函数
         function onWindowResize() {
             const aspectRatio = window.innerWidth / window.innerHeight;
-            // 在移动设备上使用更大的视图尺寸
+            // 在移动设备上使用更小的视图尺寸，使模型看起来更小
             const isMobile = window.innerWidth <= 768;
-            const mobileViewSize = isMobile ? 15 : 10;
+            const mobileViewSize = isMobile ? 20 : 10; // 增大视图尺寸使模型看起来更小
 
             camera.left = -mobileViewSize * aspectRatio / 2;
             camera.right = mobileViewSize * aspectRatio / 2;
@@ -1132,6 +1181,18 @@
 
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+
+            // 如果模型已加载，调整模型大小和位置
+            if (model && isMobile) {
+                // 在移动端缩小模型
+                const box = new THREE.Box3().setFromObject(model);
+                const size = box.getSize(new THREE.Vector3()).length();
+                const scale = (isMobile ? 7 : 10) / size; // 移动端使用更小的比例
+                model.scale.set(scale, scale, scale);
+
+                // 在移动端将模型向上移动一点，使其在屏幕中心偏上位置
+                model.position.y = 1.0; // 向上移动
+            }
 
             // 在窗口大小变化时检查是否为移动设备，更新按钮可见性
             if (isMobile) {
@@ -1362,6 +1423,9 @@
                 // 如果旋转动画正在进行，忽略鼠标移动
                 if (isRotating || !mouseMoveEnabled) return;
 
+                // 如果是移动设备且重力感应已启用，则忽略鼠标移动
+                if (window.innerWidth <= 768 && deviceOrientationEnabled) return;
+
                 // 获取容器位置信息
                 const rect = container.getBoundingClientRect();
 
@@ -1407,11 +1471,102 @@
                 // 如果旋转动画正在进行，忽略鼠标移动
                 if (isRotating) return;
 
+                // 如果是移动设备且重力感应已启用，则不重置旋转
+                if (window.innerWidth <= 768 && deviceOrientationEnabled) return;
+
                 mouseActive = false;
                 targetRotationX = modelInitialRotation.x;
                 targetRotationY = modelInitialRotation.y;
                 targetRotationZ = modelInitialRotation.z;
             });
+        }
+
+        // 重力感应相关变量
+        let deviceOrientationEnabled = false;
+        let lastBeta = 0;
+        let lastGamma = 0;
+
+        // 设置重力感应系统
+        function setupDeviceOrientation() {
+            // 检查是否为移动设备
+            const isMobile = window.innerWidth <= 768;
+            if (!isMobile) return; // 非移动设备不启用重力感应
+
+            // 检查浏览器是否支持重力感应
+            if (window.DeviceOrientationEvent) {
+                // iOS 13+ 需要请求权限
+                if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    // 创建一个按钮请求权限
+                    const permissionButton = document.createElement('button');
+                    permissionButton.textContent = '启用重力感应';
+                    permissionButton.style.position = 'fixed';
+                    permissionButton.style.top = '50%';
+                    permissionButton.style.left = '50%';
+                    permissionButton.style.transform = 'translate(-50%, -50%)';
+                    permissionButton.style.zIndex = '1000';
+                    permissionButton.style.padding = '10px 20px';
+                    permissionButton.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+                    permissionButton.style.border = 'none';
+                    permissionButton.style.borderRadius = '5px';
+                    permissionButton.style.color = '#333';
+                    permissionButton.style.fontFamily = '"Noto Serif SC", serif';
+                    permissionButton.style.fontSize = '16px';
+                    permissionButton.style.cursor = 'pointer';
+
+                    permissionButton.addEventListener('click', function() {
+                        DeviceOrientationEvent.requestPermission()
+                            .then(function(response) {
+                                if (response === 'granted') {
+                                    // 权限获得后添加事件监听
+                                    window.addEventListener('deviceorientation', handleDeviceOrientation);
+                                    deviceOrientationEnabled = true;
+                                    // 移除按钮
+                                    document.body.removeChild(permissionButton);
+                                }
+                            })
+                            .catch(console.error);
+                    });
+
+                    document.body.appendChild(permissionButton);
+                } else {
+                    // 非iOS设备直接添加事件监听
+                    window.addEventListener('deviceorientation', handleDeviceOrientation);
+                    deviceOrientationEnabled = true;
+                }
+            }
+        }
+
+        // 处理重力感应事件
+        function handleDeviceOrientation(event) {
+            // 如果旋转动画正在进行，忽略重力感应
+            if (isRotating || !mouseMoveEnabled || !model) return;
+
+            // 获取设备倾斜角度
+            const beta = event.beta;  // X轴旋转角度 (-180到180) - 前后倾斜
+            const gamma = event.gamma; // Y轴旋转角度 (-90夀90) - 左右倾斜
+
+            // 应用平滑过渡
+            if (lastBeta === 0 && lastGamma === 0) {
+                lastBeta = beta;
+                lastGamma = gamma;
+            }
+
+            // 平滑过渡当前值
+            lastBeta = lastBeta * 0.9 + beta * 0.1;
+            lastGamma = lastGamma * 0.9 + gamma * 0.1;
+
+            // 将角度转换为弧度，并限制最大倾斜角度
+            const maxTiltDegrees = 15;
+            const betaRad = (Math.max(-maxTiltDegrees, Math.min(maxTiltDegrees, lastBeta)) / 180) * Math.PI;
+            const gammaRad = (Math.max(-maxTiltDegrees, Math.min(maxTiltDegrees, lastGamma)) / 180) * Math.PI;
+
+            // 设置目标旋转角度
+            targetRotationX = -betaRad; // 前后倾斜，反向以获得自然的感觉
+            targetRotationY = gammaRad;  // 左右倾斜
+            targetRotationZ = gammaRad * betaRad * 0.3; // 添加轻微的Z轴旋转
+
+            // 激活鼠标交互状态，使得animate函数中的LERP生效
+            mouseActive = true;
         }
 
         // 清理Three.js资源的函数

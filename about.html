@@ -1158,23 +1158,14 @@
                     observer.observe(title);
                 });
 
-                // 为图标添加延迟属性并观察
-                // 按类别分组处理，确保从上到下的顺序
-                const categories = document.querySelectorAll('.skills-category');
-                let globalDelay = 200; // 初始延迟
+                // 为所有图标设置统一的延迟，使它们几乎同时出现
+                const allItems = document.querySelectorAll('.software-item');
 
-                categories.forEach((category) => {
-                    // 获取当前类别的所有图标
-                    const categoryItems = category.querySelectorAll('.software-item');
-
-                    // 为当前类别的图标设置延迟
-                    categoryItems.forEach((item, index) => {
-                        item.dataset.delay = (globalDelay + index * 50).toString();
-                        observer.observe(item);
-                    });
-
-                    // 增加全局延迟，确保下一个类别的图标在当前类别之后显示
-                    globalDelay += Math.max(categoryItems.length * 50, 200);
+                // 为所有图标设置小延迟，使它们出现的时间非常接近
+                allItems.forEach((item, index) => {
+                    // 设置小延迟，最多相差100ms
+                    item.dataset.delay = (200 + (index % 3) * 30).toString();
+                    observer.observe(item);
                 });
             }
 

@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,17 +19,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Jim+Nightshade&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Slab:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
+
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    
+
     <!-- 预设字体缩放因子，避免页面加载过程中的闪烁 -->
     <script>
         // 在页面加载前就设置--scale-factor变量
         (function() {
             const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
             let scaleFactor = 1;
-            
+
             if (vw <= 360) {
                 scaleFactor = 0.22;
             } else if (vw <= 480) {
@@ -37,61 +38,172 @@
             } else if (vw <= 768) {
                 scaleFactor = 0.4;
             }
-            
+
             document.documentElement.style.setProperty('--scale-factor', scaleFactor);
         })();
     </script>
-    
+
     <!-- GSAP, Lenis, Barba.js 脚本 -->
     <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
     <script src="https://unpkg.com/@barba/core"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    
+
     <title>Gallery - Triple-Y</title>
     <style>
+        /* 第二个幻灯片标题样式 - 精简版 */
+
+        /* Northern Journey文字样式 - 极简版 */
+        .river-text {
+            display: flex;
+            color: #ffffff;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            font-size: 3.2rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            font-family: 'Cinzel', serif;
+            white-space: nowrap;
+            position: absolute;
+            bottom: 15%;
+            left: 10%;
+            opacity: 0;
+            transition: opacity 0.01s ease;
+            pointer-events: none;
+        }
+
+        /* 核心修复: 将类应用于视频容器而非幻灯片 - 增强版 */
+        .video-container .river-text {
+            opacity: 0;
+            transition: opacity 0.01s ease;
+        }
+
+        /* 只要幻灯片被激活，就强制显示 river-text */
+        .swiper-slide-active .video-title .river-text {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            pointer-events: none !important;
+        }
+
+        /* 淡出效果 - 完全依赖CSS而非JavaScript */
+        .swiper-slide-prev .river-text,
+        .swiper-slide-next .river-text {
+            opacity: 0;
+            /* 移除浮动效果 */
+            transition: opacity 0.01s ease;
+            transition-delay: 0s;
+        }
+
+        /* 移除每个字母的单独延迟 */
+        /* 如果想让每个字母有错峰效果，可以设置不同的延迟 */
+        .river-text span:nth-child(1) { transition-delay: 0s; }
+        .river-text span:nth-child(2) { transition-delay: 0s; }
+        .river-text span:nth-child(3) { transition-delay: 0s; }
+        .river-text span:nth-child(4) { transition-delay: 0s; }
+        .river-text span:nth-child(5) { transition-delay: 0s; }
+        .river-text span:nth-child(6) { transition-delay: 0s; }
+        .river-text span:nth-child(7) { transition-delay: 0s; }
+        .river-text span:nth-child(8) { transition-delay: 0s; }
+        .river-text span:nth-child(9) { transition-delay: 0s; }
+        .river-text span:nth-child(10) { transition-delay: 0s; }
+        .river-text span:nth-child(11) { transition-delay: 0s; }
+        .river-text span:nth-child(12) { transition-delay: 0s; }
+        .river-text span:nth-child(13) { transition-delay: 0s; }
+        .river-text span:nth-child(14) { transition-delay: 0s; }
+        .river-text span:nth-child(15) { transition-delay: 0s; }
+        .river-text span:nth-child(16) { transition-delay: 0s; }
+
+        /* 或者直接删除单个字母的延迟设置，使用更简单的方式 */
+        .river-text span {
+            display: inline-block;
+        }
+
+        /* 当所在幻灯片变为当前激活状态时自动显示 */
+        .swiper-slide-active .river-text {
+            opacity: 1;
+        }
+
+        /* 当所在幻灯片变为当前激活状态时自动显示 - 增强版 */
+        .swiper-slide-active .river-text,
+        .river-slide-show .river-text {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        /* 添加浮现动画 */
+        @keyframes floatIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 添加淡入动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Safari兼容性 */
+        @-webkit-keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .swiper-slide-active:nth-child(2) .video-title {
+            animation: floatIn 1.5s ease forwards !important;
+        }
+
+        /* 直接设置第二个幻灯片的标题样式 */
+        .swiper-slide:nth-child(2) .video-title h1 {
+            color: white !important;
+            font-size: 3.5rem !important;
+            font-weight: 400 !important;
+            letter-spacing: 2px !important;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 0, 0, 0.7) !important;
+            display: block !important;
+        }
         /* 基础样式 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         :root {
             --scale-factor: 1;
         }
-        
+
         body {
             overflow-x: hidden;
             background-color: black;
             color: white;
             line-height: 1.6;
             font-family: 'Noto Serif SC', serif;
-            
+
             /* 隐藏滚动条 */
             scrollbar-width: none; /* Firefox */
             -ms-overflow-style: none; /* IE and Edge */
         }
-        
+
         /* 针对 Chrome、Safari、Opera */
         body::-webkit-scrollbar {
             display: none;
             width: 0;
             height: 0;
         }
-        
+
         /* 隐藏所有可能的滚动容器的滚动条 */
         ::-webkit-scrollbar {
             display: none;
             width: 0;
             height: 0;
         }
-        
+
         * {
             scrollbar-width: none; /* Firefox */
             -ms-overflow-style: none; /* IE and Edge */
         }
-        
+
         /* 导航栏样式 */
         header {
             position: fixed;
@@ -104,7 +216,7 @@
             z-index: 1000;
             padding: 0 5%;
         }
-        
+
         nav {
             display: flex;
             justify-content: space-between;
@@ -114,7 +226,7 @@
             margin: 0 auto;
             padding: 0 20px;
         }
-        
+
         .logo {
             font-family: 'Reenie Beanie', cursive;
             font-size: 2.2rem;
@@ -123,7 +235,7 @@
             color: #ffffff;
             opacity: 0.9;
         }
-        
+
         .nav-links {
             position: absolute;
             left: 50%;
@@ -134,7 +246,7 @@
             padding: 0;
             gap: 2.5rem;
         }
-        
+
         .nav-links a {
             text-decoration: none;
             color: #ffffff;
@@ -147,7 +259,7 @@
             font-family: 'Poiret One', cursive;
             position: relative;
         }
-        
+
         .nav-links a:hover {
             opacity: 1;
             letter-spacing: 4px;
@@ -184,7 +296,7 @@
             overflow: hidden;
             height: 100vh;
         }
-        
+
         /* 添加Swiper相关样式 */
         .swiper {
             width: 100%;
@@ -206,7 +318,7 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         /* 左右切换按钮与分页指示点样式 */
         .swiper-button-next, .swiper-button-prev {
             color: rgb(255, 255, 255);
@@ -253,14 +365,14 @@
         .swiper-button-next:hover, .swiper-button-prev:hover {
             opacity: 1;
         }
-        
+
         /* 视频容器样式 */
         .video-container {
             position: relative;
             width: 100%;
             height: 100%;
         }
-        
+
         .video-placeholder {
             position: absolute;
             top: 0;
@@ -273,23 +385,27 @@
             opacity: 1;
             transition: opacity 0.8s ease;
         }
-        
+
         .swiper-slide video.loaded + .video-placeholder {
             opacity: 0;
         }
-        
-        /* 视频标题样式 */
+
+        /* 视频标题样式 - 超强化版 */
         .video-title {
             position: absolute;
             bottom: 15%;
             left: 10%;
             transform: translate(0, 0);
-            z-index: 3;
+            z-index: 1000; /* 进一步增加z-index值确保在最上层 */
             text-align: left;
             opacity: 0;
-            animation: fadeInUp 2s ease forwards;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            pointer-events: none; /* 确保标题不影响点击事件 */
+            will-change: opacity, transform; /* 优化动画性能 */
+            display: block; /* 确保元素显示 */
+            visibility: visible; /* 确保元素可见 */
         }
-        
+
         .video-title h1 {
             color: #ffffff;
             font-size: 3.5rem;
@@ -297,8 +413,39 @@
             letter-spacing: 2px;
             margin-bottom: 1rem;
             font-family: 'Playfair Display', serif;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 0, 0, 0.7); /* 大幅增强文字阴影 */
+            display: inline-block; /* 确保文字正确显示 */
         }
-        
+
+        /* 确保第二个幻灯片的标题始终可见 */
+        .swiper-slide:nth-child(2) .video-title {
+            display: block !important;
+            visibility: visible !important;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 40px, 0);
+            }
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        /* Safari兼容性 */
+        @-webkit-keyframes fadeInUp {
+            from {
+                opacity: 0;
+                -webkit-transform: translate3d(0, 40px, 0);
+            }
+            to {
+                opacity: 1;
+                -webkit-transform: translate3d(0, 0, 0);
+            }
+        }
+
         /* 观看影片链接样式 */
         .watch-film-link {
             position: absolute;
@@ -322,7 +469,7 @@
             letter-spacing: 2px;
             color: #ffffff;
         }
-        
+
         /* 修改视频过渡效果 */
         .swiper-slide video {
             width: 100%;
@@ -335,7 +482,7 @@
         .swiper-slide video.loaded {
             opacity: 1;
         }
-        
+
         .gallery-title img {
             width: 100%;
             height: 100%;
@@ -349,7 +496,7 @@
         .gallery-title h1 {
             display: none;
         }
-        
+
         /* Gallery标题的特殊样式 */
         .gallery-title .gallery-text {
             position: absolute;
@@ -368,62 +515,72 @@
             animation: fadeIn 1.5s ease forwards 0.3s;
             transition: opacity 0.8s ease;
         }
-        
+
         .gallery-title .gallery-text span {
             transform: translateY(30px);
             opacity: 0;
             display: inline-block;
+            will-change: transform, opacity;
+            -webkit-transform: translateY(30px); /* Safari兼容性 */
         }
-        
+
         .gallery-title .gallery-text .g {
             font-family: 'Jomhuria', cursive;
             font-size: 200px;
             animation: letterFadeIn 0.4s ease forwards 0.4s;
+            -webkit-animation: letterFadeIn 0.4s ease forwards 0.4s;
         }
-        
+
         .gallery-title .gallery-text .a {
             font-family: 'Jomhuria', cursive;
             font-size: 200px;
             animation: letterFadeIn 0.4s ease forwards 0.5s;
+            -webkit-animation: letterFadeIn 0.4s ease forwards 0.5s;
         }
-        
+
         .gallery-title .gallery-text .l1 {
             font-family: 'Jim Nightshade', cursive;
             font-size: 200px;
             animation: letterFadeIn 0.4s ease forwards 0.6s;
+            -webkit-animation: letterFadeIn 0.4s ease forwards 0.6s;
         }
-        
+
         .gallery-title .gallery-text .l2 {
             font-family: 'Jomhuria', cursive;
             font-size: 200px;
             animation: letterFadeIn 0.4s ease forwards 0.7s;
+            -webkit-animation: letterFadeIn 0.4s ease forwards 0.7s;
         }
-        
+
         .gallery-title .gallery-text .e {
             font-family: 'Josefin Slab', serif;
             font-size: 130px;
             font-weight: 600;
             animation: letterFadeIn 0.4s ease forwards 0.8s;
+            -webkit-animation: letterFadeIn 0.4s ease forwards 0.8s;
         }
-        
+
         .gallery-title .gallery-text .r {
             font-family: 'Josefin Slab', serif;
             font-size: 130px;
             font-weight: 600;
             animation: letterFadeIn 0.4s ease forwards 0.9s;
+            -webkit-animation: letterFadeIn 0.4s ease forwards 0.9s;
         }
-        
+
         .gallery-title .gallery-text .y {
             font-family: 'Reenie Beanie', cursive;
             font-size: 230px;
             animation: letterFadeIn 0.4s ease forwards 1.0s;
+            -webkit-animation: letterFadeIn 0.4s ease forwards 1.0s;
         }
-        
+
         .gallery-title .welcome {
             position: absolute;
             top: 27%;
             left: 49%;
             transform: translateX(-50%) scale(var(--scale-factor, 1));
+            -webkit-transform: translateX(-50%) scale(var(--scale-factor, 1));
             font-family: 'Reenie Beanie', sans-serif;
             font-size: 50px;
             font-weight: 200;
@@ -433,17 +590,33 @@
             opacity: 0;
             visibility: hidden;
             animation: fadeInDown 1.2s ease forwards 1.2s;
+            -webkit-animation: fadeInDown 1.2s ease forwards 1.2s;
             transition: opacity 0.8s ease, visibility 0.8s ease;
+            will-change: transform, opacity, visibility;
         }
-        
+
         @keyframes letterFadeIn {
             from {
                 opacity: 0;
                 transform: translateY(30px);
+                -webkit-transform: translateY(30px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
+                -webkit-transform: translateY(0);
+            }
+        }
+
+        /* Safari兼容性 */
+        @-webkit-keyframes letterFadeIn {
+            from {
+                opacity: 0;
+                -webkit-transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                -webkit-transform: translateY(0);
             }
         }
 
@@ -452,11 +625,27 @@
                 visibility: visible;
                 opacity: 0;
                 transform: translateX(-50%) translateY(-20px);
+                -webkit-transform: translateX(-50%) translateY(-20px);
             }
             to {
                 visibility: visible;
                 opacity: 1;
                 transform: translateX(-50%) translateY(0);
+                -webkit-transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* Safari兼容性 */
+        @-webkit-keyframes fadeInDown {
+            from {
+                visibility: visible;
+                opacity: 0;
+                -webkit-transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                visibility: visible;
+                opacity: 1;
+                -webkit-transform: translateX(-50%) translateY(0);
             }
         }
 
@@ -654,7 +843,7 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        
+
         .lightbox.show .lightbox-prev,
         .lightbox.show .lightbox-next {
             opacity: 0.7;
@@ -744,7 +933,7 @@
                 transform: translate(-50%, -50%);
             }
         }
-        
+
         @keyframes fadeInDown {
             from {
                 visibility: visible;
@@ -763,12 +952,12 @@
             .nav-links {
                 display: none;
             }
-            
+
             .gallery-title {
                 height: 85vh;
                 margin-bottom: 0; /* 重置负边距 */
             }
-            
+
             .gallery-title img {
                 width: 100%;
                 height: 85%;
@@ -777,20 +966,20 @@
                 margin: 0;
                 display: block;
             }
-            
+
             .gallery-title .gallery-text {
                 top: 18%;
                 left: 50%;
                 transform: translate(-50%, -50%) scale(var(--scale-factor, 0.63));
             }
-            
+
             .gallery-title .welcome {
                 font-size: 45px;
                 top: 24%;
                 left: 50%;
                 transform: translateX(-50%) scale(var(--scale-factor, 0.8));
             }
-            
+
             /* 移动菜单按钮调整 */
             .mobile-menu-btn {
                 display: block;
@@ -808,28 +997,28 @@
                 gap: 20px;
                 padding-top: 0; /* 移除顶部内边距 */
             }
-            
+
             /* 设置主图与下方图片之间的距离与图片间距一致 */
             .art-gallery-showcase {
                 padding-top: 0;
                 margin-top: 20px; /* 设置与图片间相同的间距 */
             }
         }
-        
+
         /* 小屏手机适配 */
         @media (max-width: 480px) {
             .gallery-title {
                 height: 80vh;
                 margin-bottom: 0; /* 重置负边距 */
             }
-            
+
             .gallery-title .gallery-text {
                 top: 18%;
                 left: 50%;
                 transform: translate(-50%, -50%) scale(var(--scale-factor, 0.63));
                 width: 100%;
             }
-            
+
             .gallery-title img {
                 width: 100%;
                 height: 80%;
@@ -837,7 +1026,7 @@
                 object-position: 47% top;
                 margin: 0;
             }
-            
+
             .gallery-title .welcome {
                 font-size: 40px;
                 top: 24%;
@@ -851,20 +1040,20 @@
                 margin-top: 20px; /* 设置与图片间相同的间距 */
             }
         }
-        
+
         /* 超小屏幕 */
         @media (max-width: 360px) {
             .gallery-title {
                 height: 75vh;
                 margin-bottom: 0; /* 重置负边距 */
             }
-            
+
             .gallery-title .gallery-text {
                 top: 18%;
                 left: 50%;
                 transform: translate(-50%, -50%) scale(var(--scale-factor, 0.6));
             }
-            
+
             .gallery-title img {
                 width: 100%;
                 height: 75%;
@@ -872,7 +1061,7 @@
                 object-position: 46% top;
                 margin: 0;
             }
-            
+
             .gallery-title .welcome {
                 font-size: 35px;
                 top: 24%;
@@ -911,54 +1100,88 @@
             overflow: hidden;
         }
 
-        /* 页脚样式 */
+        /* 页脚样式 - 优化版 */
         footer {
             background-color: #111;
             color: white;
-            padding: 5rem 5% 2rem;
+            padding: 4rem 5% 2rem;
         }
-        
+
         .footer-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-bottom: 3rem;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            justify-content: center;
         }
-        
+
         .footer-column h3 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 400;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.8rem;
             position: relative;
             display: inline-block;
+            letter-spacing: 1px;
+            font-family: 'Playfair Display', serif;
         }
-        
+
         .footer-column h3::after {
             content: '';
             position: absolute;
             height: 1px;
-            width: 50px;
-            background-color: white;
+            width: 40px;
+            background-color: #DE2910;
             bottom: -10px;
             left: 0;
         }
-        
+
+        .footer-column p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #ddd;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
         .footer-links {
             list-style: none;
+            padding: 0;
         }
-        
+
         .footer-links li {
-            margin-bottom: 0.8rem;
+            margin-bottom: 1.2rem;
         }
-        
+
         .footer-links a {
             text-decoration: none;
-            color: #ccc;
-            transition: color 0.3s ease;
+            color: #ddd;
+            transition: color 0.3s ease, letter-spacing 0.3s ease;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
         }
-        
+
         .footer-links a:hover {
             color: white;
+            letter-spacing: 1px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 页脚响应式调整 */
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
         }
 
         /* 让字体动画在横屏和竖屏模式都保持良好显示 */
@@ -966,24 +1189,24 @@
             .gallery-title .gallery-text {
                 top: 15%;
             }
-            
+
             .gallery-title .welcome {
                 top: 25%;
             }
         }
-        
+
         @media screen and (orientation: landscape) and (max-height: 500px) {
             .gallery-title .gallery-text {
                 top: 20%;
                 transform: translate(-50%, -50%) scale(var(--scale-factor, 0.35));
             }
-            
+
             .gallery-title .welcome {
                 top: 32%;
                 transform: translateX(-50%) scale(var(--scale-factor, 0.35));
             }
         }
-        
+
         /* 探索区域样式 */
         .explore-section {
             display: block;
@@ -994,27 +1217,27 @@
             overflow: hidden;
             position: relative;
         }
-        
+
         .explore-image-container {
             width: 100%;
             overflow: hidden;
             position: relative;
         }
-        
+
         .explore-image {
             width: 100%;
             display: block;
             transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             will-change: transform;
         }
-        
+
         .explore-content {
             position: absolute;
             bottom: 10%;
             right: 10%;
             z-index: 5;
         }
-        
+
         .explore-link {
             display: inline-block;
             padding: 15px 40px;
@@ -1032,7 +1255,7 @@
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
         }
-        
+
         .explore-link::before {
             content: '';
             position: absolute;
@@ -1044,28 +1267,28 @@
             transition: all 0.5s ease;
             z-index: -1;
         }
-        
+
         .explore-link:hover {
             color: #fff;
             border-color: #fff;
             letter-spacing: 5px;
         }
-        
+
         .explore-link:hover::before {
             left: 0;
         }
-        
+
         /* 响应式调整 */
         @media (max-width: 768px) {
             .explore-section {
                 padding: 0;
             }
-            
+
             .explore-content {
                 bottom: 5%;
                 right: 5%;
             }
-            
+
             .explore-link {
                 padding: 10px 25px;
                 font-size: 1rem;
@@ -1080,7 +1303,7 @@
             background-color: #000;
             width: 100%;
         }
-        
+
         .bento-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -1091,7 +1314,7 @@
             background-color: #000;
             padding-top: 0; /* 移除顶部内边距 */
         }
-        
+
         .three-images-row {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -1099,19 +1322,19 @@
             grid-column: 1 / -1;
             margin: 0;
         }
-        
+
         .three-images-row .bento-item {
             height: 100%;
             display: flex;
             align-items: center;
         }
-        
+
         .three-images-row img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        
+
         /* 最后一行高度一致 */
         .last-row {
             display: grid;
@@ -1120,7 +1343,7 @@
             grid-column: 1 / -1;
             /* 确保与上方图片的间距与左右间距一致 */
         }
-        
+
         .last-row .bento-item {
             display: flex;
             align-items: center;
@@ -1128,34 +1351,31 @@
             background-color: #000; /* 确保背景为黑色 */
             overflow: hidden; /* 防止内容溢出 */
         }
-        
+
         /* 右侧图片的样式(12.jpg) - 保持原样 */
         .last-row .bento-item:last-child {
             height: 350px;
         }
-        
+
         .last-row .bento-item:last-child img {
             max-width: 100%;
             max-height: 350px;
             object-fit: cover;
         }
-        
+
         /* 左侧图片的样式(11.jpg) - 调整使其变大 */
         .last-row .bento-item:first-child {
             height: 350px;
         }
-        
+
         .last-row .bento-item:first-child img {
             min-width: 500px; /* 设置最小宽度使图片显示更大 */
             height: 350px;
             object-fit: cover; /* 使用cover确保填充整个区域 */
         }
-        
+
         /* 去除特殊样式，让两个图片使用相同的样式 */
-        .smaller-image {
-            /* 移除所有特殊设置，使用与其他图片相同的规则 */
-        }
-        
+
         .bento-item {
             position: relative;
             overflow: hidden;
@@ -1168,7 +1388,7 @@
             text-align: center;
             margin: 0;
         }
-        
+
         .bento-item img {
             width: 100%;
             height: auto;
@@ -1177,29 +1397,29 @@
             display: block;
             margin: 0;
         }
-        
+
         .bento-item:hover img {
             transform: scale(1.01);
         }
-        
+
         /* 响应式调整 */
         @media (max-width: 768px) {
             .bento-grid {
                 grid-template-columns: 1fr;
                 gap: 15px;
             }
-            
+
             .three-images-row {
                 grid-template-columns: 1fr;
                 gap: 15px;
                 margin: 0;
             }
-            
+
             .last-row {
                 grid-template-columns: 1fr;
                 gap: 15px;
             }
-            
+
             .last-row img {
                 height: auto;
             }
@@ -1228,52 +1448,156 @@
             letter-spacing: 2px;
             color: #ffffff;
         }
-        
+
         /* Learn more链接样式 */
         .learn-more-link {
             position: absolute;
-            bottom: 10%;    
+            bottom: 10%;
             right: 10%;
             text-align: right;
             z-index: 5;
         }
-        
+
         .learn-more-link a {
             color: rgb(255, 225, 118);
             font-family: Helvetica, Arial, sans-serif;
             font-size: 1rem;
             font-weight: 400;
             text-decoration: none;
-            letter-spacing: 1px;    
+            letter-spacing: 1px;
             transition: letter-spacing 0.3s ease, color 0.3s ease;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 添加黑色投影 */
         }
-        
+
         .learn-more-link a:hover {
             letter-spacing: 2px;
-            color: #ffffff; 
+            color: #ffffff;
         }
-        
+
         /* 修改视频过渡效果 */
         .swiper-slide video {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: filter 0.3s ease, opacity 1.5s ease;
+            transition: opacity 0.5s ease;
             opacity: 0;
+            /* Safari兼容性属性 */
+            -webkit-object-fit: cover;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            background-color: #000;
         }
 
         .swiper-slide video.loaded {
             opacity: 1;
         }
+
+        /* 强制隐藏所有视频控件 - 增强版 */
+        video::-webkit-media-controls,
+        video::-webkit-media-controls-play-button,
+        video::-webkit-media-controls-volume-slider,
+        video::-webkit-media-controls-mute-button,
+        video::-webkit-media-controls-timeline,
+        video::-webkit-media-controls-current-time-display,
+        video::-webkit-full-page-media::-webkit-media-controls-panel,
+        video::-webkit-media-controls-timeline-container,
+        video::-webkit-media-controls-time-remaining-display,
+        video::-webkit-media-controls-toggle-closed-captions-button,
+        video::-webkit-media-controls-enclosure,
+        video::-webkit-media-controls-panel,
+        video::-webkit-media-controls-panel-container,
+        video::-webkit-media-controls-start-playback-button,
+        video::-webkit-media-controls-status-display,
+        video::-webkit-media-controls-fullscreen-button,
+        video::-webkit-media-controls-rewind-button,
+        video::-webkit-media-controls-return-to-realtime-button,
+        video::-webkit-media-controls-seek-back-button,
+        video::-webkit-media-controls-seek-forward-button,
+        video::-webkit-media-controls-overflow-button,
+        video::-webkit-media-controls-overlay-play-button {
+            display: none !important;
+            opacity: 0 !important;
+            -webkit-appearance: none !important;
+            visibility: hidden !important;
+            width: 0 !important;
+            height: 0 !important;
+            position: absolute !important;
+            pointer-events: none !important;
+        }
+
+        /* 隐藏其他浏览器的控件 */
+        video::-moz-media-controls,
+        video::-ms-media-controls,
+        video::media-controls {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        /* 使用额外的技巧隐藏控件 */
+        video {
+            -webkit-user-select: none !important; /* Safari */
+            -moz-user-select: none !important; /* Firefox */
+            -ms-user-select: none !important; /* IE/Edge */
+            user-select: none !important;
+        }
+
+        /* 确保视频元素正确显示并禁用交互 */
+        video {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* 禁止与视频元素的所有交互 */
+        }
+
+        /* 针对"带 river-text 的视频标题"强制显示 - 添加高优先级规则 */
+        .swiper-slide-active .video-title .river-text {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+            visibility: visible !important;
+        }
+
+        /* SANYA文字的特殊样式 - 优雅版 */
+        .sanya-text {
+            font-size: 4.5rem;
+            font-weight: 300;
+            letter-spacing: 12px;
+            color: #003c6e61;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            opacity: 0;
+            visibility: visible;
+            display: block;
+            pointer-events: none;
+            font-family: 'Cinzel', serif;
+            transition: opacity 0.01s ease;
+        }
+
+        /* 确保在活跃幻灯片中的SANYA文字浮动出现 */
+        .swiper-slide-active .sanya-text {
+            opacity: 1;
+            visibility: visible;
+            display: block;
+        }
+
+        /* 确保非活跃幻灯片中的SANYA文字消失 */
+        .swiper-slide:not(.swiper-slide-active) .sanya-text {
+            opacity: 0;
+            /* 去掉transform变换以移除浮动效果 */
+            transition: opacity 0.01s ease;
+        }
     </style>
 </head>
 <body data-barba="wrapper">
     <div class="page-transition"></div>
-    
+
     <!-- 导航栏容器 -->
     <div id="nav-container"></div>
-    
+
     <!-- 主体内容，添加barba数据属性 -->
     <main data-barba="container" data-barba-namespace="gallery">
         <!-- Gallery页面内容 -->
@@ -1300,21 +1624,23 @@
                             <!-- 幻灯片2：视频 -->
                             <div class="swiper-slide" style="cursor: pointer;" onclick="window.location.href='north.html'">
                                 <div class="video-container">
-                                    <video muted playsinline class="hero-image" preload="metadata" data-src="artistweb/videos/video1.webm" controlsList="nodownload" disablePictureInPicture>
-                                        <source type="video/webm" src="artistweb/videos/video1.webm">
+                                    <video autoplay muted playsinline class="hero-image tibet-video" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline data-video-id="tibet">
+                                        <source src="artistweb/videos/video1.webm" type="video/webm">
+                                        <source src="artistweb/videos/video1.mp4" type="video/mp4">
                                         Your browser does not support HTML5 video.
                                     </video>
                                     <div class="video-placeholder" style="background-color: #000;"></div>
-                        </div>
-                                <div class="video-title">
-                                    <h1>额尔古纳河</h1>
+                                    <div class="video-title">
+                                        <div class="river-text">Northern Journey</div>
+                                    </div>
                                 </div>
-                        </div>
+                            </div>
                             <!-- 幻灯片3：视频 -->
                             <div class="swiper-slide" style="cursor: pointer;" onclick="window.location.href='film.html'">
                                 <div class="video-container">
-                                    <video muted playsinline class="hero-image" preload="none" data-src="artistweb/videos/video2.webm" controlsList="nodownload" disablePictureInPicture>
-                                        <source type="video/webm" data-src="artistweb/videos/video2.webm">
+                                    <video autoplay muted playsinline class="hero-image" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                                        <!-- 只使用存在的WebM文件 -->
+                                        <source src="artistweb/videos/video2.webm" type="video/webm">
                                         Your browser does not support HTML5 video.
                                     </video>
                                     <div class="video-placeholder" style="background-color: #000;"></div>
@@ -1323,10 +1649,13 @@
                             <!-- 幻灯片4：视频 -->
                             <div class="swiper-slide" style="cursor: pointer;" onclick="window.location.href='sanya.html'">
                                 <div class="video-container">
-                                    <video muted playsinline class="hero-image" preload="none" data-src="artistweb/videos/video3.webm" controlsList="nodownload" disablePictureInPicture>
-                                        <source type="video/webm" data-src="artistweb/videos/video3.webm">
+                                    <video autoplay muted playsinline class="hero-image tibet-video" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline data-video-id="sanya">
+                                        <source src="artistweb/videos/video3.webm" type="video/webm">
+                                        <source src="artistweb/videos/video3.mp4" type="video/mp4">
+                                        Your browser does not support HTML5 video.
                                     </video>
                                     <div class="video-placeholder" style="background-color: #000;"></div>
+                                    <div class="sanya-text"></div>
                                 </div>
                             </div>
                             </div>
@@ -1337,13 +1666,15 @@
                         <div class="swiper-pagination"></div>
                             </div>
                         </div>
-                        
+
                 <!-- 移除图片网格部分 -->
-                
+
             </div>
-            
+
         </div>
     </main>
+
+
 
     <!-- 灯箱效果 -->
     <div class="lightbox">
@@ -1376,14 +1707,11 @@
         <div class="footer-content">
             <div class="footer-column">
                 <h3>Contact</h3>
-                <p>studio@artist.com</p>
-                <p>+86 123 4567 8910</p>
-                <p>Shanghai, China</p>
+                <p>yang2320506971@gmail.com</p>
             </div>
             <div class="footer-column">
                 <h3>Navigation</h3>
                 <ul class="footer-links">
-                    <li><a href="index.html#explore">Explore</a></li>
                     <li><a href="film.html">Film</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
                     <li><a href="work.html">Work</a></li>
@@ -1391,13 +1719,13 @@
                 </ul>
             </div>
             <div class="footer-column">
-                <h3>Connect</h3>
-                <p>Follow my work and creative journey</p>
-                <div class="social-links">
-                    <a href="#" class="social-link">YT</a>
-                    <a href="#" class="social-link">BL</a>
-                    <a href="#" class="social-link">IG</a>
-                </div>
+                <h3>Gallery</h3>
+                <ul class="footer-links">
+                    <li><a href="tibet.html">Tibet</a></li>
+                    <li><a href="north.html">Northern Journey</a></li>
+                    <li><a href="film.html">Summer Sense</a></li>
+                    <li><a href="sanya.html">Island</a></li>
+                </ul>
             </div>
         </div>
         <div class="copyright">
@@ -1411,141 +1739,121 @@
     <script src="shared/animation.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 处理字体动画适配不同设备
-            function adjustFontSizes() {
-                const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-                const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-                
-                let scaleFactor = 1;
-                
-                if (vw <= 360) {
-                    scaleFactor = 0.6; // 进一步缩小
-                } else if (vw <= 480) {
-                    scaleFactor = 0.63; // 进一步缩小
-                } else if (vw <= 768) {
-                    scaleFactor = 0.63; // 进一步缩小
-                }
-                
-                document.documentElement.style.setProperty('--scale-factor', scaleFactor);
-                
-                // 调整welcome文字大小和位置，确保与gallery文字比例一致
-                const welcomeText = document.querySelector('.gallery-title .welcome');
-                const galleryText = document.querySelector('.gallery-title .gallery-text');
-                
-                if (welcomeText) {
-                    // 根据屏幕大小设置更大的字体
-                    if (vw <= 360) {
-                        welcomeText.style.fontSize = '35px';
-                        welcomeText.style.top = '24%';
-                    } else if (vw <= 480) {
-                        welcomeText.style.fontSize = '40px';
-                        welcomeText.style.top = '24%';
-                    } else if (vw <= 768) {
-                        welcomeText.style.fontSize = '45px';
-                        welcomeText.style.top = '24%';
-                    } else {
-                        welcomeText.style.fontSize = '50px';
-                        welcomeText.style.top = '27%';
-                    }
-                    welcomeText.style.left = '50%';
-                }
-                
-                if (galleryText) {
-                    // 确保Gallery文字位置在不同设备上保持一致
-                    if (vw <= 768) {
-                        galleryText.style.top = '18%';
-                        galleryText.style.left = '50%';
-                    } else {
-                        galleryText.style.top = '18%';
-                        galleryText.style.left = '49%';
-                    }
-                }
-            }
-            
-            // 确保字体和动画元素在页面完全准备好前不可见
-            const welcomeText = document.querySelector('.gallery-title .welcome');
-            const galleryText = document.querySelector('.gallery-title .gallery-text');
-            if (welcomeText) welcomeText.style.visibility = 'hidden';
-            if (galleryText) galleryText.style.visibility = 'hidden';
-            
-            // 立即调用一次以确保初始加载时就能正确设置位置
-            adjustFontSizes();
-            
-            // 添加窗口大小变化的监听器
-            window.addEventListener('resize', adjustFontSizes);
-            
-            // 跟踪每个视频的播放状态
-            const videoPlaybackStates = {};
-            
-            // 视频加载与播放控制
+            // 获取Gallery文字元素
+            const galleryText = document.querySelector('.gallery-text');
+            const welcomeText = document.querySelector('.welcome');
+
+            // 极简化的视频处理
             function handleVideo(video) {
                 if (!video) return;
-                
-                // 获取视频的唯一标识符
-                const videoId = video.dataset.src;
-                
-                // 如果是第一次处理这个视频，初始化它的状态
-                if (!videoPlaybackStates[videoId]) {
-                    videoPlaybackStates[videoId] = {
-                        played: false,   // 是否播放过
-                        completed: false  // 是否播放完成
-                    };
-                    
-                    // 监听视频播放结束事件
-                    video.addEventListener('ended', function() {
-                        videoPlaybackStates[videoId].completed = true;
-                        // 视频播放完毕后自动切换到下一张幻灯片
-                        swiper.slideNext();
+
+                // 确保视频控件始终不可见
+                video.controls = false;
+
+                // 重置视频到开头
+                video.currentTime = 0;
+
+                // 确保视频可见
+                video.style.opacity = "1";
+
+                // 检查是否是tibet或sanya视频
+                const videoId = video.getAttribute('data-video-id');
+                const isTibetOrSanya = videoId === 'tibet' || videoId === 'sanya';
+
+                // 如果是Safari浏览器且是tibet或sanya视频，直接使用MP4源
+                const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+                if (isSafari && isTibetOrSanya) {
+                    // 在Safari中处理tibet和sanya视频
+                    const sources = video.querySelectorAll('source');
+                    let mp4Source = null;
+
+                    // 找到MP4源
+                    sources.forEach(source => {
+                        if (source.type === 'video/mp4') {
+                            mp4Source = source;
+                        }
                     });
+
+                    if (mp4Source) {
+                        // 将MP4源移动到第一位置
+                        video.insertBefore(mp4Source, video.firstChild);
+                    }
                 }
-                
-                // 加载视频源
-                if (!video.currentSrc || video.readyState === 0) {
-                    const sources = video.querySelectorAll('source[data-src]');
-                    if (sources.length > 0) {
-                        sources.forEach(source => {
-                            if (source.dataset.src && !source.src) {
-                                source.src = source.dataset.src;
-                            }
+
+                // 加载并播放视频
+                video.load();
+
+                // 尝试播放视频
+                    const playPromise = video.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(err => {
+                        setTimeout(() => video.play().catch(e => {}), 500);
                         });
                     }
-                    video.load();
+
+                    // 添加loaded类
                     video.classList.add('loaded');
-                }
-                
-                // 决定是否播放视频
-                const state = videoPlaybackStates[videoId];
-                
-                // 如果视频已经播放完毕，但用户再次回到这个幻灯片，重新开始播放
-                if (state.completed) {
-                    video.currentTime = 0;
-                    state.completed = false;
-                }
-                
-                // 播放视频
-                video.play().catch(err => console.log('视频播放失败:', err));
+
+                // 监听视频结束事件，自动切换到下一张幻灯片
+                video.onended = function() {
+                    swiper.slideNext();
+                };
             }
 
-            // 为所有视频添加加载完成事件
+            // 获取所有视频
             const videos = document.querySelectorAll('.swiper-slide video');
-            videos.forEach(video => {
-                video.addEventListener('loadeddata', function() {
-                    video.classList.add('loaded');
-                });
-                
-                // 添加错误处理
-                video.addEventListener('error', function(e) {
-                    console.log('视频加载失败，显示占位图', e);
-                    // 如果WebM格式加载失败，尝试使用MP4格式
-                    const source = video.querySelector('source');
-                    if (source && source.src.includes('.webm')) {
-                        source.src = source.src.replace('.webm', '.mp4');
-                        video.load();
-                    }
-                });
-            });
 
-            // 初始化Swiper
+            // 超强化版文字显示函数
+            function ensureRiverTextVisible() {
+                // 获取当前活跃幻灯片中的文字
+                const activeSlide = document.querySelector('.swiper-slide-active');
+                if (activeSlide) {
+                    // 处理普通的river-text
+                    const riverText = activeSlide.querySelector('.river-text');
+                    if (riverText) {
+                        // 强制显示文字，移除浮动效果，只保留透明度变化
+                        riverText.style.opacity = "1";
+                        riverText.style.visibility = "visible";
+                        riverText.style.display = "block";
+                    }
+
+                    // 单独处理SANYA文字 - 使用更优雅的样式
+                    const sanyaText = activeSlide.querySelector('.sanya-text');
+                    if (sanyaText) {
+                        // 确保SANYA文字可见，但使用CSS过渡效果，不直接设置行内样式
+                        sanyaText.classList.add('visible');
+                        
+                        // 移除可能干扰动画的行内样式
+                        sanyaText.style.removeProperty('opacity');
+                        sanyaText.style.removeProperty('transform');
+                    }
+
+                    // 检查是否是Sanya视频幻灯片
+                    const sanyaVideo = activeSlide.querySelector('video[data-video-id="sanya"]');
+                    if (sanyaVideo) {
+                        // 如果是Sanya视频幻灯片，但没有SANYA文字，则创建一个
+                        if (!sanyaText) {
+                            const videoContainer = sanyaVideo.closest('.video-container');
+                            if (videoContainer) {
+                                // 检查是否已经存在SANYA文字
+                                const existingSanyaText = videoContainer.querySelector('.sanya-text');
+                                if (!existingSanyaText) {
+                                    // 创建新的SANYA文字元素 - 优雅版
+                                    const newSanyaText = document.createElement('div');
+                                    newSanyaText.className = 'sanya-text';
+                                    newSanyaText.textContent = ''; // 清空文本内容
+                                    
+                                    // 添加到视频容器
+                                    videoContainer.appendChild(newSanyaText);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 初始化Swiper - 增强版
             var swiper = new Swiper(".mySwiper", {
                 loop: true,
                 autoplay: {
@@ -1561,74 +1869,114 @@
                     prevEl: ".swiper-button-prev",
                 },
                 effect: "fade",
+                fadeEffect: {
+                    crossFade: true
+                },
                 speed: 1000,
                 on: {
                     init: function() {
-                        // 初始化时处理当前幻灯片
+                        // 初始化时处理当前幻灯片视频
                         const activeSlide = this.slides[this.activeIndex];
                         if (activeSlide) {
                             const video = activeSlide.querySelector('video');
                             if (video) handleVideo(video);
-                            
-                            // 如果是静态图片幻灯片，显示标题和欢迎文字
-                            if (activeSlide.querySelector('.gallery-text')) {
-                                setTimeout(() => {
-                                    if (galleryText) galleryText.style.visibility = '';
-                                    if (welcomeText) welcomeText.style.visibility = '';
-                                }, 100);
-                            }
+
+                            // 显示文字元素
+                            if (galleryText) galleryText.style.visibility = '';
+                            if (welcomeText) welcomeText.style.visibility = '';
                         }
+
+                        // 确保river-text显示
+                        ensureRiverTextVisible();
                     },
                     slideChangeTransitionStart: function() {
-                        // 幻灯片开始切换时处理当前幻灯片
+                        // 处理当前幻灯片视频
                         const activeSlide = this.slides[this.activeIndex];
                         if (activeSlide) {
                             const video = activeSlide.querySelector('video');
-                            if (video) {
-                                handleVideo(video);
-                            }
-                            
-                            // 如果是静态图片幻灯片，显示标题和欢迎文字
-                            if (activeSlide.querySelector('.gallery-text')) {
-                                setTimeout(() => {
-                                    if (galleryText) {
-                                        galleryText.style.visibility = '';
-                                        galleryText.style.opacity = '1';
+                            if (video) handleVideo(video);
+
+                            // 只淡出上一张幻灯片的视频和Sanya文字
+                            if (this.previousIndex !== undefined) {
+                                const prevSlide = this.slides[this.previousIndex];
+                                if (prevSlide) {
+                                    const prevVideo = prevSlide.querySelector('video');
+                                    const prevSanyaText = prevSlide.querySelector('.sanya-text');
+                                    
+                                    // 淡出视频
+                                    if (prevVideo) prevVideo.style.opacity = "0";
+                                    
+                                    // 淡出Sanya文字 - 仅透明度变化，没有浮动效果
+                                    if (prevSanyaText) {
+                                        prevSanyaText.style.opacity = "0";
+                                        // 移除transform样式，只保留透明度过渡
+                                        prevSanyaText.style.transition = "opacity 0.01s ease";
                                     }
-                                    if (welcomeText) {
-                                        welcomeText.style.visibility = 'visible';
-                                        welcomeText.style.opacity = '1';
-                                    }
-                                }, 100);
-                            } else {
-                                // 添加渐隐效果，而不是立即隐藏
-                                if (galleryText) {
-                                    galleryText.style.opacity = '0';
-                                    // 延迟隐藏，等待渐隐动画完成
-                                    setTimeout(() => {
-                                        galleryText.style.visibility = 'hidden';
-                                    }, 800);
                                 }
-                                if (welcomeText) {
-                                    welcomeText.style.opacity = '0';
-                                    // 延迟隐藏，等待渐隐动画完成
-                                    setTimeout(() => {
-                                        welcomeText.style.visibility = 'hidden';
-                                    }, 800);
+                            }
+
+                            // 暂停其他幻灯片中的视频
+                            videos.forEach(v => {
+                                if (v !== video) v.pause();
+                            });
+                        }
+
+                        // 确保文字显示
+                        ensureRiverTextVisible();
+                    },
+                    slideChangeTransitionEnd: function() {
+                        // 在幻灯片过渡结束后再次确保文字显示
+                        ensureRiverTextVisible();
+
+                        // 特别处理SANYA文字 - 优雅版
+                        const activeSlide = this.slides[this.activeIndex];
+                        if (activeSlide) {
+                            const sanyaText = activeSlide.querySelector('.sanya-text');
+                            if (sanyaText) {
+                                // 不直接设置样式，而是添加类来触发CSS过渡
+                                sanyaText.classList.add('visible');
+                                // 重置过渡样式为CSS中定义的速度
+                                sanyaText.style.transition = "opacity 1s ease, transform 1s ease";
+                                // 确保与视频同步显示
+                            const video = activeSlide.querySelector('video');
+                                if (video) {
+                                    video.style.opacity = "1";
+                                    sanyaText.style.opacity = "1";
+                                    sanyaText.style.transform = "translate(-50%, -50%) translateY(0)";
+                                }
+                            } else {
+                                // 如果当前幻灯片是Sanya视频，但没有找到SANYA文字，则创建一个
+                                const video = activeSlide.querySelector('video[data-video-id="sanya"]');
+                                if (video) {
+                                    const videoContainer = video.closest('.video-container');
+                                    if (videoContainer) {
+                                        // 创建新的SANYA文字元素 - 优雅版
+                                        const newSanyaText = document.createElement('div');
+                                        newSanyaText.className = 'sanya-text';
+                                        newSanyaText.textContent = ''; // 清空文本内容
+                                        
+                                        // 添加到视频容器
+                                        videoContainer.appendChild(newSanyaText);
+                                        
+                                        // 延迟添加visible类，以便触发动画
+                                        setTimeout(() => {
+                                            newSanyaText.classList.add('visible');
+                                            // 与视频同步显示
+                                            video.style.opacity = "1";
+                                            newSanyaText.style.opacity = "1";
+                                            newSanyaText.style.transform = "translate(-50%, -50%) translateY(0)";
+                                        }, 50);
+                                    }
                                 }
                             }
                         }
-                        
-                        // 暂停其他幻灯片中的视频
-                        videos.forEach(video => {
-                            if (video.parentElement.parentElement !== activeSlide && !video.paused) {
-                                video.pause();
-                            }
-                        });
                     }
                 }
             });
+
+            // 添加一个定时器，作为备用机制确保文字显示
+            setInterval(ensureRiverTextVisible, 1000); // 每秒检查一次
         });
     </script>
 </body>
-</html> 
+</html>

@@ -187,157 +187,62 @@
 
             /* 移动端上logo的样式调整 */
             .logos-wrapper {
-                flex-direction: row; /* 保持水平排列 */
-                gap: 50px; /* 移动端上也增加间距 */
+                flex-direction: column; /* 改为垂直排列 */
+                gap: 40px; /* 减小间距 */
+                padding-top: 80px; /* 增加顶部空间 */
             }
 
             .huatu-logo {
                 width: 300px;
-                max-width: 60%;
+                max-width: 80%;
+                margin-top: -80px; /* 华图logo往上移动 */
             }
 
             .lexue-logo {
                 width: 180px;
-                max-width: 35%;
+                max-width: 50%;
             }
 
-            /* 移动端导航菜单按钮 */
-            .mobile-menu-btn {
-                display: block;
-                position: absolute;
-                right: 20px;
-                width: 30px;
-                height: 20px;
-                cursor: pointer;
-                z-index: 1001;
-            }
-
-            .mobile-menu-btn span {
-                display: block;
-                position: absolute;
-                height: 2px;
-                width: 100%;
-                background: white;
-                opacity: 1;
-                left: 0;
-                transform: rotate(0deg);
-                transition: .25s ease-in-out;
-            }
-
-            .mobile-menu-btn span:nth-child(1) {
-                top: 0px;
-            }
-
-            .mobile-menu-btn span:nth-child(2) {
-                top: 9px;
-            }
-
-            .mobile-menu-btn span:nth-child(3) {
-                top: 18px;
-            }
-
-            .mobile-menu-btn.open span:nth-child(1) {
-                top: 9px;
-                transform: rotate(135deg);
-            }
-
-            .mobile-menu-btn.open span:nth-child(2) {
-                opacity: 0;
-                left: -60px;
-            }
-
-            .mobile-menu-btn.open span:nth-child(3) {
-                top: 9px;
-                transform: rotate(-135deg);
-            }
-
-            /* 移动端菜单样式 */
-            .mobile-menu {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.95);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
-                z-index: 999;
-                padding: 20px;
-                padding-top: 65px;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .mobile-menu.open {
-                display: flex;
-            }
-
-            .mobile-menu a {
-                color: white;
-                font-size: 1.5rem;
-                margin: 15px 0;
-                text-decoration: none;
-                font-family: 'Poiret One', cursive;
-                letter-spacing: 3px;
-                transition: all 0.3s ease;
-            }
-
-            .mobile-menu a:hover {
-                color: #DE2910;
-                letter-spacing: 4px;
-            }
-
-            .mobile-menu a.active {
-                color: #DE2910;
-            }
-
+            /* 作品展示部分的移动端样式 */
             .works-selection {
-                flex-direction: column;
-                height: auto;
-                min-height: 100vh;
+                flex-direction: column !important;
+                height: auto !important;
+                min-height: 100vh !important;
             }
 
             .work-category {
-                width: 100%;
-                height: 40vh; /* 减小每个视频高度以便可以看到两个视频 */
+                width: 100% !important;
+                height: 45vh !important;
+                position: relative;
+                margin-bottom: 0 !important;
+                overflow: hidden !important;
             }
 
-            .work-category:hover {
-                width: 100%;
-                height: 40vh; /* 保持一致高度，移除hover时的高度变化 */
-                transform: scale(1.02); /* 改为轻微缩放效果 */
-            }
-
-            .work-category-title {
-                font-size: 2.5rem;
-                letter-spacing: 8px;
-                opacity: 1; /* 默认显示标题 */
-                transform: translateY(0); /* 默认无位移 */
-            }
-
-            /* 调整移动端视频容器内边距，确保标题完全可见 */
-            .work-category-overlay {
-                padding: 0 20px;
-            }
-
-            /* 移动端优化：默认显示标题，不再需要hover才显示 */
-            .work-category .work-category-title {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            /* 移动端视频背景样式 */
             .work-category-video {
-                height: 100%;
-                width: 100%;
-                object-position: center;
+                position: absolute !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                min-width: 100% !important;
+                min-height: 100% !important;
+                width: auto !important;
+                height: auto !important;
+                object-fit: cover !important;
+                z-index: 0 !important;
+            }
+
+            .work-category-overlay {
+                z-index: 2 !important;
+                position: relative !important;
+                width: 100% !important;
+                height: 100% !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
             }
             
-            /* 在视频项之间添加间距 */
             #pictureWorks {
-                margin-bottom: 20px;
+                margin-bottom: 0px !important; 
             }
         }
 
@@ -561,6 +466,7 @@
             opacity: 1;
         }
 
+        /* 视频背景样式 */
         .work-category {
             position: relative;
             width: 50%;
@@ -582,14 +488,22 @@
             transition: transform 0.7s ease;
         }
 
-        /* 视频背景样式 */
         .work-category-video {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
             object-fit: cover;
             transition: transform 0.7s ease;
-            background-color: #000; /* 视频加载时的背景色 */
+            background-color: #000;
+        }
+
+        .work-category:hover .work-category-video {
+            transform: translate(-50%, -50%) scale(1.07);
         }
 
         .work-category.loading::before {
@@ -609,11 +523,6 @@
 
         @keyframes spin {
             to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        .work-category:hover .work-category-image,
-        .work-category:hover .work-category-video {
-            transform: scale(1.05);
         }
 
         .work-category-overlay {
@@ -671,24 +580,29 @@
 
         /* 超小屏幕设备的响应式调整 */
         @media (max-width: 480px) {
-            /* 超小屏幕上logo的样式调整 */
             .logos-wrapper {
-                flex-direction: column; /* 改为垂直排列（上下排布） */
-                gap: 40px; /* 上下间距 */
-                justify-content: center;
-                align-items: center;
-                padding-top: 60px; /* 增加顶部空间 */
+                flex-direction: column;
+                gap: 30px;
+                padding-top: 100px;
             }
 
             .huatu-logo {
-                width: 300px;
-                max-width: 80%;
-                margin-top: -110px; /* 华图logo往上移动 */
+                width: 260px;
+                max-width: 75%;
+                margin-top: -100px;
             }
 
             .lexue-logo {
-                width: 130px;
-                max-width: 60%;
+                width: 140px;
+                max-width: 45%;
+            }
+
+            .work-category-title {
+                font-size: 2.5rem;
+            }
+
+            .work-category {
+                height: 45vh;
             }
         }
     </style>

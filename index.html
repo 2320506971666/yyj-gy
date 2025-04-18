@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- SEO基础标签 -->
     <title>Triple-Y | 首页</title>
@@ -29,6 +29,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome 图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- 导航栏样式 -->
+    <link rel="stylesheet" href="shared/nav-styles.css">
 
     <!-- GSAP, Lenis, Barba.js 脚本 -->
     <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
@@ -53,8 +59,8 @@
         }
 
         html, body {
-            background-color: black;
-            color: #ffffff;
+            background-color: white;
+            color: #333333;
             line-height: 1.6;
             font-family: 'Lato', sans-serif;
             overflow-x: hidden;
@@ -93,7 +99,7 @@
             height: 45px;
             background-color: rgba(0, 0, 0, 0.8);
             z-index: 1000;
-            padding: 0 5%;
+            padding: 0;
         }
 
         nav {
@@ -104,6 +110,11 @@
             height: 100%;
             margin: 0 auto;
             padding: 0 20px;
+        }
+
+        /* 调整logo位置，防止紧贴边缘 */
+        .logo {
+            margin-left: 10px; /* 添加左侧间距 */
         }
 
         .logo, .logo a {
@@ -120,9 +131,13 @@
             opacity: 0.8;
         }
 
+        .navbar-right {
+            margin-right: 10px; /* 添加右侧间距 */
+        }
+
         .nav-links {
             position: absolute;
-            left: 50%;
+            left: 51%;
             transform: translateX(-50%);
             display: flex;
             list-style: none;
@@ -132,7 +147,7 @@
         }
 
         .nav-links li {
-            margin-left: 0;
+            padding: 0;
         }
 
         .nav-links a {
@@ -151,6 +166,90 @@
         .nav-links a:hover {
             opacity: 1;
         }
+        
+        /* 移动菜单按钮样式 - 确保在index.html中也能正确显示 */
+        /* 注意: 这部分样式已移至shared/nav-styles.css，保留此注释作为参考 */
+        /* 
+        .mobile-menu-button {
+            display: none;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1010;
+        }
+
+        .mobile-menu-button .bar1,
+        .mobile-menu-button .bar2,
+        .mobile-menu-button .bar3 {
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            margin: 6px 0;
+            transition: 0.4s;
+        }
+
+        .mobile-menu-button.open .bar1 {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .mobile-menu-button.open .bar2 {
+            opacity: 0;
+        }
+
+        .mobile-menu-button.open .bar3 {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        /* 移动菜单样式 */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 45px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 45px);
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1009;
+            padding: 20px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mobile-menu.open {
+            display: flex;
+        }
+
+        .mobile-link {
+            color: white;
+            font-size: 1.5rem;
+            margin: 15px 0;
+            text-decoration: none;
+            font-family: 'Poiret One', cursive;
+            letter-spacing: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-link:hover {
+            color: #DE2910;
+            letter-spacing: 4px;
+        }
+
+        .mobile-link.active {
+            color: #DE2910;
+        }
+
+        /* 菜单打开时的body样式 */
+        body.menu-open {
+            overflow: hidden;
+        }
+        */
 
         /* 3D模型容器 */
         #model-container {
@@ -222,83 +321,220 @@
                 bottom: 20px;
             }
 
-            /* 移动端按钮悬停和点击效果覆盖 */
-            .nav-button:hover {
-                transform: scale(1.1) !important;
-            }
-
-            .nav-button:active {
-                transform: scale(0.9) !important;
-            }
-
-            .nav-button.clicked {
-                animation: mobileButtonPulse 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            }
-
-            @keyframes mobileButtonPulse {
-                0% { transform: scale(1); }
-                40% { transform: scale(0.85); }
-                80% { transform: scale(1.15); }
-                100% { transform: scale(1); }
-            }
-
-            .nav-button.visible {
-                transform: scale(1) !important;
-            }
-
-            /* 移动端导航栏样式调整 */
-            .nav-links {
-                display: none; /* 在移动端隐藏导航链接 */
-            }
-
-            /* 移动端按钮布局 - 模型上下平行排列，不遮挡模型 */
-            .nav-button {
-                position: fixed;
-                transform: translateY(0) scale(1) !important; /* 确保按钮显示 */
-                opacity: 1 !important; /* 确保按钮可见 */
-                width: 42%; /* 四个按钮大小一致 */
-                padding: 10px 0;
-                font-size: 0.8rem;
-                letter-spacing: 2px;
-                right: auto;
-                top: auto;
-                text-align: center;
-                margin: 0;
-                border-radius: 20px;
-            }
-
-            /* 上方两个按钮 - 在导航栏下方，模型上方 */
-            .gallery-button {
-                top: 60px; /* 距离顶部足够距离，避开导航栏 */
-                left: 4%;
-            }
-
-            .work-button {
-                top: 60px;
-                right: 4%;
-                left: auto;
-            }
-
-            /* 下方两个按钮 - 在模型下方 */
-            .about-button {
-                bottom: 40px;
-                left: 4%;
-            }
-
+            /* 移动端按钮基本样式 */
+            .nav-button,
+            .gallery-button,
+            .work-button,
+            .about-button,
             .explore-button {
-                bottom: 40px;
-                right: 4%;
-                left: auto;
+                position: fixed !important;
+                width: 60% !important;
+                left: 50% !important; 
+                transform: translateX(-50%) !important;
+                right: auto !important; /* 清除桌面设置的right影响 */
+                opacity: 1 !important; /* 确保按钮始终可见 */
             }
-
-            /* 确保模型容器占满屏幕 */
+            
+            /* 移动端按钮位置 */
+            .gallery-button {
+                bottom: 320px !important;
+                top: auto !important;
+            }
+            
+            .work-button {
+                bottom: 240px !important;
+                top: auto !important;
+            }
+            
+            .about-button {
+                bottom: 160px !important;
+                top: auto !important;
+            }
+            
+            .explore-button {
+                bottom: 80px !important;
+                top: auto !important;
+            }
+            
+            /* 确保模型容器填充整个屏幕，移除底部黑色区域 */
             #model-container {
-                height: 100dvh; /* 使用动态视口高度 */
+                height: 100vh; /* 填充整个视口高度 */
+                margin: 0; /* 移除所有外边距 */
+                background-color: white; /* 确保背景是白色 */
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
             }
-
-            /* 修复Logo位置 */
+            
+            /* 移动端按钮动画 */
+            @keyframes mobileButtonPulse {
+                0% {
+                    transform: translateX(-50%) scale(1);
+                }
+                50% {
+                    transform: translateX(-50%) scale(1.05);
+                }
+                100% {
+                    transform: translateX(-50%) scale(1);
+                }
+            }
+            
+            /* 添加移动端点击动画效果 */
+            .nav-button:active {
+                animation: mobileButtonPulse 0.3s ease;
+            }
+            
+            nav {
+                padding: 0 10px; /* 移动端使用更小的内边距 */
+            }
+            
+            header {
+                padding: 0;
+            }
+            
+            .logo {
+                margin-left: 5px; /* 小屏幕减少间距 */
+            }
+            
+            .navbar-right {
+                margin-right: 5px; /* 小屏幕减少间距 */
+            }
+            
+            .nav-links a {
+                padding: 0 10px; /* 减少链接间的间距 */
+            }
+            
+            /* 显示移动端汉堡菜单按钮 - 已移至shared/nav-styles.css */
+            /*
+            .mobile-menu-button {
+                display: block;
+            }
+            
+            /* 隐藏导航链接 - 已移至shared/nav-styles.css */
+            /*
+            .nav-links {
+                display: none;
+            }
+            */
+        }
+        
+        /* 小型手机屏幕适配 (小于375px) */
+        @media (max-width: 375px) {
+            /* 小屏幕按钮样式 */
+            .nav-button,
+            .gallery-button,
+            .work-button,
+            .about-button,
+            .explore-button {
+                width: 75% !important; /* 在小屏幕上使按钮更宽 */
+                height: 40px !important; /* 降低高度以节省空间 */
+                font-size: 0.85rem !important;
+            }
+            
+            /* 图标调整 */
+            .nav-button i {
+                font-size: 1rem !important;
+                margin-right: 8px !important;
+            }
+            
+            /* 小屏幕按钮布局位置 */
+            .gallery-button {
+                bottom: 290px !important;
+            }
+            
+            .work-button {
+                bottom: 220px !important;
+            }
+            
+            .about-button {
+                bottom: 150px !important;
+            }
+            
+            .explore-button {
+                bottom: 80px !important;
+            }
+            
+            /* 导航栏样式 */
             .logo, .logo a {
-                font-size: 1.8rem;
+                font-size: 1.4rem !important;
+            }
+        }
+        
+        /* 大型手机屏幕适配 (大于420px小于768px) */
+        @media (min-width: 420px) and (max-width: 768px) {
+            /* 大屏手机按钮样式 */
+            .nav-button,
+            .gallery-button,
+            .work-button,
+            .about-button,
+            .explore-button {
+                width: 55% !important; /* 在大屏幕上可以更窄一些 */
+                height: 48px !important; /* 略高一些以方便操作 */
+                font-size: 1rem !important;
+            }
+            
+            /* 大屏手机按钮布局位置 */
+            .gallery-button {
+                bottom: 300px !important;
+            }
+            
+            .work-button {
+                bottom: 230px !important;
+            }
+            
+            .about-button {
+                bottom: 160px !important;
+            }
+            
+            .explore-button {
+                bottom: 90px !important;
+            }
+            
+            /* 导航栏样式 */
+            header {
+                position: fixed;
+                width: 100%;
+                top: 0;
+                height: 45px;
+                background-color: rgba(0, 0, 0, 0.8);
+                z-index: 1000;
+                padding: 0;
+            }
+        }
+        
+        /* 平板设备适配 */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            /* 针对平板的布局调整 */
+            .nav-button {
+                right: 60px !important; /* 位置更靠左 */
+                min-width: 140px; /* 略大的按钮 */
+                transform: translateY(-50%) !important; /* 确保垂直居中 */
+            }
+            
+            #model-container {
+                height: 90vh; /* 稍微减少高度 */
+            }
+            
+            /* 导航栏样式统一 */
+            header {
+                position: fixed;
+                width: 100%;
+                top: 0;
+                height: 45px;
+                background-color: rgba(0, 0, 0, 0.8);
+                z-index: 1000;
+                padding: 0;
+            }
+            
+            nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                max-width: 1400px;
+                height: 100%;
+                margin: 0 auto;
+                padding: 0 20px;
             }
         }
 
@@ -309,7 +545,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #000; /* 改为黑色背景 */
+            background-color: #ffffff; /* 改为白色背景 */
             z-index: 999;
             opacity: 0;
             visibility: hidden;
@@ -324,8 +560,6 @@
         /* 所有按钮共用的基础样式 */
         .nav-button {
             position: fixed;
-            right: 80px; /* 位置更靠左 */
-            transform: translateY(-50%) scale(1);
             background-color: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
@@ -341,7 +575,7 @@
             text-decoration: none;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1),
                         0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* 移除transition过渡效果 */
             opacity: 0;
             z-index: 1000;
             cursor: pointer;
@@ -351,103 +585,280 @@
             min-width: 120px; /* 设置最小宽度，确保能容纳文字 */
         }
 
-        /* 鼠标悬停时的增强效果 */
+        /* 鼠标悬停时的增强效果 - 简化 */
         .nav-button:hover {
             background-color: rgba(255, 255, 255, 0.25);
-            transform: translateY(-50%) scale(1.1);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2),
-                        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
         }
 
-        /* 点击按钮时的动画效果 */
+        /* 点击按钮时的动画效果 - 简化 */
         .nav-button:active {
-            transform: translateY(-50%) scale(0.9);
-            transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
                         0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            animation: buttonPulse 0.3s ease;
         }
 
         /* 点击后的动画类 */
         .nav-button.clicked {
-            animation: buttonPulse 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* 移除animation */
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
         /* 按钮动画 */
         @keyframes buttonPulse {
             0% {
-                transform: translateY(-50%) scale(1);
+                transform: translateX(0) scale(1);
             }
-            40% {
-                transform: translateY(-50%) scale(0.85);
-            }
-            80% {
-                transform: translateY(-50%) scale(1.15);
+            50% {
+                transform: translateX(0) scale(1.05);
             }
             100% {
-                transform: translateY(-50%) scale(1);
+                transform: translateX(0) scale(1);
             }
         }
 
-        .nav-button.visible {
-            opacity: 1;
-            transform: translateY(-50%) scale(1);
+        /* 添加点击动画效果 */
+        .nav-button:active {
+            animation: buttonPulse 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
         }
 
         /* Gallery按钮样式 */
         .gallery-button {
             top: 40%;
+            right: 80px;
+            left: auto;
         }
 
         /* Work按钮样式 */
         .work-button {
             top: 50%;
+            right: 80px;
+            left: auto;
         }
 
         /* About按钮样式 */
         .about-button {
             top: 60%;
+            right: 80px;
+            left: auto;
         }
 
         /* Film按钮样式 */
         .explore-button {
             top: 70%;
+            right: 80px;
+            left: auto;
         }
 
         /* 点击按钮时的动画效果 */
         .nav-button:active {
-            transform: translateY(-50%) scale(0.95) translateZ(0) rotateX(0deg) rotateY(0deg);
-            transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
                         0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-            letter-spacing: 3px;
         }
 
         /* 点击后的动画类 */
         .nav-button.clicked {
-            animation: workButtonPulse 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .nav-button.visible {
-            opacity: 1;
-            transform: translateY(-50%) scale(1) translateZ(0);
+            /* 移除animation */
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
         /* 修改点击波动动画以兼容3D效果 */
         @keyframes workButtonPulse {
             0% {
-                transform: translateY(-50%) scale(1) translateZ(0);
+                transform: scale(1);
             }
-            40% {
-                transform: translateY(-50%) scale(0.85) translateZ(-5px);
-            }
-            80% {
-                transform: translateY(-50%) scale(1.15) translateZ(10px);
+            50% {
+                transform: scale(1.05);
             }
             100% {
-                transform: translateY(-50%) scale(1) translateZ(0);
+                transform: scale(1);
             }
         }
+
+        /* 为工作按钮添加特殊的点击动画 */
+        .work-button:active {
+            animation: workButtonPulse 0.3s ease !important;
+        }
+
+        /* 调整各按钮的水平位置 */
+        @media (min-width: 769px) {
+            /* 桌面端按钮位置，统一在右侧 */
+            .gallery-button {
+                left: auto;
+                right: 80px;
+            }
+
+            .work-button {
+                left: auto;
+                right: 80px;
+            }
+
+            .about-button {
+                left: auto;
+                right: 80px;
+            }
+
+            .explore-button {
+                left: auto;
+                right: 80px;
+                top: 70%; /* 保持与默认样式一致 */
+            }
+        }
+
+        /* 桌面端样式 */
+        @media (min-width: 769px) {
+            /* 确保桌面端按钮在右侧且宽度一致 */
+            .nav-button {
+                right: 80px !important;
+                left: auto !important;
+                transform: translateY(-50%) !important;
+                width: 150px !important; /* 统一桌面端按钮宽度 */
+            }
+            
+            /* 简化桌面端按钮悬停效果 */
+            .nav-button:hover {
+                background-color: rgba(255, 255, 255, 0.25);
+            }
+            
+            /* 简化桌面端按钮点击效果 */
+            .nav-button:active {
+                background-color: rgba(255, 255, 255, 0.2);
+                animation: buttonPulse 0.3s ease;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+                           0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            }
+            
+            /* 特殊按钮动画效果 */
+            .work-button:active {
+                animation: workButtonPulse 0.3s ease !important;
+            }
+            
+            /* 移除按钮点击动画效果 */
+            
+            /* 桌面端各按钮的垂直位置 - 往下移动 */
+            .gallery-button {
+                top: 40% !important; /* 从30%调整为40% */
+            }
+            
+            .work-button {
+                top: 50% !important; /* 从40%调整为50% */
+            }
+            
+            .about-button {
+                top: 60% !important; /* 从50%调整为60% */
+            }
+            
+            .explore-button {
+                top: 70% !important; /* 从60%调整为70% */
+            }
+            
+            /* 桌面端按钮可见状态 */
+            .nav-button.visible {
+                opacity: 1 !important;
+            }
+            
+            /* 桌面端隐藏移动菜单按钮 */
+            .mobile-menu-button {
+                display: none;
+            }
+            
+            /* 桌面端显示导航链接 */
+            .nav-links {
+                display: flex;
+            }
+        }
+
+        /* 首页特定汉堡菜单增强样式 */
+        .header-container {
+            z-index: 2000 !important; /* 确保不被其他元素覆盖 */
+        }
+        
+        .mobile-menu-button {
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 5px;
+            padding: 5px;
+            right: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-button {
+                display: block !important; /* 强制显示 */
+            }
+            
+            .mobile-menu-button .bar1,
+            .mobile-menu-button .bar2,
+            .mobile-menu-button .bar3 {
+                height: 3px; /* 使线条更粗，更容易看见 */
+                background-color: white !important;
+                margin: 5px 0;
+            }
+            
+            .mobile-menu.open {
+                display: flex !important; /* 强制显示 */
+            }
+        }
+
+        /* 新增：移动端按钮控制 */
+        @media (max-width: 768px) {
+            /* 初始状态按钮隐藏 */
+            .nav-button, .cta-button, .section-scroll-indicator, .model-controls,
+            #gallery-button, #work-button, #about-button, #explore-button {
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.5s ease, visibility 0.5s ease;
+            }
+            
+            /* 加载完成后显示的样式 */
+            .model-loaded .nav-button,
+            .model-loaded .cta-button,
+            .model-loaded .section-scroll-indicator,
+            .model-loaded .model-controls,
+            .model-loaded #gallery-button,
+            .model-loaded #work-button,
+            .model-loaded #about-button,
+            .model-loaded #explore-button {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+
+        /* 新增：加载完成样式类 */
+        .model-loaded {
+            /* 加载完成的页面样式 */
+        }
     </style>
+
+    <!-- 移除冲突的汉堡菜单脚本 -->
+    <script>
+        // 确保汉堡菜单能正常显示和工作
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('检查并清除冲突样式');
+            // 查找并移除可能冲突的样式
+            setTimeout(function() {
+                // 移除所有汉堡菜单相关元素，确保没有重叠
+                document.querySelectorAll('.quick-burger').forEach(el => {
+                    if (el.getAttribute('data-source') !== 'load-nav') {
+                        console.log('移除冲突汉堡菜单');
+                        el.remove();
+                    }
+                });
+                
+                // 移除所有相关样式标签
+                document.querySelectorAll('style').forEach(styleTag => {
+                    if (styleTag.textContent.includes('.quick-burger') && !styleTag.hasAttribute('data-preserved')) {
+                        console.log('移除冲突样式');
+                        styleTag.remove();
+                    }
+                });
+                
+                // 强制触发窗口调整以重新创建汉堡菜单
+                window.dispatchEvent(new Event('resize'));
+                
+                console.log('汉堡菜单清理完成');
+            }, 500);
+        });
+    </script>
 </head>
 <body>
     <div class="page-transition"></div>
@@ -458,31 +869,46 @@
     <!-- 主体内容容器 -->
     <main>
         <div id="model-container">
-            <!-- 加载指示器 -->
-            <div id="loader">
-                <p>加载中...</p>
-                <div class="loader-bar">
-                    <div class="loader-progress" id="progress-bar"></div>
+            <!-- 添加模型包装器 -->
+            <div class="model-wrapper">
+                <!-- 加载指示器 -->
+                <div id="loader">
+                    <p>加载中...</p>
+                    <div class="loader-bar">
+                        <div class="loader-progress" id="progress-bar"></div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- 提示文本 -->
-            <div class="model-info" id="model-info">
-                <p></p>
+                <!-- 提示文本 -->
+                <div class="model-info" id="model-info">
+                    <p></p>
+                </div>
             </div>
         </div>
 
         <!-- Gallery按钮 - 移到模型容器外部 -->
-        <a href="gallery.html" class="gallery-button nav-button" id="gallery-button">gallery</a>
+        <a href="gallery.html" class="gallery-button nav-button" id="gallery-button">
+            <i class="fas fa-images"></i>
+            <span>gallery</span>
+        </a>
 
         <!-- Work按钮 - 添加在右侧 -->
-        <a href="work.html" class="work-button nav-button" id="work-button">work</a>
+        <a href="work.html" class="work-button nav-button" id="work-button">
+            <i class="fas fa-briefcase"></i>
+            <span>work</span>
+        </a>
 
         <!-- About按钮 - 添加在下方 -->
-        <a href="about.html" class="about-button nav-button" id="about-button">about</a>
+        <a href="about.html" class="about-button nav-button" id="about-button">
+            <i class="fas fa-user"></i>
+            <span>about</span>
+        </a>
 
         <!-- Film按钮 - 添加在左侧 -->
-        <a href="film.html" class="explore-button nav-button" id="explore-button">film</a>
+        <a href="film.html" class="explore-button nav-button" id="explore-button">
+            <i class="fas fa-film"></i>
+            <span>film</span>
+        </a>
     </main>
 
     <!-- 加载统一导航栏脚本 -->
@@ -574,16 +1000,35 @@
             // 在移动设备上使用更小的视图尺寸，使模型看起来更小
             const isMobile = window.innerWidth <= 768;
             const mobileViewSize = isMobile ? 20 : 10; // 增大视图尺寸使模型看起来更小
+            
+            // 针对不同尺寸的移动设备调整视图大小
+            let adjustedViewSize = mobileViewSize;
+            if(isMobile) {
+                if(window.innerWidth <= 375) {
+                    // 小型手机
+                    adjustedViewSize = 22;
+                } else if(window.innerWidth >= 420 && window.innerWidth <= 768) {
+                    // 大型手机
+                    adjustedViewSize = 19;
+                }
+            }
 
             camera = new THREE.OrthographicCamera(
-                -mobileViewSize * aspectRatio / 2,
-                mobileViewSize * aspectRatio / 2,
-                mobileViewSize / 2,
-                -mobileViewSize / 2,
+                -adjustedViewSize * aspectRatio / 2,
+                adjustedViewSize * aspectRatio / 2,
+                adjustedViewSize / 2,
+                -adjustedViewSize / 2,
                 0.1,
                 1000
             );
-            camera.position.z = 5;
+            
+            // 设置相机位置 - 移动端调整相机位置使模型显示在上方
+            if (isMobile) {
+                camera.position.z = 5;
+                camera.position.y = 0; // 恢复相机正常位置，不再向下移动相机
+            } else {
+                camera.position.z = 5;
+            }
 
             // 创建渲染器
             renderer = new THREE.WebGLRenderer({
@@ -884,6 +1329,10 @@
                 window.modelLoaded = true;
                 console.log('模型加载状态已设置为：', window.modelLoaded);
 
+                // 添加标记类，在移动端显示按钮
+                document.body.classList.add('model-loaded');
+                console.log('添加model-loaded类，激活移动端按钮显示');
+
                 // 无论是否为移动设备，都显示按钮
                 galleryButton.classList.add('visible');
                 workButton.classList.add('visible');
@@ -929,14 +1378,35 @@
                     // 检查是否为移动设备
                     const isMobile = window.innerWidth <= 768;
 
-                    // 如果是移动设备，将模型向上移动一点
-                    if (isMobile) {
-                        model.position.y = 1.0; // 向上移动，使模型在屏幕中心偏上位置
-                    }
-
                     // 适应正交相机的缩放
-                    const scale = (isMobile ? 7 : 10) / size; // 移动端使用更小的比例
+                    let scale = (isMobile ? 7 : 10) / size; // 移动端使用更小的比例
+                    
+                    // 针对不同尺寸的移动设备调整模型缩放
+                    if(isMobile) {
+                        if(window.innerWidth <= 375) {
+                            // 小型手机
+                            scale = 8 / size; // 增加缩放比例
+                        } else if(window.innerWidth >= 420 && window.innerWidth <= 768) {
+                            // 大型手机
+                            scale = 9.5 / size; // 增加缩放比例
+                        } else {
+                            scale = 9 / size; // 增加缩放比例
+                        }
+                    }
+                    
                     model.scale.set(scale, scale, scale);
+                    
+                    // 在移动端设备上，向上移动模型
+                    if (isMobile) {
+                        // 根据屏幕尺寸调整模型位置
+                        if(window.innerWidth <= 375) {
+                            model.position.y += 4.5; // 位置更高
+                        } else if(window.innerWidth >= 420 && window.innerWidth <= 768) {
+                            model.position.y += 5.0; // 位置更高
+                        } else {
+                            model.position.y += 4.5; // 默认位置
+                        }
+                    }
 
                     // 遍历模型的所有材质，应用Z轴渐变材质
                     const gradientMaterial = createGradientMaterial();
@@ -1179,28 +1649,70 @@
             // 在移动设备上使用更小的视图尺寸，使模型看起来更小
             const isMobile = window.innerWidth <= 768;
             const mobileViewSize = isMobile ? 20 : 10; // 增大视图尺寸使模型看起来更小
+            
+            // 针对不同尺寸的移动设备调整视图大小
+            let adjustedViewSize = mobileViewSize;
+            if(isMobile) {
+                if(window.innerWidth <= 375) {
+                    // 小型手机
+                    adjustedViewSize = 22;
+                } else if(window.innerWidth >= 420 && window.innerWidth <= 768) {
+                    // 大型手机
+                    adjustedViewSize = 19;
+                }
+            }
 
-            camera.left = -mobileViewSize * aspectRatio / 2;
-            camera.right = mobileViewSize * aspectRatio / 2;
-            camera.top = mobileViewSize / 2;
-            camera.bottom = -mobileViewSize / 2;
+            camera.left = -adjustedViewSize * aspectRatio / 2;
+            camera.right = adjustedViewSize * aspectRatio / 2;
+            camera.top = adjustedViewSize / 2;
+            camera.bottom = -adjustedViewSize / 2;
+
+            // 调整相机位置
+            if (isMobile) {
+                camera.position.y = 0; // 恢复相机正常位置
+                // 如果模型存在，直接调整模型位置
+                if (model) {
+                    // 根据屏幕尺寸调整模型位置
+                    if(window.innerWidth <= 375) {
+                        model.position.y = 4.5; // 位置更高
+                    } else if(window.innerWidth >= 420 && window.innerWidth <= 768) {
+                        model.position.y = 5.0; // 位置更高
+                    } else {
+                        model.position.y = 4.5; // 默认位置
+                    }
+                    
+                    // 重新设置模型的缩放比例
+                    const box = new THREE.Box3().setFromObject(model);
+                    const size = box.getSize(new THREE.Vector3()).length();
+                    
+                    let scale;
+                    if(window.innerWidth <= 375) {
+                        scale = 8 / size; // 增加缩放比例
+                    } else if(window.innerWidth >= 420 && window.innerWidth <= 768) {
+                        scale = 9.5 / size; // 增加缩放比例
+                    } else {
+                        scale = 9 / size; // 增加缩放比例
+                    }
+                    
+                    model.scale.set(scale, scale, scale);
+                }
+            } else {
+                camera.position.y = 0;
+            }
 
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
 
-            // 如果模型已加载，调整模型大小和位置
+            // 如果模型已加载，调整模型大小
             if (model && isMobile) {
                 // 在移动端缩小模型
                 const box = new THREE.Box3().setFromObject(model);
                 const size = box.getSize(new THREE.Vector3()).length();
                 const scale = (isMobile ? 7 : 10) / size; // 移动端使用更小的比例
                 model.scale.set(scale, scale, scale);
-
-                // 在移动端将模型向上移动一点，使其在屏幕中心偏上位置
-                model.position.y = 1.0; // 向上移动
             }
 
-            // 在窗口大小变化时检查是否为移动设备，更新按钮可见性
+            // 确保按钮在移动设备上始终可见
             if (isMobile) {
                 const galleryButton = document.getElementById('gallery-button');
                 const workButton = document.getElementById('work-button');
@@ -1509,26 +2021,43 @@
             const isMobile = window.innerWidth <= 768;
             if (!isMobile) return; // 非移动设备不启用重力感应
 
+            console.log('尝试启用移动端重力感应...');
+
             // 检查浏览器是否支持重力感应
             if (window.DeviceOrientationEvent) {
                 // iOS 13+ 需要请求权限
                 if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                    // 创建一个按钮请求权限
+                    console.log('iOS设备，需要请求权限');
+                    
+                    // 创建一个更美观的按钮请求权限
                     const permissionButton = document.createElement('button');
-                    permissionButton.textContent = '启用重力感应';
+                    permissionButton.textContent = '开启重力感应';
                     permissionButton.style.position = 'fixed';
                     permissionButton.style.top = '50%';
                     permissionButton.style.left = '50%';
                     permissionButton.style.transform = 'translate(-50%, -50%)';
-                    permissionButton.style.zIndex = '1000';
-                    permissionButton.style.padding = '10px 20px';
-                    permissionButton.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
-                    permissionButton.style.border = 'none';
-                    permissionButton.style.borderRadius = '5px';
-                    permissionButton.style.color = '#333';
+                    permissionButton.style.zIndex = '2000';
+                    permissionButton.style.padding = '12px 24px';
+                    permissionButton.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                    permissionButton.style.color = 'white';
+                    permissionButton.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+                    permissionButton.style.borderRadius = '30px';
                     permissionButton.style.fontFamily = '"Noto Serif SC", serif';
                     permissionButton.style.fontSize = '16px';
                     permissionButton.style.cursor = 'pointer';
+                    permissionButton.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
+                    permissionButton.style.transition = 'all 0.3s ease';
+                    
+                    // 添加悬停效果
+                    permissionButton.onmouseover = function() {
+                        this.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+                        this.style.transform = 'translate(-50%, -50%) scale(1.05)';
+                    };
+                    
+                    permissionButton.onmouseout = function() {
+                        this.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                        this.style.transform = 'translate(-50%, -50%)';
+                    };
 
                     permissionButton.addEventListener('click', function() {
                         DeviceOrientationEvent.requestPermission()
@@ -1537,19 +2066,40 @@
                                     // 权限获得后添加事件监听
                                     window.addEventListener('deviceorientation', handleDeviceOrientation);
                                     deviceOrientationEnabled = true;
+                                    console.log('iOS设备重力感应权限已获取');
                                     // 移除按钮
                                     document.body.removeChild(permissionButton);
+                                } else {
+                                    console.log('iOS设备重力感应权限被拒绝');
+                                    // 提示用户权限被拒绝
+                                    permissionButton.textContent = '权限被拒绝，请重试';
+                                    permissionButton.style.backgroundColor = 'rgba(200, 0, 0, 0.8)';
+                                    setTimeout(() => {
+                                        permissionButton.textContent = '开启重力感应';
+                                        permissionButton.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                                    }, 2000);
                                 }
                             })
-                            .catch(console.error);
+                            .catch(function(error) {
+                                console.error('请求重力感应权限出错:', error);
+                                permissionButton.textContent = '出错了，请重试';
+                                permissionButton.style.backgroundColor = 'rgba(200, 0, 0, 0.8)';
+                                setTimeout(() => {
+                                    permissionButton.textContent = '开启重力感应';
+                                    permissionButton.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                                }, 2000);
+                            });
                     });
 
                     document.body.appendChild(permissionButton);
                 } else {
-                    // 非iOS设备直接添加事件监听
+                    // 非iOS设备直接自动添加事件监听
+                    console.log('非iOS设备，自动启用重力感应');
                     window.addEventListener('deviceorientation', handleDeviceOrientation);
                     deviceOrientationEnabled = true;
                 }
+            } else {
+                console.log('设备不支持重力感应');
             }
         }
 
@@ -1657,7 +2207,46 @@
         };
 
         // 页面加载完成后初始化
-        window.addEventListener('load', init);
+        window.addEventListener('load', function() {
+            init();
+            // 设置触摸事件
+            setupTouchEvents();
+        });
+
+        // 添加触摸事件支持
+        function setupTouchEvents() {
+            // 检查是否为移动设备
+            const isMobile = window.innerWidth <= 768;
+            if (!isMobile) return;
+            
+            const container = document.getElementById('model-container');
+            
+            // 监听触摸开始
+            container.addEventListener('touchstart', function(e) {
+                // 如果旋转动画正在进行，忽略触摸
+                if (isRotating) return;
+                
+                // 开始旋转动画
+                toggleWireframe();
+            });
+            
+            // 阻止默认的触摸行为，防止页面缩放
+            document.addEventListener('touchmove', function(e) {
+                if (e.scale !== 1) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+        }
+
+        // 查找模型加载完成的函数，在其中添加以下代码：
+        function onLoadComplete() {
+            // 现有的加载完成代码...
+            
+            // 添加标记类，显示按钮
+            document.body.classList.add('model-loaded');
+            
+            console.log('3D模型加载完成，显示按钮');
+        }
     </script>
 
     <script>
@@ -1680,11 +2269,19 @@
             const exploreButton = document.getElementById('explore-button');
             const modelContainer = document.getElementById('model-container');
 
-            // 确保初始状态所有按钮都是隐藏的
-            galleryButton.classList.remove('visible');
-            workButton.classList.remove('visible');
-            aboutButton.classList.remove('visible');
-            exploreButton.classList.remove('visible');
+            // 初始状态下，如果是移动设备，直接设置按钮为可见
+            if (window.innerWidth <= 768) {
+                if (galleryButton) galleryButton.classList.add('visible');
+                if (workButton) workButton.classList.add('visible');
+                if (aboutButton) aboutButton.classList.add('visible');
+                if (exploreButton) exploreButton.classList.add('visible');
+            } else {
+                // 在桌面设备上初始状态隐藏按钮
+                galleryButton.classList.remove('visible');
+                workButton.classList.remove('visible');
+                aboutButton.classList.remove('visible');
+                exploreButton.classList.remove('visible');
+            }
 
             // 鼠标移动时显示或隐藏按钮
             document.addEventListener('mousemove', function(e) {
@@ -1748,8 +2345,8 @@
                 }
                 isNavigating = true;
 
-                // 执行点击动画效果
-                galleryButton.classList.add('clicked');
+                // 移除点击动画效果
+                // galleryButton.classList.add('clicked');
 
                 // 显示过渡层
                 const transition = document.querySelector('.page-transition');
@@ -1780,8 +2377,8 @@
                 }
                 isNavigating = true;
 
-                // 执行点击动画效果
-                workButton.classList.add('clicked');
+                // 移除点击动画效果
+                // workButton.classList.add('clicked');
 
                 // 显示过渡层
                 const transition = document.querySelector('.page-transition');
@@ -1812,8 +2409,8 @@
                 }
                 isNavigating = true;
 
-                // 执行点击动画效果
-                aboutButton.classList.add('clicked');
+                // 移除点击动画效果
+                // aboutButton.classList.add('clicked');
 
                 // 显示过渡层
                 const transition = document.querySelector('.page-transition');
@@ -1844,8 +2441,8 @@
                 }
                 isNavigating = true;
 
-                // 执行点击动画效果
-                exploreButton.classList.add('clicked');
+                // 移除点击动画效果
+                // exploreButton.classList.add('clicked');
 
                 // 显示过渡层
                 const transition = document.querySelector('.page-transition');
@@ -1911,6 +2508,39 @@
                     }
                 });
             });
+            
+            // 设置当前页面的导航按钮激活状态
+            function setActiveNav() {
+                const currentPath = window.location.pathname;
+                const pageName = currentPath.split('/').pop().split('.')[0] || 'index';
+                
+                // 移除所有按钮的激活状态
+                document.querySelectorAll('.nav-button').forEach(btn => {
+                    btn.classList.remove('active-nav');
+                });
+                
+                // 根据当前页面路径设置激活按钮
+                switch(pageName) {
+                    case 'index':
+                        // 首页不需要激活任何按钮
+                        break;
+                    case 'gallery':
+                        document.getElementById('gallery-button')?.classList.add('active-nav');
+                        break;
+                    case 'work':
+                        document.getElementById('work-button')?.classList.add('active-nav');
+                        break;
+                    case 'about':
+                        document.getElementById('about-button')?.classList.add('active-nav');
+                        break;
+                    case 'film':
+                        document.getElementById('explore-button')?.classList.add('active-nav');
+                        break;
+                }
+            }
+            
+            // 页面加载完成后设置激活状态
+            setActiveNav();
         });
     </script>
 </body>

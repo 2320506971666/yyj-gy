@@ -292,6 +292,53 @@
             .mobile-menu a.active {
                 color: #DE2910;
             }
+
+            .works-selection {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .work-category {
+                width: 100%;
+                height: 40vh; /* 减小每个视频高度以便可以看到两个视频 */
+            }
+
+            .work-category:hover {
+                width: 100%;
+                height: 40vh; /* 保持一致高度，移除hover时的高度变化 */
+                transform: scale(1.02); /* 改为轻微缩放效果 */
+            }
+
+            .work-category-title {
+                font-size: 2.5rem;
+                letter-spacing: 8px;
+                opacity: 1; /* 默认显示标题 */
+                transform: translateY(0); /* 默认无位移 */
+            }
+
+            /* 调整移动端视频容器内边距，确保标题完全可见 */
+            .work-category-overlay {
+                padding: 0 20px;
+            }
+
+            /* 移动端优化：默认显示标题，不再需要hover才显示 */
+            .work-category .work-category-title {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            /* 移动端视频背景样式 */
+            .work-category-video {
+                height: 100%;
+                width: 100%;
+                object-position: center;
+            }
+            
+            /* 在视频项之间添加间距 */
+            #pictureWorks {
+                margin-bottom: 20px;
+            }
         }
 
         /* 页面过渡效果 */
@@ -617,36 +664,6 @@
         }
 
         @media (max-width: 768px) {
-            .works-selection {
-                flex-direction: column;
-                height: auto;
-            }
-
-            .work-category {
-                width: 100%;
-                height: 50vh;
-            }
-
-            .work-category:hover {
-                width: 100%;
-                height: 55vh;
-            }
-
-            .work-category-title {
-                font-size: 2.5rem;
-                letter-spacing: 8px;
-            }
-
-            /* 移动端视频背景样式 */
-            .work-category-video {
-                height: 100%;
-                width: 100%;
-                object-position: center;
-            }
-        }
-
-        /* 响应式调整 */
-        @media (max-width: 768px) {
             .section-title h2 {
                 font-size: 2rem;
             }
@@ -656,18 +673,22 @@
         @media (max-width: 480px) {
             /* 超小屏幕上logo的样式调整 */
             .logos-wrapper {
-                flex-direction: row; /* 保持水平排列 */
-                gap: 30px; /* 超小屏幕上也增加间距，但不要太大 */
+                flex-direction: column; /* 改为垂直排列（上下排布） */
+                gap: 40px; /* 上下间距 */
+                justify-content: center;
+                align-items: center;
+                padding-top: 60px; /* 增加顶部空间 */
             }
 
             .huatu-logo {
-                width: 200px;
-                max-width: 55%;
+                width: 300px;
+                max-width: 80%;
+                margin-top: -110px; /* 华图logo往上移动 */
             }
 
             .lexue-logo {
-                width: 120px;
-                max-width: 30%;
+                width: 130px;
+                max-width: 60%;
             }
         }
     </style>

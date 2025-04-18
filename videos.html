@@ -428,7 +428,7 @@
         @media (max-width: 768px) {
             .pictures-link-btn {
                 left: 20px;
-                bottom: 20px;
+                bottom: 80px; /* 将按钮上移，从20px改为120px */
                 padding: 8px 15px;
                 font-size: 0.9rem;
             }
@@ -555,6 +555,44 @@
 
             .card-title {
                 font-size: 1.5rem;
+            }
+            
+            /* 移动端模型位置上移 */
+            #canvas {
+                margin-top: -100px; /* 将模型向上移动 */
+            }
+            
+            /* 介绍文字下移 */
+            .card-description {
+                top: 230px; /* 文字下移，从80px改为180px */
+            }
+            
+            /* 缩略图导航向上移动、放大并改为两排布局 */
+            #preview-strip {
+                bottom: 200px; /* 位置上移，从40px改为80px */
+                width: 80vw; /* 宽度扩大，从70vw改为80vw */
+                flex-wrap: wrap; /* 允许换行 */
+                gap: 1px; /* 增加间距 */
+                height: auto; /* 高度自适应内容 */
+                justify-content: center; /* 确保居中 */
+            }
+            
+            .preview-box {
+                width: 60px; /* 放大缩略图，从42px改为60px */
+                height: 34px; /* 保持16:9比例 */
+                margin-bottom: 15px; /* 行间距 */
+            }
+            
+            /* 确保两排布局，每排三个 */
+            #preview-strip {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr); /* 3列 */
+                grid-template-rows: repeat(2, auto); /* 2行 */
+                max-width: 300px; /* 限制最大宽度 */
+                margin: 0 auto; /* 添加自动边距实现水平居中 */
+                left: 50%; /* 重置左侧位置 */
+                transform: translateX(-50%); /* 确保真正居中 */
+                place-items: center; /* 确保网格内的项目居中对齐 */
             }
         }
 
@@ -949,6 +987,25 @@
                 group.position.x = 11; // 向右偏移11个单位
                 group.position.y = 0.7; // 稍微向上移动0.5个单位
                 console.log("模型组位置设置为：", group.position);
+
+                // 移动端缩放处理
+                function applyResponsiveScale() {
+                    if (window.innerWidth <= 768) {
+                        // 移动端缩放到约0.36倍（0.6*0.6=0.36）
+                        group.scale.set(0.36, 0.36, 0.36);
+                        console.log("应用移动端缩放: 0.36");
+                    } else {
+                        // 恢复桌面端正常大小
+                        group.scale.set(1, 1, 1);
+                        console.log("应用桌面端缩放: 1.0");
+                    }
+                }
+                
+                // 初始应用缩放
+                applyResponsiveScale();
+                
+                // 窗口大小改变时重新应用缩放
+                window.addEventListener('resize', applyResponsiveScale);
 
                 // 创建卡片
                 createCards();
@@ -1988,3 +2045,4 @@
     </footer>
 </body>
 </html>
+

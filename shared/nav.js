@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     // 获取当前页面名称
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    console.log("nav.js loaded, current page:", currentPage);
     
     // 处理导航栏逻辑
     setupMobileMenu();
@@ -15,7 +16,20 @@ function setupMobileMenu() {
     const mobileMenu = document.querySelector('.mobile-menu');
     
     if (mobileMenuButton && mobileMenu) {
-        mobileMenuButton.addEventListener('click', () => {
+        console.log("移动菜单初始化");
+        
+        // 确保更高的z-index，防止被其他元素覆盖
+        mobileMenuButton.style.zIndex = '2000';
+        mobileMenu.style.zIndex = '1999';
+        
+        // 在移动设备上默认显示汉堡菜单按钮
+        if (window.innerWidth <= 768) {
+            mobileMenuButton.style.display = 'block';
+        }
+        
+        mobileMenuButton.addEventListener('click', function(e) {
+            console.log("汉堡菜单按钮点击");
+            e.stopPropagation(); // 阻止事件冒泡
             mobileMenuButton.classList.toggle('open');
             mobileMenu.classList.toggle('open');
             document.body.classList.toggle('menu-open');
@@ -29,6 +43,22 @@ function setupMobileMenu() {
                 document.body.classList.remove('menu-open');
             });
         });
+        
+        // 阻止菜单上的点击事件冒泡
+        mobileMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // 点击页面其他地方关闭菜单
+        document.addEventListener('click', function(e) {
+            if (mobileMenu.classList.contains('open')) {
+                mobileMenuButton.classList.remove('open');
+                mobileMenu.classList.remove('open');
+                document.body.classList.remove('menu-open');
+            }
+        });
+    } else {
+        console.log("未找到移动菜单元素");
     }
 }
 

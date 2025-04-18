@@ -50,10 +50,53 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <title>Gallery - Triple-Y</title>
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="artistweb/images/个人图片作品/IMG_0082.jpg" as="image">
+    <link rel="preload" href="artistweb/videos/video1.webm" as="video" type="video/webm">
+    <!-- 预连接第三方域 -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://unpkg.com">
+
     <style>
         /* 第二个幻灯片标题样式 - 精简版 */
 
-        /* Northern Journey文字样式 - 极简版 */
+        /* 添加加载指示器样式 */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 北方之旅文字样式 - 极简版 */
         .river-text {
             display: flex;
             color: #ffffff;
@@ -1616,6 +1659,11 @@
     </style>
 </head>
 <body data-barba="wrapper">
+    <!-- 添加页面加载指示器 -->
+    <div class="page-loader">
+        <div class="loader-spinner"></div>
+    </div>
+    
     <div class="page-transition"></div>
 
     <!-- 导航栏容器 -->
@@ -1643,7 +1691,7 @@
                         <span class="r">r</span>
                         <span class="y">y</span>
                     </div>
-                        </div>
+                        </div>  
                             <!-- 幻灯片2：视频 -->
                             <div class="swiper-slide" style="cursor: pointer;" onclick="window.location.href='north.html'">
                                 <div class="video-container">
@@ -1762,16 +1810,123 @@
     <script src="shared/animation.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // 页面加载完成后，隐藏加载指示器
+            const pageLoader = document.querySelector('.page-loader');
+            
+            // 预加载所有视频和图片资源
+            const resourcesToLoad = [];
+            const allVideos = document.querySelectorAll('video');
+            const videoSources = document.querySelectorAll('video source');
+            const images = document.querySelectorAll('img[src]');
+            
+            // 收集所有需要预加载的资源
+            videoSources.forEach(source => {
+                if (source.src && !resourcesToLoad.includes(source.src)) {
+                    resourcesToLoad.push(source.src);
+                }
+            });
+            
+            images.forEach(img => {
+                if (img.src && !resourcesToLoad.includes(img.src)) {
+                    resourcesToLoad.push(img.src);
+                }
+            });
+            
+            // 仅预加载第一个和第二个幻灯片的资源
+            let loadedCount = 0;
+            const initialResourcesToLoad = resourcesToLoad.slice(0, 2);
+            const totalInitialResources = initialResourcesToLoad.length;
+            
+            // 如果没有资源需要加载，直接隐藏加载器
+            if (totalInitialResources === 0) {
+                pageLoader.classList.add('hidden');
+            } else {
+                // 预加载初始资源
+                initialResourcesToLoad.forEach(resourceUrl => {
+                    const isVideo = resourceUrl.includes('.mp4') || resourceUrl.includes('.webm');
+                    let element;
+                    
+                    if (isVideo) {
+                        element = document.createElement('video');
+                    } else {
+                        element = new Image();
+                    }
+                    
+                    element.onload = element.oncanplaythrough = function() {
+                        loadedCount++;
+                        if (loadedCount >= totalInitialResources) {
+                            // 初始资源加载完成，隐藏加载器
+                            pageLoader.classList.add('hidden');
+                            
+                            // 设置延迟以确保转场效果平滑
+                            setTimeout(() => {
+                                pageLoader.style.display = 'none';
+                            }, 500);
+                        }
+                    };
+                    
+                    element.onerror = function() {
+                        loadedCount++;
+                        console.warn(`资源加载失败: ${resourceUrl}`);
+                        if (loadedCount >= totalInitialResources) {
+                            pageLoader.classList.add('hidden');
+                            setTimeout(() => {
+                                pageLoader.style.display = 'none';
+                            }, 500);
+                        }
+                    };
+                    
+                    if (isVideo) {
+                        element.src = resourceUrl;
+                        element.style.display = 'none';
+                        element.preload = 'auto';
+                        document.body.appendChild(element);
+                    } else {
+                        element.src = resourceUrl;
+                    }
+                });
+                
+                // 设置5秒后无论如何都隐藏加载器的超时保护
+                setTimeout(() => {
+                    pageLoader.classList.add('hidden');
+                    setTimeout(() => {
+                        pageLoader.style.display = 'none';
+                    }, 500);
+                }, 5000);
+            }
+
             // 获取Gallery文字元素
             const galleryText = document.querySelector('.gallery-text');
             const welcomeText = document.querySelector('.welcome');
 
-            // 极简化的视频处理
+            // 优化视频处理，添加懒加载策略
             function handleVideo(video) {
                 if (!video) return;
 
                 // 确保视频控件始终不可见
                 video.controls = false;
+
+                // 视频懒加载
+                if (!video.dataset.loaded) {
+                    // 设置视频数据属性标记为已加载
+                    video.dataset.loaded = "true";
+                    
+                    // 为视频添加加载事件监听器
+                    video.addEventListener('loadeddata', () => {
+                        // 视频加载完成后添加loaded类
+                        video.classList.add('loaded');
+                    });
+                    
+                    // 为视频添加错误处理
+                    video.addEventListener('error', (e) => {
+                        console.error(`视频加载失败: ${e.target.src}`, e.error);
+                        // 尝试使用占位图
+                        const placeholder = video.parentElement.querySelector('.video-placeholder');
+                        if (placeholder) {
+                            placeholder.style.opacity = "1";
+                        }
+                    });
+                }
 
                 // 重置视频到开头
                 video.currentTime = 0;
@@ -1807,16 +1962,20 @@
                 // 加载并播放视频
                 video.load();
 
-                // 尝试播放视频
+                // 尝试播放视频，添加重试机制
+                const playWithRetry = (retryCount = 3, delay = 300) => {
                     const playPromise = video.play();
                     if (playPromise !== undefined) {
                         playPromise.catch(err => {
-                        setTimeout(() => video.play().catch(e => {}), 500);
+                            console.warn(`视频播放失败: ${err.message}, 剩余重试次数: ${retryCount}`);
+                            if (retryCount > 0) {
+                                setTimeout(() => playWithRetry(retryCount - 1, delay * 1.5), delay);
+                            }
                         });
                     }
-
-                    // 添加loaded类
-                    video.classList.add('loaded');
+                };
+                
+                playWithRetry();
 
                 // 监听视频结束事件，自动切换到下一张幻灯片
                 video.onended = function() {
@@ -1826,6 +1985,27 @@
 
             // 获取所有视频
             const videos = document.querySelectorAll('.swiper-slide video');
+            
+            // 为视频添加懒加载
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const video = entry.target;
+                        // 只有当视频即将进入视口时才预加载视频
+                        if (!video.dataset.preloaded) {
+                            video.dataset.preloaded = "true";
+                            video.load();
+                        }
+                    }
+                });
+            }, {
+                rootMargin: '100px' // 提前100px开始加载
+            });
+            
+            // 监听所有视频元素
+            videos.forEach(video => {
+                observer.observe(video);
+            });
 
             // 超强化版文字显示函数
             function ensureRiverTextVisible() {
@@ -1876,13 +2056,11 @@
                 }
             }
 
-            // 初始化Swiper - 增强版
+            // 初始化Swiper - 优化版
             var swiper = new Swiper(".mySwiper", {
                 loop: true,
-                autoplay: {
-                    delay: 5000,
-                    disableOnInteraction: false,
-                },
+                // 禁用自动播放，直到资源加载完成
+                autoplay: false,
                 pagination: {
                     el: ".swiper-pagination",
                     clickable: true,
@@ -1897,6 +2075,9 @@
                     crossFade: true // 确保是渐隐而不是滑动
                 },
                 speed: 1200, // 增加过渡时间，使渐隐效果更加平滑
+                // 预加载下一张和上一张幻灯片
+                preloadImages: true,
+                updateOnImagesReady: true,
                 on: {
                     init: function() {
                         // 初始化时处理当前幻灯片视频
@@ -1912,6 +2093,27 @@
 
                         // 确保river-text显示
                         ensureRiverTextVisible();
+                        
+                        // 当加载完成后，延迟启用自动播放
+                        setTimeout(() => {
+                            // 检查页面加载是否完成
+                            if (document.readyState === 'complete' || pageLoader.classList.contains('hidden')) {
+                                this.params.autoplay = {
+                                    delay: 5000,
+                                    disableOnInteraction: false
+                                };
+                                this.autoplay.start();
+                            } else {
+                                // 如果页面尚未完全加载，监听加载完成事件
+                                window.addEventListener('load', () => {
+                                    this.params.autoplay = {
+                                        delay: 5000,
+                                        disableOnInteraction: false
+                                    };
+                                    this.autoplay.start();
+                                });
+                            }
+                        }, 500);
                     },
                     slideChangeTransitionStart: function() {
                         // 处理当前幻灯片视频
@@ -2000,6 +2202,78 @@
 
             // 添加一个定时器，作为备用机制确保文字显示
             setInterval(ensureRiverTextVisible, 1000); // 每秒检查一次
+            
+            // 页面可见性变化时的优化处理
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    // 页面不可见时暂停视频播放和自动轮播，减少资源占用
+                    if (swiper && swiper.autoplay) {
+                        swiper.autoplay.stop();
+                    }
+                    
+                    // 暂停所有视频
+                    allVideos.forEach(video => {
+                        if (!video.paused) {
+                            video.pause();
+                        }
+                    });
+                } else {
+                    // 页面重新可见时恢复自动轮播
+                    if (swiper && swiper.autoplay) {
+                        swiper.autoplay.start();
+                    }
+                    
+                    // 恢复当前活跃幻灯片的视频
+                    const activeSlide = document.querySelector('.swiper-slide-active');
+                    if (activeSlide) {
+                        const activeVideo = activeSlide.querySelector('video');
+                        if (activeVideo && activeVideo.paused) {
+                            activeVideo.play().catch(e => {});
+                        }
+                    }
+                }
+            });
+            
+            // 页面完全加载后执行的优化
+            window.addEventListener('load', function() {
+                // 隐藏加载指示器
+                pageLoader.classList.add('hidden');
+                setTimeout(() => {
+                    pageLoader.style.display = 'none';
+                }, 500);
+                
+                // 启用事件统计，用于性能监控
+                const perfData = {
+                    pageLoadTime: performance.now(),
+                    firstContentfulPaint: 0,
+                    resourceLoadTimes: []
+                };
+                
+                // 收集资源加载时间
+                performance.getEntriesByType('resource').forEach(resource => {
+                    perfData.resourceLoadTimes.push({
+                        name: resource.name,
+                        duration: resource.duration,
+                        size: resource.transferSize || 0
+                    });
+                });
+                
+                // 使用 console.info 输出性能数据，方便调试
+                console.info('页面性能数据:', perfData);
+                
+                // 清理不必要的资源
+                if ('requestIdleCallback' in window) {
+                    requestIdleCallback(() => {
+                        // 移除预加载用的临时元素
+                        const tempVideos = document.querySelectorAll('video[style*="display: none"]');
+                        tempVideos.forEach(v => v.parentNode && v.parentNode.removeChild(v));
+                        
+                        // 清除可能的内存泄漏
+                        const unusedImages = document.querySelectorAll('img[style*="display: none"]');
+                        unusedImages.forEach(img => img.src = '');
+                    });
+                }
+            });
         });
     </script>
 </body>

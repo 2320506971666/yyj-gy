@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+    
+    <!-- GSAP, Lenis, Barba.js 脚本 -->
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
+    <script src="https://unpkg.com/@barba/core"></script>
+    
+    <title>Film - Triple-Y</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: black;
+            color: white;
+            line-height: 1.6;
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        /* 导航栏样式 */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            height: 45px;
+            background-color: black;
+            z-index: 1000;
+            padding: 0 5%;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            height: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-family: 'Reenie Beanie', cursive;
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+        
+        .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 2.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: capitalize;
+            transition: all 0.4s ease;
+            opacity: 0.9;
+            font-family: 'Poiret One', cursive;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            opacity: 1;
+            letter-spacing: 4px;
+            color: #DE2910;
+        }
+        
+        .nav-links a.active {
+            color: #DE2910;
+            opacity: 1;
+        }
+
+        /* 电影页面特定样式 */
+        .film-page {
+            padding-top: 0;
+            min-height: 100vh;
+            background-color: black;
+        }
+
+        .film-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 5% 100px;
+        }
+
+        .film-title {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .film-title h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+        }
+
+        .film-title p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            padding-top: 56.25%; /* 16:9 宽高比 */
+            overflow: hidden;
+            background-color: #000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .film-description {
+            max-width: 800px;
+            margin: 50px auto 0;
+            padding: 0 20px;
+        }
+
+        .film-description h2 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .film-description p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .film-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .film-meta div {
+            margin-bottom: 10px;
+        }
+
+        .film-meta span {
+            font-weight: 500;
+            margin-right: 10px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            /* 移动端导航菜单按钮 */
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                right: 20px;
+                width: 30px;
+                height: 20px;
+                cursor: pointer;
+                z-index: 1001;
+            }
+
+            .mobile-menu-btn span {
+                display: block;
+                position: absolute;
+                height: 2px;
+                width: 100%;
+                background: white;
+                opacity: 1;
+                left: 0;
+                transform: rotate(0deg);
+                transition: .25s ease-in-out;
+            }
+
+            .mobile-menu-btn span:nth-child(1) {
+                top: 0px;
+            }
+
+            .mobile-menu-btn span:nth-child(2) {
+                top: 9px;
+            }
+
+            .mobile-menu-btn span:nth-child(3) {
+                top: 18px;
+            }
+
+            .mobile-menu-btn.open span:nth-child(1) {
+                top: 9px;
+                transform: rotate(135deg);
+            }
+
+            .mobile-menu-btn.open span:nth-child(2) {
+                opacity: 0;
+                left: -60px;
+            }
+
+            .mobile-menu-btn.open span:nth-child(3) {
+                top: 9px;
+                transform: rotate(-135deg);
+            }
+
+            /* 移动端菜单样式 */
+            .mobile-menu {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.95);
+                z-index: 999;
+                padding: 20px;
+                padding-top: 65px;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .mobile-menu.open {
+                display: flex;
+            }
+
+            .mobile-menu a {
+                color: white;
+                font-size: 1.5rem;
+                margin: 15px 0;
+                text-decoration: none;
+                font-family: 'Poiret One', cursive;
+                letter-spacing: 3px;
+                transition: all 0.3s ease;
+            }
+
+            .mobile-menu a:hover {
+                color: #DE2910;
+                letter-spacing: 4px;
+            }
+
+            .mobile-menu a.active {
+                color: #DE2910;
+            }
+
+            .film-title h1 {
+                font-size: 2rem;
+            }
+
+            .film-description h2 {
+                font-size: 1.5rem;
+            }
+
+            .film-description p {
+                font-size: 1rem;
+            }
+        }
+
+        /* 页面过渡效果 */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        .page-transition.fade-in {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 菜单打开时的body样式 */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* 添加页脚样式 */
+        footer {
+            background-color: #111;
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            justify-content: center;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 1.8rem;
+            position: relative;
+            display: inline-block;
+            letter-spacing: 1px;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            height: 1px;
+            width: 40px;
+            background-color: #DE2910;
+            bottom: -10px;
+            left: 0;
+        }
+        
+        .footer-column p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #ddd;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 1.2rem;
+        }
+        
+        .footer-links a {
+            text-decoration: none;
+            color: #ddd;
+            transition: color 0.3s ease, letter-spacing 0.3s ease;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            letter-spacing: 1px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Summer Sense 图片样式 */
+        .summer-sense-images {
+            margin-top: 60px;
+            width: 100%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+        }
+        
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+            background-color: #000;
+        }
+        
+        .grid-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0;
+            box-shadow: none;
+            cursor: pointer;
+            background-color: #000;
+            width: 100%;
+            height: auto;
+            text-align: center;
+            margin: 0;
+            transition: transform 0.3s ease;
+            aspect-ratio: 16 / 9; /* 添加固定的宽高比 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .grid-item:hover {
+            transform: scale(1.02);
+        }
+        
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 改为cover以填充整个容器 */
+            transition: transform 0.5s ease;
+            display: block;
+            margin: 0;
+        }
+        
+        .grid-item:hover img {
+            transform: scale(1.01);
+        }
+        
+        /* 始终保持两列布局，不根据屏幕尺寸变化 */
+        @media (min-width: 768px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 480px) {
+            .image-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+        
+        /* 灯箱效果 */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 30px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .lightbox.show {
+            opacity: 1;
+            display: flex;
+        }
+        
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            transform: scale(0.9);
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        
+        .lightbox.show .lightbox-content {
+            transform: scale(1);
+        }
+        
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .lightbox-close:hover {
+            transform: rotate(90deg);
+        }
+        
+        .lightbox-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        .lightbox-prev, .lightbox-next {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 50px;
+            cursor: pointer;
+            background-color: transparent;
+            pointer-events: auto;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .lightbox.show .lightbox-prev,
+        .lightbox.show .lightbox-next {
+            opacity: 0.7;
+        }
+        
+        .lightbox-prev:hover, .lightbox-next:hover {
+            opacity: 1 !important;
+        }
+        
+        .lightbox-prev {
+            left: 40px;
+        }
+        
+        .lightbox-next {
+            right: 40px;
+        }
+    </style>
+</head>
+<body data-barba="wrapper">
+    <div class="page-transition"></div>
+    
+    <!-- 导航栏容器 -->
+    <div id="nav-container"></div>
+    
+    <!-- 主体内容，添加barba数据属性 -->
+    <main data-barba="container" data-barba-namespace="film">
+        <!-- 电影页面内容 -->
+        <div class="film-page">
+            <div class="film-content">
+                <div class="film-title">
+                    <h1>Summer Sense</h1>
+                    <p>一部关于夏日体验的短片</p>
+                </div>
+                
+                <div class="video-container">
+                    <video controls preload="metadata" id="mainVideo" controlsList="nodownload" disablePictureInPicture autoplay muted>
+                        <source src="https://assets.tripley.cn/summer%20sense%EF%BC%88compress%EF%BC%89.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                </div>
+                
+                <!-- Summer Sense 图片展示 -->
+                <div class="summer-sense-images">
+                    <div class="image-grid">
+                        <div class="grid-item">
+                            <img src="artistweb/images/个人图片作品/summer sense/1.jpg" alt="Summer Sense 1" loading="lazy">
+                        </div>
+                        <div class="grid-item">
+                            <img src="artistweb/images/个人图片作品/summer sense/2.jpg" alt="Summer Sense 2" loading="lazy">
+                        </div>
+                        <div class="grid-item">
+                            <img src="artistweb/images/个人图片作品/summer sense/3.jpg" alt="Summer Sense 3" loading="lazy">
+                        </div>
+                        <div class="grid-item">
+                            <img src="artistweb/images/个人图片作品/summer sense/4.jpg" alt="Summer Sense 4" loading="lazy">
+                        </div>
+                        <div class="grid-item">
+                            <img src="artistweb/images/个人图片作品/summer sense/5.jpg" alt="Summer Sense 5" loading="lazy">
+                        </div>
+                        <div class="grid-item">
+                            <img src="artistweb/images/个人图片作品/summer sense/6.jpg" alt="Summer Sense 6" loading="lazy">
+                        </div>
+                        <div class="grid-item">
+                            <img src="artistweb/images/个人图片作品/summer sense/7.jpg" alt="Summer Sense 7" loading="lazy">
+                        </div>
+                        <div class="grid-item">
+                            <img src="artistweb/images/个人图片作品/summer sense/8.jpg" alt="Summer Sense 8" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+
+    <!-- 灯箱效果 -->
+    <div class="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close">&times;</span>
+            <img src="" alt="" class="lightbox-image">
+        </div>
+        <div class="lightbox-nav">
+            <span class="lightbox-prev">&#8249;</span>
+            <span class="lightbox-next">&#8250;</span>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Contact</h3>
+                <p>yang2320506971@gmail.com</p>
+            </div>
+            <div class="footer-column">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="film.html">Film</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="work.html">Work</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Artist Portfolio. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- 加载统一导航栏脚本 -->
+    <script src="shared/load-nav.js"></script>
+    <!-- 加载动画框架脚本 -->
+    <script src="shared/animation.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 页面加载时的淡出效果
+            const transition = document.querySelector('.page-transition');
+            setTimeout(() => {
+                transition.style.visibility = 'hidden';
+                transition.style.opacity = '0';
+            }, 500);
+
+            // 视频元素
+            const video = document.getElementById('mainVideo');
+            
+            // 确保视频自动播放
+            if(video) {
+                // 尝试播放视频
+                video.play().catch(error => {
+                    console.log('自动播放失败:', error);
+                    // 如果自动播放失败，尝试静音后播放
+                    video.muted = true;
+                    video.play();
+                });
+                
+                // 为用户提供取消静音的按钮或提示
+                // 您可以在这里添加一个取消静音的UI元素
+            }
+
+            // 灯箱效果
+            const galleryItems = document.querySelectorAll('.grid-item');
+            const lightbox = document.querySelector('.lightbox');
+            const lightboxImg = document.querySelector('.lightbox-image');
+            const lightboxClose = document.querySelector('.lightbox-close');
+            const lightboxPrev = document.querySelector('.lightbox-prev');
+            const lightboxNext = document.querySelector('.lightbox-next');
+            
+            let currentIndex = 0;
+            
+            // 打开灯箱
+            galleryItems.forEach((item, index) => {
+                item.addEventListener('click', function() {
+                    currentIndex = index;
+                    const img = this.querySelector('img');
+                    const imgSrc = img.getAttribute('src');
+                    const imgAlt = img.getAttribute('alt');
+                    
+                    lightboxImg.setAttribute('src', imgSrc);
+                    lightboxImg.setAttribute('alt', imgAlt);
+                    
+                    lightbox.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            // 关闭灯箱
+            lightboxClose.addEventListener('click', function() {
+                lightbox.classList.remove('show');
+                document.body.style.overflow = '';
+            });
+            
+            // 点击背景关闭灯箱
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    lightbox.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // 上一张图片
+            lightboxPrev.addEventListener('click', function() {
+                currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+                const img = galleryItems[currentIndex].querySelector('img');
+                lightboxImg.setAttribute('src', img.getAttribute('src'));
+                lightboxImg.setAttribute('alt', img.getAttribute('alt'));
+            });
+            
+            // 下一张图片
+            lightboxNext.addEventListener('click', function() {
+                currentIndex = (currentIndex + 1) % galleryItems.length;
+                const img = galleryItems[currentIndex].querySelector('img');
+                lightboxImg.setAttribute('src', img.getAttribute('src'));
+                lightboxImg.setAttribute('alt', img.getAttribute('alt'));
+            });
+            
+            // 键盘导航
+            document.addEventListener('keydown', function(e) {
+                if (!lightbox.classList.contains('show')) return;
+                
+                if (e.key === 'Escape') {
+                    lightbox.classList.remove('show');
+                    document.body.style.overflow = '';
+                } else if (e.key === 'ArrowLeft') {
+                    lightboxPrev.click();
+                } else if (e.key === 'ArrowRight') {
+                    lightboxNext.click();
+                }
+            });
+
+            // 点击链接时的过渡效果
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.hostname === window.location.hostname) {
+                        e.preventDefault();
+                        const href = this.getAttribute('href');
+                        
+                        // 显示过渡层
+                        transition.style.visibility = 'visible';
+                        transition.style.opacity = '1';
+                        
+                        // 延迟导航以等待过渡效果完成
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 1000);
+                    }
+                });
+            });
+
+            // 移动端菜单控制
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    mobileMenu.classList.toggle('open');
+                    document.body.classList.toggle('menu-open');
+                });
+                
+                // 点击移动端菜单项关闭菜单
+                document.querySelectorAll('.mobile-menu a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenuBtn.classList.remove('open');
+                        mobileMenu.classList.remove('open');
+                        document.body.classList.remove('menu-open');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

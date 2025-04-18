@@ -1386,10 +1386,11 @@
 
             // 根据鼠标位置更新模型旋转 - 仅当旋转动画未进行且鼠标交互已启用时
             if (model && mouseActive && !isRotating && mouseMoveEnabled) {
-                // 使用LERP平滑过渡到目标角度
-                model.rotation.x += (targetRotationX - model.rotation.x) * 0.05;
-                model.rotation.y += (targetRotationY - model.rotation.y) * 0.05;
-                model.rotation.z += (targetRotationZ - model.rotation.z) * 0.05;
+                // 使用更平滑的LERP过渡到目标角度
+                // 降低插值系数，使过渡更加平滑
+                model.rotation.x += (targetRotationX - model.rotation.x) * 0.03;
+                model.rotation.y += (targetRotationY - model.rotation.y) * 0.03;
+                model.rotation.z += (targetRotationZ - model.rotation.z) * 0.03;
             }
 
             renderer.render(scene, camera);
@@ -1439,30 +1440,40 @@
                 const distX = (mouseX - centerX) / centerX;
                 const distY = (mouseY - centerY) / centerY;
 
+                // 应用平滑因子，使鼠标移动更加平滑
+                // 使用三次方缓动函数使移动更自然
+                const smoothX = Math.sign(distX) * Math.pow(Math.abs(distX), 1.5) * 0.8;
+                const smoothY = Math.sign(distY) * Math.pow(Math.abs(distY), 1.5) * 0.8;
+
                 // 计算距离中心点的距离（0到1之间）
                 const distance = Math.min(1, Math.sqrt(distX * distX + distY * distY));
 
-                // 不再检查鼠标是否在容器内，始终应用倾斜效果
-                // 如果鼠标距离中心足够远，才应用倾斜效果
-                if (distance > 0.1) {
+                // 降低阈值，使模型对小范围鼠标移动也有响应
+                if (distance > 0.05) {
                     mouseActive = true;
 
-                    // 根据鼠标位置计算倾斜角度
-                    // X轴旋转（前后倾斜）- 鼠标在下方时，模型向前倾斜（正值）
-                    targetRotationX = distY * MAX_TILT;
+                    // 根据平滑化的鼠标位置计算倾斜角度
+                    // X轴旋转（前后倾斜）
+                    targetRotationX = smoothY * MAX_TILT;
 
-                    // Y轴旋转（左右旋转）- 鼠标在右侧时，模型向右旋转（正值）
-                    targetRotationY = distX * MAX_TILT;
+                    // Y轴旋转（左右旋转）
+                    targetRotationY = smoothX * MAX_TILT;
 
-                    // Z轴旋转（侧向倾斜）- 根据鼠标位置添加轻微的侧向倾斜
-                    // 当鼠标在右上/左下时为负，在左上/右下时为正
-                    targetRotationZ = (distX * distY) * (MAX_TILT * 0.3);
+                    // Z轴旋转（侧向倾斜）- 使用平滑化的值
+                    targetRotationZ = (smoothX * smoothY) * (MAX_TILT * 0.3);
                 } else {
-                    // 当鼠标在中心区域时，恢复到初始状态
-                    mouseActive = false;
+                    // 当鼠标在中心区域时，缓慢恢复到初始状态
+                    // 不立即设置mouseActive=false，而是让模型缓慢回到初始位置
                     targetRotationX = modelInitialRotation.x;
                     targetRotationY = modelInitialRotation.y;
                     targetRotationZ = modelInitialRotation.z;
+
+                    // 如果模型已经非常接近初始位置，才设置mouseActive=false
+                    if (Math.abs(model.rotation.x - modelInitialRotation.x) < 0.01 &&
+                        Math.abs(model.rotation.y - modelInitialRotation.y) < 0.01 &&
+                        Math.abs(model.rotation.z - modelInitialRotation.z) < 0.01) {
+                        mouseActive = false;
+                    }
                 }
             });
 
@@ -1551,14 +1562,19 @@
                 lastGamma = gamma;
             }
 
-            // 平滑过渡当前值
-            lastBeta = lastBeta * 0.9 + beta * 0.1;
-            lastGamma = lastGamma * 0.9 + gamma * 0.1;
+            // 平滑过渡当前值 - 使用更平滑的插值因子
+            lastBeta = lastBeta * 0.95 + beta * 0.05; // 增加平滑度
+            lastGamma = lastGamma * 0.95 + gamma * 0.05; // 增加平滑度
 
             // 将角度转换为弧度，并限制最大倾斜角度
             const maxTiltDegrees = 15;
-            const betaRad = (Math.max(-maxTiltDegrees, Math.min(maxTiltDegrees, lastBeta)) / 180) * Math.PI;
-            const gammaRad = (Math.max(-maxTiltDegrees, Math.min(maxTiltDegrees, lastGamma)) / 180) * Math.PI;
+
+            // 应用缓动函数使移动更自然
+            const smoothBeta = Math.sign(lastBeta) * Math.pow(Math.abs(lastBeta / maxTiltDegrees), 1.2) * maxTiltDegrees;
+            const smoothGamma = Math.sign(lastGamma) * Math.pow(Math.abs(lastGamma / maxTiltDegrees), 1.2) * maxTiltDegrees;
+
+            const betaRad = (Math.max(-maxTiltDegrees, Math.min(maxTiltDegrees, smoothBeta)) / 180) * Math.PI;
+            const gammaRad = (Math.max(-maxTiltDegrees, Math.min(maxTiltDegrees, smoothGamma)) / 180) * Math.PI;
 
             // 设置目标旋转角度
             targetRotationX = -betaRad; // 前后倾斜，反向以获得自然的感觉

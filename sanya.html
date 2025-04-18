@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,13 +15,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
-    
+
     <!-- GSAP, Lenis 脚本 -->
     <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
     <script src="https://unpkg.com/@barba/core"></script>
-    
-    <title>Sanya Gallery - Triple-Y</title>
+
+    <title>Island Gallery - Triple-Y</title>
     <style>
         /* 基础样式 */
         * {
@@ -29,7 +29,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             overflow-x: hidden;
             background-color: black;
@@ -37,7 +37,7 @@
             line-height: 1.6;
             font-family: 'Noto Serif SC', serif;
         }
-        
+
         /* 导航栏样式 */
         header {
             position: fixed;
@@ -50,7 +50,7 @@
             z-index: 1000;
             padding: 0 5%;
         }
-        
+
         nav {
             display: flex;
             justify-content: space-between;
@@ -60,7 +60,7 @@
             margin: 0 auto;
             padding: 0 20px;
         }
-        
+
         .logo {
             font-family: 'Reenie Beanie', cursive;
             font-size: 2.2rem;
@@ -69,7 +69,7 @@
             color: #ffffff;
             opacity: 0.9;
         }
-        
+
         .nav-links {
             position: absolute;
             left: 50%;
@@ -80,7 +80,7 @@
             padding: 0;
             gap: 2.5rem;
         }
-        
+
         .nav-links a {
             text-decoration: none;
             color: #ffffff;
@@ -93,18 +93,18 @@
             font-family: 'Poiret One', cursive;
             position: relative;
         }
-        
+
         .nav-links a:hover {
             opacity: 1;
             letter-spacing: 4px;
             color: #DE2910;
         }
-        
+
         .nav-links a.active {
             color: #DE2910;
             opacity: 1;
         }
-        
+
         /* Sanya页面标题样式 */
         .sanya-header {
             height: 60vh;
@@ -118,7 +118,7 @@
             padding-top: 70px;
             text-align: center;
         }
-        
+
         .sanya-header::before {
             content: '';
             position: absolute;
@@ -128,7 +128,7 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
         }
-        
+
         .sanya-title {
             position: relative;
             z-index: 2;
@@ -140,7 +140,7 @@
             letter-spacing: 5px;
             text-transform: uppercase;
         }
-        
+
         .sanya-subtitle {
             position: relative;
             z-index: 2;
@@ -151,32 +151,32 @@
             margin: 0 auto;
             padding: 0 20px;
         }
-        
+
         /* 图片网格展示 */
         .gallery-container {
             padding: 50px 5%;
             background-color: #000;
         }
-        
+
         .gallery-intro {
             max-width: 800px;
             margin: 0 auto 50px;
             text-align: center;
             padding: 0 20px;
         }
-        
+
         .gallery-intro p {
             font-family: 'Noto Serif SC', serif;
             font-size: 1.1rem;
             line-height: 1.8;
             color: #ddd;
         }
-        
+
         /* 视频展示区修改为与图片同排 */
         .video-showcase {
             margin-bottom: 30px;
         }
-        
+
         .video-container {
             position: relative;
             width: 100%;
@@ -185,14 +185,14 @@
             overflow: hidden;
             border-radius: 0;
         }
-        
+
         .video-container video {
             width: 100%;
             height: auto;
             display: block;
             object-fit: cover;
         }
-        
+
         .video-title {
             margin: 15px 0 10px;
             text-align: center;
@@ -200,7 +200,7 @@
             font-size: 1.5rem;
             color: #fff;
         }
-        
+
         .video-description {
             text-align: center;
             max-width: 800px;
@@ -209,7 +209,7 @@
             font-size: 0.9rem;
             color: #ddd;
         }
-        
+
         /* 将视频放入bento-grid */
         .bento-grid {
             display: grid;
@@ -220,7 +220,7 @@
             margin: 0 auto;
             background-color: #000;
         }
-        
+
         /* 视频等同于bento-item */
         .video-item {
             position: relative;
@@ -231,7 +231,7 @@
             height: auto;
             margin: 0;
         }
-        
+
         .video-item video {
             width: 100%;
             height: auto;
@@ -239,12 +239,17 @@
             display: block;
             margin: 0;
             transition: transform 0.5s ease;
+            /* Safari兼容性属性 */
+            -webkit-object-fit: cover;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            background-color: #000;
         }
-        
+
         .video-item:hover video {
             transform: scale(1.01);
         }
-        
+
         /* 视频标题和描述调整 */
         .video-item .item-caption {
             position: absolute;
@@ -256,23 +261,23 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        
+
         .video-item:hover .item-caption {
             opacity: 1;
         }
-        
+
         .video-item .item-caption h3 {
             margin: 0 0 5px;
             font-size: 1.2rem;
             color: #fff;
         }
-        
+
         .video-item .item-caption p {
             margin: 0;
             font-size: 0.8rem;
             color: #ddd;
         }
-        
+
         /* 视频网格专用布局 */
         .video-grid {
             display: grid;
@@ -281,32 +286,32 @@
             grid-column: 1 / -1;
             margin-bottom: 30px;
         }
-        
+
         @media (max-width: 768px) {
             .video-grid {
                 grid-template-columns: 1fr;
             }
         }
-        
+
         .three-images-row {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             grid-column: 1 / -1;
         }
-        
+
         .three-images-row .bento-item {
             height: 100%;
             display: flex;
             align-items: center;
         }
-        
+
         .three-images-row img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        
+
         /* 最后一行高度一致 */
         .last-row {
             display: grid;
@@ -314,7 +319,7 @@
             gap: 20px;
             grid-column: 1 / -1;
         }
-        
+
         .last-row .bento-item {
             display: flex;
             align-items: center;
@@ -322,29 +327,29 @@
             background-color: #000;
             overflow: hidden;
         }
-        
+
         /* 右侧图片的样式 */
         .last-row .bento-item:last-child {
             height: 350px;
         }
-        
+
         .last-row .bento-item:last-child img {
             max-width: 100%;
             max-height: 350px;
             object-fit: cover;
         }
-        
+
         /* 左侧图片的样式 */
         .last-row .bento-item:first-child {
             height: 350px;
         }
-        
+
         .last-row .bento-item:first-child img {
             min-width: 500px;
             height: 350px;
             object-fit: cover;
         }
-        
+
         .bento-item {
             position: relative;
             overflow: hidden;
@@ -357,7 +362,7 @@
             text-align: center;
             margin: 0;
         }
-        
+
         .bento-item img {
             width: 100%;
             height: auto;
@@ -366,11 +371,11 @@
             display: block;
             margin: 0;
         }
-        
+
         .bento-item:hover img {
             transform: scale(1.01);
         }
-        
+
         /* 灯箱效果 */
         .lightbox {
             position: fixed;
@@ -465,7 +470,7 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        
+
         .lightbox.show .lightbox-prev,
         .lightbox.show .lightbox-next {
             opacity: 0.7;
@@ -534,106 +539,140 @@
         .fullscreen-btn:hover svg {
             transform: scale(1.1);
         }
-        
-        /* 页脚样式 */
+
+        /* 页脚样式 - 优化版 */
         footer {
             background-color: #111;
             color: white;
-            padding: 5rem 5% 2rem;
+            padding: 4rem 5% 2rem;
         }
-        
+
         .footer-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-bottom: 3rem;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            justify-content: center;
         }
-        
+
         .footer-column h3 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 400;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.8rem;
             position: relative;
             display: inline-block;
+            letter-spacing: 1px;
+            font-family: 'Playfair Display', serif;
         }
-        
+
         .footer-column h3::after {
             content: '';
             position: absolute;
             height: 1px;
-            width: 50px;
-            background-color: white;
+            width: 40px;
+            background-color: #DE2910;
             bottom: -10px;
             left: 0;
         }
-        
+
+        .footer-column p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #ddd;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
         .footer-links {
             list-style: none;
+            padding: 0;
         }
-        
+
         .footer-links li {
-            margin-bottom: 0.8rem;
+            margin-bottom: 1.2rem;
         }
-        
+
         .footer-links a {
             text-decoration: none;
-            color: #ccc;
-            transition: color 0.3s ease;
+            color: #ddd;
+            transition: color 0.3s ease, letter-spacing 0.3s ease;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
         }
-        
+
         .footer-links a:hover {
             color: white;
+            letter-spacing: 1px;
         }
-        
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 页脚响应式调整 */
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+        }
+
         /* 响应式设计 */
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
             }
-            
+
             .sanya-title {
                 font-size: 3rem;
             }
-            
+
             .sanya-subtitle {
                 font-size: 1.2rem;
             }
-            
+
             .bento-grid {
                 grid-template-columns: 1fr;
                 gap: 15px;
             }
-            
+
             .three-images-row {
                 grid-template-columns: 1fr;
                 gap: 15px;
             }
-            
+
             .last-row {
                 grid-template-columns: 1fr;
                 gap: 15px;
             }
-            
+
             .last-row .bento-item:first-child img,
             .last-row .bento-item:last-child img {
                 min-width: auto;
                 height: auto;
             }
-            
+
             .last-row .bento-item:first-child,
             .last-row .bento-item:last-child {
                 height: auto;
             }
-            
+
             .lightbox-prev {
                 left: 10px;
             }
-            
+
             .lightbox-next {
                 right: 10px;
             }
         }
-        
+
         /* 页面过渡效果 */
         .page-transition {
             position: fixed;
@@ -661,109 +700,131 @@
 </head>
 <body data-barba="wrapper">
     <div class="page-transition"></div>
-    
+
     <!-- 导航栏容器 -->
     <div id="nav-container"></div>
-    
+
     <!-- 主体内容，添加barba数据属性 -->
     <main data-barba="container" data-barba-namespace="sanya">
         <!-- Sanya页面内容 -->
         <div class="sanya-header">
-            <h1 class="sanya-title">Sanya</h1>
+            <h1 class="sanya-title">Island</h1>
         </div>
-        
+
         <div class="gallery-container">
             <!-- 视频集合展示区 -->
             <div class="video-grid">
                 <!-- 视频1 -->
                 <div class="video-item">
-                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-1">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-1" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/sanya/1.mp4" type="video/mp4">
                         <source src="artistweb/images/个人图片作品/sanya/1.webm" type="video/webm">
                         Your browser does not support HTML5 video.
                     </video>
                 </div>
-                
+
                 <!-- 视频2 -->
                 <div class="video-item">
-                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-2">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-2" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/sanya/2.mp4" type="video/mp4">
                         <source src="artistweb/images/个人图片作品/sanya/2.webm" type="video/webm">
                         Your browser does not support HTML5 video.
                     </video>
                 </div>
-                
+
                 <!-- 视频3 -->
                 <div class="video-item">
-                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-3">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-3" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/sanya/3.mp4" type="video/mp4">
                         <source src="artistweb/images/个人图片作品/sanya/3.webm" type="video/webm">
                         Your browser does not support HTML5 video.
                     </video>
                 </div>
-                
+
                 <!-- 视频4 -->
                 <div class="video-item">
-                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-4">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-4" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/sanya/4.mp4" type="video/mp4">
                         <source src="artistweb/images/个人图片作品/sanya/4.webm" type="video/webm">
                         Your browser does not support HTML5 video.
                     </video>
                 </div>
-                
+
                 <!-- 视频5 -->
                 <div class="video-item">
-                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-5">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-5" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/sanya/5.mp4" type="video/mp4">
                         <source src="artistweb/images/个人图片作品/sanya/5.webm" type="video/webm">
                         Your browser does not support HTML5 video.
                     </video>
                 </div>
-                
+
                 <!-- 视频6 -->
                 <div class="video-item">
-                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-6">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-6" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/sanya/6.mp4" type="video/mp4">
                         <source src="artistweb/images/个人图片作品/sanya/6.webm" type="video/webm">
                         Your browser does not support HTML5 video.
                     </video>
                 </div>
-                
+
                 <!-- 视频7 -->
                 <div class="video-item">
-                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-7">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-7" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/sanya/7.mp4" type="video/mp4">
                         <source src="artistweb/images/个人图片作品/sanya/7.webm" type="video/webm">
                         Your browser does not support HTML5 video.
                     </video>
                 </div>
-                
+
                 <!-- 视频8 -->
                 <div class="video-item">
-                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-8">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-8" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/sanya/8.mp4" type="video/mp4">
                         <source src="artistweb/images/个人图片作品/sanya/8.webm" type="video/webm">
                         Your browser does not support HTML5 video.
                     </video>
                 </div>
-                
+
                 <!-- 视频9 -->
                 <div class="video-item">
-                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-9">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-9" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/sanya/9.mp4" type="video/mp4">
                         <source src="artistweb/images/个人图片作品/sanya/9.webm" type="video/webm">
                         Your browser does not support HTML5 video.
                     </video>
                 </div>
-                
+
                 <!-- 视频10 -->
                 <div class="video-item">
-                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-10">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-10" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/sanya/11.mp4" type="video/mp4">
                         <source src="artistweb/images/个人图片作品/sanya/11.webm" type="video/webm">
                         Your browser does not support HTML5 video.
                     </video>
                 </div>
-                
+
                 <!-- 视频11 -->
                 <div class="video-item">
-                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-11">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/sanya/video-poster.jpg" id="sanya-video-11" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/sanya/12.mp4" type="video/mp4">
                         <source src="artistweb/images/个人图片作品/sanya/12.webm" type="video/webm">
                         Your browser does not support HTML5 video.
                     </video>
                 </div>
             </div>
-            
+
             <!-- 图片网格展示 - 删除所有找不到的图片 -->
             <!-- 这部分根据截图所示，原先的图片似乎都无法显示，因此将其全部删除 -->
         </div>
@@ -800,14 +861,11 @@
         <div class="footer-content">
             <div class="footer-column">
                 <h3>Contact</h3>
-                <p>studio@artist.com</p>
-                <p>+86 123 4567 8910</p>
-                <p>Shanghai, China</p>
+                <p>yang2320506971@gmail.com</p>
             </div>
             <div class="footer-column">
                 <h3>Navigation</h3>
                 <ul class="footer-links">
-                    <li><a href="index.html#film">Explore</a></li>
                     <li><a href="film.html">Film</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
                     <li><a href="work.html">Work</a></li>
@@ -815,13 +873,13 @@
                 </ul>
             </div>
             <div class="footer-column">
-                <h3>Connect</h3>
-                <p>Follow my work and creative journey</p>
-                <div class="social-links">
-                    <a href="#" class="social-link">YT</a>
-                    <a href="#" class="social-link">BL</a>
-                    <a href="#" class="social-link">IG</a>
-                </div>
+                <h3>Gallery</h3>
+                <ul class="footer-links">
+                    <li><a href="tibet.html">Tibet</a></li>
+                    <li><a href="north.html">Northern Journey</a></li>
+                    <li><a href="film.html">Summer Sense</a></li>
+                    <li><a href="sanya.html">Island</a></li>
+                </ul>
             </div>
         </div>
         <div class="copyright">
@@ -848,14 +906,14 @@
                     if (this.hostname === window.location.hostname && !this.getAttribute('href').startsWith('#')) {
                         e.preventDefault();
                         const href = this.getAttribute('href');
-                        
+
                         // 显示过渡层
                         transition.style.visibility = 'visible';
                         transition.style.opacity = '1';
-                        
+
                         // 立即记录要跳转的URL，防止被其他事件覆盖
                         const targetUrl = href;
-                        
+
                         // 延迟导航以等待过渡效果完成，但确保一定会执行
                         setTimeout(function() {
                             window.location.href = targetUrl;
@@ -867,14 +925,14 @@
             // 移动端菜单控制
             const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
             const mobileMenu = document.querySelector('.mobile-menu');
-            
+
             if (mobileMenuBtn && mobileMenu) {
                 mobileMenuBtn.addEventListener('click', function() {
                     this.classList.toggle('open');
                     mobileMenu.classList.toggle('open');
                     document.body.classList.toggle('menu-open');
                 });
-                
+
                 // 点击移动端菜单项关闭菜单
                 document.querySelectorAll('.mobile-menu a').forEach(link => {
                     link.addEventListener('click', function() {
@@ -895,11 +953,11 @@
             const lightboxNext = document.querySelector('.lightbox-next');
             const likeBtn = document.querySelector('.like-btn');
             const fullscreenBtn = document.querySelector('.fullscreen-btn');
-            
+
             let currentBentoIndex = 0;
             // 存储已点赞的图片索引
             const likedImages = new Set();
-            
+
             // 给bento-item添加标题
             bentoItems.forEach((item, index) => {
                 if (!item.querySelector('h3')) {
@@ -910,33 +968,33 @@
                     item.appendChild(title);
                 }
             });
-            
+
             // 打开灯箱
             bentoItems.forEach((item, index) => {
                 item.addEventListener('click', function() {
                     currentBentoIndex = index;
-                    
+
                     const img = this.querySelector('img');
                     const title = this.querySelector('h3')?.textContent || img.alt || '';
-                    
+
                     lightboxImage.src = img.src;
                     lightboxCaption.textContent = title;
                     lightbox.style.display = 'flex';
-                    
+
                     // 检查当前图片是否被点赞
                     if (likedImages.has(index)) {
                         likeBtn.classList.add('active');
                     } else {
                         likeBtn.classList.remove('active');
                     }
-                    
+
                     // 添加动画效果
                     setTimeout(() => {
                         lightbox.classList.add('show');
                     }, 10);
                 });
             });
-            
+
             // 关闭灯箱
             lightboxClose.addEventListener('click', () => {
                 lightbox.classList.remove('show');
@@ -944,41 +1002,41 @@
                     lightbox.style.display = 'none';
                 }, 500);
             });
-            
+
             // 点击灯箱背景关闭
             lightbox.addEventListener('click', function(e) {
                 if (e.target === this) {
                     lightboxClose.click();
                 }
             });
-            
+
             // 上一张/下一张
             lightboxPrev.addEventListener('click', () => {
                 currentBentoIndex = (currentBentoIndex - 1 + bentoItems.length) % bentoItems.length;
                 updateLightbox();
             });
-            
+
             lightboxNext.addEventListener('click', () => {
                 currentBentoIndex = (currentBentoIndex + 1) % bentoItems.length;
                 updateLightbox();
             });
-            
+
             // 点赞功能
             likeBtn.addEventListener('click', function() {
                 this.classList.toggle('active');
-                
+
                 if (this.classList.contains('active')) {
                     likedImages.add(currentBentoIndex);
                     // 可以在这里添加点赞动画效果
-                    gsap.fromTo(this, 
-                        {scale: 1}, 
+                    gsap.fromTo(this,
+                        {scale: 1},
                         {scale: 1.4, yoyo: true, repeat: 1, duration: 0.3}
                     );
                 } else {
                     likedImages.delete(currentBentoIndex);
                 }
             });
-            
+
             // 全屏功能
             fullscreenBtn.addEventListener('click', function() {
                 if (!document.fullscreenElement) {
@@ -1001,35 +1059,35 @@
                     }
                 }
             });
-            
+
             // 更新灯箱内容
             function updateLightbox() {
                 const item = bentoItems[currentBentoIndex];
                 const img = item.querySelector('img');
                 const title = item.querySelector('h3')?.textContent || img.alt || '';
-                
+
                 // 添加过渡效果
                 lightboxImage.style.opacity = '0';
                 lightboxImage.style.transform = 'scale(0.95)';
-                
+
                 setTimeout(() => {
                     lightboxImage.src = img.src;
                     lightboxCaption.textContent = title;
-                    
+
                     // 检查当前图片是否被点赞
                     if (likedImages.has(currentBentoIndex)) {
                         likeBtn.classList.add('active');
                     } else {
                         likeBtn.classList.remove('active');
                     }
-                    
+
                     setTimeout(() => {
                         lightboxImage.style.opacity = '1';
                         lightboxImage.style.transform = 'scale(1)';
                     }, 50);
                 }, 300);
             }
-            
+
             // 键盘导航
             document.addEventListener('keydown', function(e) {
                 if (lightbox.classList.contains('show')) {
@@ -1055,43 +1113,131 @@
                     const { left, top, width, height } = this.getBoundingClientRect();
                     const x = (e.clientX - left) / width - 0.5;
                     const y = (e.clientY - top) / height - 0.5;
-                    
+
                     const image = this.querySelector('img');
                     image.style.transform = `scale(1.05) translate(${x * 10}px, ${y * 10}px)`;
                 });
-                
+
                 item.addEventListener('mouseleave', function() {
                     const image = this.querySelector('img');
                     image.style.transform = 'scale(1)';
                 });
             });
 
-            // 视频控制 - 播放到最后停止，鼠标悬停时重新播放
+            // 视频控制 - 增强版，支持Safari兼容性
             const videoItems = document.querySelectorAll('.video-item');
-            
+
+            // 检测是否是Safari浏览器
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
             // 处理所有视频的播放行为
             function setupVideoControls(video, container) {
                 if (video) {
+                    // 确保视频控件始终不可见
+                    video.controls = false;
+
+                    // 处理视频源加载错误
+                    video.addEventListener('error', function(e) {
+                        console.log('视频加载失败:', e);
+
+                        // 如果是MP4格式失败，尝试切换到WebM
+                        const sources = video.querySelectorAll('source');
+                        sources.forEach(source => {
+                            if (source.type === 'video/mp4') {
+                                // 尝试切换到WebM格式
+                                const webmSource = Array.from(sources).find(s => s.type === 'video/webm');
+                                if (webmSource) {
+                                    console.log('切换到WebM格式');
+                                    video.insertBefore(webmSource, video.firstChild);
+                                    video.load();
+                                    video.play().catch(err => console.log('播放失败:', err));
+                                }
+                            }
+                        });
+                    }, true);
+
+                    // 为每个源添加错误处理
+                    const sources = video.querySelectorAll('source');
+                    sources.forEach(source => {
+                        source.addEventListener('error', function(e) {
+                            console.log('视频源加载失败:', source.src, e);
+
+                            // 如果是MP4格式失败，尝试切换到WebM
+                            if (source.type === 'video/mp4') {
+                                const webmSource = Array.from(video.querySelectorAll('source'))
+                                    .find(s => s.type === 'video/webm');
+
+                                if (webmSource) {
+                                    console.log('切换到WebM格式');
+                                    video.insertBefore(webmSource, video.firstChild);
+                                    video.load();
+                                    video.play().catch(err => console.log('播放失败:', err));
+                                }
+                            }
+                        });
+                    });
+
                     // 视频播放结束后暂停在最后一帧
                     video.addEventListener('ended', function() {
                         this.pause();
                     });
-                    
+
                     // 鼠标悬停时重新播放
                     container.addEventListener('mouseenter', function() {
-                        video.play();
+                        video.play().catch(err => console.log('播放失败:', err));
+                    });
+
+                    // 加载并尝试播放视频
+                    video.load();
+                    video.play().catch(err => {
+                        console.log('初始播放失败:', err);
+                        // 如果失败，延迟再试
+                        setTimeout(() => {
+                            video.play().catch(e => console.log('重试播放仍然失败:', e));
+                        }, 1000);
                     });
                 }
             }
-            
+
             // 为所有视频设置控制行为
             videoItems.forEach((container, index) => {
                 const video = container.querySelector('video');
                 if (video) {
+                    // 如果是Safari，确保使用MP4格式
+                    if (isSafari) {
+                        const sources = video.querySelectorAll('source');
+                        const mp4Source = Array.from(sources).find(source => source.type === 'video/mp4');
+                        if (mp4Source) {
+                            // 将MP4源移动到第一位置
+                            video.insertBefore(mp4Source, video.firstChild);
+                        }
+                    }
+
                     setupVideoControls(video, container);
                 }
             });
+
+            // 添加CSS样式隐藏视频控件
+            const style = document.createElement('style');
+            style.textContent = `
+                /* Safari 下隐藏 video 控件 */
+                video::-webkit-media-controls,
+                video::-webkit-media-controls-play-button,
+                video::-webkit-media-controls-volume-slider,
+                video::-webkit-media-controls-mute-button,
+                video::-webkit-media-controls-timeline,
+                video::-webkit-media-controls-current-time-display,
+                video::-webkit-full-page-media::-webkit-media-controls-panel,
+                video::-webkit-media-controls-timeline-container,
+                video::-webkit-media-controls-time-remaining-display,
+                video::-webkit-media-controls-toggle-closed-captions-button,
+                video::-webkit-media-controls-enclosure {
+                    display: none !important;
+                    opacity: 0 !important;
+                }
+            `;
+            document.head.appendChild(style);
         });
     </script>
 </body>
-</html> 
+</html>

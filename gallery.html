@@ -1474,18 +1474,41 @@
             color: #ffffff;
         }
 
-        /* 修改视频过渡效果 */
+        /* 视频容器样式 */
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* 修改视频过渡效果 - 纯渐隐切换 */
         .swiper-slide video {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: opacity 0.5s ease;
+            transition: opacity 1s ease; /* 增加过渡时间，使渐隐更平滑 */
             opacity: 0;
             /* Safari兼容性属性 */
             -webkit-object-fit: cover;
             -webkit-transform: translateZ(0);
             transform: translateZ(0);
             background-color: #000;
+            position: absolute; /* 确保视频可以叠加 */
+            top: 0;
+            left: 0;
+        }
+
+        /* 确保幻灯片切换时的渐隐过渡 */
+        .swiper-slide {
+            opacity: 0; /* 默认不可见 */
+            transition: opacity 0.8s ease;
+            background-color: #000;
+        }
+
+        .swiper-slide-active {
+            opacity: 1; /* 活跃幻灯片可见 */
+            z-index: 2;
         }
 
         .swiper-slide video.loaded {
@@ -1823,7 +1846,7 @@
                     if (sanyaText) {
                         // 确保SANYA文字可见，但使用CSS过渡效果，不直接设置行内样式
                         sanyaText.classList.add('visible');
-                        
+
                         // 移除可能干扰动画的行内样式
                         sanyaText.style.removeProperty('opacity');
                         sanyaText.style.removeProperty('transform');
@@ -1843,7 +1866,7 @@
                                     const newSanyaText = document.createElement('div');
                                     newSanyaText.className = 'sanya-text';
                                     newSanyaText.textContent = ''; // 清空文本内容
-                                    
+
                                     // 添加到视频容器
                                     videoContainer.appendChild(newSanyaText);
                                 }
@@ -1868,11 +1891,12 @@
                     nextEl: ".swiper-button-next",
                     prevEl: ".swiper-button-prev",
                 },
+                // 使用渐隐切换效果
                 effect: "fade",
                 fadeEffect: {
-                    crossFade: true
+                    crossFade: true // 确保是渐隐而不是滑动
                 },
-                speed: 1000,
+                speed: 1200, // 增加过渡时间，使渐隐效果更加平滑
                 on: {
                     init: function() {
                         // 初始化时处理当前幻灯片视频
@@ -1902,10 +1926,10 @@
                                 if (prevSlide) {
                                     const prevVideo = prevSlide.querySelector('video');
                                     const prevSanyaText = prevSlide.querySelector('.sanya-text');
-                                    
+
                                     // 淡出视频
                                     if (prevVideo) prevVideo.style.opacity = "0";
-                                    
+
                                     // 淡出Sanya文字 - 仅透明度变化，没有浮动效果
                                     if (prevSanyaText) {
                                         prevSanyaText.style.opacity = "0";
@@ -1954,10 +1978,10 @@
                                         const newSanyaText = document.createElement('div');
                                         newSanyaText.className = 'sanya-text';
                                         newSanyaText.textContent = ''; // 清空文本内容
-                                        
+
                                         // 添加到视频容器
                                         videoContainer.appendChild(newSanyaText);
-                                        
+
                                         // 延迟添加visible类，以便触发动画
                                         setTimeout(() => {
                                             newSanyaText.classList.add('visible');

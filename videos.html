@@ -227,17 +227,21 @@
                 width: 30px;
                 height: 20px;
                 cursor: pointer;
-                z-index: 1001;
+                z-index: 10001; /* 提高z-index确保在最上层 */
+                padding: 15px; /* 增加内边距扩大点击区域 */
+                /* 将点击区域调整为可见区域 */
+                top: -10px; /* 上移确保包含所有菜单线条 */
+                right: 5px; /* 微调右侧位置 */
             }
 
             .mobile-menu-btn span {
                 display: block;
                 position: absolute;
                 height: 2px;
-                width: 100%;
-                background: white; /* 修改为白色，与黑色背景搭配 */
+                width: 30px; /* 确保宽度固定 */
+                background: white;
                 opacity: 1;
-                left: 0;
+                left: 15px; /* 根据内边距调整 */
                 transform: rotate(0deg);
                 transition: .25s ease-in-out;
             }
@@ -667,6 +671,30 @@
             transition: opacity 0.2s ease, transform 0.2s ease;
         }
 
+        /* 增大移动端关闭按钮点击区域和提高z-index */
+        @media (max-width: 768px) {
+            .close-modal {
+                position: absolute;
+                top: 10px;
+                right: 15px;
+                color: #ffffff;
+                font-size: 50px; /* 增大字体大小 */
+                font-weight: bold;
+                cursor: pointer;
+                z-index: 9999; /* 提高z-index确保在最上层 */
+                opacity: 0.9;
+                padding: 15px; /* 增加内边距扩大点击区域 */
+                line-height: 0.6; /* 降低行高，使X更紧凑 */
+                background-color: rgba(0, 0, 0, 0.3); /* 添加半透明背景使按钮更明显 */
+                border-radius: 50%; /* 圆形背景 */
+                width: 40px; /* 设置固定宽度 */
+                height: 40px; /* 设置固定高度 */
+                display: flex; /* 使用flex布局 */
+                justify-content: center; /* 水平居中 */
+                align-items: center; /* 垂直居中 */
+            }
+        }
+
         .close-modal:hover {
             opacity: 1;
             transform: scale(1.1);
@@ -988,11 +1016,13 @@
                 function applyResponsiveScale() {
                     if (window.innerWidth <= 768) {
                         // 移动端缩放到约0.36倍（0.6*0.6=0.36）
-                        group.scale.set(0.36, 0.36, 0.36);
-                        console.log("应用移动端缩放: 0.36");
+                        group.scale.set(0.5, 0.5, 0.5); // 增大移动端缩放比例从0.36到0.5
+                        group.position.y = 0.5; // 调整垂直位置更靠近中心
+                        console.log("应用移动端缩放: 0.5");
                     } else {
                         // 恢复桌面端正常大小
                         group.scale.set(1, 1, 1);
+                        group.position.y = 0.7; // 恢复原始垂直位置
                         console.log("应用桌面端缩放: 1.0");
                     }
                 }
@@ -1614,8 +1644,51 @@
                     // 更新射线
                     raycaster.setFromCamera(mouse, camera);
                     
+                    // 在移动设备上扩大射线检测范围
+                    raycaster.far = 100; // 增加射线检测距离
+                    raycaster.params.Line.threshold = 0.3; // 增加线的检测阈值
+                    raycaster.params.Points.threshold = 0.3; // 增加点的检测阈值
+                    
                     // 检测射线与卡片的相交
                     const intersects = raycaster.intersectObjects(cardMeshes);
+                    
+                    // 如果没有直接点击到卡片，尝试检测点击是否接近当前卡片
+                    if (intersects.length === 0) {
+                        console.log("未直接点击到卡片，检查是否靠近当前卡片");
+                        
+                        // 获取当前显示的卡片
+                        const currentCard = cardMeshes[currentCardIndex];
+                        if (currentCard && currentCard.userData && currentCard.userData.data && currentCard.userData.data.videoUrl) {
+                            // 屏幕点击位置与当前卡片的中心位置比较
+                            const cardWorldPosition = new THREE.Vector3();
+                            currentCard.getWorldPosition(cardWorldPosition);
+                            
+                            // 将世界坐标转换为屏幕坐标
+                            const cardScreenPosition = cardWorldPosition.clone();
+                            cardScreenPosition.project(camera);
+                            
+                            // 计算点击位置与卡片屏幕中心的距离
+                            const cardScreenX = (cardScreenPosition.x + 1) / 2 * window.innerWidth;
+                            const cardScreenY = - (cardScreenPosition.y - 1) / 2 * window.innerHeight;
+                            const clickDistance = Math.sqrt(
+                                Math.pow(touch.clientX - cardScreenX, 2) + 
+                                Math.pow(touch.clientY - cardScreenY, 2)
+                            );
+                            
+                            console.log("点击距离卡片中心:", clickDistance, "像素");
+                            
+                            // 如果点击位置与当前卡片中心的距离在合理范围内，也打开视频
+                            // 在移动设备上使用更大的阈值
+                            const clickThreshold = window.innerWidth * 0.4; // 屏幕宽度的40%作为阈值
+                            if (clickDistance < clickThreshold) {
+                                console.log("点击在当前卡片附近，打开视频:", currentCard.userData.data.title);
+                                stopAutoRotate();
+                                openVideoModal(currentCard.userData.data.videoUrl, fakeMouseEvent);
+                                setTimeout(startAutoRotate, 3000);
+                                return;
+                            }
+                        }
+                    }
                     
                     if (intersects.length > 0) {
                         // 获取点击的卡片
@@ -2053,7 +2126,16 @@
                 let lastClickPosition = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
                 // 点击关闭按钮
-                closeBtn.addEventListener('click', function() {
+                closeBtn.addEventListener('click', function(e) {
+                    e.preventDefault(); // 阻止默认行为
+                    e.stopPropagation(); // 阻止事件冒泡
+                    closeVideoModal();
+                });
+
+                // 添加触摸事件监听器，确保在移动设备上也能正常关闭
+                closeBtn.addEventListener('touchend', function(e) {
+                    e.preventDefault(); // 阻止默认行为
+                    e.stopPropagation(); // 阻止事件冒泡
                     closeVideoModal();
                 });
 
@@ -2073,68 +2155,32 @@
 
                 // 关闭视频模态框的函数
                 function closeVideoModal() {
+                    console.log("执行关闭视频模态框");
                     const modal = document.getElementById('video-modal');
                     const modalContent = document.querySelector('.video-modal-content');
                     const videoPlayer = document.getElementById('video-player');
-                    const destRect = modalContent.getBoundingClientRect();
-
-                    // 获取原始点击元素或位置
-                    const clickedElement = modal.clickedElement;
-                    let thumbRect;
-
-                    if (clickedElement && clickedElement.getBoundingClientRect) {
-                        // 如果有DOM元素，获取它的边界
-                        thumbRect = clickedElement.getBoundingClientRect();
-                    } else if (clickedElement && clickedElement.clientX) {
-                        // 如果是事件对象，创建虚拟边界
-                        thumbRect = {
-                            left: clickedElement.clientX - 100,
-                            top: clickedElement.clientY - 56.25,
-                            width: 200,
-                            height: 112.5,
-                            right: clickedElement.clientX + 100,
-                            bottom: clickedElement.clientY + 56.25
-                        };
-                    } else {
-                        // 回到屏幕中心
-                        thumbRect = {
-                            left: lastClickPosition.x - 100,
-                            top: lastClickPosition.y - 56.25,
-                            width: 200,
-                            height: 112.5,
-                            right: lastClickPosition.x + 100,
-                            bottom: lastClickPosition.y + 56.25
-                        };
-                    }
-
-                    // 计算目标位置和缩放
-                    const targetX = (thumbRect.left + thumbRect.width/2) - (destRect.left + destRect.width/2);
-                    const targetY = (thumbRect.top + thumbRect.height/2) - (destRect.top + destRect.height/2);
-                    const targetScaleX = thumbRect.width / destRect.width;
-                    const targetScaleY = thumbRect.height / destRect.height;
-
-                    // 创建反向timeline
-                    const tl = gsap.timeline({
-                        onComplete: () => {
-                                    modal.classList.remove('active');
-                                        modal.style.visibility = 'hidden';
-                                        videoPlayer.pause();
-                                        videoPlayer.src = '';
+                    
+                    try {
+                        // 确保视频停止播放
+                        if (videoPlayer) {
+                            videoPlayer.pause();
+                            videoPlayer.currentTime = 0;
                         }
-                    });
-
-                    // 内容缩小到原始位置
-                    tl.to(modalContent, {
-                        x: targetX, y: targetY,
-                        scaleX: targetScaleX,
-                        scaleY: targetScaleY,
-                        duration: 0.5, ease: 'power3.in'
-                    }, 0);
-
-                    // 同时背景淡出
-                    tl.to(modal, {
-                        opacity: 0, duration: 0.4, ease: 'power2.in'
-                    }, 0);
+                        
+                        // 立即隐藏模态框
+                        modal.classList.remove('active');
+                        modal.style.visibility = 'hidden';
+                        modal.style.opacity = '0';
+                        
+                        // 清除视频源，确保完全释放资源
+                        if (videoPlayer) {
+                            videoPlayer.src = '';
+                        }
+                        
+                        console.log("视频模态框已关闭");
+                    } catch (error) {
+                        console.error("关闭视频模态框时出错:", error);
+                    }
                 }
             }, 100);
         });

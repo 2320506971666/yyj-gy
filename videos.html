@@ -342,11 +342,38 @@
             z-index: 100;
             transition: all 0.3s ease;
             user-select: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* 添加通用箭头样式，适用于所有设备 */
+        .arrow:before {
+            content: '';
+            display: block;
+            width: 12px;
+            height: 12px;
+            border-top: 2px solid white;
+            border-right: 2px solid white;
+            position: absolute;
+        }
+
+        .left-arrow:before {
+            transform: rotate(-135deg); /* 左箭头 */
+            left: 20px; /* 稍微右移一点 */
+        }
+
+        .right-arrow:before {
+            transform: rotate(45deg); /* 右箭头 */
+            right: 20px; /* 稍微左移一点 */
         }
 
         .arrow:hover {
             background-color: rgba(0, 0, 0, 0.8);
             transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .left-arrow {
@@ -360,6 +387,40 @@
         /* 为按钮添加点击效果 */
         .arrow:active {
             transform: translateY(-50%) scale(0.95);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 移动端箭头按钮样式调整 */
+        @media (max-width: 768px) {
+            .arrow {
+                top: 55%; /* 向下移动到屏幕65%位置 */
+                width: 45px; /* 略微减小尺寸 */
+                height: 45px;
+                font-size: 0; /* 隐藏可能的文本内容 */
+                background-color: rgba(0, 0, 0, 0.6); /* 稍微提高不透明度 */
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            
+            .arrow:active {
+                transform: translateY(0) scale(0.95); /* 移动端不需要保持垂直居中 */
+            }
+            
+            .left-arrow {
+                left: 15px; /* 向内移动，避免边缘区域不易点击 */
+            }
+            
+            .right-arrow {
+                right: 15px; /* 向内移动，避免边缘区域不易点击 */
+            }
+            
+            /* 移动端调整箭头位置 */
+            .left-arrow:before {
+                left: 18px;
+            }
+            
+            .right-arrow:before {
+                right: 18px;
+            }
         }
 
         /* 添加卡片描述区域样式 */
@@ -569,7 +630,7 @@
             
             /* 缩略图导航向上移动、放大并改为两排布局 */
             #preview-strip {
-                bottom: 200px; /* 位置上移，从40px改为80px */
+                bottom: 130px; /* 位置上移，从40px改为80px */
                 width: 80vw; /* 宽度扩大，从70vw改为80vw */
                 flex-wrap: wrap; /* 允许换行 */
                 gap: 1px; /* 增加间距 */
@@ -815,8 +876,8 @@
     <div id="nav-container"></div>
 
     <!-- 添加左右箭头控制按钮 -->
-    <div class="arrow left-arrow">&lt;</div>
-    <div class="arrow right-arrow">&gt;</div>
+    <div class="arrow left-arrow" aria-label="上一个"></div>
+    <div class="arrow right-arrow" aria-label="下一个"></div>
 
     <!-- 添加左侧卡片描述区域 -->
     <div class="card-description">

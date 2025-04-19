@@ -1390,9 +1390,19 @@
                 const modal = document.getElementById('video-modal');
                 const videoPlayer = document.getElementById('video-player');
                 const modalContent = document.querySelector('.video-modal-content');
-
+                
+                // 检测是否为Safari浏览器
+                const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+                
+                console.log("打开视频模态框，是否Safari:", isSafari);
+                
                 // 设置视频源
                 videoPlayer.src = videoUrl;
+                
+                // Safari特定处理：确保加载元数据
+                if (isSafari) {
+                    videoPlayer.load();
+                }
 
                 // 计算元素边界
                 let thumbRect;
@@ -1452,9 +1462,59 @@
                     onComplete: () => {
                         // 视频自动播放安全处理
                         videoPlayer.muted = true;
-                        videoPlayer.play().catch(err => {
-                            console.warn('视频自动播放失败：', err);
-                        });
+                        
+                        // 对于Safari，使用不同的播放方法
+                        if (isSafari) {
+                            // 监听元数据加载完成事件
+                            videoPlayer.onloadedmetadata = function() {
+                                console.log("Safari: 视频元数据已加载");
+                                // 尝试播放
+                                const playPromise = videoPlayer.play();
+                                if (playPromise !== undefined) {
+                                    playPromise.catch(err => {
+                                        console.warn('Safari视频播放失败，尝试使用点击触发:', err);
+                                        // 创建一个透明的按钮覆盖视频
+                                        const playButton = document.createElement('div');
+                                        playButton.style.position = 'absolute';
+                                        playButton.style.top = '0';
+                                        playButton.style.left = '0';
+                                        playButton.style.width = '100%';
+                                        playButton.style.height = '100%';
+                                        playButton.style.zIndex = '10';
+                                        playButton.style.cursor = 'pointer';
+                                        modalContent.appendChild(playButton);
+                                        
+                                        // 点击播放
+                                        playButton.addEventListener('click', function() {
+                                            videoPlayer.play();
+                                            playButton.remove();
+                                        });
+                                    });
+                                }
+                            };
+                            videoPlayer.load(); // 确保重新加载元数据
+                        } else {
+                            // 非Safari浏览器
+                            videoPlayer.play().catch(err => {
+                                console.warn('视频自动播放失败：', err);
+                                // 创建播放按钮
+                                const playButton = document.createElement('div');
+                                playButton.style.position = 'absolute';
+                                playButton.style.top = '0';
+                                playButton.style.left = '0';
+                                playButton.style.width = '100%';
+                                playButton.style.height = '100%';
+                                playButton.style.zIndex = '10';
+                                playButton.style.cursor = 'pointer';
+                                modalContent.appendChild(playButton);
+                                
+                                // 点击播放
+                                playButton.addEventListener('click', function() {
+                                    videoPlayer.play();
+                                    playButton.remove();
+                                });
+                            });
+                        }
                     }
                 });
 
@@ -1520,6 +1580,68 @@
 
                     // 3秒后恢复自动旋转
                     setTimeout(startAutoRotate, 3000);
+                }
+            }
+
+            // 新增：处理移动端触摸结束事件（相当于点击）
+            function handleTouchEnd(event) {
+                // 防止默认行为，避免干扰我们的视频打开
+                event.preventDefault();
+                
+                // 获取触摸结束的位置
+                const touch = event.changedTouches[0];
+                
+                // 判断是否是简单的点击（非滑动）
+                if (Math.abs(touchEndX - touchStartX) < 10) { // 如果移动距离小，视为点击而非滑动
+                    console.log("检测到移动端点击事件");
+                    
+                    // 如果点击的是预览条或其子元素，不处理
+                    if (event.target.closest('#preview-strip')) {
+                        return;
+                    }
+
+                    // 如果点击的是左右箭头，不处理
+                    if (event.target.closest('.arrow')) {
+                        return;
+                    }
+                    
+                    // 创建一个模拟的鼠标事件对象，用于光线投射
+                    const fakeMouseEvent = {
+                        clientX: touch.clientX,
+                        clientY: touch.clientY
+                    };
+                    
+                    // 计算触摸点的归一化坐标
+                    mouse.x = (touch.clientX / window.innerWidth) * 2 - 1;
+                    mouse.y = - (touch.clientY / window.innerHeight) * 2 + 1;
+                    
+                    // 更新射线
+                    raycaster.setFromCamera(mouse, camera);
+                    
+                    // 检测射线与卡片的相交
+                    const intersects = raycaster.intersectObjects(cardMeshes);
+                    
+                    if (intersects.length > 0) {
+                        // 获取点击的卡片
+                        const clickedCard = intersects[0].object;
+                        const cardIndex = clickedCard.userData.index;
+                        const cardData = clickedCard.userData.data;
+                        
+                        console.log("触摸到卡片:", cardIndex, "当前卡片:", currentCardIndex);
+                        
+                        // 暂停自动旋转
+                        stopAutoRotate();
+                        
+                        // 如果卡片有视频，打开视频模态框
+                        if (cardData && cardData.videoUrl) {
+                            console.log("移动端打开视频:", cardData.title);
+                            // 传递触摸事件作为clickedElement
+                            openVideoModal(cardData.videoUrl, fakeMouseEvent);
+                        }
+                        
+                        // 3秒后恢复自动旋转
+                        setTimeout(startAutoRotate, 3000);
+                    }
                 }
             }
 
@@ -1713,6 +1835,9 @@
 
             // 添加鼠标点击事件监听器，用于卡片点击
             window.addEventListener('click', handleCardClick);
+            
+            // 添加移动端触摸结束事件监听器，用于卡片点击
+            window.addEventListener('touchend', handleTouchEnd);
 
             // 添加触摸滑动和鼠标滑动事件
             let touchStartX = 0;
@@ -1916,6 +2041,12 @@
                 // 添加单一的键盘事件监听器，移除重复的监听器
                 window.removeEventListener('keydown', handleKeyDown); // 先移除可能存在的监听器
                 window.addEventListener('keydown', handleKeyDown);
+
+                // 添加鼠标点击事件监听器，用于卡片点击
+                window.addEventListener('click', handleCardClick);
+                
+                // 添加移动端触摸结束事件监听器，用于卡片点击
+                window.addEventListener('touchend', handleTouchEnd);
 
                 // 添加模态框关闭事件
                 const modal = document.getElementById('video-modal');

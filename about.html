@@ -279,6 +279,7 @@
             padding-top: 0;
             min-height: 100vh;
             background-color: #f0f0f0;
+            margin-bottom: 0; /* 确保无底部边距 */
         }
 
         .about-content {
@@ -364,7 +365,7 @@
             background-color: #111;
             color: white;
             padding: 4rem 5% 2rem;
-            margin-top: 5rem;
+            margin-top: 0; /* 移除顶部外边距 */
         }
         
         .footer-content {
@@ -402,7 +403,7 @@
             color: #ddd;
             margin-bottom: 0.8rem;
             letter-spacing: 0.5px;
-            font-family: 'Lato', sans-serif;
+            font-family: 'Noto Serif SC', serif;
         }
         
         .footer-links {
@@ -420,7 +421,7 @@
             transition: color 0.3s ease, letter-spacing 0.3s ease;
             font-size: 1rem;
             letter-spacing: 0.5px;
-            font-family: 'Lato', sans-serif;
+            font-family: 'Noto Serif SC', serif;
         }
         
         .footer-links a:hover {
@@ -436,7 +437,6 @@
             font-size: 0.9rem;
             max-width: 1200px;
             margin: 0 auto;
-            font-family: 'Lato', sans-serif;
         }
         
         /* 页脚响应式调整 */
@@ -450,8 +450,9 @@
         /* 软件技能部分样式 */
         .skills-section {
             background-color: #f0f0f0;
-            padding: 5rem 5%;
+            padding: 5rem 5% 5rem; /* 调整底部内边距 */
             text-align: center;
+            margin-bottom: 0; /* 确保底部无边距 */
         }
 
         .skills-section .container {
@@ -527,15 +528,22 @@
         /* 修改过渡效果 */
         .page-transition {
             position: fixed;
-            top: 45px;
+            top: 0;
             left: 0;
             width: 100%;
-            height: calc(100% - 45px);
-            background-color: black;
-            z-index: 999;
+            height: 100%;
+            background-color: #000000; /* 确保是纯黑色 */
+            z-index: 9999; /* 更高的z-index确保在所有内容之上 */
             opacity: 0;
             visibility: hidden;
-            transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
+            transition: opacity 0.5s ease-out; /* 简化过渡效果 */
+            pointer-events: none; /* 防止过渡层拦截点击事件，直到完全显示 */
+        }
+
+        .page-transition.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all; /* 激活时恢复点击拦截 */
         }
 
         /* 移动端适配样式 */
@@ -830,6 +838,28 @@
             color: #555;
             letter-spacing: 0.5px;
         }
+
+        /* 确保页面整体结构无缝衔接 */
+        main {
+            display: block;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 调整整体页面布局 */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* 与内容区背景保持一致 */
+        }
+
+        /* 确保在主内容区和页脚之间没有间隙 */
+        body > * {
+            margin: 0;
+        }
     </style>
 </head>
 <body data-barba="wrapper">
@@ -995,6 +1025,8 @@
         document.addEventListener("DOMContentLoaded", function() {
             // 页面加载时的淡出效果
             const transition = document.querySelector('.page-transition');
+            
+            // 页面加载完成后隐藏过渡层
             setTimeout(() => {
                 transition.style.visibility = 'hidden';
                 transition.style.opacity = '0';
@@ -1003,18 +1035,18 @@
             // 点击链接时的过渡效果
             document.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function(e) {
-                    if (this.hostname === window.location.hostname) {
+                    // 仅处理同域名且非锚点链接
+                    if (this.hostname === window.location.hostname && !this.getAttribute('href').startsWith('#')) {
                         e.preventDefault();
                         const href = this.getAttribute('href');
-
-                        // 显示过渡层
-                        transition.style.visibility = 'visible';
-                        transition.style.opacity = '1';
-
-                        // 延迟导航以等待过渡效果完成
+                        
+                        // 使用类来激活过渡效果，确保CSS样式完全应用
+                        transition.classList.add('active');
+                        
+                        // 存储目标URL并在过渡后导航
                         setTimeout(() => {
-                            window.location.href = fixPath(href);
-                        }, 1000);
+                            window.location.href = href;
+                        }, 500); // 与CSS过渡时间匹配
                     }
                 });
             });

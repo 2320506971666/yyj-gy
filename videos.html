@@ -547,12 +547,6 @@
 
         /* 在移动设备上调整位置 */
         @media (max-width: 768px) {
-            .card-description {
-                top: 80px; /* 在小屏幕上进一步上移，从90px改为80px */
-                width: 85%;
-                max-width: 400px;
-            }
-
             .card-title {
                 font-size: 1.5rem;
             }
@@ -562,9 +556,11 @@
                 margin-top: -100px; /* 将模型向上移动 */
             }
             
-            /* 介绍文字下移 */
+            /* 介绍文字位置调整 */
             .card-description {
-                top: 230px; /* 文字下移，从80px改为180px */
+                top: 170px; /* 文字位置调整，从150px改为120px，在iPhone 11上显示更高 */
+                width: 85%;
+                max-width: 400px;
             }
             
             /* 缩略图导航向上移动、放大并改为两排布局 */

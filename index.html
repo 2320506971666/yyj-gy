@@ -29,7 +29,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    
+
     <!-- Font Awesome 图标 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -91,85 +91,11 @@
             -ms-overflow-style: none;
         }
 
-        /* 导航栏样式 */
-        header {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            height: 45px;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            padding: 0;
-        }
+        /* 导航栏样式已移至shared/nav-styles.css */
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            height: 100%;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* 调整logo位置，防止紧贴边缘 */
-        .logo {
-            margin-left: 10px; /* 添加左侧间距 */
-        }
-
-        .logo, .logo a {
-            font-family: 'Reenie Beanie', cursive !important;
-            font-size: 2.2rem;
-            font-weight: 400;
-            letter-spacing: 3px;
-            color: #ffffff;
-            opacity: 0.9;
-            text-decoration: none;
-        }
-
-        .logo:hover {
-            opacity: 0.8;
-        }
-
-        .navbar-right {
-            margin-right: 10px; /* 添加右侧间距 */
-        }
-
-        .nav-links {
-            position: absolute;
-            left: 51%;
-            transform: translateX(-50%);
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            gap: 2.5rem;
-        }
-
-        .nav-links li {
-            padding: 0;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #ffffff;
-            font-size: 0.9rem;
-            font-weight: 300;
-            letter-spacing: 3px;
-            text-transform: capitalize;
-            transition: all 0.4s ease;
-            opacity: 0.9;
-            font-family: 'Poiret One', cursive !important;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            opacity: 1;
-        }
-        
         /* 移动菜单按钮样式 - 确保在index.html中也能正确显示 */
         /* 注意: 这部分样式已移至shared/nav-styles.css，保留此注释作为参考 */
-        /* 
+        /*
         .mobile-menu-button {
             display: none;
             position: absolute;
@@ -329,33 +255,33 @@
             .explore-button {
                 position: fixed !important;
                 width: 60% !important;
-                left: 50% !important; 
+                left: 50% !important;
                 transform: translateX(-50%) !important;
                 right: auto !important; /* 清除桌面设置的right影响 */
                 opacity: 1 !important; /* 确保按钮始终可见 */
             }
-            
+
             /* 移动端按钮位置 */
             .gallery-button {
                 bottom: 320px !important;
                 top: auto !important;
             }
-            
+
             .work-button {
                 bottom: 240px !important;
                 top: auto !important;
             }
-            
+
             .about-button {
                 bottom: 160px !important;
                 top: auto !important;
             }
-            
+
             .explore-button {
                 bottom: 80px !important;
                 top: auto !important;
             }
-            
+
             /* 确保模型容器填充整个屏幕，移除底部黑色区域 */
             #model-container {
                 height: 100vh; /* 填充整个视口高度 */
@@ -366,7 +292,7 @@
                 left: 0;
                 width: 100%;
             }
-            
+
             /* 移动端按钮动画 */
             @keyframes mobileButtonPulse {
                 0% {
@@ -379,38 +305,28 @@
                     transform: translateX(-50%) scale(1);
                 }
             }
-            
+
             /* 添加移动端点击动画效果 */
             .nav-button:active {
                 animation: mobileButtonPulse 0.3s ease;
             }
-            
+
             nav {
                 padding: 0 10px; /* 移动端使用更小的内边距 */
             }
-            
+
             header {
                 padding: 0;
             }
-            
-            .logo {
-                margin-left: 5px; /* 小屏幕减少间距 */
-            }
-            
-            .navbar-right {
-                margin-right: 5px; /* 小屏幕减少间距 */
-            }
-            
-            .nav-links a {
-                padding: 0 10px; /* 减少链接间的间距 */
-            }
-            
+
+            /* 移动端导航栏样式已移至shared/nav-styles.css */
+
             /* 显示移动端汉堡菜单按钮 - 已移至shared/nav-styles.css */
             /*
             .mobile-menu-button {
                 display: block;
             }
-            
+
             /* 隐藏导航链接 - 已移至shared/nav-styles.css */
             /*
             .nav-links {
@@ -418,7 +334,7 @@
             }
             */
         }
-        
+
         /* 小型手机屏幕适配 (小于375px) */
         @media (max-width: 375px) {
             /* 小屏幕按钮样式 */
@@ -431,36 +347,36 @@
                 height: 40px !important; /* 降低高度以节省空间 */
                 font-size: 0.85rem !important;
             }
-            
+
             /* 图标调整 */
             .nav-button i {
                 font-size: 1rem !important;
                 margin-right: 8px !important;
             }
-            
+
             /* 小屏幕按钮布局位置 */
             .gallery-button {
                 bottom: 290px !important;
             }
-            
+
             .work-button {
                 bottom: 220px !important;
             }
-            
+
             .about-button {
                 bottom: 150px !important;
             }
-            
+
             .explore-button {
                 bottom: 80px !important;
             }
-            
+
             /* 导航栏样式 */
             .logo, .logo a {
                 font-size: 1.4rem !important;
             }
         }
-        
+
         /* 大型手机屏幕适配 (大于420px小于768px) */
         @media (min-width: 420px) and (max-width: 768px) {
             /* 大屏手机按钮样式 */
@@ -473,36 +389,27 @@
                 height: 48px !important; /* 略高一些以方便操作 */
                 font-size: 1rem !important;
             }
-            
+
             /* 大屏手机按钮布局位置 */
             .gallery-button {
                 bottom: 300px !important;
             }
-            
+
             .work-button {
                 bottom: 230px !important;
             }
-            
+
             .about-button {
                 bottom: 160px !important;
             }
-            
+
             .explore-button {
                 bottom: 90px !important;
             }
-            
-            /* 导航栏样式 */
-            header {
-                position: fixed;
-                width: 100%;
-                top: 0;
-                height: 45px;
-                background-color: rgba(0, 0, 0, 0.8);
-                z-index: 1000;
-                padding: 0;
-            }
+
+            /* 导航栏样式已移至shared/nav-styles.css */
         }
-        
+
         /* 平板设备适配 */
         @media (min-width: 768px) and (max-width: 1024px) {
             /* 针对平板的布局调整 */
@@ -511,11 +418,11 @@
                 min-width: 140px; /* 略大的按钮 */
                 transform: translateY(-50%) !important; /* 确保垂直居中 */
             }
-            
+
             #model-container {
                 height: 90vh; /* 稍微减少高度 */
             }
-            
+
             /* 导航栏样式统一 */
             header {
                 position: fixed;
@@ -526,7 +433,7 @@
                 z-index: 1000;
                 padding: 0;
             }
-            
+
             nav {
                 display: flex;
                 justify-content: space-between;
@@ -541,10 +448,10 @@
         /* 页面过渡效果 */
         .page-transition {
             position: fixed;
-            top: 0;
+            top: 45px; /* 从0改为45px，让出导航栏的高度 */
             left: 0;
             width: 100%;
-            height: 100%;
+            height: calc(100vh - 45px); /* 高度相应调整，减去导航栏高度 */
             background-color: #ffffff; /* 改为白色背景 */
             z-index: 999;
             opacity: 0;
@@ -715,12 +622,12 @@
                 transform: translateY(-50%) !important;
                 width: 150px !important; /* 统一桌面端按钮宽度 */
             }
-            
+
             /* 简化桌面端按钮悬停效果 */
             .nav-button:hover {
                 background-color: rgba(255, 255, 255, 0.25);
             }
-            
+
             /* 简化桌面端按钮点击效果 */
             .nav-button:active {
                 background-color: rgba(255, 255, 255, 0.2);
@@ -728,41 +635,41 @@
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
                            0 0 0 1px rgba(255, 255, 255, 0.05) inset;
             }
-            
+
             /* 特殊按钮动画效果 */
             .work-button:active {
                 animation: workButtonPulse 0.3s ease !important;
             }
-            
+
             /* 移除按钮点击动画效果 */
-            
+
             /* 桌面端各按钮的垂直位置 - 往下移动 */
             .gallery-button {
                 top: 40% !important; /* 从30%调整为40% */
             }
-            
+
             .work-button {
                 top: 50% !important; /* 从40%调整为50% */
             }
-            
+
             .about-button {
                 top: 60% !important; /* 从50%调整为60% */
             }
-            
+
             .explore-button {
                 top: 70% !important; /* 从60%调整为70% */
             }
-            
+
             /* 桌面端按钮可见状态 */
             .nav-button.visible {
                 opacity: 1 !important;
             }
-            
+
             /* 桌面端隐藏移动菜单按钮 */
             .mobile-menu-button {
                 display: none;
             }
-            
+
             /* 桌面端显示导航链接 */
             .nav-links {
                 display: flex;
@@ -773,19 +680,19 @@
         .header-container {
             z-index: 2000 !important; /* 确保不被其他元素覆盖 */
         }
-        
+
         .mobile-menu-button {
             background-color: rgba(0, 0, 0, 0.6);
             border-radius: 5px;
             padding: 5px;
             right: 15px;
         }
-        
+
         @media (max-width: 768px) {
             .mobile-menu-button {
                 display: block !important; /* 强制显示 */
             }
-            
+
             .mobile-menu-button .bar1,
             .mobile-menu-button .bar2,
             .mobile-menu-button .bar3 {
@@ -793,7 +700,7 @@
                 background-color: white !important;
                 margin: 5px 0;
             }
-            
+
             .mobile-menu.open {
                 display: flex !important; /* 强制显示 */
             }
@@ -808,7 +715,7 @@
                 visibility: hidden;
                 transition: opacity 0.5s ease, visibility 0.5s ease;
             }
-            
+
             /* 加载完成后显示的样式 */
             .model-loaded .nav-button,
             .model-loaded .cta-button,
@@ -827,6 +734,27 @@
         .model-loaded {
             /* 加载完成的页面样式 */
         }
+
+        /* 添加按钮点击效果 */
+        .nav-button {
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:active {
+            transform: scale(0.9);
+            transition: transform 0.1s ease;
+        }
+
+        /* 添加按钮点击动画 */
+        @keyframes buttonPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        .nav-button.clicked {
+            animation: buttonPulse 0.3s forwards;
+        }
     </style>
 
     <!-- 移除冲突的汉堡菜单脚本 -->
@@ -843,7 +771,7 @@
                         el.remove();
                     }
                 });
-                
+
                 // 移除所有相关样式标签
                 document.querySelectorAll('style').forEach(styleTag => {
                     if (styleTag.textContent.includes('.quick-burger') && !styleTag.hasAttribute('data-preserved')) {
@@ -851,10 +779,10 @@
                         styleTag.remove();
                     }
                 });
-                
+
                 // 强制触发窗口调整以重新创建汉堡菜单
                 window.dispatchEvent(new Event('resize'));
-                
+
                 console.log('汉堡菜单清理完成');
             }, 500);
         });
@@ -1000,7 +928,7 @@
             // 在移动设备上使用更小的视图尺寸，使模型看起来更小
             const isMobile = window.innerWidth <= 768;
             const mobileViewSize = isMobile ? 20 : 10; // 增大视图尺寸使模型看起来更小
-            
+
             // 针对不同尺寸的移动设备调整视图大小
             let adjustedViewSize = mobileViewSize;
             if(isMobile) {
@@ -1021,7 +949,7 @@
                 0.1,
                 1000
             );
-            
+
             // 设置相机位置 - 移动端调整相机位置使模型显示在上方
             if (isMobile) {
                 camera.position.z = 5;
@@ -1380,7 +1308,7 @@
 
                     // 适应正交相机的缩放
                     let scale = (isMobile ? 7 : 10) / size; // 移动端使用更小的比例
-                    
+
                     // 针对不同尺寸的移动设备调整模型缩放
                     if(isMobile) {
                         if(window.innerWidth <= 375) {
@@ -1393,9 +1321,9 @@
                             scale = 9 / size; // 增加缩放比例
                         }
                     }
-                    
+
                     model.scale.set(scale, scale, scale);
-                    
+
                     // 在移动端设备上，向上移动模型
                     if (isMobile) {
                         // 根据屏幕尺寸调整模型位置
@@ -1649,7 +1577,7 @@
             // 在移动设备上使用更小的视图尺寸，使模型看起来更小
             const isMobile = window.innerWidth <= 768;
             const mobileViewSize = isMobile ? 20 : 10; // 增大视图尺寸使模型看起来更小
-            
+
             // 针对不同尺寸的移动设备调整视图大小
             let adjustedViewSize = mobileViewSize;
             if(isMobile) {
@@ -1680,11 +1608,11 @@
                     } else {
                         model.position.y = 4.5; // 默认位置
                     }
-                    
+
                     // 重新设置模型的缩放比例
                     const box = new THREE.Box3().setFromObject(model);
                     const size = box.getSize(new THREE.Vector3()).length();
-                    
+
                     let scale;
                     if(window.innerWidth <= 375) {
                         scale = 8 / size; // 增加缩放比例
@@ -1693,7 +1621,7 @@
                     } else {
                         scale = 9 / size; // 增加缩放比例
                     }
-                    
+
                     model.scale.set(scale, scale, scale);
                 }
             } else {
@@ -2028,7 +1956,7 @@
                 // iOS 13+ 需要请求权限
                 if (typeof DeviceOrientationEvent.requestPermission === 'function') {
                     console.log('iOS设备，需要请求权限');
-                    
+
                     // 创建一个更美观的按钮请求权限
                     const permissionButton = document.createElement('button');
                     permissionButton.textContent = '开启重力感应';
@@ -2047,13 +1975,13 @@
                     permissionButton.style.cursor = 'pointer';
                     permissionButton.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
                     permissionButton.style.transition = 'all 0.3s ease';
-                    
+
                     // 添加悬停效果
                     permissionButton.onmouseover = function() {
                         this.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
                         this.style.transform = 'translate(-50%, -50%) scale(1.05)';
                     };
-                    
+
                     permissionButton.onmouseout = function() {
                         this.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
                         this.style.transform = 'translate(-50%, -50%)';
@@ -2218,18 +2146,18 @@
             // 检查是否为移动设备
             const isMobile = window.innerWidth <= 768;
             if (!isMobile) return;
-            
+
             const container = document.getElementById('model-container');
-            
+
             // 监听触摸开始
             container.addEventListener('touchstart', function(e) {
                 // 如果旋转动画正在进行，忽略触摸
                 if (isRotating) return;
-                
+
                 // 开始旋转动画
                 toggleWireframe();
             });
-            
+
             // 阻止默认的触摸行为，防止页面缩放
             document.addEventListener('touchmove', function(e) {
                 if (e.scale !== 1) {
@@ -2241,10 +2169,10 @@
         // 查找模型加载完成的函数，在其中添加以下代码：
         function onLoadComplete() {
             // 现有的加载完成代码...
-            
+
             // 添加标记类，显示按钮
             document.body.classList.add('model-loaded');
-            
+
             console.log('3D模型加载完成，显示按钮');
         }
     </script>
@@ -2345,21 +2273,22 @@
                 }
                 isNavigating = true;
 
-                // 移除点击动画效果
-                // galleryButton.classList.add('clicked');
+                // 添加点击动画效果
+                galleryButton.classList.add('clicked');
 
                 // 显示过渡层
                 const transition = document.querySelector('.page-transition');
                 transition.style.visibility = 'visible';
                 transition.style.opacity = '1';
 
-                // 在导航前清理Three.js资源
-                if (typeof cleanupThreeJS === 'function') {
-                    cleanupThreeJS();
-                }
-
-                // 使用延迟确保动画效果完成后再跳转
+                // 延迟清理Three.js资源，确保过渡效果先显示
                 setTimeout(function() {
+                    // 在导航前清理Three.js资源
+                    if (typeof cleanupThreeJS === 'function') {
+                        cleanupThreeJS();
+                    }
+
+                    // 在清理资源后跳转
                     window.location.href = 'gallery.html';
                 }, 300);
             });
@@ -2377,21 +2306,22 @@
                 }
                 isNavigating = true;
 
-                // 移除点击动画效果
-                // workButton.classList.add('clicked');
+                // 添加点击动画效果
+                workButton.classList.add('clicked');
 
                 // 显示过渡层
                 const transition = document.querySelector('.page-transition');
                 transition.style.visibility = 'visible';
                 transition.style.opacity = '1';
 
-                // 在导航前清理Three.js资源
-                if (typeof cleanupThreeJS === 'function') {
-                    cleanupThreeJS();
-                }
-
-                // 使用延迟确保动画效果完成后再跳转
+                // 延迟清理Three.js资源，确保过渡效果先显示
                 setTimeout(function() {
+                    // 在导航前清理Three.js资源
+                    if (typeof cleanupThreeJS === 'function') {
+                        cleanupThreeJS();
+                    }
+
+                    // 在清理资源后跳转
                     window.location.href = 'work.html';
                 }, 300);
             });
@@ -2409,21 +2339,22 @@
                 }
                 isNavigating = true;
 
-                // 移除点击动画效果
-                // aboutButton.classList.add('clicked');
+                // 添加点击动画效果
+                aboutButton.classList.add('clicked');
 
                 // 显示过渡层
                 const transition = document.querySelector('.page-transition');
                 transition.style.visibility = 'visible';
                 transition.style.opacity = '1';
 
-                // 在导航前清理Three.js资源
-                if (typeof cleanupThreeJS === 'function') {
-                    cleanupThreeJS();
-                }
-
-                // 使用延迟确保动画效果完成后再跳转
+                // 延迟清理Three.js资源，确保过渡效果先显示
                 setTimeout(function() {
+                    // 在导航前清理Three.js资源
+                    if (typeof cleanupThreeJS === 'function') {
+                        cleanupThreeJS();
+                    }
+
+                    // 在清理资源后跳转
                     window.location.href = 'about.html';
                 }, 300);
             });
@@ -2441,21 +2372,22 @@
                 }
                 isNavigating = true;
 
-                // 移除点击动画效果
-                // exploreButton.classList.add('clicked');
+                // 添加点击动画效果
+                exploreButton.classList.add('clicked');
 
                 // 显示过渡层
                 const transition = document.querySelector('.page-transition');
                 transition.style.visibility = 'visible';
                 transition.style.opacity = '1';
 
-                // 在导航前清理Three.js资源
-                if (typeof cleanupThreeJS === 'function') {
-                    cleanupThreeJS();
-                }
-
-                // 使用延迟确保动画效果完成后再跳转
+                // 延迟清理Three.js资源，确保过渡效果先显示
                 setTimeout(function() {
+                    // 在导航前清理Three.js资源
+                    if (typeof cleanupThreeJS === 'function') {
+                        cleanupThreeJS();
+                    }
+
+                    // 在清理资源后跳转
                     window.location.href = 'film.html';
                 }, 300);
             });
@@ -2508,17 +2440,17 @@
                     }
                 });
             });
-            
+
             // 设置当前页面的导航按钮激活状态
             function setActiveNav() {
                 const currentPath = window.location.pathname;
                 const pageName = currentPath.split('/').pop().split('.')[0] || 'index';
-                
+
                 // 移除所有按钮的激活状态
                 document.querySelectorAll('.nav-button').forEach(btn => {
                     btn.classList.remove('active-nav');
                 });
-                
+
                 // 根据当前页面路径设置激活按钮
                 switch(pageName) {
                     case 'index':
@@ -2538,7 +2470,7 @@
                         break;
                 }
             }
-            
+
             // 页面加载完成后设置激活状态
             setActiveNav();
         });

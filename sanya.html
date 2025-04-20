@@ -21,6 +21,9 @@
     <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
     <script src="https://unpkg.com/@barba/core"></script>
 
+    <!-- 导航栏样式 -->
+    <link rel="stylesheet" href="shared/nav-styles.css">
+
     <title>Island Gallery - Triple-Y</title>
     <style>
         /* 基础样式 */
@@ -38,72 +41,7 @@
             font-family: 'Noto Serif SC', serif;
         }
 
-        /* 导航栏样式 */
-        header {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            height: 45px;
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 0 5%;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            height: 100%;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .logo {
-            font-family: 'Reenie Beanie', cursive;
-            font-size: 2.2rem;
-            font-weight: 400;
-            letter-spacing: 3px;
-            color: #ffffff;
-            opacity: 0.9;
-        }
-
-        .nav-links {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            gap: 2.5rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #ffffff;
-            font-size: 0.9rem;
-            font-weight: 300;
-            letter-spacing: 3px;
-            text-transform: capitalize;
-            transition: all 0.4s ease;
-            opacity: 0.9;
-            font-family: 'Poiret One', cursive;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            opacity: 1;
-            letter-spacing: 4px;
-            color: #DE2910;
-        }
-
-        .nav-links a.active {
-            color: #DE2910;
-            opacity: 1;
-        }
+        /* 导航栏样式已移至shared/nav-styles.css */
 
         /* Sanya页面标题样式 */
         .sanya-header {
@@ -626,9 +564,7 @@
 
         /* 响应式设计 */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
+            /* 移动端导航栏样式已移至shared/nav-styles.css */
 
             .sanya-title {
                 font-size: 3rem;

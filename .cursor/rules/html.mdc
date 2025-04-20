@@ -21,5 +21,6 @@ Use `// TODO:` comments for any unfinished or planned feature sections.
 # 资源管理
 - Store all static images inside the `public/images` folder.
 
-
+不要有任何备用的方案，我必须要严格执行我需要的方案
+任何问题找出根本原因修复，不要乱加!important标记
 

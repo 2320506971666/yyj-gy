@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,12 +15,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
-    
+
     <!-- GSAP, Lenis, Barba.js 脚本 -->
     <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
     <script src="https://unpkg.com/@barba/core"></script>
-    
+
     <title>Film - Triple-Y</title>
     <style>
         /* 基础样式 */
@@ -29,7 +29,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         html, body {
             margin: 0;
             padding: 0;
@@ -37,7 +37,7 @@
             background-color: black;
             overflow-x: hidden;
         }
-        
+
         body {
             background-color: black;
             color: white;
@@ -50,75 +50,12 @@
             position: relative;
             width: 100%;
         }
-        
+
         main {
             flex: 1 0 auto !important; /* 主内容区域占据剩余空间 */
         }
-        
-        /* 导航栏样式 */
-        header {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            height: 45px;
-            background-color: black;
-            z-index: 1000;
-            padding: 0 5%;
-        }
-        
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            height: 100%;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .logo {
-            font-family: 'Reenie Beanie', cursive;
-            font-size: 2.2rem;
-            font-weight: 400;
-            letter-spacing: 3px;
-            color: #ffffff;
-            opacity: 0.9;
-        }
-        
-        .nav-links {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            gap: 2.5rem;
-        }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: #ffffff;
-            font-size: 0.9rem;
-            font-weight: 300;
-            letter-spacing: 3px;
-            text-transform: capitalize;
-            transition: all 0.4s ease;
-            opacity: 0.9;
-            font-family: 'Poiret One', cursive;
-            position: relative;
-        }
-        
-        .nav-links a:hover {
-            opacity: 1;
-            letter-spacing: 4px;
-            color: #DE2910;
-        }
-        
-        .nav-links a.active {
-            color: #DE2910;
-            opacity: 1;
-        }
+
+        /* 导航栏样式已移至shared/nav-styles.css */
 
         /* 电影页面特定样式 */
         .film-page {
@@ -210,101 +147,8 @@
             margin-right: 10px;
         }
 
-        /* 移动端适配 */
+        /* 移动端适配 - 导航栏相关样式已移至shared/nav-styles.css */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
-            /* 移动端导航菜单按钮 */
-            .mobile-menu-btn {
-                display: block;
-                position: absolute;
-                right: 20px;
-                width: 30px;
-                height: 20px;
-                cursor: pointer;
-                z-index: 1001;
-            }
-
-            .mobile-menu-btn span {
-                display: block;
-                position: absolute;
-                height: 2px;
-                width: 100%;
-                background: white;
-                opacity: 1;
-                left: 0;
-                transform: rotate(0deg);
-                transition: .25s ease-in-out;
-            }
-
-            .mobile-menu-btn span:nth-child(1) {
-                top: 0px;
-            }
-
-            .mobile-menu-btn span:nth-child(2) {
-                top: 9px;
-            }
-
-            .mobile-menu-btn span:nth-child(3) {
-                top: 18px;
-            }
-
-            .mobile-menu-btn.open span:nth-child(1) {
-                top: 9px;
-                transform: rotate(135deg);
-            }
-
-            .mobile-menu-btn.open span:nth-child(2) {
-                opacity: 0;
-                left: -60px;
-            }
-
-            .mobile-menu-btn.open span:nth-child(3) {
-                top: 9px;
-                transform: rotate(-135deg);
-            }
-
-            /* 移动端菜单样式 */
-            .mobile-menu {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.95);
-                z-index: 999;
-                padding: 20px;
-                padding-top: 65px;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .mobile-menu.open {
-                display: flex;
-            }
-
-            .mobile-menu a {
-                color: white;
-                font-size: 1.5rem;
-                margin: 15px 0;
-                text-decoration: none;
-                font-family: 'Poiret One', cursive;
-                letter-spacing: 3px;
-                transition: all 0.3s ease;
-            }
-
-            .mobile-menu a:hover {
-                color: #DE2910;
-                letter-spacing: 4px;
-            }
-
-            .mobile-menu a.active {
-                color: #DE2910;
-            }
 
             .film-title h1 {
                 font-size: 2rem;
@@ -439,7 +283,7 @@
             margin-right: auto;
             padding: 0 20px;
         }
-        
+
         .image-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -447,7 +291,7 @@
             width: 100%;
             background-color: #000;
         }
-        
+
         .grid-item {
             position: relative;
             overflow: hidden;
@@ -465,11 +309,11 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .grid-item:hover {
             transform: scale(1.02);
         }
-        
+
         .grid-item img {
             width: 100%;
             height: 100%;
@@ -478,24 +322,24 @@
             display: block;
             margin: 0;
         }
-        
+
         .grid-item:hover img {
             transform: scale(1.01);
         }
-        
+
         /* 始终保持两列布局，不根据屏幕尺寸变化 */
         @media (min-width: 768px) {
             .image-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-        
+
         @media (min-width: 1024px) {
             .image-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-        
+
         /* 移动端适配 */
         @media (max-width: 480px) {
             .image-grid {
@@ -503,7 +347,7 @@
                 gap: 15px;
             }
         }
-        
+
         /* 灯箱效果 */
         .lightbox {
             position: fixed;
@@ -520,12 +364,12 @@
             opacity: 0;
             transition: opacity 0.5s ease;
         }
-        
+
         .lightbox.show {
             opacity: 1;
             display: flex;
         }
-        
+
         .lightbox-content {
             position: relative;
             max-width: 90%;
@@ -533,11 +377,11 @@
             transform: scale(0.9);
             transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
-        
+
         .lightbox.show .lightbox-content {
             transform: scale(1);
         }
-        
+
         .lightbox-image {
             max-width: 100%;
             max-height: 90vh;
@@ -545,7 +389,7 @@
             border-radius: 4px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
-        
+
         .lightbox-close {
             position: absolute;
             top: -40px;
@@ -555,11 +399,11 @@
             cursor: pointer;
             transition: transform 0.3s ease;
         }
-        
+
         .lightbox-close:hover {
             transform: rotate(90deg);
         }
-        
+
         .lightbox-nav {
             position: fixed;
             top: 0;
@@ -569,7 +413,7 @@
             pointer-events: none;
             z-index: 9999;
         }
-        
+
         .lightbox-prev, .lightbox-next {
             position: fixed;
             top: 50%;
@@ -588,20 +432,20 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        
+
         .lightbox.show .lightbox-prev,
         .lightbox.show .lightbox-next {
             opacity: 0.7;
         }
-        
+
         .lightbox-prev:hover, .lightbox-next:hover {
             opacity: 1 !important;
         }
-        
+
         .lightbox-prev {
             left: 40px;
         }
-        
+
         .lightbox-next {
             right: 40px;
         }
@@ -609,10 +453,10 @@
 </head>
 <body data-barba="wrapper">
     <div class="page-transition"></div>
-    
+
     <!-- 导航栏容器 -->
     <div id="nav-container"></div>
-    
+
     <!-- 主体内容，添加barba数据属性 -->
     <main data-barba="container" data-barba-namespace="film">
         <!-- 电影页面内容 -->
@@ -622,14 +466,14 @@
                     <h1>Summer Sense</h1>
                     <p>一部关于夏日体验的短片</p>
                 </div>
-                
+
                 <div class="video-container">
                     <video controls preload="metadata" id="mainVideo" controlsList="nodownload" disablePictureInPicture autoplay muted>
                         <source src="https://assets.tripley.cn/summer%20sense%EF%BC%88compress%EF%BC%89.mp4" type="video/mp4">
                         您的浏览器不支持视频播放。
                     </video>
                 </div>
-                
+
                 <!-- Summer Sense 图片展示 -->
                 <div class="summer-sense-images">
                     <div class="image-grid">
@@ -659,7 +503,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </main>
@@ -722,7 +566,7 @@
 
             // 视频元素
             const video = document.getElementById('mainVideo');
-            
+
             // 确保视频自动播放
             if(video) {
                 // 尝试播放视频
@@ -732,7 +576,7 @@
                     video.muted = true;
                     video.play();
                 });
-                
+
                 // 为用户提供取消静音的按钮或提示
                 // 您可以在这里添加一个取消静音的UI元素
             }
@@ -744,9 +588,9 @@
             const lightboxClose = document.querySelector('.lightbox-close');
             const lightboxPrev = document.querySelector('.lightbox-prev');
             const lightboxNext = document.querySelector('.lightbox-next');
-            
+
             let currentIndex = 0;
-            
+
             // 打开灯箱
             galleryItems.forEach((item, index) => {
                 item.addEventListener('click', function() {
@@ -754,21 +598,21 @@
                     const img = this.querySelector('img');
                     const imgSrc = img.getAttribute('src');
                     const imgAlt = img.getAttribute('alt');
-                    
+
                     lightboxImg.setAttribute('src', imgSrc);
                     lightboxImg.setAttribute('alt', imgAlt);
-                    
+
                     lightbox.classList.add('show');
                     document.body.style.overflow = 'hidden';
                 });
             });
-            
+
             // 关闭灯箱
             lightboxClose.addEventListener('click', function() {
                 lightbox.classList.remove('show');
                 document.body.style.overflow = '';
             });
-            
+
             // 点击背景关闭灯箱
             lightbox.addEventListener('click', function(e) {
                 if (e.target === lightbox) {
@@ -776,7 +620,7 @@
                     document.body.style.overflow = '';
                 }
             });
-            
+
             // 上一张图片
             lightboxPrev.addEventListener('click', function() {
                 currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
@@ -784,7 +628,7 @@
                 lightboxImg.setAttribute('src', img.getAttribute('src'));
                 lightboxImg.setAttribute('alt', img.getAttribute('alt'));
             });
-            
+
             // 下一张图片
             lightboxNext.addEventListener('click', function() {
                 currentIndex = (currentIndex + 1) % galleryItems.length;
@@ -792,11 +636,11 @@
                 lightboxImg.setAttribute('src', img.getAttribute('src'));
                 lightboxImg.setAttribute('alt', img.getAttribute('alt'));
             });
-            
+
             // 键盘导航
             document.addEventListener('keydown', function(e) {
                 if (!lightbox.classList.contains('show')) return;
-                
+
                 if (e.key === 'Escape') {
                     lightbox.classList.remove('show');
                     document.body.style.overflow = '';
@@ -813,11 +657,11 @@
                     if (this.hostname === window.location.hostname) {
                         e.preventDefault();
                         const href = this.getAttribute('href');
-                        
+
                         // 显示过渡层
                         transition.style.visibility = 'visible';
                         transition.style.opacity = '1';
-                        
+
                         // 延迟导航以等待过渡效果完成
                         setTimeout(() => {
                             window.location.href = href;
@@ -826,27 +670,8 @@
                 });
             });
 
-            // 移动端菜单控制
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-            const mobileMenu = document.querySelector('.mobile-menu');
-            
-            if (mobileMenuBtn && mobileMenu) {
-                mobileMenuBtn.addEventListener('click', function() {
-                    this.classList.toggle('open');
-                    mobileMenu.classList.toggle('open');
-                    document.body.classList.toggle('menu-open');
-                });
-                
-                // 点击移动端菜单项关闭菜单
-                document.querySelectorAll('.mobile-menu a').forEach(link => {
-                    link.addEventListener('click', function() {
-                        mobileMenuBtn.classList.remove('open');
-                        mobileMenu.classList.remove('open');
-                        document.body.classList.remove('menu-open');
-                    });
-                });
-            }
+            // 移动端菜单控制已由shared/nav.js处理
         });
     </script>
 </body>
-</html> 
+</html>

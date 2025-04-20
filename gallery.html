@@ -9,7 +9,7 @@
 
     <!-- 预加载关键资源 - 优化版 -->
     <link rel="preload" href="artistweb/images/个人图片作品/IMG_0082.jpg" as="image" fetchpriority="high">
-    
+
     <!-- 使用字体显示交换来优化字体加载 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,7 @@
     <style>
         /* 基础关键样式 */
         body{background-color:#000;color:#fff;margin:0;padding:0;overflow-x:hidden}
-        .page-loader{position:fixed;top:0;left:0;width:100%;height:100%;background-color:#000;display:flex;justify-content:center;align-items:center;z-index:9999;opacity:1;transition:opacity .5s ease,visibility .5s ease}
+        .page-loader{position:fixed;top:45px;left:0;width:100%;height:calc(100vh - 45px);background-color:#000;display:flex;justify-content:center;align-items:center;z-index:9999;opacity:1;transition:opacity .5s ease,visibility .5s ease}
         .page-loader.hidden{opacity:0;visibility:hidden}
         .loader-spinner{width:40px;height:40px;border:4px solid rgba(255,255,255,.2);border-radius:50%;border-top-color:#fff;animation:spin 1s linear infinite}
         @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
@@ -59,7 +59,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
 
     <title>Gallery - Triple-Y</title>
-    
+
     <!-- 预加载关键资源 -->
     <link rel="preload" href="artistweb/images/个人图片作品/IMG_0082.jpg" as="image">
     <link rel="preload" href="artistweb/videos/video1.webm" as="video" type="video/webm">
@@ -73,10 +73,10 @@
         /* 添加加载指示器样式 */
         .page-loader {
             position: fixed;
-            top: 0;
+            top: 45px; /* 从0改为45px，让出导航栏的高度 */
             left: 0;
             width: 100%;
-            height: 100%;
+            height: calc(100vh - 45px); /* 高度相应调整，减去导航栏高度 */
             background-color: #000;
             display: flex;
             justify-content: center;
@@ -104,7 +104,7 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
+
         /* 北方之旅文字样式 - 极简版 */
         .river-text {
             display: flex;
@@ -256,72 +256,7 @@
             -ms-overflow-style: none; /* IE and Edge */
         }
 
-        /* 导航栏样式 */
-        header {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            height: 45px;
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 0 5%;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            height: 100%;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .logo {
-            font-family: 'Reenie Beanie', cursive;
-            font-size: 2.2rem;
-            font-weight: 400;
-            letter-spacing: 3px;
-            color: #ffffff;
-            opacity: 0.9;
-        }
-
-        .nav-links {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            gap: 2.5rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #ffffff;
-            font-size: 0.9rem;
-            font-weight: 300;
-            letter-spacing: 3px;
-            text-transform: capitalize;
-            transition: all 0.4s ease;
-            opacity: 0.9;
-            font-family: 'Poiret One', cursive;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            opacity: 1;
-            letter-spacing: 4px;
-            color: #DE2910;
-        }
-
-        .nav-links a.active {
-            color: #DE2910;
-            opacity: 1;
-        }
+        /* 导航栏样式已移至shared/nav-styles.css */
 
         /* Gallery页面特定样式 - 现代化改进 */
         .gallery-page {
@@ -1001,9 +936,7 @@
 
         /* 移动端适配 */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
+            /* 移动端导航栏样式已移至shared/nav-styles.css */
 
             .gallery-title {
                 height: 85vh;
@@ -1032,17 +965,7 @@
                 transform: translateX(-50%) scale(var(--scale-factor, 0.8));
             }
 
-            /* 移动菜单按钮调整 */
-            .mobile-menu-btn {
-                display: block;
-                position: absolute;
-                right: 20px;
-                top: 12px;
-                width: 30px;
-                height: 20px;
-                cursor: pointer;
-                z-index: 1001;
-            }
+            /* 移动菜单按钮样式已移至shared/nav-styles.css */
 
             /* 调整图片间距，与顶部空隙保持一致 */
             .bento-grid {
@@ -1131,10 +1054,10 @@
         /* 页面过渡效果 */
         .page-transition {
             position: fixed;
-            top: 0;
+            top: 45px; /* 从0改为45px，让出导航栏的高度 */
             left: 0;
             width: 100%;
-            height: 100%;
+            height: calc(100vh - 45px); /* 高度相应调整，减去导航栏高度 */
             background-color: black;
             z-index: 999;
             opacity: 0;
@@ -1730,7 +1653,7 @@
     <div class="page-loader">
         <div class="loader-spinner"></div>
     </div>
-    
+
     <div class="page-transition"></div>
 
     <!-- 导航栏容器 -->
@@ -1758,7 +1681,7 @@
                         <span class="r">r</span>
                         <span class="y">y</span>
                     </div>
-                        </div>  
+                        </div>
                             <!-- 幻灯片2：视频 -->
                             <div class="swiper-slide" style="cursor: pointer;" onclick="window.location.href='north.html'">
                                 <div class="video-container">
@@ -1881,13 +1804,13 @@
             const pageLoader = document.querySelector('.page-loader');
             const galleryText = document.querySelector('.gallery-text');
             const welcomeText = document.querySelector('.welcome');
-            
+
             // 设置动画开始的函数
             function startAnimations() {
                 // 添加动画就绪类，触发所有文字动画
                 document.body.classList.add('animation-ready');
             }
-            
+
             // 视频处理函数 - 恢复并优化原始函数
             function handleVideo(video) {
                 if (!video) return;
@@ -1899,13 +1822,13 @@
                 if (!video.dataset.loaded) {
                     // 设置视频数据属性标记为已加载
                     video.dataset.loaded = "true";
-                    
+
                     // 为视频添加加载事件监听器
                     video.addEventListener('loadeddata', () => {
                         // 视频加载完成后添加loaded类
                         video.classList.add('loaded');
                     });
-                    
+
                     // 为视频添加错误处理
                     video.addEventListener('error', (e) => {
                         console.error(`视频加载失败: ${e.target.src}`);
@@ -1965,22 +1888,22 @@
 
             // 获取所有视频并使用懒加载策略
             const videos = document.querySelectorAll('.swiper-slide video');
-            
+
             // 初始化首个视频
             setTimeout(() => {
                 const firstSlideVideo = document.querySelector('.swiper-slide:first-child video');
                 if (firstSlideVideo) {
                     handleVideo(firstSlideVideo);
                 }
-                
+
                 // 先隐藏加载指示器
                 pageLoader.classList.add('hidden');
-                
+
                 // 页面加载器消失后才开始文字动画
                 setTimeout(() => {
                     // 延迟100ms后开始动画，确保加载指示器过渡效果结束
                     startAnimations();
-                    
+
                     // 预加载其他幻灯片的视频
                     videos.forEach((video, index) => {
                         if (index > 0) {
@@ -1989,7 +1912,7 @@
                             }, index * 800);
                         }
                     });
-                    
+
                     // 这时设置pageLoader为不可见
                     pageLoader.style.display = 'none';
                 }, 600); // 600ms确保页面加载器的500ms过渡效果完成
@@ -2044,7 +1967,7 @@
                             const video = activeSlide.querySelector('video');
                             if (video) handleVideo(video);
                         }
-                        
+
                         // 延迟启用自动播放
                         setTimeout(() => {
                             this.params.autoplay = {
@@ -2053,7 +1976,7 @@
                             };
                             this.autoplay.start();
                         }, 2000);
-                        
+
                         // 确保文字显示
                         ensureTextVisible();
                     },
@@ -2071,7 +1994,7 @@
                                 }
                             });
                         }
-                        
+
                         // 确保文字显示
                         ensureTextVisible();
                     }
@@ -2085,7 +2008,7 @@
                     if (swiper && swiper.autoplay) {
                         swiper.autoplay.stop();
                     }
-                    
+
                     videos.forEach(video => {
                         if (!video.paused) video.pause();
                     });
@@ -2095,13 +2018,13 @@
                     if (activeVideo && activeVideo.paused) {
                         activeVideo.play().catch(e => {});
                     }
-                    
+
                     if (swiper && swiper.autoplay) {
                         swiper.autoplay.start();
                     }
                 }
             });
-            
+
             // 确保超时保护
             setTimeout(() => {
                 if (!pageLoader.classList.contains('hidden')) {

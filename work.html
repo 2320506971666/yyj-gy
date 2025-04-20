@@ -41,72 +41,7 @@
             height: 0;
         }
 
-        /* 导航栏样式 */
-        header {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            height: 45px;
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 0 5%;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            height: 100%;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .logo {
-            font-family: 'Reenie Beanie', cursive;
-            font-size: 2.2rem;
-            font-weight: 400;
-            letter-spacing: 3px;
-            color: #ffffff;
-            opacity: 0.9;
-        }
-
-        .nav-links {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            gap: 2.5rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #ffffff;
-            font-size: 0.9rem;
-            font-weight: 300;
-            letter-spacing: 3px;
-            text-transform: capitalize;
-            transition: all 0.4s ease;
-            opacity: 0.9;
-            font-family: 'Poiret One', cursive;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            opacity: 1;
-            letter-spacing: 4px;
-            color: #DE2910;
-        }
-
-        .nav-links a.active {
-            color: #DE2910;
-            opacity: 1;
-        }
+        /* 导航栏样式已移至shared/nav-styles.css */
 
         /* Work页面特定样式 */
         .work-page {
@@ -176,9 +111,7 @@
 
         /* 移动端适配 */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
+            /* 移动端导航栏样式已移至shared/nav-styles.css */
 
             .work-title h1 {
                 font-size: 2.5rem;
@@ -229,6 +162,8 @@
                 height: auto !important;
                 object-fit: cover !important;
                 z-index: 0 !important;
+                max-width: 100% !important; /* 确保移动端也限制最大宽度 */
+                max-height: 100% !important; /* 确保移动端也限制最大高度 */
             }
 
             .work-category-overlay {
@@ -240,9 +175,9 @@
                 justify-content: center !important;
                 align-items: center !important;
             }
-            
+
             #pictureWorks {
-                margin-bottom: 0px !important; 
+                margin-bottom: 0px !important;
             }
         }
 
@@ -500,6 +435,8 @@
             object-fit: cover;
             transition: transform 0.7s ease;
             background-color: #000;
+            max-width: 100%; /* 限制最大宽度 */
+            max-height: 100%; /* 限制最大高度 */
         }
 
         .work-category:hover .work-category-video {
@@ -764,26 +701,7 @@
                 });
             });
 
-            // 移动端菜单控制
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-            const mobileMenu = document.querySelector('.mobile-menu');
-
-            if (mobileMenuBtn && mobileMenu) {
-                mobileMenuBtn.addEventListener('click', function() {
-                    this.classList.toggle('open');
-                    mobileMenu.classList.toggle('open');
-                    document.body.classList.toggle('menu-open');
-                });
-
-                // 点击移动端菜单项关闭菜单
-                document.querySelectorAll('.mobile-menu a').forEach(link => {
-                    link.addEventListener('click', function() {
-                        mobileMenuBtn.classList.remove('open');
-                        mobileMenu.classList.remove('open');
-                        document.body.classList.remove('menu-open');
-                    });
-                });
-            }
+            // 移动端菜单控制已由shared/nav.js处理
 
             // 检查URL中的hash，如果有#work，则直接显示作品内容
             if (window.location.hash === '#work' && logoContainer && workContent) {

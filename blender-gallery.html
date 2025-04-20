@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,12 +16,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600&display=swap" rel="stylesheet">
-    
+
     <!-- GSAP, Lenis, Barba.js 脚本 -->
     <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
     <script src="https://unpkg.com/@barba/core"></script>
-    
+
     <title>Blender 3D作品集 - Triple-Y</title>
     <style>
         /* 基础样式 */
@@ -30,7 +30,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             overflow-x: hidden;
             background-color: black;
@@ -38,74 +38,9 @@
             line-height: 1.6;
             font-family: 'Noto Serif SC', serif;
         }
-        
-        /* 导航栏样式 */
-        header {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            height: 45px;
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 0 5%;
-        }
-        
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            height: 100%;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .logo {
-            font-family: 'Reenie Beanie', cursive;
-            font-size: 2.2rem;
-            font-weight: 400;
-            letter-spacing: 3px;
-            color: #ffffff;
-            opacity: 0.9;
-        }
-        
-        .nav-links {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            gap: 2.5rem;
-        }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: #ffffff;
-            font-size: 0.9rem;
-            font-weight: 300;
-            letter-spacing: 3px;
-            text-transform: capitalize;
-            transition: all 0.4s ease;
-            opacity: 0.9;
-            font-family: 'Poiret One', cursive;
-            position: relative;
-        }
-        
-        .nav-links a:hover {
-            opacity: 1;
-            letter-spacing: 4px;
-            color: #DE2910;
-        }
 
-        .nav-links a.active {
-            color: #DE2910;
-            opacity: 1;
-        }
-        
+        /* 导航栏样式已移至shared/nav-styles.css */
+
         /* Blender作品集页面特定样式 */
         .blender-gallery-page {
             padding-top: 60px;
@@ -113,18 +48,18 @@
             background-color: #0a0a0a;
             width: 100%;
         }
-        
+
         .blender-gallery-content {
             max-width: 1600px;
             margin: 0 auto;
             padding: 0 20px;
         }
-        
+
         .blender-gallery-header {
             text-align: center;
             padding: 40px 0;
         }
-        
+
         .blender-gallery-header h1 {
             font-size: 3rem;
             font-weight: 300;
@@ -133,7 +68,7 @@
             color: #ffffff;
             font-family: 'Playfair Display', serif;
         }
-        
+
         .blender-gallery-header p {
             font-size: 1.2rem;
             font-weight: 300;
@@ -142,7 +77,7 @@
             color: #aaaaaa;
             line-height: 1.8;
         }
-        
+
         /* 作品展示 - 大图模式 */
         .blender-works {
             display: grid;
@@ -151,7 +86,7 @@
             margin: 30px 0;
             padding-bottom: 50px;
         }
-        
+
         .blender-work-item {
             position: relative;
             width: 100%;
@@ -163,12 +98,12 @@
             transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
             aspect-ratio: 16/9;
         }
-        
+
         .blender-work-item.visible {
             opacity: 1;
             transform: translateY(0);
         }
-        
+
         .blender-work-img {
             width: 100%;
             height: 100%;
@@ -177,15 +112,15 @@
             transition: transform 0.5s ease;
             object-fit: cover;
         }
-        
+
         .blender-work-item:hover .blender-work-img {
             transform: scale(1.05);
         }
-        
+
         .blender-work-info {
             display: none; /* 隐藏文字信息 */
         }
-        
+
         /* 返回按钮 */
         .back-btn {
             position: fixed;
@@ -205,13 +140,13 @@
             z-index: 100;
             transition: all 0.3s ease;
         }
-        
+
         .back-btn:hover {
             background: rgba(255, 255, 255, 0.1);
             border-color: white;
             transform: translateX(-5px);
         }
-        
+
         /* 灯箱效果 */
         .lightbox {
             position: fixed;
@@ -307,7 +242,7 @@
         .lightbox-next:hover {
             transform: translateX(5px);
         }
-        
+
         /* 响应式设计 */
         @media (max-width: 768px) {
             .back-btn {
@@ -316,117 +251,22 @@
                 font-size: 0.8rem;
                 padding: 8px 15px;
             }
-            
+
             .blender-gallery-header h1 {
                 font-size: 2rem;
             }
-            
+
             .blender-gallery-header p {
                 font-size: 1rem;
                 padding: 0 20px;
             }
-            
+
             .blender-works {
                 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
                 gap: 15px;
             }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            /* 移动菜单按钮调整 */
-            .mobile-menu-btn {
-                display: block;
-                position: absolute;
-                right: 20px;
-                top: 12px;
-                width: 30px;
-                height: 20px;
-                cursor: pointer;
-                z-index: 1001;
-            }
 
-            .mobile-menu-btn span {
-                display: block;
-                position: absolute;
-                height: 2px;
-                width: 100%;
-                background: white;
-                opacity: 1;
-                left: 0;
-                transform: rotate(0deg);
-                transition: .25s ease-in-out;
-            }
-
-            .mobile-menu-btn span:nth-child(1) {
-                top: 0px;
-            }
-
-            .mobile-menu-btn span:nth-child(2) {
-                top: 9px;
-            }
-
-            .mobile-menu-btn span:nth-child(3) {
-                top: 18px;
-            }
-
-            .mobile-menu-btn.open span:nth-child(1) {
-                top: 9px;
-                transform: rotate(135deg);
-            }
-
-            .mobile-menu-btn.open span:nth-child(2) {
-                opacity: 0;
-                left: -60px;
-            }
-
-            .mobile-menu-btn.open span:nth-child(3) {
-                top: 9px;
-                transform: rotate(-135deg);
-            }
-
-            /* 移动端菜单样式 */
-            .mobile-menu {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.95);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
-                z-index: 999;
-                padding: 20px;
-                padding-top: 65px;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .mobile-menu.open {
-                display: flex;
-            }
-
-            .mobile-menu a {
-                color: white;
-                font-size: 1.5rem;
-                margin: 15px 0;
-                text-decoration: none;
-                font-family: 'Poiret One', cursive;
-                letter-spacing: 3px;
-                transition: all 0.3s ease;
-            }
-
-            .mobile-menu a:hover {
-                color: #DE2910;
-                letter-spacing: 4px;
-            }
-
-            .mobile-menu a.active {
-                color: #DE2910;
-            }
+            /* 移动端导航栏样式已移至shared/nav-styles.css */
         }
 
         /* 页面过渡效果 */
@@ -451,13 +291,13 @@
 </head>
 <body data-barba="wrapper">
     <div class="page-transition"></div>
-    
+
     <!-- 导航栏容器 -->
     <div id="nav-container"></div>
-    
+
     <!-- 返回按钮 -->
     <a href="gallery.html" class="back-btn">← 返回画廊</a>
-    
+
     <!-- 主体内容 -->
     <main data-barba="container" data-barba-namespace="blender-gallery">
         <div class="blender-gallery-page">
@@ -465,33 +305,33 @@
                 <div class="blender-gallery-header">
                     <h1>Blender 3D作品集</h1>
                 </div>
-                
+
                 <div class="blender-works">
                     <!-- Blender作品1 -->
                     <div class="blender-work-item">
                         <img src="artistweb/images/个人图片作品/blender/1.png" alt="Blender作品1" class="blender-work-img">
                     </div>
-                    
+
                     <!-- Blender作品2 -->
                     <div class="blender-work-item">
                         <img src="artistweb/images/个人图片作品/blender/2.png" alt="Blender作品2" class="blender-work-img">
                     </div>
-                    
+
                     <!-- Blender作品3 -->
                     <div class="blender-work-item">
                         <img src="artistweb/images/个人图片作品/blender/3.png" alt="Blender作品3" class="blender-work-img">
                     </div>
-                    
+
                     <!-- Blender作品4 -->
                     <div class="blender-work-item">
                         <img src="artistweb/images/个人图片作品/blender/4.png" alt="Blender作品4" class="blender-work-img">
                     </div>
-                    
+
                     <!-- Blender作品5 -->
                     <div class="blender-work-item">
                         <img src="artistweb/images/个人图片作品/blender/5.png" alt="Blender作品5" class="blender-work-img">
                     </div>
-                    
+
                     <!-- Blender作品6 -->
                     <div class="blender-work-item">
                         <img src="artistweb/images/个人图片作品/blender/6.png" alt="Blender作品6" class="blender-work-img">
@@ -516,7 +356,7 @@
 
     <!-- 加载统一导航栏脚本 -->
     <script src="shared/load-nav.js"></script>
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // 页面加载时的淡出效果
@@ -532,14 +372,14 @@
                     if (this.hostname === window.location.hostname && !this.getAttribute('href').startsWith('#')) {
                         e.preventDefault();
                         const href = this.getAttribute('href');
-                        
+
                         // 显示过渡层
                         transition.style.visibility = 'visible';
                         transition.style.opacity = '1';
-                        
+
                         // 立即记录要跳转的URL，防止被其他事件覆盖
                         const targetUrl = href;
-                        
+
                         // 延迟导航以等待过渡效果完成，但确保一定会执行
                         setTimeout(function() {
                             window.location.href = targetUrl;
@@ -551,14 +391,14 @@
             // 移动端菜单控制
             const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
             const mobileMenu = document.querySelector('.mobile-menu');
-            
+
             if (mobileMenuBtn && mobileMenu) {
                 mobileMenuBtn.addEventListener('click', function() {
                     this.classList.toggle('open');
                     mobileMenu.classList.toggle('open');
                     document.body.classList.toggle('menu-open');
                 });
-                
+
                 // 点击移动端菜单项关闭菜单
                 document.querySelectorAll('.mobile-menu a').forEach(link => {
                     link.addEventListener('click', function() {
@@ -571,24 +411,24 @@
 
             // 滚动时显示作品
             const blenderWorks = document.querySelectorAll('.blender-work-item');
-            
+
             function checkVisibility() {
                 blenderWorks.forEach(work => {
                     const rect = work.getBoundingClientRect();
                     const windowHeight = window.innerHeight;
-                    
+
                     if (rect.top < windowHeight * 0.9) {
                         work.classList.add('visible');
                     }
                 });
             }
-            
+
             // 初始检查
             setTimeout(checkVisibility, 100);
-            
+
             // 滚动时检查
             window.addEventListener('scroll', checkVisibility);
-            
+
             // 灯箱效果
             const workItems = document.querySelectorAll('.blender-work-img');
             const lightbox = document.querySelector('.lightbox');
@@ -597,26 +437,26 @@
             const lightboxClose = document.querySelector('.lightbox-close');
             const lightboxPrev = document.querySelector('.lightbox-prev');
             const lightboxNext = document.querySelector('.lightbox-next');
-            
+
             let currentIndex = 0;
-            
+
             // 打开灯箱
             workItems.forEach((item, index) => {
                 item.addEventListener('click', function() {
                     currentIndex = index;
-                    
+
                     // 移除标题获取逻辑，因为没有文字了
                     lightboxImage.src = this.src;
                     lightboxCaption.textContent = "";  // 清空标题
                     lightbox.style.display = 'flex';
-                    
+
                     // 添加动画效果
                     setTimeout(() => {
                         lightbox.classList.add('show');
                     }, 10);
                 });
             });
-            
+
             // 关闭灯箱
             lightboxClose.addEventListener('click', () => {
                 lightbox.classList.remove('show');
@@ -624,44 +464,44 @@
                     lightbox.style.display = 'none';
                 }, 500);
             });
-            
+
             // 点击灯箱背景关闭
             lightbox.addEventListener('click', function(e) {
                 if (e.target === this) {
                     lightboxClose.click();
                 }
             });
-            
+
             // 上一张/下一张
             lightboxPrev.addEventListener('click', () => {
                 currentIndex = (currentIndex - 1 + workItems.length) % workItems.length;
                 updateLightbox();
             });
-            
+
             lightboxNext.addEventListener('click', () => {
                 currentIndex = (currentIndex + 1) % workItems.length;
                 updateLightbox();
             });
-            
+
             // 更新灯箱内容
             function updateLightbox() {
                 const item = workItems[currentIndex];
-                
+
                 // 添加过渡效果
                 lightboxImage.style.opacity = '0';
                 lightboxImage.style.transform = 'scale(0.95)';
-                
+
                 setTimeout(() => {
                     lightboxImage.src = item.src;
                     lightboxCaption.textContent = "";  // 清空标题
-                    
+
                     setTimeout(() => {
                         lightboxImage.style.opacity = '1';
                         lightboxImage.style.transform = 'scale(1)';
                     }, 50);
                 }, 300);
             }
-            
+
             // 键盘导航
             document.addEventListener('keydown', function(e) {
                 if (lightbox.classList.contains('show')) {
@@ -677,4 +517,4 @@
         });
     </script>
 </body>
-</html> 
+</html>

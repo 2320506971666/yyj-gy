@@ -67,8 +67,18 @@
 }
 
 .nav-link.active {
-    color: #DE2910;
+    color: #DE2910 !important;
     opacity: 1;
+}
+
+/* 强制激活状态样式 - 确保当前页面链接始终为红色 */
+.nav-link[style*="color: #DE2910"],
+.nav-link[href="film.html"].active,
+.nav-link[href="gallery.html"].active,
+.nav-link[href="work.html"].active,
+.nav-link[href="about.html"].active {
+    color: #DE2910 !important;
+    opacity: 1 !important;
 }
 
 /* 移动端菜单按钮 */
@@ -148,7 +158,16 @@
 }
 
 .mobile-link.active {
-    color: #DE2910;
+    color: #DE2910 !important;
+}
+
+/* 强制激活状态样式 - 确保当前页面移动链接始终为红色 */
+.mobile-link[style*="color: #DE2910"],
+.mobile-link[href="film.html"].active,
+.mobile-link[href="gallery.html"].active,
+.mobile-link[href="work.html"].active,
+.mobile-link[href="about.html"].active {
+    color: #DE2910 !important;
 }
 
 /* 菜单打开时的body样式 */
@@ -161,20 +180,20 @@ body.menu-open {
     .nav-links {
         display: none !important; /* 强制隐藏 */
     }
-    
+
     .mobile-menu-button {
         display: block !important; /* 强制显示 */
     }
-    
+
     .header {
         padding: 0 10px;
     }
-    
+
     .logo {
         margin-left: 5px;
         font-size: 2rem;
     }
-    
+
     /* 在index页面中增强显示效果 */
     body.index-page .mobile-menu-button {
         background-color: rgba(0, 0, 0, 0.6);
@@ -185,4 +204,16 @@ body.menu-open {
 /* 为页面内容添加顶部内边距，不再需要这个，因为导航栏不再固定 */
 .content {
     padding-top: 0;
-} 
+}
+
+/* 通用规则：确保所有页面中的当前页面链接都显示为红色 */
+body.film-page a[href="film.html"],
+body.gallery-page a[href="gallery.html"],
+body.work-page a[href="work.html"],
+body.about-page a[href="about.html"],
+/* Gallery 子页面也需要激活 Gallery 链接 */
+body.tibet-page a[href="gallery.html"],
+body.north-page a[href="gallery.html"],
+body.sanya-page a[href="gallery.html"] {
+    color: #DE2910 !important;
+}

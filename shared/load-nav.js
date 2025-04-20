@@ -2,17 +2,16 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log("load-nav.js 加载");
     // 获取当前页面名称
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    // 如果是首页，添加标识类
-    if (currentPage === 'index.html' || currentPage === '') {
-        document.body.classList.add('index-page');
-    }
-    
+
+    // 根据当前页面设置 body 类名
+    setBodyClass(currentPage);
+
     // 获取导航栏容器
     const navContainer = document.getElementById('nav-container');
-    
+
     if (navContainer) {
         console.log("找到导航容器，开始加载导航栏");
-        
+
         // 检查是否已经加载了导航内容
         if (navContainer.querySelector('.header-container')) {
             console.log("导航栏内容已存在，直接加载JS");
@@ -20,22 +19,22 @@ document.addEventListener("DOMContentLoaded", function() {
             loadNavJs();
             return;
         }
-        
+
         // 根据当前环境调整路径
         const isGitHubPages = window.location.hostname.includes("github.io");
         const isCustomDomain = window.location.hostname === "tripley.cn";
         const prefix = isGitHubPages ? "/yyj-gy/" : (isCustomDomain ? "/" : "");
-        
+
         // 加载导航栏样式
         loadStylesheet(prefix + 'shared/nav-styles.css');
-        
+
         // 加载导航栏HTML
         loadNavHtml(prefix, navContainer, 1);
     }
-    
+
     // 紧急修复汉堡菜单 - 用于所有页面
     createEmergencyBurgerMenu();
-    
+
     // 监听窗口大小变化，确保汉堡菜单随时可用
     window.addEventListener('resize', function() {
         // 延迟执行，避免频繁触发
@@ -45,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
             createEmergencyBurgerMenu();
         }, 200);
     });
-    
+
     // 添加全局样式来隐藏原始汉堡菜单和移动导航链接
     const globalStyle = document.createElement('style');
     globalStyle.setAttribute('data-source', 'load-nav-global');
@@ -60,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     `;
     document.head.appendChild(globalStyle);
-    
+
     // 页面加载2秒后执行一次彻底检查，确保隐藏所有冲突元素
     setTimeout(function() {
         // 隐藏所有可能冲突的移动菜单元素
@@ -72,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 el.style.pointerEvents = 'none !important';
             }
         });
-        
+
         // 确保我们的紧急汉堡菜单是唯一可见的
         document.querySelectorAll('[data-source="emergency"]').forEach(el => {
             if (el.classList.contains('main-burger-icon')) {
@@ -81,25 +80,99 @@ document.addEventListener("DOMContentLoaded", function() {
                 el.style.opacity = '1';
             }
         });
-        
+
         console.log('页面导航元素最终清理完成');
     }, 2000);
 });
+
+// 根据当前页面设置 body 类名
+function setBodyClass(currentPage) {
+    // 清除所有页面类名
+    document.body.classList.remove(
+        'index-page', 'gallery-page', 'film-page', 'work-page', 'about-page',
+        'tibet-page', 'north-page', 'sanya-page'
+    );
+
+    // 根据当前页面设置对应的类名
+    switch(currentPage) {
+        case 'index.html':
+        case '':
+            document.body.classList.add('index-page');
+            break;
+        case 'gallery.html':
+            document.body.classList.add('gallery-page');
+            break;
+        case 'film.html':
+            document.body.classList.add('film-page');
+            break;
+        case 'work.html':
+            document.body.classList.add('work-page');
+            break;
+        case 'about.html':
+            document.body.classList.add('about-page');
+            break;
+        // Gallery 子页面
+        case 'tibet.html':
+            document.body.classList.add('tibet-page');
+            break;
+        case 'north.html':
+            document.body.classList.add('north-page');
+            break;
+        case 'sanya.html':
+            document.body.classList.add('sanya-page');
+            break;
+    }
+}
 
 // 创建紧急汉堡菜单函数 - 确保所有页面都有可用的汉堡菜单
 function createEmergencyBurgerMenu() {
     // 先检查是否为移动设备
     if (window.innerWidth <= 768) {
         console.log('移动设备：激活全站紧急汉堡菜单');
-        
+
         // 移除所有现有的紧急汉堡菜单实例
         document.querySelectorAll('[data-source="emergency"]').forEach(el => {
             el.remove();
         });
-        
+
         // 创建唯一的菜单ID - 使用固定ID而非随机值，确保始终只有一个实例
         const menuId = 'emergency_burger_menu';
-        
+
+        // 获取当前页面名称，用于设置激活状态
+        const fullPath = window.location.pathname;
+        const currentPage = fullPath.split('/').pop() || 'index.html';
+        console.log('紧急汉堡菜单当前页面:', currentPage);
+
+        // 强制输出当前页面路径，帮助调试
+        console.log('完整路径:', fullPath);
+        console.log('当前页面名称:', currentPage);
+
+        // 根据当前页面设置激活状态
+        let galleryActive = '';
+        let workActive = '';
+        let aboutActive = '';
+        let filmActive = '';
+
+        // 根据当前页面名称设置对应链接的激活状态
+        switch(currentPage.toLowerCase()) {
+            case 'gallery.html':
+            // Gallery 子页面也需要激活 Gallery 链接
+            case 'tibet.html':
+            case 'north.html':
+            case 'sanya.html':
+                galleryActive = 'style="color: #DE2910 !important;" class="active"';
+                break;
+            case 'work.html':
+                workActive = 'style="color: #DE2910 !important;" class="active"';
+                break;
+            case 'about.html':
+                aboutActive = 'style="color: #DE2910 !important;" class="active"';
+                break;
+            case 'film.html':
+                filmActive = 'style="color: #DE2910 !important;" class="active"';
+                break;
+        }
+
         // 创建汉堡菜单直接附加到body，确保可见和可用
         const burgerMenu = document.createElement('div');
         burgerMenu.className = 'main-burger-menu';
@@ -112,14 +185,14 @@ function createEmergencyBurgerMenu() {
                 <div class="main-burger-bar"></div>
             </div>
             <div class="main-burger-panel" data-source="emergency">
-                <a href="gallery.html">Gallery</a>
-                <a href="work.html">Work</a>
-                <a href="about.html">About</a>
-                <a href="film.html">Film</a>
+                <a href="gallery.html" ${galleryActive}>Gallery</a>
+                <a href="work.html" ${workActive}>Work</a>
+                <a href="about.html" ${aboutActive}>About</a>
+                <a href="film.html" ${filmActive}>Film</a>
             </div>
         `;
         document.body.appendChild(burgerMenu);
-        
+
         // 添加样式
         const style = document.createElement('style');
         style.setAttribute('data-source', 'emergency');
@@ -131,7 +204,7 @@ function createEmergencyBurgerMenu() {
                 right: 0 !important;
                 z-index: 999999 !important;
             }
-            
+
             /* 汉堡菜单图标 */
             .main-burger-icon {
                 width: 40px !important;
@@ -148,21 +221,21 @@ function createEmergencyBurgerMenu() {
                 z-index: 999999 !important; /* 确保始终在最上层 */
                 transition: all 0.3s ease !important;
             }
-            
+
             /* 菜单图标强调样式 */
             .main-burger-icon.open {
                 background-color: #000 !important;
                 border: 1px solid rgba(255,255,255,0.2) !important;
                 box-shadow: 0 0 10px rgba(255,255,255,0.1) !important;
             }
-            
+
             /* 汉堡菜单条 */
             .main-burger-bar {
                 height: 3px !important;
                 background-color: white !important;
                 transition: 0.3s !important;
             }
-            
+
             /* 汉堡菜单面板 */
             .main-burger-panel {
                 display: block !important;
@@ -184,7 +257,7 @@ function createEmergencyBurgerMenu() {
                 transition: opacity 0.3s ease, visibility 0.3s ease !important;
                 pointer-events: none !important;
             }
-            
+
             /* 打开状态 */
             .main-burger-panel.open {
                 display: flex !important;
@@ -192,7 +265,7 @@ function createEmergencyBurgerMenu() {
                 visibility: visible !important;
                 pointer-events: auto !important;
             }
-            
+
             /* 关闭过渡状态 */
             .main-burger-panel.closing {
                 opacity: 0 !important;
@@ -200,7 +273,7 @@ function createEmergencyBurgerMenu() {
                 transition: opacity 0.5s ease !important;
                 pointer-events: none !important;
             }
-            
+
             /* 菜单链接 */
             .main-burger-panel a {
                 color: white !important;
@@ -212,12 +285,17 @@ function createEmergencyBurgerMenu() {
                 font-family: 'Poiret One', cursive !important;
                 transition: color 0.3s ease !important;
             }
-            
+
             /* 链接悬停效果 */
             .main-burger-panel a:hover {
                 color: #ddd !important;
             }
-            
+
+            /* 激活状态的链接 */
+            .main-burger-panel a[style*="color: #DE2910"] {
+                color: #DE2910 !important;
+            }
+
             /* 图标变X动画 */
             .main-burger-icon.open .main-burger-bar:nth-child(1) {
                 transform: rotate(-45deg) translate(-5px, 6px) !important;
@@ -228,12 +306,12 @@ function createEmergencyBurgerMenu() {
             .main-burger-icon.open .main-burger-bar:nth-child(3) {
                 transform: rotate(45deg) translate(-5px, -6px) !important;
             }
-            
+
             /* 禁止页面滚动 */
             body.menu-open {
                 overflow: hidden !important;
             }
-            
+
             /* 隐藏原始导航元素 */
             .mobile-menu-button:not([data-source="emergency"]),
             .mobile-menu:not([data-source="emergency"]) {
@@ -244,22 +322,22 @@ function createEmergencyBurgerMenu() {
             }
         `;
         document.head.appendChild(style);
-        
+
         // 添加点击事件
         const burgerIcon = burgerMenu.querySelector('.main-burger-icon');
         const burgerPanel = burgerMenu.querySelector('.main-burger-panel');
-        
+
         burgerIcon.addEventListener('click', function(e) {
             console.log('紧急汉堡菜单点击');
             e.stopPropagation();
-            
+
             if (this.classList.contains('open')) {
                 // 关闭菜单
                 this.classList.remove('open');
                 burgerPanel.classList.add('closing');
                 burgerPanel.classList.remove('open');
                 document.body.classList.remove('menu-open');
-                
+
                 // 延迟移除closing类
                 setTimeout(() => {
                     burgerPanel.classList.remove('closing');
@@ -270,7 +348,7 @@ function createEmergencyBurgerMenu() {
                 burgerPanel.classList.remove('closing');
                 burgerPanel.classList.add('open');
                 document.body.classList.add('menu-open');
-                
+
                 // 隐藏所有其他导航元素
                 document.querySelectorAll('.mobile-menu, .mobile-menu-button, .nav-links')
                     .forEach(el => {
@@ -282,23 +360,23 @@ function createEmergencyBurgerMenu() {
                     });
             }
         });
-        
+
         // 点击链接时关闭菜单
         const links = burgerPanel.querySelectorAll('a');
         links.forEach(link => {
             link.addEventListener('click', function(e) {
                 // 阻止默认行为，防止立即跳转
                 e.preventDefault();
-                
+
                 // 保存链接目标
                 const href = this.getAttribute('href');
-                
+
                 // 关闭菜单
                 burgerIcon.classList.remove('open');
                 burgerPanel.classList.add('closing');
                 burgerPanel.classList.remove('open');
                 document.body.classList.remove('menu-open');
-                
+
                 // 移除黑色背景后再跳转
                 setTimeout(() => {
                     burgerPanel.classList.remove('closing');
@@ -307,7 +385,7 @@ function createEmergencyBurgerMenu() {
                 }, 300); // 缩短时间以获得更好的用户体验
             });
         });
-        
+
         // 使用MutationObserver确保紧急菜单始终可见
         const bodyObserver = new MutationObserver(() => {
             const menuElement = document.getElementById(menuId);
@@ -316,9 +394,9 @@ function createEmergencyBurgerMenu() {
                 createEmergencyBurgerMenu();
             }
         });
-        
+
         bodyObserver.observe(document.body, { childList: true, subtree: true });
-        
+
         console.log('紧急汉堡菜单已创建, ID:', menuId);
     }
 }
@@ -331,9 +409,9 @@ function loadNavHtml(prefix, navContainer, attempt) {
         useBackupNav(navContainer);
         return;
     }
-    
+
     console.log(`尝试加载导航HTML (${attempt}/${maxAttempts})`);
-    
+
     fetch(prefix + 'shared/nav.html')
         .then(response => {
             if (!response.ok) {
@@ -345,16 +423,16 @@ function loadNavHtml(prefix, navContainer, attempt) {
             // 插入导航栏HTML
             navContainer.innerHTML = html;
             console.log("导航HTML加载成功");
-            
+
             // 修复导航链接路径
             fixNavLinks(prefix);
-            
+
             // 加载导航栏JS
             loadNavJs();
         })
         .catch(error => {
             console.error('加载导航栏失败:', error);
-            
+
             // 重试加载
             setTimeout(() => {
                 loadNavHtml(prefix, navContainer, attempt + 1);
@@ -366,7 +444,7 @@ function loadNavHtml(prefix, navContainer, attempt) {
 function fixNavLinks(prefix) {
     const isGitHubPages = window.location.hostname.includes("github.io");
     const isCustomDomain = window.location.hostname === "tripley.cn";
-    
+
     if (isGitHubPages || isCustomDomain) {
         document.querySelectorAll('.nav-link, .mobile-link, .logo').forEach(link => {
             const href = link.getAttribute('href');
@@ -403,7 +481,7 @@ function useBackupNav(navContainer) {
             </div>
         </header>
     </div>`;
-    
+
     // 加载导航JS
     loadNavJs();
 }
@@ -413,7 +491,7 @@ function loadNavJs() {
     const isGitHubPages = window.location.hostname.includes("github.io");
     const isCustomDomain = window.location.hostname === "tripley.cn";
     const prefix = isGitHubPages ? "/yyj-gy/" : (isCustomDomain ? "/" : "");
-    
+
     loadScript(prefix + 'shared/nav.js');
 }
 
@@ -434,4 +512,4 @@ function loadStylesheet(href) {
         link.href = href;
         document.head.appendChild(link);
     }
-} 
+}

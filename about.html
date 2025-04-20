@@ -156,6 +156,20 @@
 
         body[data-section="about"] .nav-dot.active {
             background-color: #666;
+            width: 6px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        body[data-section="skills"] .nav-dot {
+            background-color: rgba(128, 128, 128, 0.3);
+        }
+
+        body[data-section="skills"] .nav-dot.active {
+            background-color: #666;
+            width: 6px;
+            height: 20px;
+            border-radius: 3px;
         }
 
         body[data-section="footer"] .nav-dot {
@@ -164,6 +178,9 @@
 
         body[data-section="footer"] .nav-dot.active {
             background-color: white;
+            width: 6px;
+            height: 20px;
+            border-radius: 3px;
         }
 
         /* 底部滚动指示器 */
@@ -1087,6 +1104,7 @@
                     const sectionNames = ['about', 'skills', 'footer'];
                     if(current !== '') {
                         document.body.setAttribute('data-section', sectionNames[current]);
+                        console.log('当前区域更新为:', sectionNames[current]);
                     }
 
                     // 控制滚动指示器显示

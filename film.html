@@ -42,6 +42,31 @@
             width: 100%;
             background-color: black;
             overflow-x: hidden;
+            overflow-y: scroll;
+
+            /* 隐藏滚动条 */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        /* 针对 Chrome、Safari、Opera */
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        /* 隐藏所有可能的滚动容器的滚动条 */
+        ::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        * {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
 
         body {
@@ -68,6 +93,110 @@
             padding-top: 0;
             min-height: 100vh;
             background-color: black;
+        }
+
+        /* 页面导航指示器 */
+        .page-navigation {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .page-navigation .nav-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: rgba(128, 128, 128, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-navigation .nav-dot.active {
+            width: 6px;
+            height: 20px;
+            border-radius: 3px;
+            background-color: #666;
+            box-shadow: none;
+            transform: scale(1);
+        }
+
+        /* 根据当前区域调整导航点颜色 */
+        body[data-section="video"] .nav-dot {
+            background-color: rgba(128, 128, 128, 0.3);
+        }
+
+        body[data-section="video"] .nav-dot.active {
+            background-color: #666;
+            width: 6px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        body[data-section="images"] .nav-dot {
+            background-color: rgba(128, 128, 128, 0.3);
+        }
+
+        body[data-section="images"] .nav-dot.active {
+            background-color: #666;
+            width: 6px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        body[data-section="footer"] .nav-dot {
+            background-color: rgba(200, 200, 200, 0.3);
+        }
+
+        body[data-section="footer"] .nav-dot.active {
+            background-color: white;
+            width: 6px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        /* 底部滚动指示器 */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 30px;
+            height: 60px;
+            border-radius: 15px;
+            border: 2px solid rgba(100, 100, 100, 0.4);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            padding-top: 8px;
+            transition: opacity 0.5s ease;
+        }
+
+        .scroll-indicator::after {
+            content: '';
+            width: 4px;
+            height: 8px;
+            border-radius: 2px;
+            background-color: #666;
+            animation: scrollAnim 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollAnim {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            70% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 0;
+            }
         }
 
         .film-content {
@@ -463,6 +592,16 @@
     <!-- 导航栏容器 -->
     <div id="nav-container"></div>
 
+    <!-- 页面导航指示器 -->
+    <div class="page-navigation">
+        <div class="nav-dot active" data-index="0"></div>
+        <div class="nav-dot" data-index="1"></div>
+        <div class="nav-dot" data-index="2"></div>
+    </div>
+
+    <!-- 底部滚动指示器 -->
+    <div class="scroll-indicator"></div>
+
     <!-- 主体内容，添加barba数据属性 -->
     <main data-barba="container" data-barba-namespace="film">
         <!-- 电影页面内容 -->
@@ -692,6 +831,65 @@
 
                 console.log('延迟再次设置 Film 链接颜色');
             }, 1000);
+
+            // 页面导航指示器功能
+            function initPageNavigation() {
+                const sections = [
+                    document.querySelector('.film-page'),
+                    document.querySelector('.summer-sense-images'),
+                    document.querySelector('footer')
+                ];
+
+                const dots = document.querySelectorAll('.nav-dot');
+
+                // 点击导航点时滚动到对应区域
+                dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => {
+                        sections[index].scrollIntoView({ behavior: 'smooth' });
+                    });
+                });
+
+                // 监听滚动更新活动导航点
+                window.addEventListener('scroll', () => {
+                    let current = '';
+
+                    sections.forEach((section, index) => {
+                        const sectionTop = section.offsetTop;
+                        const sectionHeight = section.clientHeight;
+
+                        if (window.scrollY >= (sectionTop - sectionHeight / 3)) {
+                            current = index;
+                        }
+                    });
+
+                    // 更新导航点状态
+                    dots.forEach(dot => dot.classList.remove('active'));
+                    if(current !== '') {
+                        dots[current].classList.add('active');
+                    }
+
+                    // 根据当前区域设置body属性
+                    const sectionNames = ['video', 'images', 'footer'];
+                    if(current !== '') {
+                        document.body.setAttribute('data-section', sectionNames[current]);
+                        console.log('当前区域更新为:', sectionNames[current]);
+                    }
+
+                    // 控制滚动指示器显示
+                    const scrollIndicator = document.querySelector('.scroll-indicator');
+
+                    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+                        // 接近页面底部，隐藏滚动指示器
+                        scrollIndicator.style.opacity = '0';
+                    } else {
+                        // 显示滚动指示器
+                        scrollIndicator.style.opacity = '1';
+                    }
+                });
+            }
+
+            // 初始化页面导航
+            initPageNavigation();
         });
     </script>
     <!-- 当前页面导航链接激活状态脚本 -->

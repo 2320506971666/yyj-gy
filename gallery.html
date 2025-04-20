@@ -2351,6 +2351,42 @@
                 }
             }
 
+            // 根据设备类型设置图片源
+            function setImageSourceByDevice() {
+                if (isMobileDevice()) {
+                    const images = document.querySelectorAll('img');
+                    images.forEach(img => {
+                        const originalSrc = img.getAttribute('data-original-src') || img.src;
+                        if (!img.getAttribute('data-original-src')) {
+                            img.setAttribute('data-original-src', originalSrc);
+                        }
+                        
+                        // 为移动设备设置低分辨率图片
+                        if (originalSrc.includes('.jpg') || originalSrc.includes('.jpeg') || originalSrc.includes('.png')) {
+                            const fileExtension = originalSrc.substring(originalSrc.lastIndexOf('.'));
+                            const basePath = originalSrc.substring(0, originalSrc.lastIndexOf('.'));
+                            const lowResSrc = basePath + '_mobile' + fileExtension;
+                            
+                            // 检查低分辨率版本是否存在
+                            const testImg = new Image();
+                            testImg.onerror = function() {
+                                // 如果文件不存在，回退到原始图片
+                                console.log("低分辨率图片不存在，使用原始图片");
+                                img.src = originalSrc;
+                            };
+                            testImg.onload = function() {
+                                // 如果文件存在，使用低分辨率图片
+                                img.src = lowResSrc;
+                            };
+                            testImg.src = lowResSrc;
+                            
+                            // 默认先设置为原始图片，避免404错误
+                            img.src = originalSrc;
+                        }
+                    });
+                }
+            }
+
             // 初始化首个视频
             setTimeout(() => {
                 const firstSlideVideo = document.querySelector('.swiper-slide:first-child video');
@@ -2623,6 +2659,9 @@
                 allVideos.forEach(video => {
                     setVideoSourceByDevice(video);
                 });
+                
+                // 为所有图片设置适合设备的源
+                setImageSourceByDevice();
             });
         });
     </script>

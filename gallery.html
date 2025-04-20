@@ -999,18 +999,30 @@
                 display: block;
             }
 
+            /* Gallery文字大小调整 - 放大1倍 */
             .gallery-title .gallery-text {
                 top: 15%; /* 上移文字 */
                 left: 50%;
-                transform: translate(-50%, -50%) scale(var(--scale-factor, 1)); /* 移除固定缩放因子 */
+                transform: translate(-50%, -50%) scale(2) !important; /* 从1倍增加到2倍 */
                 width: auto; /* 允许自然宽度 */
+                z-index: 999 !important;
+                color: #FFD900 !important;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
             }
-
+            
+            /* Awaits文字位置调整 - 下移 */
             .gallery-title .welcome {
-                font-size: min(45px, 5.5vw); /* 响应式字体 */
-                top: 22%; /* 上移文字 */
+                font-size: min(55px, 8vw) !important;
+                top: 30% !important; /* 下移文字 */
                 left: 50%;
-                transform: translateX(-50%) scale(var(--scale-factor, 1)); /* 移除固定缩放因子 */
+                transform: translateX(-50%) scale(1.2); /* 放大1.2倍 */
+                color: #c30101 !important;
+                font-weight: bold !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                z-index: 999 !important;
             }
             
             /* 确保视频标题显示 */
@@ -1033,13 +1045,28 @@
                 padding-top: 0;
                 margin-top: 20px; /* 设置与图片间相同的间距 */
             }
-
-            /* 移动端Northern Journey文字样式 */
-            .river-text {
-                font-size: min(2.5rem, 7vw) !important; /* 移动端更大的响应式字体 */
-                letter-spacing: min(2px, 0.3vw) !important;
-                bottom: 12%;
-                left: 8%;
+            
+            /* Northern Journey上下排布 */
+            .swiper-slide:nth-child(2) .river-text {
+                display: none !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+            }
+            
+            .swiper-slide:nth-child(2) .video-title:after {
+                content: "Northern\00000aJourney";
+                white-space: pre;
+                font-family: 'Cinzel', serif !important;
+                font-size: 2.4rem !important;
+                color: white !important;
+                position: absolute !important;
+                bottom: 15% !important;
+                left: 10% !important;
+                text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 0, 0, 0.7) !important;
+                z-index: 9999 !important;
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
             }
         }
 
@@ -1054,14 +1081,12 @@
                 height: auto;
                 margin-bottom: 0; /* 重置负边距 */
             }
-
+            
+            /* 调整Gallery文字大小 */
             .gallery-title .gallery-text {
-                top: 12%; /* 更上移文字 */
-                left: 50%;
-                transform: translate(-50%, -50%) scale(var(--scale-factor, 1)); /* 使用响应式单位替代固定缩放 */
-                width: auto;
+                transform: translate(-50%, -50%) scale(1.6) !important; /* 稍微小一点但仍增大 */
             }
-
+            
             .gallery-title img {
                 width: 100%;
                 height: 100%;
@@ -1070,30 +1095,17 @@
                 margin: 0;
             }
 
+            /* 增大Awaits文字 */
             .gallery-title .welcome {
-                font-size: min(40px, 5vw); /* 更小的响应式字体 */
-                top: 20%; /* 更上移文字 */
-                left: 50%;
-                transform: translateX(-50%) scale(var(--scale-factor, 1)); /* 使用响应式单位替代固定缩放 */
+                font-size: min(50px, 7.5vw) !important;
+                top: 28% !important; /* 下移但不要太多 */
+                transform: translateX(-50%) scale(1.1);
             }
-
-            /* 确保视频和标题正确显示 */
-            .video-title, .river-text, .sanya-text {
-                bottom: 10%;
-                font-size: 2.5rem !important;
-            }
-
-            /* 设置主图与下方图片之间的距离与图片间距一致 */
-            .art-gallery-showcase {
-                padding-top: 0;
-                margin-top: 20px; /* 设置与图片间相同的间距 */
-            }
-
-            /* 小屏Northern Journey文字样式 */
-            .river-text {
-                font-size: min(2.2rem, 6.5vw) !important; /* 更小屏幕调整 */
-                bottom: 10%;
-                left: 6%;
+            
+            /* 设置Northern Journey文字 */
+            .swiper-slide:nth-child(2) .video-title:after {
+                font-size: 2.16rem !important;
+                bottom: 12% !important;
             }
         }
 
@@ -1108,13 +1120,12 @@
                 height: auto;
                 margin-bottom: 0; /* 重置负边距 */
             }
-
+            
+            /* 调整Gallery文字大小 */
             .gallery-title .gallery-text {
-                top: 10%; /* 最上移文字 */
-                left: 50%;
-                transform: translate(-50%, -50%) scale(var(--scale-factor, 1)); /* 使用响应式单位替代固定缩放 */
+                transform: translate(-50%, -50%) scale(1.2) !important; /* 为超小屏幕调整 */
             }
-
+            
             .gallery-title img {
                 width: 100%;
                 height: 100%;
@@ -1123,30 +1134,16 @@
                 margin: 0;
             }
 
+            /* 调整Awaits文字 */
             .gallery-title .welcome {
-                font-size: min(35px, 4.5vw); /* 最小的响应式字体 */
-                top: 18%; /* 最上移文字 */
-                left: 50%;
-                transform: translateX(-50%) scale(var(--scale-factor, 1)); /* 使用响应式单位替代固定缩放 */
+                font-size: min(45px, 7vw) !important;
+                top: 26% !important; /* 也下移一些 */
             }
-
-            /* 确保视频和标题正确显示 */
-            .video-title, .river-text, .sanya-text {
-                bottom: 10%;
-                font-size: 2rem !important;
-            }
-
-            /* 设置主图与下方图片之间的距离与图片间距一致 */
-            .art-gallery-showcase {
-                padding-top: 0;
-                margin-top: 20px; /* 设置与图片间相同的间距 */
-            }
-
-            /* 超小屏Northern Journey文字样式 */
-            .river-text {
-                font-size: min(2rem, 6vw) !important; /* 最小屏幕调整 */
-                bottom: 8%;
-                left: 5%;
+            
+            /* 设置Northern Journey文字 */
+            .swiper-slide:nth-child(2) .video-title:after {
+                font-size: 1.8rem !important;
+                bottom: 10% !important;
             }
         }
 
@@ -1782,6 +1779,277 @@
                 display: block !important;
             }
         }
+
+        /* 直接在头部添加高优先级样式，解决冲突 */
+        @media (max-width: 768px) {
+            .gallery-title .gallery-text {
+                top: 15% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) scale(6) !important; /* 增大到6倍确保明显 */
+                z-index: 999 !important;
+            }
+            
+            /* 隐藏滑块2中原有的Northern Journey，并用自定义文本替代 */
+            .swiper-slide:nth-child(2) .river-text {
+                display: none !important;
+            }
+            
+            .swiper-slide:nth-child(2) .video-title:after {
+                content: "Northern\00000aJourney";  /* \00000a是换行符 */
+                white-space: pre;
+                font-family: 'Cinzel', serif !important;
+                font-size: 2rem !important;
+                color: white !important;
+                position: absolute !important;
+                bottom: 15% !important;
+                left: 10% !important;
+                text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 0, 0, 0.7) !important;
+                z-index: 9999 !important;
+                display: block !important;
+            }
+        }
+        
+        /* 小屏幕适配 */
+        @media (max-width: 480px) {
+            .gallery-title .gallery-text {
+                transform: translate(-50%, -50%) scale(5) !important; /* 稍微小一点但仍然很大 */
+            }
+            
+            .swiper-slide:nth-child(2) .video-title:after {
+                font-size: 1.8rem !important;
+                bottom: 12% !important;
+            }
+        }
+        
+        /* 超小屏幕适配 */
+        @media (max-width: 360px) {
+            .gallery-title .gallery-text {
+                transform: translate(-50%, -50%) scale(2) !important;
+            }
+            
+            .swiper-slide:nth-child(2) .video-title:after {
+                font-size: 1.5rem !important;
+                bottom: 10% !important;
+            }
+        }
+
+        /* 直接在头部添加最高优先级样式，解决冲突 */
+        @media (max-width: 768px) {
+            /* 设置Gallery文字为5倍 */
+            .gallery-text, 
+            .gallery-title .gallery-text,
+            body .gallery-page .gallery-content .gallery-title .gallery-text {
+                top: 15% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) scale(5) !important; /* 将比例改为5倍 */
+                z-index: 999 !important;
+                color: #FFD900 !important;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            
+            .gallery-title .welcome {
+                top: 35% !important; /* 下移避免被覆盖，但不需要下移太多 */
+                font-size: min(55px, 8vw) !important;
+                color: #c30101 !important;
+                font-weight: bold !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                z-index: 999 !important;
+            }
+            
+            /* 隐藏滑块2中原有的Northern Journey，并用自定义文本替代 */
+            .swiper-slide:nth-child(2) .river-text {
+                display: none !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+            }
+            
+            .swiper-slide:nth-child(2) .video-title:after {
+                content: "Northern\00000aJourney";  /* \00000a是换行符 */
+                white-space: pre;
+                font-family: 'Cinzel', serif !important;
+                font-size: 2.4rem !important; /* 增大0.2倍，从2rem变为2.4rem */
+                color: white !important;
+                position: absolute !important;
+                bottom: 15% !important;
+                left: 10% !important;
+                text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 0, 0, 0.7) !important;
+                z-index: 9999 !important;
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+        }
+        
+        /* 小屏幕适配 */
+        @media (max-width: 480px) {
+            /* 保持Gallery文字缩放一致 */
+            .gallery-text, 
+            .gallery-title .gallery-text,
+            body .gallery-page .gallery-content .gallery-title .gallery-text {
+                transform: translate(-50%, -50%) scale(2) !important; /* 稍微小一点 */
+            }
+            
+            .gallery-title .welcome {
+                top: 38% !important; /* 下移位置调整 */
+            }
+            
+            .swiper-slide:nth-child(2) .video-title:after {
+                font-size: 2.16rem !important; /* 增大0.2倍，从1.8rem变为2.16rem */
+                bottom: 12% !important;
+            }
+        }
+        
+        /* 超小屏幕适配 */
+        @media (max-width: 360px) {
+            /* 在最小屏幕上稍微减小Gallery文字 */
+            .gallery-text, 
+            .gallery-title .gallery-text,
+            body .gallery-page .gallery-content .gallery-title .gallery-text {
+                transform: translate(-50%, -50%) scale(3) !important; /* 更小屏幕上更小 */
+            }
+            
+            .gallery-title .welcome {
+                top: 35% !important; /* 调整位置 */
+            }
+            
+            .swiper-slide:nth-child(2) .video-title:after {
+                font-size: 1.8rem !important; /* 增大0.2倍，从1.5rem变为1.8rem */
+                bottom: 10% !important;
+            }
+        }
+
+        /* 直接在头部添加最高优先级样式，解决冲突 */
+        @media (max-width: 768px) {
+            /* 设置Gallery文字再次缩小5倍 */
+            .gallery-text, 
+            .gallery-title .gallery-text,
+            body .gallery-page .gallery-content .gallery-title .gallery-text {
+                top: 15% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) scale(1) !important; /* 从5倍缩小到1倍 (5÷5=1) */
+                z-index: 999 !important;
+                color: #FFD900 !important;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            
+            .gallery-title .welcome {
+                top: 25% !important; /* 上移位置，因为Gallery更小了 */
+                font-size: min(55px, 8vw) !important;
+                color: #c30101 !important;
+                font-weight: bold !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                z-index: 999 !important;
+            }
+            
+            /* Northern Journey保持不变 */
+            .swiper-slide:nth-child(2) .river-text {
+                display: none !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+            }
+            
+            .swiper-slide:nth-child(2) .video-title:after {
+                content: "Northern\00000aJourney";  /* \00000a是换行符 */
+                white-space: pre;
+                font-family: 'Cinzel', serif !important;
+                font-size: 2.4rem !important;
+                color: white !important;
+                position: absolute !important;
+                bottom: 15% !important;
+                left: 10% !important;
+                text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 0, 0, 0.7) !important;
+                z-index: 9999 !important;
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+        }
+        
+        /* 小屏幕适配 */
+        @media (max-width: 480px) {
+            /* Gallery文字也缩小5倍 */
+            .gallery-text, 
+            .gallery-title .gallery-text,
+            body .gallery-page .gallery-content .gallery-title .gallery-text {
+                transform: translate(-50%, -50%) scale(0.8) !important; /* 从4倍缩小到0.8倍 (4÷5=0.8) */
+            }
+            
+            .gallery-title .welcome {
+                top: 22% !important; /* 再次调整位置 */
+            }
+            
+            /* Northern Journey保持不变 */
+            .swiper-slide:nth-child(2) .video-title:after {
+                font-size: 2.16rem !important;
+                bottom: 12% !important;
+            }
+        }
+        
+        /* 超小屏幕适配 */
+        @media (max-width: 360px) {
+            /* 在最小屏幕上也缩小5倍 */
+            .gallery-text, 
+            .gallery-title .gallery-text,
+            body .gallery-page .gallery-content .gallery-title .gallery-text {
+                transform: translate(-50%, -50%) scale(0.6) !important; /* 从3倍缩小到0.6倍 (3÷5=0.6) */
+            }
+            
+            .gallery-title .welcome {
+                top: 20% !important; /* 调整位置 */
+            }
+            
+            /* Northern Journey保持不变 */
+            .swiper-slide:nth-child(2) .video-title:after {
+                font-size: 1.8rem !important;
+                bottom: 10% !important;
+            }
+        }
+
+        /* 直接覆盖默认样式，强制设置Gallery文字大小和位置 */
+        @media (max-width: 768px) {
+            #gallery-text-override {
+                position: absolute !important;
+                top: 25% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) scale(1.2) !important;
+                z-index: 9999 !important;
+                color: #FFD900 !important;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            
+            #welcome-text-override {
+                position: absolute !important;
+                top: 40% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                z-index: 9999 !important;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+        }
+            
+        /* 小屏手机适配 */
+        @media (max-width: 480px) {
+            #gallery-text-override {
+                transform: translate(-50%, -50%) scale(1.2) !important;
+            }
+        }
+            
+        /* 超小屏幕适配 */
+        @media (max-width: 360px) {
+            #gallery-text-override {
+                transform: translate(-50%, -50%) scale(1.2) !important;
+            }
+        }
     </style>
 </head>
 <body data-barba="wrapper">
@@ -1807,8 +2075,8 @@
                             <div class="swiper-slide" style="cursor: pointer;" onclick="window.location.href='tibet.html'">
                     <img src="artistweb/images/个人图片作品/IMG_0082.jpg" alt="Gallery Header Image">
                     <h1>Gallery</h1>
-                    <div class="welcome"><span style="text-decoration: none; color: #c30101; display: inline-block; padding: 8px;">Awaits</span></div>
-                    <div class="gallery-text">
+                    <div id="welcome-text-override" class="welcome"><span style="text-decoration: none; color: #c30101; display: inline-block; padding: 8px;">Awaits</span></div>
+                    <div id="gallery-text-override" class="gallery-text">
                         <span class="g">G</span>
                         <span class="a">a</span>
                         <span class="l1">l</span>
@@ -2027,7 +2295,60 @@
 
             // 判断是否为移动设备
             function isMobileDevice() {
-                return window.innerWidth <= 768;
+                return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+            }
+
+            // 根据设备类型选择合适的视频源
+            function setVideoSourceByDevice(video) {
+                if (isMobileDevice()) {
+                    const sources = video.querySelectorAll('source');
+                    sources.forEach(source => {
+                        const originalSrc = source.getAttribute('data-original-src') || source.src;
+                        if (!source.getAttribute('data-original-src')) {
+                            source.setAttribute('data-original-src', originalSrc);
+                        }
+                        
+                        // 为移动设备设置低分辨率视频
+                        if (source.type === 'video/mp4') {
+                            // 假设原视频格式为：path/video.mp4，低分辨率版本为：path/video_mobile.mp4
+                            const lowResSrc = originalSrc.replace('.mp4', '_mobile.mp4');
+                            
+                            // 检查低分辨率版本是否存在
+                            const testImg = new Image();
+                            testImg.onerror = function() {
+                                // 如果文件不存在，回退到原始视频
+                                console.log("低分辨率视频不存在，使用原始视频");
+                                source.src = originalSrc;
+                            };
+                            testImg.onload = function() {
+                                // 如果文件存在，使用低分辨率视频
+                                source.src = lowResSrc;
+                            };
+                            testImg.src = lowResSrc;
+                            
+                            // 默认先设置为原始视频，避免404错误
+                            source.src = originalSrc;
+                        } else if (source.type === 'video/webm') {
+                            const lowResSrc = originalSrc.replace('.webm', '_mobile.webm');
+                            
+                            // 检查低分辨率版本是否存在
+                            const testImg = new Image();
+                            testImg.onerror = function() {
+                                // 如果文件不存在，回退到原始视频
+                                console.log("低分辨率视频不存在，使用原始视频");
+                                source.src = originalSrc;
+                            };
+                            testImg.onload = function() {
+                                // 如果文件存在，使用低分辨率视频
+                                source.src = lowResSrc;
+                            };
+                            testImg.src = lowResSrc;
+                            
+                            // 默认先设置为原始视频，避免404错误
+                            source.src = originalSrc;
+                        }
+                    });
+                }
             }
 
             // 初始化首个视频
@@ -2233,6 +2554,76 @@
                     setTimeout(() => pageLoader.style.display = 'none', 500);
                 }
             }, 5000);
+
+            // 在swiper初始化之后添加滑动开始事件
+            swiper.on('slideChange', function () {
+                // 获取当前激活的slide
+                const currentSlide = swiper.slides[swiper.activeIndex];
+                const video = currentSlide.querySelector('video');
+                
+                if (video) {
+                    // 重置视频到开头
+                    video.currentTime = 0;
+                    
+                    // 确保视频可见
+                    video.style.opacity = "1";
+                    
+                    // 检查是否是Safari浏览器
+                    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+                    if (isSafari) {
+                        // 在Safari中优先使用MP4格式
+                        const sources = video.querySelectorAll('source');
+                        let mp4Source = null;
+                        sources.forEach(source => {
+                            if (source.type === 'video/mp4') {
+                                mp4Source = source;
+                            }
+                        });
+                        
+                        if (mp4Source) {
+                            // 将MP4源移动到第一位置
+                            video.insertBefore(mp4Source, video.firstChild);
+                        }
+                    }
+                    
+                    // 设置适合设备的视频源
+                    setVideoSourceByDevice(video);
+                    
+                    // 加载并播放视频
+                    video.load();
+                    
+                    // 添加视频结束事件监听器 - 关键修复
+                    video.onended = function() {
+                        // 视频播放结束时，立即切换到下一张幻灯片
+                        if (swiper && typeof swiper.slideNext === 'function' && !isMobileDevice()) {
+                            swiper.slideNext();
+                        }
+                    };
+                    
+                    // 尝试播放视频，带重试机制
+                    const playPromise = video.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(err => {
+                            console.warn(`视频播放失败: ${err.message}, 尝试重新播放`);
+                            
+                            // 延迟尝试再次播放
+                            setTimeout(() => {
+                                video.play().catch(error => {
+                                    console.error('第二次播放尝试失败:', error);
+                                });
+                            }, 1000);
+                        });
+                    }
+                }
+            });
+
+            // 页面加载完成后为所有视频设置合适的源
+            document.addEventListener('DOMContentLoaded', function() {
+                const allVideos = document.querySelectorAll('video');
+                allVideos.forEach(video => {
+                    setVideoSourceByDevice(video);
+                });
+            });
         });
     </script>
 </body>

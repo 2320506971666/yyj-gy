@@ -13,7 +13,7 @@
     <!-- 使用字体显示交换来优化字体加载 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Noto+Serif+SC:wght@300;400;500&family=Lato:wght@300;400;700&family=Reenie+Beanie&family=Playfair+Display:wght@400;500;600&family=Jomhuria&family=Jim+Nightshade&family=Josefin+Slab:wght@400;600;700&family=Poppins:wght@200;400;500;600&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Noto+Serif+SC:wght@300;400;500&family=Reenie+Beanie&family=Playfair+Display:wght@400;500;600&family=Jomhuria&family=Jim+Nightshade&family=Josefin+Slab:wght@400;600;700&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- 预连接第三方域 -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
@@ -61,8 +61,8 @@
     <title>Gallery - Triple-Y</title>
 
     <!-- 预加载关键资源 -->
-    <link rel="preload" href="artistweb/images/个人图片作品/IMG_0082.jpg" as="image">
-    <link rel="preload" href="artistweb/videos/video1.webm" as="video" type="video/webm">
+    <!-- 仅预加载首屏必要资源，移除其他资源的预加载 -->
+    <!-- <link rel="preload" href="artistweb/videos/video1.webm" as="video" type="video/webm"> -->
     <!-- 预连接第三方域 -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://unpkg.com">
@@ -2458,7 +2458,7 @@
                         }
                     }
                 });
-            }, { threshold: 0.1 });
+            }, { threshold: 0.1, rootMargin: '200px' });  // 增加rootMargin提前处理
 
             videos.forEach(video => videoObserver.observe(video));
 

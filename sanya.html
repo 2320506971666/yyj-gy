@@ -836,6 +836,41 @@
                 transition.style.opacity = '0';
             }, 500);
 
+            // 添加图片滚动浮动效果
+            const imageItems = document.querySelectorAll('.bento-item');
+            
+            // 设置初始状态 - 所有图片项初始透明度为0且向下偏移
+            gsap.set(imageItems, {
+                opacity: 0,
+                y: 20,
+            });
+            
+            // 创建IntersectionObserver监听图片进入视口
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // 图片进入视口时，执行向上浮动动画
+                        gsap.to(entry.target, {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.8,
+                            ease: "power2.out"
+                        });
+                        
+                        // 图片显示后不再监听该元素
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,   // 当元素10%进入视口时触发
+                rootMargin: "0px 0px -100px 0px" // 提前100px触发，使动画更流畅
+            });
+            
+            // 开始监听所有图片项
+            imageItems.forEach(item => {
+                observer.observe(item);
+            });
+
             // 点击链接时的过渡效果
             document.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function(e) {

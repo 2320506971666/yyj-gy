@@ -197,7 +197,7 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            opacity: 0;
+            opacity: 1; /* 修改为默认可见 */
             transition: opacity 0.5s ease;
         }
 
@@ -575,6 +575,41 @@
                 transition.style.opacity = '0';
             }, 500);
 
+            // 使用IntersectionObserver实现滚动浮动效果
+            const photoItems = document.querySelectorAll('.photo-item');
+            
+            // 先确保图片可见但位置偏移
+            photoItems.forEach(item => {
+                // 保持图片可见性但设置位置偏移
+                item.style.transform = "translateY(20px)";
+                item.style.opacity = "0";
+                item.style.transition = "opacity 0.8s ease, transform 0.8s ease";
+            });
+            
+            // 创建IntersectionObserver监听图片进入视口
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // 图片进入视口时执行动画
+                        setTimeout(() => {
+                            entry.target.style.opacity = "1";
+                            entry.target.style.transform = "translateY(0)";
+                        }, 100);
+                        
+                        // 图片显示后不再监听该元素
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,   // 当元素10%进入视口时触发
+                rootMargin: "0px 0px -50px 0px" // 提前50px触发，使动画更流畅
+            });
+            
+            // 开始监听所有图片项
+            photoItems.forEach(item => {
+                observer.observe(item);
+            });
+
             // 点击链接时的过渡效果
             document.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function(e) {
@@ -599,9 +634,6 @@
 
             // 移动端菜单控制已由shared/nav.js处理
 
-            const photoItems = document.querySelectorAll('.photo-item');
-
-            // 灯箱功能
             const lightbox = document.getElementById('imageLightbox');
             const lightboxImage = document.getElementById('lightboxImage');
             const lightboxClose = document.getElementById('lightboxClose');
@@ -672,9 +704,12 @@
                 }
             });
 
-            // 图片加载效果
+            // 图片加载效果 - 确保图片内容本身可见
             const allImages = document.querySelectorAll('.photo-image');
             allImages.forEach(img => {
+                // 确保图片内容显示
+                img.style.opacity = "1";
+                
                 // 检查图片是否已经加载完成
                 if (img.complete) {
                     img.classList.add('loaded');
@@ -683,6 +718,13 @@
                         img.classList.add('loaded');
                     });
                 }
+                
+                // 添加错误处理
+                img.addEventListener('error', function() {
+                    console.error('图片加载失败:', img.src);
+                    // 尝试使用备用图片
+                    img.src = "artistweb/images/华图图片作品/2.jpg";
+                });
             });
         });
     </script>

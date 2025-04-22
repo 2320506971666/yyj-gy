@@ -76,7 +76,16 @@
 .nav-link[href="film.html"].active,
 .nav-link[href="gallery.html"].active,
 .nav-link[href="work.html"].active,
-.nav-link[href="about.html"].active {
+.nav-link[href="about.html"].active,
+.nav-link.active,
+.mobile-link.active {
+    color: #DE2910 !important;
+    opacity: 1 !important;
+}
+
+/* 添加更强制的样式规则 */
+html body .nav-link.active,
+html body .mobile-link.active {
     color: #DE2910 !important;
     opacity: 1 !important;
 }

@@ -23,10 +23,20 @@ document.addEventListener("DOMContentLoaded", function() {
         // 根据当前环境调整路径
         const isGitHubPages = window.location.hostname.includes("github.io");
         const isCustomDomain = window.location.hostname === "tripley.cn";
-        const prefix = isGitHubPages ? "/yyj-gy/" : (isCustomDomain ? "/" : "");
-
+        
+        // 修改前缀逻辑，确保路径始终正确
+        let prefix = "";
+        
+        // 强制输出当前主机名，帮助调试
+        console.log("当前主机名:", window.location.hostname);
+        console.log("是否GitHub Pages:", isGitHubPages);
+        console.log("是否自定义域名:", isCustomDomain);
+        
+        // 无论GitHub Pages还是自定义域名，都使用相对路径
+        // 这样可以确保导航栏在任何环境下都能正确加载
+        
         // 加载导航栏样式
-        loadStylesheet(prefix + 'shared/nav-styles.css');
+        loadStylesheet('shared/nav-styles.css');
 
         // 加载导航栏HTML
         loadNavHtml(prefix, navContainer, 1);
@@ -440,19 +450,24 @@ function loadNavHtml(prefix, navContainer, attempt) {
         });
 }
 
-// 修复导航链接
+// 修复导航链接，确保它们指向正确的路径
 function fixNavLinks(prefix) {
-    const isGitHubPages = window.location.hostname.includes("github.io");
-    const isCustomDomain = window.location.hostname === "tripley.cn";
-
-    if (isGitHubPages || isCustomDomain) {
-        document.querySelectorAll('.nav-link, .mobile-link, .logo').forEach(link => {
-            const href = link.getAttribute('href');
-            if (href && !href.startsWith("http")) {
-                link.setAttribute('href', prefix + href.replace(/^\.?\/*/, ""));
-            }
-        });
-    }
+    console.log('修复导航链接，前缀:', prefix);
+    
+    // 不再使用前缀，直接使用相对路径
+    // 这样可以确保链接在任何环境下都能正确工作
+    
+    // 获取所有导航链接
+    document.querySelectorAll('.nav-link, .mobile-link').forEach(link => {
+        // 原始链接
+        const originalHref = link.getAttribute('href');
+        console.log('原始链接:', originalHref);
+        
+        // 保持原始链接不变，不添加前缀
+        // 使用相对路径确保在任何环境下都能正确导航
+        
+        console.log('最终链接:', link.getAttribute('href'));
+    });
 }
 
 // 使用备用导航

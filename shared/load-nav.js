@@ -434,9 +434,6 @@ function loadNavHtml(prefix, navContainer, attempt) {
             navContainer.innerHTML = html;
             console.log("导航HTML加载成功");
 
-            // 修复导航链接路径
-            fixNavLinks(prefix);
-
             // 加载导航栏JS
             loadNavJs();
         })
@@ -448,26 +445,6 @@ function loadNavHtml(prefix, navContainer, attempt) {
                 loadNavHtml(prefix, navContainer, attempt + 1);
             }, 500 * attempt); // 逐渐增加重试间隔
         });
-}
-
-// 修复导航链接，确保它们指向正确的路径
-function fixNavLinks(prefix) {
-    console.log('修复导航链接，前缀:', prefix);
-    
-    // 不再使用前缀，直接使用相对路径
-    // 这样可以确保链接在任何环境下都能正确工作
-    
-    // 获取所有导航链接
-    document.querySelectorAll('.nav-link, .mobile-link').forEach(link => {
-        // 原始链接
-        const originalHref = link.getAttribute('href');
-        console.log('原始链接:', originalHref);
-        
-        // 保持原始链接不变，不添加前缀
-        // 使用相对路径确保在任何环境下都能正确导航
-        
-        console.log('最终链接:', link.getAttribute('href'));
-    });
 }
 
 // 使用备用导航
@@ -503,11 +480,8 @@ function useBackupNav(navContainer) {
 
 // 加载导航JS
 function loadNavJs() {
-    const isGitHubPages = window.location.hostname.includes("github.io");
-    const isCustomDomain = window.location.hostname === "tripley.cn";
-    const prefix = isGitHubPages ? "/yyj-gy/" : (isCustomDomain ? "/" : "");
-
-    loadScript(prefix + 'shared/nav.js');
+    // 不再使用前缀，一律使用相对路径来加载 nav.js
+    loadScript('shared/nav.js');
 }
 
 // 加载JavaScript文件

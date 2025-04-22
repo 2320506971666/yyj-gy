@@ -88,10 +88,9 @@ function setActiveNavLink(currentPage) {
     currentPage = finalPage;
     console.log('当前页面最终确认为:', currentPage);
 
-    // 重置所有链接的颜色和激活状态
-    document.querySelectorAll('.nav-link, .mobile-link, .main-burger-panel a').forEach(link => {
+    // 重置所有普通导航链接的颜色和激活状态（不影响紧急汉堡菜单）
+    document.querySelectorAll('.nav-link, .mobile-link').forEach(link => {
         link.classList.remove('active');
-        // 强制清除所有链接的样式，确保重置
         link.style.color = '';
     });
 
@@ -101,8 +100,8 @@ function setActiveNavLink(currentPage) {
         console.log('尝试激活链接:', currentPage);
         document.querySelectorAll(`a[href="${currentPage}"]`).forEach(link => {
             link.classList.add('active');
-            // 强制设置颜色为红色
-            link.style.color = '#DE2910';
+            // 只使用 setAttribute 来应用 !important 样式
+            link.setAttribute('style', 'color: #DE2910 !important');
             console.log('激活链接成功:', link);
         });
 
@@ -110,8 +109,8 @@ function setActiveNavLink(currentPage) {
         if (['tibet.html', 'north.html', 'sanya.html'].includes(currentPage)) {
             document.querySelectorAll('a[href="gallery.html"]').forEach(link => {
                 link.classList.add('active');
-                // 强制设置颜色为红色
-                link.style.color = '#DE2910';
+                // 只使用 setAttribute 来应用 !important 样式
+                link.setAttribute('style', 'color: #DE2910 !important');
                 console.log('激活 Gallery 链接 (子页面):', link);
             });
         }
@@ -125,8 +124,7 @@ function setActiveNavLink(currentPage) {
         if (currentPage !== 'index.html') {
             document.querySelectorAll(`a[href="${currentPage}"]`).forEach(link => {
                 link.classList.add('active');
-                // 强制设置颜色，确保覆盖任何可能的冲突样式
-                link.style.color = '#DE2910 !important';
+                // 只使用 setAttribute 来应用 !important 样式
                 link.setAttribute('style', 'color: #DE2910 !important');
                 console.log('定时器再次设置链接颜色:', link);
             });
@@ -135,8 +133,7 @@ function setActiveNavLink(currentPage) {
             if (['tibet.html', 'north.html', 'sanya.html'].includes(currentPage)) {
                 document.querySelectorAll('a[href="gallery.html"]').forEach(link => {
                     link.classList.add('active');
-                    // 强制设置颜色，确保覆盖任何可能的冲突样式
-                    link.style.color = '#DE2910 !important';
+                    // 只使用 setAttribute 来应用 !important 样式
                     link.setAttribute('style', 'color: #DE2910 !important');
                     console.log('定时器再次设置 Gallery 链接颜色 (子页面):', link);
                 });

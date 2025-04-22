@@ -65,21 +65,13 @@
             font-family: 'Lato', sans-serif;
             overflow-x: hidden;
             overflow-y: scroll;
-
-            /* 隐藏滚动条 */
             scrollbar-width: none; /* Firefox */
             -ms-overflow-style: none; /* IE and Edge */
         }
 
-        /* 针对 Chrome、Safari、Opera */
+        /* 针对 Chrome、Safari、Opera 隐藏滚动条 */
         html::-webkit-scrollbar,
-        body::-webkit-scrollbar {
-            display: none;
-            width: 0;
-            height: 0;
-        }
-
-        /* 隐藏所有可能的滚动容器的滚动条 */
+        body::-webkit-scrollbar,
         ::-webkit-scrollbar {
             display: none;
             width: 0;
@@ -91,100 +83,14 @@
             -ms-overflow-style: none;
         }
 
-        /* 导航栏样式已移至shared/nav-styles.css */
-
-        /* 移动菜单按钮样式 - 确保在index.html中也能正确显示 */
-        /* 注意: 这部分样式已移至shared/nav-styles.css，保留此注释作为参考 */
-        /*
-        .mobile-menu-button {
-            display: none;
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 30px;
-            height: 20px;
-            cursor: pointer;
-            z-index: 1010;
-        }
-
-        .mobile-menu-button .bar1,
-        .mobile-menu-button .bar2,
-        .mobile-menu-button .bar3 {
-            width: 100%;
-            height: 2px;
-            background-color: white;
-            margin: 6px 0;
-            transition: 0.4s;
-        }
-
-        .mobile-menu-button.open .bar1 {
-            transform: rotate(-45deg) translate(-5px, 6px);
-        }
-
-        .mobile-menu-button.open .bar2 {
-            opacity: 0;
-        }
-
-        .mobile-menu-button.open .bar3 {
-            transform: rotate(45deg) translate(-5px, -6px);
-        }
-
-        /* 移动菜单样式 */
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 45px;
-            left: 0;
-            width: 100%;
-            height: calc(100vh - 45px);
-            background-color: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 1009;
-            padding: 20px;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .mobile-menu.open {
-            display: flex;
-        }
-
-        .mobile-link {
-            color: white;
-            font-size: 1.5rem;
-            margin: 15px 0;
-            text-decoration: none;
-            font-family: 'Poiret One', cursive;
-            letter-spacing: 3px;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-link:hover {
-            color: #DE2910;
-            letter-spacing: 4px;
-        }
-
-        .mobile-link.active {
-            color: #DE2910;
-        }
-
-        /* 菜单打开时的body样式 */
-        body.menu-open {
-            overflow: hidden;
-        }
-        */
-
         /* 3D模型容器 */
         #model-container {
             position: relative;
             width: 100%;
             height: 100vh;
-            background: #ffffff; /* 修改背景为白色 */
-            overflow: hidden; /* 确保内容不溢出 */
-            cursor: pointer; /* 显示为可点击状态 */
+            background: #ffffff;
+            overflow: hidden;
+            cursor: pointer;
         }
 
         /* 加载进度指示器 */
@@ -240,7 +146,83 @@
             transform: translateY(0);
         }
 
-        /* 响应式设计 */
+        /* 页面过渡效果 */
+        .page-transition {
+            position: fixed;
+            top: 45px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 45px);
+            background-color: #ffffff;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        .page-transition.fade-in {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 统一的按钮样式 */
+        .nav-button {
+            position: fixed;
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-family: 'Poiret One', cursive !important;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: capitalize;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1),
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            opacity: 0;
+            z-index: 1000;
+            cursor: pointer;
+            pointer-events: auto;
+            text-align: center;
+            white-space: nowrap;
+            min-width: 120px;
+            transition: all 0.3s ease;
+        }
+
+        /* 按钮悬停和点击效果 */
+        .nav-button:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .nav-button:active {
+            transform: scale(0.95);
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+        }
+
+        .nav-button.clicked {
+            animation: buttonPulse 0.3s forwards;
+        }
+
+        /* 桌面端按钮位置 */
+        .gallery-button { top: 40%; right: 80px; }
+        .work-button { top: 50%; right: 80px; }
+        .about-button { top: 60%; right: 80px; }
+        .film-button { top: 70%; right: 80px; }
+
+        /* 按钮动画 */
+        @keyframes buttonPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        /* 响应式设计 - 统一媒体查询 */
         @media (max-width: 768px) {
             .model-info {
                 font-size: 0.9rem;
@@ -248,182 +230,93 @@
             }
 
             /* 移动端按钮基本样式 */
-            .nav-button,
-            .gallery-button,
-            .work-button,
-            .about-button,
-            .explore-button {
+            .nav-button {
                 position: fixed !important;
                 width: 60% !important;
                 left: 50% !important;
                 transform: translateX(-50%) !important;
-                right: auto !important; /* 清除桌面设置的right影响 */
-                opacity: 1 !important; /* 确保按钮始终可见 */
-            }
+                right: auto !important;
+                opacity: 1 !important;
+        }
 
             /* 移动端按钮位置 */
-            .gallery-button {
-                bottom: 320px !important;
-                top: auto !important;
-            }
+            .gallery-button { bottom: 320px !important; top: auto !important; }
+            .work-button { bottom: 240px !important; top: auto !important; }
+            .about-button { bottom: 160px !important; top: auto !important; }
+            .film-button { bottom: 80px !important; top: auto !important; }
 
-            .work-button {
-                bottom: 240px !important;
-                top: auto !important;
-            }
-
-            .about-button {
-                bottom: 160px !important;
-                top: auto !important;
-            }
-
-            .explore-button {
-                bottom: 80px !important;
-                top: auto !important;
-            }
-
-            /* 确保模型容器填充整个屏幕，移除底部黑色区域 */
             #model-container {
-                height: 100vh; /* 填充整个视口高度 */
-                margin: 0; /* 移除所有外边距 */
-                background-color: white; /* 确保背景是白色 */
+                height: 100vh;
+                margin: 0;
+                background-color: white;
                 position: absolute;
                 top: 0;
                 left: 0;
                 width: 100%;
-            }
+        }
 
             /* 移动端按钮动画 */
             @keyframes mobileButtonPulse {
-                0% {
-                    transform: translateX(-50%) scale(1);
-                }
-                50% {
-                    transform: translateX(-50%) scale(1.05);
-                }
-                100% {
-                    transform: translateX(-50%) scale(1);
-                }
+                0% { transform: translateX(-50%) scale(1); }
+                50% { transform: translateX(-50%) scale(1.05); }
+                100% { transform: translateX(-50%) scale(1); }
             }
 
-            /* 添加移动端点击动画效果 */
-            .nav-button:active {
+        .nav-button:active {
                 animation: mobileButtonPulse 0.3s ease;
             }
 
-            nav {
-                padding: 0 10px; /* 移动端使用更小的内边距 */
-            }
-
-            header {
-                padding: 0;
-            }
-
-            /* 移动端导航栏样式已移至shared/nav-styles.css */
-
-            /* 显示移动端汉堡菜单按钮 - 已移至shared/nav-styles.css */
-            /*
-            .mobile-menu-button {
-                display: block;
-            }
-
-            /* 隐藏导航链接 - 已移至shared/nav-styles.css */
-            /*
-            .nav-links {
-                display: none;
-            }
-            */
+            nav { padding: 0 10px; }
+            header { padding: 0; }
         }
 
         /* 小型手机屏幕适配 (小于375px) */
         @media (max-width: 375px) {
-            /* 小屏幕按钮样式 */
-            .nav-button,
-            .gallery-button,
-            .work-button,
-            .about-button,
-            .explore-button {
-                width: 75% !important; /* 在小屏幕上使按钮更宽 */
-                height: 40px !important; /* 降低高度以节省空间 */
+            .nav-button {
+                width: 75% !important;
+                height: 40px !important;
                 font-size: 0.85rem !important;
-            }
+        }
 
-            /* 图标调整 */
             .nav-button i {
                 font-size: 1rem !important;
                 margin-right: 8px !important;
-            }
+        }
 
             /* 小屏幕按钮布局位置 */
-            .gallery-button {
-                bottom: 290px !important;
-            }
+            .gallery-button { bottom: 290px !important; }
+            .work-button { bottom: 220px !important; }
+            .about-button { bottom: 150px !important; }
+            .film-button { bottom: 80px !important; }
 
-            .work-button {
-                bottom: 220px !important;
-            }
-
-            .about-button {
-                bottom: 150px !important;
-            }
-
-            .explore-button {
-                bottom: 80px !important;
-            }
-
-            /* 导航栏样式 */
-            .logo, .logo a {
-                font-size: 1.4rem !important;
-            }
+            .logo, .logo a { font-size: 1.4rem !important; }
         }
 
         /* 大型手机屏幕适配 (大于420px小于768px) */
         @media (min-width: 420px) and (max-width: 768px) {
-            /* 大屏手机按钮样式 */
-            .nav-button,
-            .gallery-button,
-            .work-button,
-            .about-button,
-            .explore-button {
-                width: 55% !important; /* 在大屏幕上可以更窄一些 */
-                height: 48px !important; /* 略高一些以方便操作 */
+            .nav-button {
+                width: 55% !important;
+                height: 48px !important;
                 font-size: 1rem !important;
-            }
+        }
 
             /* 大屏手机按钮布局位置 */
-            .gallery-button {
-                bottom: 300px !important;
-            }
-
-            .work-button {
-                bottom: 230px !important;
-            }
-
-            .about-button {
-                bottom: 160px !important;
-            }
-
-            .explore-button {
-                bottom: 90px !important;
-            }
-
-            /* 导航栏样式已移至shared/nav-styles.css */
+            .gallery-button { bottom: 300px !important; }
+            .work-button { bottom: 230px !important; }
+            .about-button { bottom: 160px !important; }
+            .film-button { bottom: 90px !important; }
         }
 
         /* 平板设备适配 */
         @media (min-width: 768px) and (max-width: 1024px) {
-            /* 针对平板的布局调整 */
             .nav-button {
-                right: 60px !important; /* 位置更靠左 */
-                min-width: 140px; /* 略大的按钮 */
-                transform: translateY(-50%) !important; /* 确保垂直居中 */
+                right: 60px !important;
+                min-width: 140px;
+                transform: translateY(-50%) !important;
             }
 
-            #model-container {
-                height: 90vh; /* 稍微减少高度 */
-            }
+            #model-container { height: 90vh; }
 
-            /* 导航栏样式统一 */
             header {
                 position: fixed;
                 width: 100%;
@@ -445,241 +338,20 @@
             }
         }
 
-        /* 页面过渡效果 */
-        .page-transition {
-            position: fixed;
-            top: 45px; /* 从0改为45px，让出导航栏的高度 */
-            left: 0;
-            width: 100%;
-            height: calc(100vh - 45px); /* 高度相应调整，减去导航栏高度 */
-            background-color: #ffffff; /* 改为白色背景 */
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.5s cubic-bezier(0.7, 0, 0.3, 1);
-        }
-
-        .page-transition.fade-in {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* 所有按钮共用的基础样式 */
-        .nav-button {
-            position: fixed;
-            background-color: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-family: 'Poiret One', cursive !important;
-            font-size: 0.9rem;
-            font-weight: 300;
-            letter-spacing: 3px;
-            text-transform: capitalize;
-            text-decoration: none;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1),
-                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-            /* 移除transition过渡效果 */
-            opacity: 0;
-            z-index: 1000;
-            cursor: pointer;
-            pointer-events: auto;
-            text-align: center; /* 文本居中 */
-            white-space: nowrap; /* 防止文本换行 */
-            min-width: 120px; /* 设置最小宽度，确保能容纳文字 */
-        }
-
-        /* 鼠标悬停时的增强效果 - 简化 */
-        .nav-button:hover {
-            background-color: rgba(255, 255, 255, 0.25);
-        }
-
-        /* 点击按钮时的动画效果 - 简化 */
-        .nav-button:active {
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
-                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-            animation: buttonPulse 0.3s ease;
-        }
-
-        /* 点击后的动画类 */
-        .nav-button.clicked {
-            /* 移除animation */
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        /* 按钮动画 */
-        @keyframes buttonPulse {
-            0% {
-                transform: translateX(0) scale(1);
-            }
-            50% {
-                transform: translateX(0) scale(1.05);
-            }
-            100% {
-                transform: translateX(0) scale(1);
-            }
-        }
-
-        /* 添加点击动画效果 */
-        .nav-button:active {
-            animation: buttonPulse 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
-                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-        }
-
-        /* Gallery按钮样式 */
-        .gallery-button {
-            top: 40%;
-            right: 80px;
-            left: auto;
-        }
-
-        /* Work按钮样式 */
-        .work-button {
-            top: 50%;
-            right: 80px;
-            left: auto;
-        }
-
-        /* About按钮样式 */
-        .about-button {
-            top: 60%;
-            right: 80px;
-            left: auto;
-        }
-
-        /* Film按钮样式 */
-        .explore-button {
-            top: 70%;
-            right: 80px;
-            left: auto;
-        }
-
-        /* 点击按钮时的动画效果 */
-        .nav-button:active {
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
-                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-        }
-
-        /* 点击后的动画类 */
-        .nav-button.clicked {
-            /* 移除animation */
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        /* 修改点击波动动画以兼容3D效果 */
-        @keyframes workButtonPulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        /* 为工作按钮添加特殊的点击动画 */
-        .work-button:active {
-            animation: workButtonPulse 0.3s ease !important;
-        }
-
-        /* 调整各按钮的水平位置 */
-        @media (min-width: 769px) {
-            /* 桌面端按钮位置，统一在右侧 */
-            .gallery-button {
-                left: auto;
-                right: 80px;
-            }
-
-            .work-button {
-                left: auto;
-                right: 80px;
-            }
-
-            .about-button {
-                left: auto;
-                right: 80px;
-            }
-
-            .explore-button {
-                left: auto;
-                right: 80px;
-                top: 70%; /* 保持与默认样式一致 */
-            }
-        }
-
         /* 桌面端样式 */
         @media (min-width: 769px) {
-            /* 确保桌面端按钮在右侧且宽度一致 */
             .nav-button {
                 right: 80px !important;
                 left: auto !important;
                 transform: translateY(-50%) !important;
-                width: 150px !important; /* 统一桌面端按钮宽度 */
+                width: 150px !important;
             }
 
-            /* 简化桌面端按钮悬停效果 */
-            .nav-button:hover {
-                background-color: rgba(255, 255, 255, 0.25);
-            }
-
-            /* 简化桌面端按钮点击效果 */
-            .nav-button:active {
-                background-color: rgba(255, 255, 255, 0.2);
-                animation: buttonPulse 0.3s ease;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
-                           0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-            }
-
-            /* 特殊按钮动画效果 */
-            .work-button:active {
-                animation: workButtonPulse 0.3s ease !important;
-            }
-
-            /* 移除按钮点击动画效果 */
-
-            /* 桌面端各按钮的垂直位置 - 往下移动 */
-            .gallery-button {
-                top: 40% !important; /* 从30%调整为40% */
-            }
-
-            .work-button {
-                top: 50% !important; /* 从40%调整为50% */
-            }
-
-            .about-button {
-                top: 60% !important; /* 从50%调整为60% */
-            }
-
-            .explore-button {
-                top: 70% !important; /* 从60%调整为70% */
-            }
-
-            /* 桌面端按钮可见状态 */
-            .nav-button.visible {
-                opacity: 1 !important;
-            }
-
-            /* 桌面端隐藏移动菜单按钮 */
-            .mobile-menu-button {
-                display: none;
-            }
-
-            /* 桌面端显示导航链接 */
-            .nav-links {
-                display: flex;
-            }
+            .nav-button.visible { opacity: 1 !important; }
         }
 
         /* 首页特定汉堡菜单增强样式 */
-        .header-container {
-            z-index: 2000 !important; /* 确保不被其他元素覆盖 */
-        }
+        .header-container { z-index: 2000 !important; }
 
         .mobile-menu-button {
             background-color: rgba(0, 0, 0, 0.6);
@@ -690,33 +362,23 @@
 
         @media (max-width: 768px) {
             .mobile-menu-button {
-                display: block !important; /* 强制显示 */
+                display: block !important;
             }
 
             .mobile-menu-button .bar1,
             .mobile-menu-button .bar2,
             .mobile-menu-button .bar3 {
-                height: 3px; /* 使线条更粗，更容易看见 */
+                height: 3px;
                 background-color: white !important;
                 margin: 5px 0;
             }
 
             .mobile-menu.open {
-                display: flex !important; /* 强制显示 */
+                display: flex !important;
             }
-        }
-
-        /* 新增：移动端按钮控制 */
-        @media (max-width: 768px) {
-            /* 初始状态按钮隐藏 */
-            .nav-button, .cta-button, .section-scroll-indicator, .model-controls,
-            #gallery-button, #work-button, #about-button, #explore-button {
-                opacity: 0;
-                visibility: hidden;
-                transition: opacity 0.5s ease, visibility 0.5s ease;
             }
 
-            /* 加载完成后显示的样式 */
+        /* 加载完成样式类 */
             .model-loaded .nav-button,
             .model-loaded .cta-button,
             .model-loaded .section-scroll-indicator,
@@ -724,36 +386,9 @@
             .model-loaded #gallery-button,
             .model-loaded #work-button,
             .model-loaded #about-button,
-            .model-loaded #explore-button {
+        .model-loaded #film-button {
                 opacity: 1;
                 visibility: visible;
-            }
-        }
-
-        /* 新增：加载完成样式类 */
-        .model-loaded {
-            /* 加载完成的页面样式 */
-        }
-
-        /* 添加按钮点击效果 */
-        .nav-button {
-            transition: all 0.3s ease;
-        }
-
-        .nav-button:active {
-            transform: scale(0.9);
-            transition: transform 0.1s ease;
-        }
-
-        /* 添加按钮点击动画 */
-        @keyframes buttonPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.95); }
-            100% { transform: scale(1); }
-        }
-
-        .nav-button.clicked {
-            animation: buttonPulse 0.3s forwards;
         }
     </style>
 
@@ -790,50 +425,36 @@
 </head>
 <body>
     <div class="page-transition"></div>
-
-    <!-- 导航栏容器 -->
     <div id="nav-container"></div>
 
-    <!-- 主体内容容器 -->
+    <!-- 主体内容 -->
     <main>
         <div id="model-container">
-            <!-- 添加模型包装器 -->
-            <div class="model-wrapper">
-                <!-- 加载指示器 -->
                 <div id="loader">
                     <p>加载中...</p>
                     <div class="loader-bar">
                         <div class="loader-progress" id="progress-bar"></div>
                     </div>
                 </div>
-
-                <!-- 提示文本 -->
                 <div class="model-info" id="model-info">
                     <p></p>
-                </div>
             </div>
         </div>
 
-        <!-- Gallery按钮 - 移到模型容器外部 -->
+        <!-- 导航按钮 -->
         <a href="gallery.html" class="gallery-button nav-button" id="gallery-button">
             <i class="fas fa-images"></i>
             <span>gallery</span>
         </a>
-
-        <!-- Work按钮 - 添加在右侧 -->
         <a href="work.html" class="work-button nav-button" id="work-button">
             <i class="fas fa-briefcase"></i>
             <span>work</span>
         </a>
-
-        <!-- About按钮 - 添加在下方 -->
         <a href="about.html" class="about-button nav-button" id="about-button">
             <i class="fas fa-user"></i>
             <span>about</span>
         </a>
-
-        <!-- Film按钮 - 添加在左侧 -->
-        <a href="film.html" class="explore-button nav-button" id="explore-button">
+        <a href="film.html" class="film-button nav-button" id="film-button">
             <i class="fas fa-film"></i>
             <span>film</span>
         </a>
@@ -851,67 +472,62 @@
 
         // 初始化Three.js场景
         let scene, camera, renderer, controls, model;
-        let clock;
-        let modelPath = './3dLOGOblend_draco.glb'; // 指定模型路径（已重命名文件）
-        let isWireframe = false; // 是否处于线框模式
-        // 为不同浏览器添加特定优化
-        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        let clock = new THREE.Clock();
+        let modelPath = './3dLOGOblend_draco.glb';
         
-        // 渐变颜色设置 - 默认风格（橙色风格）
-        const color1_R = 255, color1_G = 169, color1_B = 85;   // 橙色
-        const color2_R = 232, color2_G = 63, color2_B = 37; // 浅橙色
-        let colorA = new THREE.Color(color1_R/255, color1_G/255, color1_B/255);
-        let colorB = new THREE.Color(color2_R/255, color2_G/255, color2_B/255);
-
-        // 第二种渐变颜色设置 - 紫蓝风格
-        const blue1_R = 154, blue1_G = 203, blue1_B = 208;  // 蓝色
-        const blue2_R = 54, blue2_G = 116, blue2_B = 181; // 淡蓝色
-        let purpleBlueColorA = new THREE.Color(blue1_R/255, blue1_G/255, blue1_B/255);
-        let purpleBlueColorB = new THREE.Color(blue2_R/255, blue2_G/255, blue2_B/255);
-
-        // 第三种渐变颜色设置 - 浅米色到淡绿色
-        const orange1_R = 253, orange1_G = 250, orange1_B = 246; // 浅米色
-        const orange2_R = 153, orange2_G = 188, orange2_B = 133; // 淡绿色
-        let orangeColorA = new THREE.Color(orange1_R/255, orange1_G/255, orange1_B/255);
-        let orangeColorB = new THREE.Color(orange2_R/255, orange2_G/255, orange2_B/255);
+        // 设备检测
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        const isMobile = window.innerWidth <= 768;
+        
+        // 颜色配置 - 统一管理
+        const colorSchemes = [
+            { // 默认橙色风格
+                colorA: new THREE.Color(255/255, 169/255, 85/255),
+                colorB: new THREE.Color(232/255, 63/255, 37/255),
+                buttonColor: "rgb(232, 63, 37)"
+            },
+            { // 蓝紫风格
+                colorA: new THREE.Color(154/255, 203/255, 208/255),
+                colorB: new THREE.Color(54/255, 116/255, 181/255),
+                buttonColor: "rgb(54, 116, 181)"
+            },
+            { // 浅米色到淡绿色
+                colorA: new THREE.Color(253/255, 250/255, 246/255),
+                colorB: new THREE.Color(153/255, 188/255, 133/255),
+                buttonColor: "rgb(153, 188, 133)"
+            },
+            { // 线框模式
+                buttonColor: "#8B4513" // 棕色
+            }
+        ];
 
         // DOM元素
         const loader = document.getElementById('loader');
         const progressBar = document.getElementById('progress-bar');
         const modelInfo = document.getElementById('model-info');
         const container = document.getElementById('model-container');
+        const buttons = {
+            gallery: document.getElementById('gallery-button'),
+            work: document.getElementById('work-button'),
+            about: document.getElementById('about-button'),
+            film: document.getElementById('film-button')
+        };
 
+        // 模型状态
+        let modelStyleState = 0;
+        let isRotating = false;
+        let rotationProgress = 0;
+        let initialRotationState = { x: 0, y: 0, z: 0 };
+        let styleChangeApplied = false;
+        let mouseMoveEnabled = true;
+        let mouseActive = false;
+        
         // 原始材质存储
         const originalMaterials = new Map();
 
-        // 模型样式状态：0=默认渐变，1=紫蓝渐变，2=橙色渐变，3=线框
-        let modelStyleState = 0;
-
-        // 存储动画状态变量
-        let isRotating = false;
-        let rotationProgress = 0;
-        let initialRotationY = 0; // 存储点击前的Y轴旋转值
-        let rotationPhase = 0; // 新增：旋转阶段标识，0=准备阶段（逆时针），1=主旋转阶段（顺时针）
-        let styleChangeApplied = false; // 新增：标记样式变化是否已应用
-
-        // 鼠标交互状态
-        let mouseMoveEnabled = true; // 控制鼠标移动是否影响模型
-
-        // 颜色过渡状态变量 - 删除
-        // let isColorTransitioning = false;
-        // let colorTransitionProgress = 0;
-        let currentModelStyleState = 0;
-        let targetModelStyleState = 0;
-
-        // 各种颜色组合 - 用于颜色过渡
-        const colorSets = [
-            { colorA: new THREE.Color(color1_R/255, color1_G/255, color1_B/255),
-              colorB: new THREE.Color(color2_R/255, color2_G/255, color2_B/255) },
-            { colorA: new THREE.Color(blue1_R/255, blue1_G/255, blue1_B/255),
-              colorB: new THREE.Color(blue2_R/255, blue2_G/255, blue2_B/255) },
-            { colorA: new THREE.Color(orange1_R/255, orange1_G/255, orange1_B/255),
-              colorB: new THREE.Color(orange2_R/255, orange2_G/255, orange2_B/255) }
-        ];
+        // 常量
+        const MAX_TILT = 25 * Math.PI / 180; // 25度
+        const rotationDuration = 1.0; // 旋转动画持续时间(秒)
 
         // 初始化模型加载状态
         window.modelLoaded = false;
@@ -922,60 +538,63 @@
 
             // 创建场景
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xffffff); // 使用白色背景
+            scene.background = new THREE.Color(0xffffff);
 
             // 创建相机
-            const aspectRatio = window.innerWidth / window.innerHeight;
-            const viewSize = 10;
-            // 在移动设备上使用更小的视图尺寸，使模型看起来更小
-            const isMobile = window.innerWidth <= 768;
-            const mobileViewSize = isMobile ? 20 : 10; // 增大视图尺寸使模型看起来更小
+            setupCamera();
 
-            // 针对不同尺寸的移动设备调整视图大小
-            let adjustedViewSize = mobileViewSize;
+            // 创建渲染器
+            setupRenderer();
+
+            // 创建控制器
+            setupControls();
+
+            // 添加灯光
+            addLights();
+
+            // 加载模型
+            loadModel();
+
+            // 添加事件监听
+            setupEventListeners();
+        }
+
+        // 设置相机
+        function setupCamera() {
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            let viewSize = isMobile ? 20 : 10;
+
+            // 根据设备尺寸调整
             if(isMobile) {
                 if(window.innerWidth <= 375) {
-                    // 小型手机
-                    adjustedViewSize = 22;
-                } else if(window.innerWidth >= 420 && window.innerWidth <= 768) {
-                    // 大型手机
-                    adjustedViewSize = 19;
+                    viewSize = 22; // 小型手机
+                } else if(window.innerWidth >= 420) {
+                    viewSize = 19; // 大型手机
                 }
             }
 
             camera = new THREE.OrthographicCamera(
-                -adjustedViewSize * aspectRatio / 2,
-                adjustedViewSize * aspectRatio / 2,
-                adjustedViewSize / 2,
-                -adjustedViewSize / 2,
+                -viewSize * aspectRatio / 2,
+                viewSize * aspectRatio / 2,
+                viewSize / 2,
+                -viewSize / 2,
                 0.1,
                 1000
             );
 
-            // 设置相机位置 - 移动端调整相机位置使模型显示在上方
-            if (isMobile) {
-                camera.position.z = 5;
-                camera.position.y = 0; // 恢复相机正常位置，不再向下移动相机
-            } else {
                 camera.position.z = 5;
             }
 
-            // 创建渲染器
+        // 设置渲染器
+        function setupRenderer() {
             renderer = new THREE.WebGLRenderer({
                 antialias: true,
                 alpha: true,
                 powerPreference: 'high-performance'
             });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.setClearColor(0x000000, 0); // 设置清除颜色为透明
-
-            // Safari特定优化
-            if (isSafari) {
-                // Safari可能在高分辨率设备上性能较慢，降低像素比
-                const pixelRatio = Math.min(1.5, window.devicePixelRatio);
-                renderer.setPixelRatio(pixelRatio);
-            }
+            renderer.setPixelRatio(isSafari ? Math.min(1.5, window.devicePixelRatio) : window.devicePixelRatio);
+            renderer.setClearColor(0x000000, 0);
 
             if (renderer.outputColorSpace !== undefined) {
                 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -984,48 +603,36 @@
             renderer.shadowMap.enabled = true;
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-            // 将渲染器添加到DOM
             container.appendChild(renderer.domElement);
+        }
 
-            // 创建控制器
+        // 设置控制器
+        function setupControls() {
             controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
             controls.rotateSpeed = 0.5;
-            controls.autoRotate = false; // 禁用自动旋转
-            controls.enableRotate = false; // 禁用轨道控制器的旋转功能
-            controls.enableZoom = false; // 禁用缩放功能
-            controls.enablePan = false; // 禁用平移功能
-
-            // 设置固定的视图大小
-            const fixedViewSize = 10; // 设置固定的视图大小
-
-            // 设置缩放限制，确保无法改变缩放水平
+            controls.autoRotate = false;
+            controls.enableRotate = false;
+            controls.enableZoom = false;
+            controls.enablePan = false;
             controls.minZoom = 1.0;
             controls.maxZoom = 1.0;
+        }
 
-            // 添加灯光
-            addLights();
-
-            // 加载模型
-            loadModel();
-
-            // 添加时钟用于动画
-            clock = new THREE.Clock();
-
-            // 监听窗口大小变化
+        // 设置事件监听
+        function setupEventListeners() {
             window.addEventListener('resize', onWindowResize, false);
-
-            // 添加点击事件
             container.addEventListener('click', function(e) {
-                // 确保点击不是发生在Gallery按钮上
-                if (!e.target.closest('.gallery-button')) {
+                if (!e.target.closest('.nav-button')) {
                     toggleWireframe();
                 }
             });
 
-            // 动画循环
-            animate();
+            // 禁用滚轮缩放
+            container.addEventListener('wheel', function(event) {
+                event.preventDefault();
+            }, { passive: false });
         }
 
         // 添加灯光函数
@@ -1053,8 +660,8 @@
             scene.add(backLight);
         }
 
-        // 创建Z轴渐变材质函数
-        function createGradientMaterial() {
+        // 创建渐变材质函数 - 统一处理
+        function createGradientMaterial(colorA, colorB) {
             const vertexShader = `
                 varying vec2 vUv;
                 varying vec3 vPosition;
@@ -1106,109 +713,46 @@
             });
         }
 
-        // 创建紫蓝Z轴渐变材质函数
-        function createPurpleBlueGradientMaterial() {
-            const vertexShader = `
-                varying vec2 vUv;
-                varying vec3 vPosition;
-                varying vec3 vNormal;
-
-                void main() {
-                    vUv = uv;
-                    vPosition = position;
-                    vNormal = normalize(normalMatrix * normal);
-                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        // 应用材质函数 - 统一处理
+        function applyMaterial(styleIndex) {
+            if (styleIndex === 3) {
+                // 线框模式
+                model.traverse(function(child) {
+                    if (child.isMesh) {
+                        if (originalMaterials.has(child.uuid)) {
+                            const originalMat = originalMaterials.get(child.uuid).clone();
+                            originalMat.wireframe = true;
+                            child.material = originalMat;
+                        } else {
+                            const currentMat = child.material.clone();
+                            currentMat.wireframe = true;
+                            child.material = currentMat;
+                        }
+                    }
+                });
+            } else {
+                // 渐变模式
+                const scheme = colorSchemes[styleIndex];
+                const gradientMaterial = createGradientMaterial(scheme.colorA, scheme.colorB);
+                
+                model.traverse(function(child) {
+                    if (child.isMesh) {
+                        child.material = gradientMaterial;
+                    }
+                });
+            }
+            
+            // 更新按钮颜色
+            updateButtonColors(styleIndex);
                 }
-            `;
-
-            const fragmentShader = `
-                uniform vec3 colorA;
-                uniform vec3 colorB;
-                varying vec2 vUv;
-                varying vec3 vPosition;
-                varying vec3 vNormal;
-
-                void main() {
-                    // Z轴渐变 (前->后)
-                    float t = (vPosition.z) * 0.5 + 0.5;
-
-                    // 添加一些法线信息增强渐变效果
-                    float normalFactor = vNormal.z * 0.5 + 0.5;
-
-                    // 混合几何系数和法线系数
-                    t = mix(t, normalFactor, 0.3);
-
-                    // 确保t在0和1之间
-                    t = clamp(t, 0.0, 1.0);
-
-                    // 混合两种颜色
-                    vec3 color = mix(colorA, colorB, t);
-
-                    gl_FragColor = vec4(color, 1.0);
+        
+        // 更新按钮颜色
+        function updateButtonColors(styleIndex) {
+            const buttonColor = colorSchemes[styleIndex].buttonColor;
+            Object.values(buttons).forEach(button => {
+                if (button) {
+                    button.style.color = buttonColor;
                 }
-            `;
-
-            return new THREE.ShaderMaterial({
-                uniforms: {
-                    colorA: { value: purpleBlueColorA },
-                    colorB: { value: purpleBlueColorB }
-                },
-                vertexShader: vertexShader,
-                fragmentShader: fragmentShader,
-                side: THREE.DoubleSide
-            });
-        }
-
-        // 创建橙色Z轴渐变材质函数
-        function createOrangeGradientMaterial() {
-            const vertexShader = `
-                varying vec2 vUv;
-                varying vec3 vPosition;
-                varying vec3 vNormal;
-
-                void main() {
-                    vUv = uv;
-                    vPosition = position;
-                    vNormal = normalize(normalMatrix * normal);
-                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-                }
-            `;
-
-            const fragmentShader = `
-                uniform vec3 colorA;
-                uniform vec3 colorB;
-                varying vec2 vUv;
-                varying vec3 vPosition;
-                varying vec3 vNormal;
-
-                void main() {
-                    // Z轴渐变 (前->后)
-                    float t = (vPosition.z) * 0.5 + 0.5;
-
-                    // 添加一些法线信息增强渐变效果
-                    float normalFactor = vNormal.z * 0.5 + 0.5;
-
-                    // 混合几何系数和法线系数
-                    t = mix(t, normalFactor, 0.3);
-
-                    // 确保t在0和1之间
-                    t = clamp(t, 0.0, 1.0);
-
-                    // 混合两种颜色
-                    vec3 color = mix(colorA, colorB, t);
-
-                    gl_FragColor = vec4(color, 1.0);
-                }
-            `;
-
-            return new THREE.ShaderMaterial({
-                uniforms: {
-                    colorA: { value: orangeColorA },
-                    colorB: { value: orangeColorB }
-                },
-                vertexShader: vertexShader,
-                fragmentShader: fragmentShader,
-                side: THREE.DoubleSide
             });
         }
 
@@ -1218,6 +762,7 @@
 
             // 加载管理器
             const manager = new THREE.LoadingManager();
+            
             manager.onProgress = function(item, loaded, total) {
                 console.log(`加载进度: ${loaded}/${total}`);
                 const progress = (loaded / total * 100);
@@ -1229,55 +774,23 @@
             manager.onLoad = function() {
                 console.log('模型加载完成');
                 loader.style.display = 'none';
-
-                // 不再显示提示文本
                 modelInfo.classList.add('visible');
 
-                // 设置模型跟随鼠标移动交互
+                // 设置交互
                 setupModelInteraction();
-
-                // 设置重力感应系统（移动端）
                 setupDeviceOrientation();
 
                 // 设置初始按钮颜色
-                const galleryButton = document.getElementById('gallery-button');
-                if (galleryButton) {
-                    galleryButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
-                }
-
-                // 设置Work按钮初始颜色
-                const workButton = document.getElementById('work-button');
-                if (workButton) {
-                    workButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
-                }
-
-                // 设置About按钮初始颜色
-                const aboutButton = document.getElementById('about-button');
-                if (aboutButton) {
-                    aboutButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
-                }
-
-                // 设置Film按钮初始颜色
-                const exploreButton = document.getElementById('explore-button');
-                if (exploreButton) {
-                    exploreButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
-                }
+                updateButtonColors(modelStyleState);
 
                 // 标记模型已加载完成
                 window.modelLoaded = true;
-                console.log('模型加载状态已设置为：', window.modelLoaded);
-
-                // 添加标记类，在移动端显示按钮
                 document.body.classList.add('model-loaded');
-                console.log('添加model-loaded类，激活移动端按钮显示');
-
-                // 无论是否为移动设备，都显示按钮
-                galleryButton.classList.add('visible');
-                workButton.classList.add('visible');
-                aboutButton.classList.add('visible');
-                exploreButton.classList.add('visible');
-
-                console.log('按钮已设置为可见');
+                
+                // 显示按钮
+                Object.values(buttons).forEach(button => {
+                    if (button) button.classList.add('visible');
+                });
             };
 
             manager.onError = function(url) {
@@ -1291,7 +804,7 @@
             // 配置DRACO解压器
             const dracoLoader = new DRACOLoader();
             dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
-            dracoLoader.setDecoderConfig({type: 'js'}); // 使用JavaScript解码器
+            dracoLoader.setDecoderConfig({type: 'js'});
             gltfLoader.setDRACOLoader(dracoLoader);
 
             // 加载模型
@@ -1301,53 +814,14 @@
                     console.log('模型加载成功', gltf);
                     model = gltf.scene;
 
-                    // 设置模型位置和比例
-                    model.position.set(0, 0, 0);
+                    // 处理模型位置和缩放
+                    positionAndScaleModel();
 
-                    // 自动缩放模型以适应视图
-                    const box = new THREE.Box3().setFromObject(model);
-                    const size = box.getSize(new THREE.Vector3()).length();
-                    const center = box.getCenter(new THREE.Vector3());
-
-                    model.position.x += (model.position.x - center.x);
-                    model.position.y += (model.position.y - center.y);
-                    model.position.z += (model.position.z - center.z);
-
-                    // 检查是否为移动设备
-                    const isMobile = window.innerWidth <= 768;
-
-                    // 适应正交相机的缩放
-                    let scale = (isMobile ? 7 : 10) / size; // 移动端使用更小的比例
-
-                    // 针对不同尺寸的移动设备调整模型缩放
-                    if(isMobile) {
-                        if(window.innerWidth <= 375) {
-                            // 小型手机
-                            scale = 8 / size; // 增加缩放比例
-                        } else if(window.innerWidth >= 420 && window.innerWidth <= 768) {
-                            // 大型手机
-                            scale = 9.5 / size; // 增加缩放比例
-                        } else {
-                            scale = 9 / size; // 增加缩放比例
-                        }
-                    }
-
-                    model.scale.set(scale, scale, scale);
-
-                    // 在移动端设备上，向上移动模型
-                    if (isMobile) {
-                        // 根据屏幕尺寸调整模型位置
-                        if(window.innerWidth <= 375) {
-                            model.position.y += 4.5; // 位置更高
-                        } else if(window.innerWidth >= 420 && window.innerWidth <= 768) {
-                            model.position.y += 5.0; // 位置更高
-                        } else {
-                            model.position.y += 4.5; // 默认位置
-                        }
-                    }
-
-                    // 遍历模型的所有材质，应用Z轴渐变材质
-                    const gradientMaterial = createGradientMaterial();
+                    // 应用渐变材质
+                    const gradientMaterial = createGradientMaterial(
+                        colorSchemes[0].colorA, 
+                        colorSchemes[0].colorB
+                    );
 
                     model.traverse(function(child) {
                         if (child.isMesh) {
@@ -1365,12 +839,8 @@
 
                     scene.add(model);
 
-                    // 使相机对准模型
-                    controls.target.copy(center);
-                    controls.update();
-
                     // 保存模型初始旋转值
-                    modelInitialRotation = {
+                    initialRotationState = {
                         x: model.rotation.x,
                         y: model.rotation.y,
                         z: model.rotation.z
@@ -1390,532 +860,98 @@
             );
         }
 
-        // 切换线框效果
+        // 处理模型定位和缩放
+        function positionAndScaleModel() {
+            // 设置模型位置和比例
+            model.position.set(0, 0, 0);
+
+            // 自动缩放模型以适应视图
+            const box = new THREE.Box3().setFromObject(model);
+            const size = box.getSize(new THREE.Vector3()).length();
+            const center = box.getCenter(new THREE.Vector3());
+
+            model.position.x += (model.position.x - center.x);
+            model.position.y += (model.position.y - center.y);
+            model.position.z += (model.position.z - center.z);
+
+            // 适应相机的缩放
+            let scale = 10 / size;
+            
+            // 针对不同设备调整
+            if(isMobile) {
+                if(window.innerWidth <= 375) {
+                    scale = 8 / size; // 小型手机
+                    model.position.y += 4.5;
+                } else if(window.innerWidth >= 420 && window.innerWidth <= 768) {
+                    scale = 9.5 / size; // 大型手机
+                    model.position.y += 5.0;
+                } else {
+                    scale = 9 / size;
+                    model.position.y += 4.5;
+                }
+            }
+
+            model.scale.set(scale, scale, scale);
+            
+            // 设置控制目标
+            if (controls) {
+                controls.target.copy(center);
+                controls.update();
+                }
+        }
+
+        // 切换模型外观
         function toggleWireframe() {
-            if (!model) return;
-
-            // 如果已经在旋转，忽略点击
-            if (isRotating) return;
-
+            if (!model || isRotating) return;
+            
             // 开始旋转动画
             startRotationAnimation();
         }
 
-        // 应用样式变化函数 - 现在负责更新UI而不是立即改变材质
-        function applyStyleChange() {
-            // 设置新的样式状态
-            modelStyleState = targetModelStyleState;
-
-            // 仅在线框模式下直接应用，因为线框没有颜色过渡效果
-            if (modelStyleState === 3) {
-                applyWireframeMaterial();
-            } else if (currentModelStyleState === 3) {
-                // 如果是从线框模式切换出来，需要立即应用新的材质
-                switch(modelStyleState) {
-                    case 0:
-                        applyDefaultGradientMaterial();
-                        break;
-                    case 1:
-                        applyPurpleBlueGradientMaterial();
-                        break;
-                    case 2:
-                        applyOrangeGradientMaterial();
-                        break;
-                }
-            }
-
-            // 同时更新Gallery按钮颜色
-            const galleryButton = document.getElementById('gallery-button');
-            if (galleryButton) {
-                // 根据当前模型样式状态设置文字颜色
-                switch(modelStyleState) {
-                    case 0: // 默认渐变风格 - 浅绿色
-                        galleryButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
-                        break;
-                    case 1: // 紫蓝渐变风格
-                        galleryButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
-                        break;
-                    case 2: // 橙色渐变风格
-                        galleryButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
-                        break;
-                    case 3: // 线框模式
-                        galleryButton.style.color = "#8B4513"; // 棕色
-                        break;
-                }
-            }
-
-            // 同时更新Work按钮颜色
-            const workButton = document.getElementById('work-button');
-            if (workButton) {
-                // 根据当前模型样式状态设置文字颜色
-                switch(modelStyleState) {
-                    case 0: // 默认渐变风格 - 浅绿色
-                        workButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
-                        break;
-                    case 1: // 紫蓝渐变风格
-                        workButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
-                        break;
-                    case 2: // 橙色渐变风格
-                        workButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
-                        break;
-                    case 3: // 线框模式
-                        workButton.style.color = "#8B4513"; // 棕色
-                        break;
-                }
-            }
-
-            // 同时更新About按钮颜色
-            const aboutButton = document.getElementById('about-button');
-            if (aboutButton) {
-                // 根据当前模型样式状态设置文字颜色
-                switch(modelStyleState) {
-                    case 0: // 默认渐变风格 - 浅绿色
-                        aboutButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
-                        break;
-                    case 1: // 紫蓝渐变风格
-                        aboutButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
-                        break;
-                    case 2: // 橙色渐变风格
-                        aboutButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
-                        break;
-                    case 3: // 线框模式
-                        aboutButton.style.color = "#8B4513"; // 棕色
-                        break;
-                }
-            }
-
-            // 同时更新Film按钮颜色
-            const exploreButton = document.getElementById('explore-button');
-            if (exploreButton) {
-                // 根据当前模型样式状态设置文字颜色
-                switch(modelStyleState) {
-                    case 0: // 默认渐变风格 - 浅绿色
-                        exploreButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
-                        break;
-                    case 1: // 紫蓝渐变风格
-                        exploreButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
-                        break;
-                    case 2: // 橙色渐变风格
-                        exploreButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
-                        break;
-                    case 3: // 线框模式
-                        exploreButton.style.color = "#8B4513"; // 棕色
-                        break;
-                }
-            }
-
-            styleChangeApplied = true; // 标记样式变化已应用
-        }
-
-        // 专门用于应用线框材质
-        function applyWireframeMaterial() {
-            model.traverse(function(child) {
-                if (child.isMesh) {
-                    if (originalMaterials.has(child.uuid)) {
-                        // 恢复原始材质并设置为线框
-                        const originalMat = originalMaterials.get(child.uuid).clone();
-                        originalMat.wireframe = true;
-                        child.material = originalMat;
-                    } else {
-                        // 如果没有原始材质，使用当前材质设置为线框
-                        const currentMat = child.material.clone();
-                        currentMat.wireframe = true;
-                        child.material = currentMat;
-                    }
-                }
-            });
-        }
-
-        // 应用默认渐变材质
-        function applyDefaultGradientMaterial() {
-            const gradientMaterial = createGradientMaterial();
-            model.traverse(function(child) {
-                if (child.isMesh) {
-                    child.material = gradientMaterial;
-                }
-            });
-        }
-
-        // 应用紫蓝渐变材质
-        function applyPurpleBlueGradientMaterial() {
-            const purpleBlueGradient = createPurpleBlueGradientMaterial();
-            model.traverse(function(child) {
-                if (child.isMesh) {
-                    child.material = purpleBlueGradient;
-                }
-            });
-        }
-
-        // 应用橙色渐变材质
-        function applyOrangeGradientMaterial() {
-            const orangeGradient = createOrangeGradientMaterial();
-            model.traverse(function(child) {
-                if (child.isMesh) {
-                    child.material = orangeGradient;
-                }
-            });
-        }
-
-        // 开始旋转动画函数
+        // 开始旋转动画
         function startRotationAnimation() {
             isRotating = true;
             rotationProgress = 0;
-            rotationPhase = 0; // 从准备阶段开始
-            styleChangeApplied = false; // 重置样式变化标记
+            styleChangeApplied = false;
 
-            // 存储点击前的旋转状态
-            initialRotationY = model.rotation.y;
-
-            // 准备颜色过渡
-            currentModelStyleState = modelStyleState;
-            targetModelStyleState = (modelStyleState + 1) % 4;
-
-            // 在旋转期间禁用鼠标跟随
-            mouseMoveEnabled = false;
-
-            // 保存当前所有轴的旋转状态
+            // 存储当前旋转状态
             initialRotationState = {
                 x: model.rotation.x,
                 y: model.rotation.y,
                 z: model.rotation.z
             };
+
+            // 准备下一种样式
+            const nextStyle = (modelStyleState + 1) % 4;
+            
+            // 临时禁用鼠标跟随
+            mouseMoveEnabled = false;
         }
 
-        // 窗口大小变化处理函数
-        function onWindowResize() {
-            const aspectRatio = window.innerWidth / window.innerHeight;
-            // 在移动设备上使用更小的视图尺寸，使模型看起来更小
-            const isMobile = window.innerWidth <= 768;
-            const mobileViewSize = isMobile ? 20 : 10; // 增大视图尺寸使模型看起来更小
-
-            // 针对不同尺寸的移动设备调整视图大小
-            let adjustedViewSize = mobileViewSize;
-            if(isMobile) {
-                if(window.innerWidth <= 375) {
-                    // 小型手机
-                    adjustedViewSize = 22;
-                } else if(window.innerWidth >= 420 && window.innerWidth <= 768) {
-                    // 大型手机
-                    adjustedViewSize = 19;
-                }
-            }
-
-            camera.left = -adjustedViewSize * aspectRatio / 2;
-            camera.right = adjustedViewSize * aspectRatio / 2;
-            camera.top = adjustedViewSize / 2;
-            camera.bottom = -adjustedViewSize / 2;
-
-            // 调整相机位置
-            if (isMobile) {
-                camera.position.y = 0; // 恢复相机正常位置
-                // 如果模型存在，直接调整模型位置
-                if (model) {
-                    // 根据屏幕尺寸调整模型位置
-                    if(window.innerWidth <= 375) {
-                        model.position.y = 4.5; // 位置更高
-                    } else if(window.innerWidth >= 420 && window.innerWidth <= 768) {
-                        model.position.y = 5.0; // 位置更高
-                    } else {
-                        model.position.y = 4.5; // 默认位置
-                    }
-
-                    // 重新设置模型的缩放比例
-                    const box = new THREE.Box3().setFromObject(model);
-                    const size = box.getSize(new THREE.Vector3()).length();
-
-                    let scale;
-                    if(window.innerWidth <= 375) {
-                        scale = 8 / size; // 增加缩放比例
-                    } else if(window.innerWidth >= 420 && window.innerWidth <= 768) {
-                        scale = 9.5 / size; // 增加缩放比例
-                    } else {
-                        scale = 9 / size; // 增加缩放比例
-                    }
-
-                    model.scale.set(scale, scale, scale);
-                }
-            } else {
-                camera.position.y = 0;
-            }
-
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-
-            // 如果模型已加载，调整模型大小
-            if (model && isMobile) {
-                // 在移动端缩小模型
-                const box = new THREE.Box3().setFromObject(model);
-                const size = box.getSize(new THREE.Vector3()).length();
-                const scale = (isMobile ? 7 : 10) / size; // 移动端使用更小的比例
-                model.scale.set(scale, scale, scale);
-            }
-
-            // 确保按钮在移动设备上始终可见
-            if (isMobile) {
-                const galleryButton = document.getElementById('gallery-button');
-                const workButton = document.getElementById('work-button');
-                const aboutButton = document.getElementById('about-button');
-                const exploreButton = document.getElementById('explore-button');
-
-                if (galleryButton) galleryButton.classList.add('visible');
-                if (workButton) workButton.classList.add('visible');
-                if (aboutButton) aboutButton.classList.add('visible');
-                if (exploreButton) exploreButton.classList.add('visible');
-            }
+        // 设置模型交互
+        function setupModelInteraction() {
+            // 设置鼠标跟随
+            document.addEventListener('mousemove', handleMouseMove);
+            
+            // 鼠标离开页面恢复原始姿态
+            document.addEventListener('mouseleave', function() {
+                if (isRotating || (isMobile && deviceOrientationEnabled)) return;
+                
+                mouseActive = false;
+                targetRotationX = initialRotationState.x;
+                targetRotationY = initialRotationState.y;
+                targetRotationZ = initialRotationState.z;
+            });
         }
 
-        // 定义鼠标交互变量
+        // 鼠标移动控制
         let targetRotationX = 0;
         let targetRotationY = 0;
         let targetRotationZ = 0;
-        let mouseActive = false;
-        let modelInitialRotation = { x: 0, y: 0, z: 0 };
-        let initialRotationState = { x: 0, y: 0, z: 0 }; // 存储旋转开始前的完整旋转状态
-
-        // 角度转弧度常量
-        const DEG_TO_RAD = Math.PI / 180;
-
-        // 设置最大倾斜角度（弧度） - 增加到25度使转动幅度更大
-        const MAX_TILT = 25 * DEG_TO_RAD;
-
-        // 存储动画帧ID，用于清理
-        let animationFrameId = null;
-
-        // 动画循环函数
-        function animate() {
-            // 存储动画帧ID，便于清理
-            window.animationFrameId = requestAnimationFrame(animate);
-            controls.update();
-
-            // 获取自上一帧以来的时间增量（以秒为单位）
-            const deltaTime = clock.getDelta();
-            // 基础旋转增量
-            let baseRotationIncrement = 0.01;
-            // 准备阶段旋转增量
-            let prepPhaseIncrement = 0.025;
-            
-            // Safari浏览器特定优化，增加旋转速度
-            if (isSafari) {
-                baseRotationIncrement = 0.015; // Safari中提高旋转速度
-                prepPhaseIncrement = 0.035; // Safari中提高旋转速度
-            }
-            
-            // 旋转动画逻辑
-            if (model && isRotating) {
-                // 根据不同阶段应用不同的旋转逻辑
-                if (rotationPhase === 0) {
-                    // 准备阶段 - 逆时针旋转一小段（约15度）
-                    // 使用时间增量来使旋转速度与帧率无关
-                    rotationProgress += prepPhaseIncrement * (60 * deltaTime);
-                    
-                    // 确保Safari中的旋转速度适当
-                    if (isSafari && rotationProgress > 1) {
-                        rotationProgress = 1;
-                    }
-                    
-                    const easeRotation = easeInOutCubic(rotationProgress);
-
-                    // 逆时针旋转一小段角度（约15度，π/12弧度）
-                    model.rotation.x = initialRotationState.x;
-                    model.rotation.y = initialRotationY - (Math.PI / 12 * easeRotation);
-                    model.rotation.z = initialRotationState.z;
-
-                    if (rotationProgress >= 1) {
-                        // 准备阶段结束，开始主旋转
-                        rotationPhase = 1;
-                        rotationProgress = 0;
-                        // 更新初始旋转值为当前值
-                        initialRotationY = model.rotation.y;
-                    }
-                } else if (rotationPhase === 1) {
-                    // 主旋转阶段 - 顺时针旋转一整圈多一点
-                    // 使用时间增量来使旋转速度与帧率无关
-                    rotationProgress += baseRotationIncrement * (60 * deltaTime);
-                    
-                    // 确保Safari中的旋转速度适当
-                    if (isSafari && rotationProgress > 1) {
-                        rotationProgress = 1;
-                    }
-
-                    // 当旋转进行到50%时应用样式变化（提前到50%位置）
-                    if (rotationProgress >= 0.5 && !styleChangeApplied) {
-                        // 应用样式变化
-                        modelStyleState = targetModelStyleState;
-
-                        // 根据新的状态立即应用材质
-                        switch(modelStyleState) {
-                            case 0:
-                                applyDefaultGradientMaterial();
-                                break;
-                            case 1:
-                                applyPurpleBlueGradientMaterial();
-                                break;
-                            case 2:
-                                applyOrangeGradientMaterial();
-                                break;
-                            case 3:
-                                applyWireframeMaterial();
-                                break;
-                        }
-
-                        // 更新Gallery按钮颜色
-                        const galleryButton = document.getElementById('gallery-button');
-                        if (galleryButton) {
-                            // 根据当前模型样式状态设置文字颜色
-                            switch(modelStyleState) {
-                                case 0: // 默认渐变风格 - 浅绿色
-                                    galleryButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
-                                    break;
-                                case 1: // 紫蓝渐变风格
-                                    galleryButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
-                                    break;
-                                case 2: // 橙色渐变风格
-                                    galleryButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
-                                    break;
-                                case 3: // 线框模式
-                                    galleryButton.style.color = "#8B4513"; // 棕色
-                                    break;
-                            }
-                        }
-
-                        // 同时更新Work按钮颜色
-                        const workButton = document.getElementById('work-button');
-                        if (workButton) {
-                            // 根据当前模型样式状态设置文字颜色
-                            switch(modelStyleState) {
-                                case 0: // 默认渐变风格 - 浅绿色
-                                    workButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
-                                    break;
-                                case 1: // 紫蓝渐变风格
-                                    workButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
-                                    break;
-                                case 2: // 橙色渐变风格
-                                    workButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
-                                    break;
-                                case 3: // 线框模式
-                                    workButton.style.color = "#8B4513"; // 棕色
-                                    break;
-                            }
-                        }
-
-                        // 同时更新About按钮颜色
-                        const aboutButton = document.getElementById('about-button');
-                        if (aboutButton) {
-                            // 根据当前模型样式状态设置文字颜色
-                            switch(modelStyleState) {
-                                case 0: // 默认渐变风格 - 浅绿色
-                                    aboutButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
-                                    break;
-                                case 1: // 紫蓝渐变风格
-                                    aboutButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
-                                    break;
-                                case 2: // 橙色渐变风格
-                                    aboutButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
-                                    break;
-                                case 3: // 线框模式
-                                    aboutButton.style.color = "#8B4513"; // 棕色
-                                    break;
-                            }
-                        }
-
-                        // 同时更新Film按钮颜色
-                        const exploreButton = document.getElementById('explore-button');
-                        if (exploreButton) {
-                            // 根据当前模型样式状态设置文字颜色
-                            switch(modelStyleState) {
-                                case 0: // 默认渐变风格 - 浅绿色
-                                    exploreButton.style.color = `rgb(${color2_R}, ${color2_G}, ${color2_B})`;
-                                    break;
-                                case 1: // 紫蓝渐变风格
-                                    exploreButton.style.color = `rgb(${blue2_R}, ${blue2_G}, ${blue2_B})`;
-                                    break;
-                                case 2: // 橙色渐变风格
-                                    exploreButton.style.color = `rgb(${orange2_R}, ${orange2_G}, ${orange2_B})`;
-                                    break;
-                                case 3: // 线框模式
-                                    exploreButton.style.color = "#8B4513"; // 棕色
-                                    break;
-                            }
-                        }
-
-                        styleChangeApplied = true; // 标记样式变化已应用
-                    }
-
-                    if (rotationProgress >= 1) {
-                        // 旋转完成
-                        isRotating = false;
-                        rotationProgress = 0;
-                        rotationPhase = 0;
-
-                        // 角度归一化：将Y轴旋转归一化到0-2π范围内，防止角度累积
-                        model.rotation.y = model.rotation.y % (Math.PI * 2);
-
-                        // 旋转结束后，恢复鼠标交互
-                        mouseMoveEnabled = true;
-                    } else {
-                        // 计算当前旋转角度 - 顺时针旋转一整圈多一点（加上之前的15度）
-                        const easeRotation = easeInOutCubic(rotationProgress);
-
-                        // 顺时针旋转一整圈加上之前的角度（π/12）
-                        const fullRotation = Math.PI * 2 + (Math.PI / 12);
-
-                        model.rotation.x = initialRotationState.x;
-                        model.rotation.y = initialRotationY + (fullRotation * easeRotation);
-                        model.rotation.z = initialRotationState.z;
-                    }
-                }
-            }
-
-            // 根据鼠标位置更新模型旋转 - 仅当旋转动画未进行且鼠标交互已启用时
-            if (model && mouseActive && !isRotating && mouseMoveEnabled) {
-                // 使用更平滑的LERP过渡到目标角度
-                // 使用时间增量来使转动速度在不同浏览器中保持一致
-                let lerpFactor = 0.05 * (60 * deltaTime);
-                
-                // Safari浏览器特定优化，增加鼠标跟随平滑度
-                if (isSafari) {
-                    lerpFactor = Math.min(0.15, lerpFactor * 1.5); // Safari中提高鼠标跟随响应速度
-                }
-                
-                // 增大插值系数，使模型响应更加迅速敏捷
-                model.rotation.x += (targetRotationX - model.rotation.x) * lerpFactor;
-                model.rotation.y += (targetRotationY - model.rotation.y) * lerpFactor;
-                model.rotation.z += (targetRotationZ - model.rotation.z) * lerpFactor;
-            }
-
-            renderer.render(scene, camera);
-        }
-
-        // 缓动函数 - 三次方缓入缓出
-        function easeInOutCubic(t) {
-            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        }
-
-        // 添加鼠标跟随交互功能
-        function setupModelInteraction() {
-            const container = document.getElementById('model-container');
-
-            // 保存模型初始旋转值
-            if (model) {
-                modelInitialRotation = {
-                    x: model.rotation.x,
-                    y: model.rotation.y,
-                    z: model.rotation.z
-                };
-            }
-
-            // 禁用滚轮事件，防止缩放
-            container.addEventListener('wheel', function(event) {
-                event.preventDefault();
-            }, { passive: false });
-
-            // 将鼠标移动监听从容器移到document，这样即使鼠标在按钮上也能响应
-            document.addEventListener('mousemove', function(event) {
-                // 如果旋转动画正在进行，忽略鼠标移动
+        
+        function handleMouseMove(event) {
                 if (isRotating || !mouseMoveEnabled) return;
-
-                // 如果是移动设备且重力感应已启用，则忽略鼠标移动
-                if (window.innerWidth <= 768 && deviceOrientationEnabled) return;
+            if (isMobile && deviceOrientationEnabled) return;
 
                 // 获取容器位置信息
                 const rect = container.getBoundingClientRect();
@@ -1926,82 +962,109 @@
                 const mouseX = event.clientX - rect.left;
                 const mouseY = event.clientY - rect.top;
 
-                // 计算鼠标与中心的距离比例（-1到1之间）
+            // 计算鼠标与中心的距离比例(-1到1之间)
                 const distX = (mouseX - centerX) / centerX;
                 const distY = (mouseY - centerY) / centerY;
 
                 // 应用平滑因子，使鼠标移动更加平滑
-                // 使用三次方缓动函数使移动更自然，增大系数使响应更强烈
                 const smoothX = Math.sign(distX) * Math.pow(Math.abs(distX), 1.3) * 1.2;
                 const smoothY = Math.sign(distY) * Math.pow(Math.abs(distY), 1.3) * 1.2;
 
-                // 计算距离中心点的距离（0到1之间）
+            // 计算距离中心点的距离
                 const distance = Math.min(1, Math.sqrt(distX * distX + distY * distY));
 
-                // 降低阈值，使模型对更小范围鼠标移动也有敏感响应
+            // 对鼠标移动做出响应
                 if (distance > 0.02) {
                     mouseActive = true;
 
-                    // 根据平滑化的鼠标位置计算倾斜角度
-                    // X轴旋转（前后倾斜）
-                    targetRotationX = smoothY * MAX_TILT;
-
-                    // Y轴旋转（左右旋转）
-                    targetRotationY = smoothX * MAX_TILT;
-
-                    // Z轴旋转（侧向倾斜）- 使用平滑化的值，增大系数使侧向倾斜更明显
-                    targetRotationZ = (smoothX * smoothY) * (MAX_TILT * 0.5);
+                // 根据鼠标位置计算倾斜角度
+                targetRotationX = smoothY * MAX_TILT;  // 前后倾斜
+                targetRotationY = smoothX * MAX_TILT;  // 左右旋转
+                targetRotationZ = (smoothX * smoothY) * (MAX_TILT * 0.5); // 侧向倾斜
                 } else {
-                    // 当鼠标在中心区域时，缓慢恢复到初始状态
-                    // 不立即设置mouseActive=false，而是让模型缓慢回到初始位置
-                    targetRotationX = modelInitialRotation.x;
-                    targetRotationY = modelInitialRotation.y;
-                    targetRotationZ = modelInitialRotation.z;
+                // 鼠标在中心区域时，恢复到初始状态
+                targetRotationX = initialRotationState.x;
+                targetRotationY = initialRotationState.y;
+                targetRotationZ = initialRotationState.z;
 
-                    // 如果模型已经非常接近初始位置，才设置mouseActive=false
-                    if (Math.abs(model.rotation.x - modelInitialRotation.x) < 0.01 &&
-                        Math.abs(model.rotation.y - modelInitialRotation.y) < 0.01 &&
-                        Math.abs(model.rotation.z - modelInitialRotation.z) < 0.01) {
+                // 接近初始位置时停止移动
+                if (model && 
+                    Math.abs(model.rotation.x - initialRotationState.x) < 0.01 &&
+                    Math.abs(model.rotation.y - initialRotationState.y) < 0.01 &&
+                    Math.abs(model.rotation.z - initialRotationState.z) < 0.01) {
                         mouseActive = false;
                     }
                 }
-            });
-
-            // 鼠标离开页面时，恢复模型初始状态
-            document.addEventListener('mouseleave', function() {
-                // 如果旋转动画正在进行，忽略鼠标移动
-                if (isRotating) return;
-
-                // 如果是移动设备且重力感应已启用，则不重置旋转
-                if (window.innerWidth <= 768 && deviceOrientationEnabled) return;
-
-                mouseActive = false;
-                targetRotationX = modelInitialRotation.x;
-                targetRotationY = modelInitialRotation.y;
-                targetRotationZ = modelInitialRotation.z;
-            });
         }
 
-        // 重力感应相关变量
+        // 窗口大小变化处理
+        function onWindowResize() {
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            const isMobile = window.innerWidth <= 768;
+            let viewSize = isMobile ? 20 : 10;
+
+            // 针对不同尺寸的设备调整
+            if(isMobile) {
+                if(window.innerWidth <= 375) {
+                    viewSize = 22; // 小型手机
+                } else if(window.innerWidth >= 420) {
+                    viewSize = 19; // 大型手机
+                }
+            }
+
+            // 更新相机参数
+            camera.left = -viewSize * aspectRatio / 2;
+            camera.right = viewSize * aspectRatio / 2;
+            camera.top = viewSize / 2;
+            camera.bottom = -viewSize / 2;
+            camera.updateProjectionMatrix();
+            
+            // 调整渲染器尺寸
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            // 如果模型已加载，调整位置和缩放
+            if (model) {
+                positionAndScaleModel();
+            }
+
+            // 确保按钮在移动设备上可见
+            if (isMobile) {
+                Object.values(buttons).forEach(button => {
+                    if (button) button.classList.add('visible');
+            });
+            }
+        }
+
+        // 设备方向控制
         let deviceOrientationEnabled = false;
         let lastBeta = 0;
         let lastGamma = 0;
 
-        // 设置重力感应系统
+        // 设置设备方向控制
         function setupDeviceOrientation() {
-            // 检查是否为移动设备
-            const isMobile = window.innerWidth <= 768;
-            if (!isMobile) return; // 非移动设备不启用重力感应
+            // 只在移动设备上启用
+            if (!isMobile) return;
 
             console.log('尝试启用移动端重力感应...');
 
-            // 检查浏览器是否支持重力感应
+            // 检查浏览器支持
             if (window.DeviceOrientationEvent) {
                 // iOS 13+ 需要请求权限
                 if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                    console.log('iOS设备，需要请求权限');
+                    createPermissionButton();
+                } else {
+                    // 其他设备直接启用
+                    window.addEventListener('deviceorientation', handleDeviceOrientation);
+                    deviceOrientationEnabled = true;
+                    console.log('非iOS设备，自动启用重力感应');
+                }
+            } else {
+                console.log('设备不支持重力感应');
+            }
+        }
 
-                    // 创建一个更美观的按钮请求权限
+        // 创建权限按钮（仅iOS需要）
+        function createPermissionButton() {
                     const permissionButton = document.createElement('button');
                     permissionButton.textContent = '开启重力感应';
                     permissionButton.style.position = 'fixed';
@@ -2020,30 +1083,27 @@
                     permissionButton.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
                     permissionButton.style.transition = 'all 0.3s ease';
 
-                    // 添加悬停效果
+            // 悬停效果
                     permissionButton.onmouseover = function() {
                         this.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
                         this.style.transform = 'translate(-50%, -50%) scale(1.05)';
                     };
-
                     permissionButton.onmouseout = function() {
                         this.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
                         this.style.transform = 'translate(-50%, -50%)';
                     };
 
+            // 点击处理
                     permissionButton.addEventListener('click', function() {
                         DeviceOrientationEvent.requestPermission()
                             .then(function(response) {
                                 if (response === 'granted') {
-                                    // 权限获得后添加事件监听
                                     window.addEventListener('deviceorientation', handleDeviceOrientation);
                                     deviceOrientationEnabled = true;
                                     console.log('iOS设备重力感应权限已获取');
-                                    // 移除按钮
                                     document.body.removeChild(permissionButton);
                                 } else {
                                     console.log('iOS设备重力感应权限被拒绝');
-                                    // 提示用户权限被拒绝
                                     permissionButton.textContent = '权限被拒绝，请重试';
                                     permissionButton.style.backgroundColor = 'rgba(200, 0, 0, 0.8)';
                                     setTimeout(() => {
@@ -2064,40 +1124,28 @@
                     });
 
                     document.body.appendChild(permissionButton);
-                } else {
-                    // 非iOS设备直接自动添加事件监听
-                    console.log('非iOS设备，自动启用重力感应');
-                    window.addEventListener('deviceorientation', handleDeviceOrientation);
-                    deviceOrientationEnabled = true;
-                }
-            } else {
-                console.log('设备不支持重力感应');
-            }
         }
 
-        // 处理重力感应事件
+        // 处理设备方向事件
         function handleDeviceOrientation(event) {
-            // 如果旋转动画正在进行，忽略重力感应
             if (isRotating || !mouseMoveEnabled || !model) return;
 
             // 获取设备倾斜角度
             const beta = event.beta;  // X轴旋转角度 (-180到180) - 前后倾斜
-            const gamma = event.gamma; // Y轴旋转角度 (-90夀90) - 左右倾斜
+            const gamma = event.gamma; // Y轴旋转角度 (-90到90) - 左右倾斜
 
-            // 应用平滑过渡
+            // 首次初始化
             if (lastBeta === 0 && lastGamma === 0) {
                 lastBeta = beta;
                 lastGamma = gamma;
             }
 
-            // 平滑过渡当前值 - 使用更平滑的插值因子
-            lastBeta = lastBeta * 0.95 + beta * 0.05; // 增加平滑度
-            lastGamma = lastGamma * 0.95 + gamma * 0.05; // 增加平滑度
+            // 平滑过渡
+            lastBeta = lastBeta * 0.95 + beta * 0.05;
+            lastGamma = lastGamma * 0.95 + gamma * 0.05;
 
-            // 将角度转换为弧度，并限制最大倾斜角度
+            // 应用缓动
             const maxTiltDegrees = 15;
-
-            // 应用缓动函数使移动更自然
             const smoothBeta = Math.sign(lastBeta) * Math.pow(Math.abs(lastBeta / maxTiltDegrees), 1.2) * maxTiltDegrees;
             const smoothGamma = Math.sign(lastGamma) * Math.pow(Math.abs(lastGamma / maxTiltDegrees), 1.2) * maxTiltDegrees;
 
@@ -2105,52 +1153,95 @@
             const gammaRad = (Math.max(-maxTiltDegrees, Math.min(maxTiltDegrees, smoothGamma)) / 180) * Math.PI;
 
             // 设置目标旋转角度
-            targetRotationX = -betaRad; // 前后倾斜，反向以获得自然的感觉
+            targetRotationX = -betaRad;  // 前后倾斜
             targetRotationY = gammaRad;  // 左右倾斜
-            targetRotationZ = gammaRad * betaRad * 0.3; // 添加轻微的Z轴旋转
+            targetRotationZ = gammaRad * betaRad * 0.3; // 轻微Z轴旋转
 
-            // 激活鼠标交互状态，使得animate函数中的LERP生效
             mouseActive = true;
         }
 
-        // 清理Three.js资源的函数
-        function cleanupThreeJS() {
-            // 取消动画循环
-            if (animationFrameId) {
-                cancelAnimationFrame(animationFrameId);
-            }
+        // 添加触摸事件支持
+        function setupTouchEvents() {
+            if (!isMobile) return;
 
-            // 如果存在渲染器，则进行清理
-            if (renderer) {
-                renderer.dispose();
-                // 从DOM中移除canvas
-                const canvas = renderer.domElement;
-                if (canvas && canvas.parentNode) {
-                    canvas.parentNode.removeChild(canvas);
+            // 监听触摸开始
+            container.addEventListener('touchstart', function(e) {
+                if (isRotating) return;
+                toggleWireframe();
+            });
+
+            // 阻止默认的触摸行为
+            document.addEventListener('touchmove', function(e) {
+                if (e.scale !== 1) {
+                    e.preventDefault();
                 }
-            }
-
-            // 清理场景中的对象
-            if (scene) {
-                scene.traverse(object => {
-                    if (object.geometry) {
-                        object.geometry.dispose();
-                    }
-
-                    if (object.material) {
-                        if (Array.isArray(object.material)) {
-                            object.material.forEach(material => material.dispose());
-                        } else {
-                            object.material.dispose();
-                        }
-                    }
-                });
-            }
+            }, { passive: false });
         }
 
-        // 添加模型加载状态变量
-        // Three.js资源清理函数
-        window.cleanupThreeJS = function() {
+        // 缓动函数
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        // 渲染循环
+        function animate() {
+            window.animationFrameId = requestAnimationFrame(animate);
+            controls.update();
+
+            // 计算时间增量
+            const deltaTime = clock.getDelta();
+            
+            // 处理模型旋转动画
+            if (model && isRotating) {
+                rotationProgress += deltaTime / rotationDuration; // 使用实际时间进度
+                
+                if (rotationProgress >= 0.5 && !styleChangeApplied) {
+                    // 当旋转进行到50%时应用新样式
+                    modelStyleState = (modelStyleState + 1) % 4;
+                    applyMaterial(modelStyleState);
+                    styleChangeApplied = true;
+                }
+                
+                if (rotationProgress >= 1.0) {
+                    // 旋转完成
+                    isRotating = false;
+                    rotationProgress = 0;
+                    
+                    // 角度归一化，防止角度累积
+                    model.rotation.y = model.rotation.y % (Math.PI * 2);
+                    
+                    // 恢复鼠标交互
+                    mouseMoveEnabled = true;
+                        } else {
+                    // 计算旋转角度 - 使用缓动函数实现平滑旋转
+                    const easeRotation = easeInOutCubic(rotationProgress);
+                    
+                    // 一个完整的旋转 + 额外的角度，实现超过360度的旋转
+                    const fullRotation = Math.PI * 2 + (Math.PI / 12);
+                    model.rotation.y = initialRotationState.y + (fullRotation * easeRotation);
+                }
+            }
+            
+            // 处理鼠标/设备方向控制的模型旋转
+            if (model && mouseActive && !isRotating && mouseMoveEnabled) {
+                // 平滑过渡到目标角度
+                const lerpFactor = Math.min(0.15, 0.05 * (60 * deltaTime));
+                
+                model.rotation.x += (targetRotationX - model.rotation.x) * lerpFactor;
+                model.rotation.y += (targetRotationY - model.rotation.y) * lerpFactor;
+                model.rotation.z += (targetRotationZ - model.rotation.z) * lerpFactor;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // 清理Three.js资源
+        function cleanupThreeJS() {
+            if (window.animationFrameId) {
+                cancelAnimationFrame(window.animationFrameId);
+                window.animationFrameId = null;
+            }
+
             if (renderer) {
                 renderer.dispose();
                 renderer.forceContextLoss();
@@ -2171,58 +1262,22 @@
                     }
                 });
             }
-
-            if (window.animationFrameId) {
-                cancelAnimationFrame(window.animationFrameId);
-                window.animationFrameId = null;
             }
-        };
+
+        // 全局访问点
+        window.cleanupThreeJS = cleanupThreeJS;
 
         // 页面加载完成后初始化
         window.addEventListener('load', function() {
             init();
-            // 设置触摸事件
+            animate();
             setupTouchEvents();
         });
-
-        // 添加触摸事件支持
-        function setupTouchEvents() {
-            // 检查是否为移动设备
-            const isMobile = window.innerWidth <= 768;
-            if (!isMobile) return;
-
-            const container = document.getElementById('model-container');
-
-            // 监听触摸开始
-            container.addEventListener('touchstart', function(e) {
-                // 如果旋转动画正在进行，忽略触摸
-                if (isRotating) return;
-
-                // 开始旋转动画
-                toggleWireframe();
-            });
-
-            // 阻止默认的触摸行为，防止页面缩放
-            document.addEventListener('touchmove', function(e) {
-                if (e.scale !== 1) {
-                    e.preventDefault();
-                }
-            }, { passive: false });
-        }
-
-        // 查找模型加载完成的函数，在其中添加以下代码：
-        function onLoadComplete() {
-            // 现有的加载完成代码...
-
-            // 添加标记类，显示按钮
-            document.body.classList.add('model-loaded');
-
-            console.log('3D模型加载完成，显示按钮');
-        }
     </script>
 
+    <!-- 在最后的Three.js脚本后添加简化的导航脚本 -->
     <script>
-        // 传统页面过渡效果
+        // 页面过渡和导航处理
         document.addEventListener('DOMContentLoaded', function() {
             // 页面加载时的淡出效果
             const transition = document.querySelector('.page-transition');
@@ -2231,238 +1286,57 @@
                 transition.style.opacity = '0';
             }, 500);
 
-            // 添加导航锁，防止快速重复点击
+            // 导航锁，防止重复点击
             let isNavigating = false;
 
-            // 处理Gallery按钮的显示和隐藏
-            const galleryButton = document.getElementById('gallery-button');
-            const workButton = document.getElementById('work-button');
-            const aboutButton = document.getElementById('about-button');
-            const exploreButton = document.getElementById('explore-button');
-            const modelContainer = document.getElementById('model-container');
+            // 导航按钮集合
+            const navButtons = {
+                gallery: document.getElementById('gallery-button'),
+                work: document.getElementById('work-button'),
+                about: document.getElementById('about-button'),
+                film: document.getElementById('film-button')
+            };
 
-            // 初始状态下，如果是移动设备，直接设置按钮为可见
-            if (window.innerWidth <= 768) {
-                if (galleryButton) galleryButton.classList.add('visible');
-                if (workButton) workButton.classList.add('visible');
-                if (aboutButton) aboutButton.classList.add('visible');
-                if (exploreButton) exploreButton.classList.add('visible');
-            } else {
-                // 在桌面设备上初始状态隐藏按钮
-                galleryButton.classList.remove('visible');
-                workButton.classList.remove('visible');
-                aboutButton.classList.remove('visible');
-                exploreButton.classList.remove('visible');
-            }
-
-            // 鼠标移动时显示或隐藏按钮
-            document.addEventListener('mousemove', function(e) {
-                // 如果模型尚未加载完成，不显示任何按钮
-                if (!window.modelLoaded) return;
-
-                // 获取视窗尺寸
-                const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
-
-                // 计算鼠标相对视窗比例位置
-                const mouseXRatio = e.clientX / viewportWidth;
-                const mouseYRatio = e.clientY / viewportHeight;
-
-                // 更新按钮可见性
-                updateButtonVisibility(mouseXRatio, mouseYRatio);
-            });
-
-            // 添加单独函数处理按钮可见性
-            function updateButtonVisibility(mouseXRatio, mouseYRatio) {
-                // 如果模型尚未加载完成，不显示任何按钮
-                if (!window.modelLoaded) {
-                    console.log('模型未加载完成，不显示按钮');
-                    return;
-                }
-
-                console.log('更新按钮可见性，模型已加载');
-
-                // 在移动设备上总是显示所有按钮，但仅当模型加载完成后
-                if (window.innerWidth <= 768) {
-                    galleryButton.classList.add('visible');
-                    workButton.classList.add('visible');
-                    aboutButton.classList.add('visible');
-                    exploreButton.classList.add('visible');
-                    return;
-                }
-
-                // 桌面端，让按钮保持可见状态，不再根据鼠标位置隐藏
-                galleryButton.classList.add('visible');
-                workButton.classList.add('visible');
-                aboutButton.classList.add('visible');
-                exploreButton.classList.add('visible');
-            }
-
-            // 鼠标离开视窗时隐藏所有按钮 - 取消这个功能，让按钮始终可见
-            document.addEventListener('mouseleave', function() {
-                // 不再隐藏按钮
-                console.log('鼠标离开视窗，按钮保持可见');
-            });
-
-            // 为Gallery按钮添加点击事件处理
-            galleryButton.addEventListener('click', function(e) {
-                // 只阻止默认行为，允许事件继续冒泡
+            // 为所有导航按钮添加统一的点击事件处理
+            Object.entries(navButtons).forEach(([page, button]) => {
+                if (button) {
+                    button.addEventListener('click', function(e) {
                 e.preventDefault();
-
-                console.log('导航到Gallery页面');
-
-                // 设置导航锁，防止重复点击
-                if (isNavigating) {
-                    return;
-                }
+                        if (isNavigating) return; // 防止重复点击
+                        
                 isNavigating = true;
-
-                // 添加点击动画效果
-                galleryButton.classList.add('clicked');
+                        button.classList.add('clicked');
 
                 // 显示过渡层
-                const transition = document.querySelector('.page-transition');
                 transition.style.visibility = 'visible';
                 transition.style.opacity = '1';
 
-                // 延迟清理Three.js资源，确保过渡效果先显示
+                        // 延迟导航
                 setTimeout(function() {
-                    // 在导航前清理Three.js资源
+                            // 清理Three.js资源
                     if (typeof cleanupThreeJS === 'function') {
                         cleanupThreeJS();
                     }
-
-                    // 在清理资源后跳转
-                    window.location.href = 'gallery.html';
+                            // 跳转到目标页面
+                            window.location.href = `${page}.html`;
                 }, 300);
             });
-
-            // 为Work按钮添加点击事件处理
-            workButton.addEventListener('click', function(e) {
-                // 只阻止默认行为，允许事件继续冒泡
-                e.preventDefault();
-
-                console.log('导航到Work页面');
-
-                // 设置导航锁，防止重复点击
-                if (isNavigating) {
-                    return;
                 }
-                isNavigating = true;
-
-                // 添加点击动画效果
-                workButton.classList.add('clicked');
-
-                // 显示过渡层
-                const transition = document.querySelector('.page-transition');
-                transition.style.visibility = 'visible';
-                transition.style.opacity = '1';
-
-                // 延迟清理Three.js资源，确保过渡效果先显示
-                setTimeout(function() {
-                    // 在导航前清理Three.js资源
-                    if (typeof cleanupThreeJS === 'function') {
-                        cleanupThreeJS();
-                    }
-
-                    // 在清理资源后跳转
-                    window.location.href = 'work.html';
-                }, 300);
             });
 
-            // 为About按钮添加点击事件处理
-            aboutButton.addEventListener('click', function(e) {
-                // 只阻止默认行为，允许事件继续冒泡
-                e.preventDefault();
-
-                console.log('导航到About页面');
-
-                // 设置导航锁，防止重复点击
-                if (isNavigating) {
-                    return;
-                }
-                isNavigating = true;
-
-                // 添加点击动画效果
-                aboutButton.classList.add('clicked');
-
-                // 显示过渡层
-                const transition = document.querySelector('.page-transition');
-                transition.style.visibility = 'visible';
-                transition.style.opacity = '1';
-
-                // 延迟清理Three.js资源，确保过渡效果先显示
-                setTimeout(function() {
-                    // 在导航前清理Three.js资源
-                    if (typeof cleanupThreeJS === 'function') {
-                        cleanupThreeJS();
-                    }
-
-                    // 在清理资源后跳转
-                    window.location.href = 'about.html';
-                }, 300);
-            });
-
-            // 为Film按钮添加点击事件处理
-            exploreButton.addEventListener('click', function(e) {
-                // 只阻止默认行为，允许事件继续冒泡
-                e.preventDefault();
-
-                console.log('导航到Film页面');
-
-                // 设置导航锁，防止重复点击
-                if (isNavigating) {
-                    return;
-                }
-                isNavigating = true;
-
-                // 添加点击动画效果
-                exploreButton.classList.add('clicked');
-
-                // 显示过渡层
-                const transition = document.querySelector('.page-transition');
-                transition.style.visibility = 'visible';
-                transition.style.opacity = '1';
-
-                // 延迟清理Three.js资源，确保过渡效果先显示
-                setTimeout(function() {
-                    // 在导航前清理Three.js资源
-                    if (typeof cleanupThreeJS === 'function') {
-                        cleanupThreeJS();
-                    }
-
-                    // 在清理资源后跳转
-                    window.location.href = 'film.html';
-                }, 300);
-            });
-
-            // 点击链接时的过渡效果
-            document.querySelectorAll('a').forEach(link => {
+            // 处理所有链接的点击
+            document.querySelectorAll('a:not(.nav-button)').forEach(link => {
                 link.addEventListener('click', function(e) {
-                    // 如果已经在导航中，阻止重复点击
-                    if (isNavigating) {
-                        e.preventDefault();
-                        e.stopPropagation();
+                    // 跳过特殊链接
+                    if (isNavigating || this.getAttribute('href').startsWith('#') || 
+                        this.getAttribute('href').startsWith('javascript:') ||
+                        this.getAttribute('href').startsWith('mailto:') ||
+                        this.getAttribute('href') === '#') {
                         return;
                     }
 
-                    // 如果链接包含协议或是锚点链接，则正常处理
-                    if (this.getAttribute('href').startsWith('#')) {
-                        return; // 正常处理页内锚点链接
-                    }
-
-                    // 处理相对路径链接和绝对路径链接
-                    if (this.getAttribute('href') &&
-                        !this.getAttribute('href').startsWith('javascript:') &&
-                        !this.getAttribute('href').startsWith('mailto:') &&
-                        this.getAttribute('href') !== '#') {
-
                         e.preventDefault();
-
-                        // 设置导航锁，防止重复点击
                         isNavigating = true;
-
-                        // 储存目标URL（在闭包范围内保存）
                         const targetHref = this.getAttribute('href');
 
                         // 禁用所有链接点击
@@ -2470,23 +1344,23 @@
                             a.style.pointerEvents = 'none';
                         });
 
-                        // 在导航前清理Three.js资源
+                    // 清理Three.js资源
+                    if (typeof cleanupThreeJS === 'function') {
                         cleanupThreeJS();
+                    }
 
                         // 显示过渡层
                         transition.style.visibility = 'visible';
                         transition.style.opacity = '1';
 
-                        // 跳转到新页面，使用固定的延迟时间
+                    // 延迟跳转
                         setTimeout(function() {
                             window.location.href = targetHref;
                         }, 300);
-                    }
                 });
             });
 
             // 设置当前页面的导航按钮激活状态
-            function setActiveNav() {
                 const currentPath = window.location.pathname;
                 const pageName = currentPath.split('/').pop().split('.')[0] || 'index';
 
@@ -2495,28 +1369,10 @@
                     btn.classList.remove('active-nav');
                 });
 
-                // 根据当前页面路径设置激活按钮
-                switch(pageName) {
-                    case 'index':
-                        // 首页不需要激活任何按钮
-                        break;
-                    case 'gallery':
-                        document.getElementById('gallery-button')?.classList.add('active-nav');
-                        break;
-                    case 'work':
-                        document.getElementById('work-button')?.classList.add('active-nav');
-                        break;
-                    case 'about':
-                        document.getElementById('about-button')?.classList.add('active-nav');
-                        break;
-                    case 'film':
-                        document.getElementById('explore-button')?.classList.add('active-nav');
-                        break;
-                }
+            // 设置当前页面对应按钮的激活状态
+            if (pageName !== 'index' && navButtons[pageName]) {
+                navButtons[pageName].classList.add('active-nav');
             }
-
-            // 页面加载完成后设置激活状态
-            setActiveNav();
         });
     </script>
 </body>

@@ -854,7 +854,9 @@
         let clock;
         let modelPath = './3dLOGOblend_draco.glb'; // 指定模型路径（已重命名文件）
         let isWireframe = false; // 是否处于线框模式
-
+        // 为不同浏览器添加特定优化
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        
         // 渐变颜色设置 - 默认风格（橙色风格）
         const color1_R = 255, color1_G = 169, color1_B = 85;   // 橙色
         const color2_R = 232, color2_G = 63, color2_B = 37; // 浅橙色
@@ -961,11 +963,19 @@
             // 创建渲染器
             renderer = new THREE.WebGLRenderer({
                 antialias: true,
-                alpha: true
+                alpha: true,
+                powerPreference: 'high-performance'
             });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setClearColor(0x000000, 0); // 设置清除颜色为透明
+
+            // Safari特定优化
+            if (isSafari) {
+                // Safari可能在高分辨率设备上性能较慢，降低像素比
+                const pixelRatio = Math.min(1.5, window.devicePixelRatio);
+                renderer.setPixelRatio(pixelRatio);
+            }
 
             if (renderer.outputColorSpace !== undefined) {
                 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -1677,12 +1687,32 @@
             window.animationFrameId = requestAnimationFrame(animate);
             controls.update();
 
+            // 获取自上一帧以来的时间增量（以秒为单位）
+            const deltaTime = clock.getDelta();
+            // 基础旋转增量
+            let baseRotationIncrement = 0.01;
+            // 准备阶段旋转增量
+            let prepPhaseIncrement = 0.025;
+            
+            // Safari浏览器特定优化，增加旋转速度
+            if (isSafari) {
+                baseRotationIncrement = 0.015; // Safari中提高旋转速度
+                prepPhaseIncrement = 0.035; // Safari中提高旋转速度
+            }
+            
             // 旋转动画逻辑
             if (model && isRotating) {
                 // 根据不同阶段应用不同的旋转逻辑
                 if (rotationPhase === 0) {
                     // 准备阶段 - 逆时针旋转一小段（约15度）
-                    rotationProgress += 0.025;
+                    // 使用时间增量来使旋转速度与帧率无关
+                    rotationProgress += prepPhaseIncrement * (60 * deltaTime);
+                    
+                    // 确保Safari中的旋转速度适当
+                    if (isSafari && rotationProgress > 1) {
+                        rotationProgress = 1;
+                    }
+                    
                     const easeRotation = easeInOutCubic(rotationProgress);
 
                     // 逆时针旋转一小段角度（约15度，π/12弧度）
@@ -1699,7 +1729,13 @@
                     }
                 } else if (rotationPhase === 1) {
                     // 主旋转阶段 - 顺时针旋转一整圈多一点
-                    rotationProgress += 0.01;
+                    // 使用时间增量来使旋转速度与帧率无关
+                    rotationProgress += baseRotationIncrement * (60 * deltaTime);
+                    
+                    // 确保Safari中的旋转速度适当
+                    if (isSafari && rotationProgress > 1) {
+                        rotationProgress = 1;
+                    }
 
                     // 当旋转进行到50%时应用样式变化（提前到50%位置）
                     if (rotationProgress >= 0.5 && !styleChangeApplied) {
@@ -1833,10 +1869,18 @@
             // 根据鼠标位置更新模型旋转 - 仅当旋转动画未进行且鼠标交互已启用时
             if (model && mouseActive && !isRotating && mouseMoveEnabled) {
                 // 使用更平滑的LERP过渡到目标角度
+                // 使用时间增量来使转动速度在不同浏览器中保持一致
+                let lerpFactor = 0.05 * (60 * deltaTime);
+                
+                // Safari浏览器特定优化，增加鼠标跟随平滑度
+                if (isSafari) {
+                    lerpFactor = Math.min(0.15, lerpFactor * 1.5); // Safari中提高鼠标跟随响应速度
+                }
+                
                 // 增大插值系数，使模型响应更加迅速敏捷
-                model.rotation.x += (targetRotationX - model.rotation.x) * 0.05;
-                model.rotation.y += (targetRotationY - model.rotation.y) * 0.05;
-                model.rotation.z += (targetRotationZ - model.rotation.z) * 0.05;
+                model.rotation.x += (targetRotationX - model.rotation.x) * lerpFactor;
+                model.rotation.y += (targetRotationY - model.rotation.y) * lerpFactor;
+                model.rotation.z += (targetRotationZ - model.rotation.z) * lerpFactor;
             }
 
             renderer.render(scene, camera);

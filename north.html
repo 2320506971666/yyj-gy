@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- GSAP, Lenis 脚本 -->
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
+    <script src="https://unpkg.com/@barba/core"></script>
+
+    <!-- 导航栏和页脚样式已移至shared/js目录 -->
+
+    <title>Northern Journey - Triple-Y</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow-x: hidden;
+            background-color: black;
+            color: white;
+            line-height: 1.6;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 导航栏样式已移至shared/nav-styles.css */
+
+        /* 页面标题样式 */
+        .north-header {
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: url('artistweb/images/个人图片作品/北方之旅/header.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            padding-top: 70px;
+            text-align: center;
+        }
+
+        .north-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .north-title {
+            position: relative;
+            z-index: 2;
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 1rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        /* 图片网格展示 */
+        .gallery-container {
+            padding: 50px 5%;
+            background-color: #000;
+        }
+
+        /* 视频网格专用布局 */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            grid-column: 1 / -1;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 视频等同于bento-item */
+        .video-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            background-color: #000;
+            width: 100%;
+            height: auto;
+            margin: 0;
+        }
+
+        .video-item video {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            display: block;
+            margin: 0;
+            transition: transform 0.5s ease;
+        }
+
+        .video-item:hover video {
+            transform: scale(1.01);
+        }
+
+        /* 禁用视频标题和描述叠加层 */
+        .video-item .item-caption {
+            display: none;
+        }
+
+        /* 灯箱效果 */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 30px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .lightbox.show {
+            opacity: 1;
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            transform: scale(0.9);
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .lightbox-caption {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Poiret One', cursive;
+            letter-spacing: 1px;
+        }
+
+        .lightbox-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .lightbox.show .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-prev, .lightbox-next {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 50px;
+            cursor: pointer;
+            background-color: transparent;
+            pointer-events: auto;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox.show .lightbox-prev,
+        .lightbox.show .lightbox-next {
+            opacity: 0.7;
+        }
+
+        .lightbox-prev:hover, .lightbox-next:hover {
+            opacity: 1 !important;
+        }
+
+        .lightbox-prev {
+            left: 40px;
+        }
+
+        .lightbox-next {
+            right: 40px;
+        }
+
+        /* 添加点赞按钮和全屏按钮样式 */
+        .lightbox-actions {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .lightbox-action-btn {
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .lightbox-action-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .like-btn .heart-icon {
+            fill: transparent;
+            stroke: white;
+            stroke-width: 2;
+            transition: all 0.3s ease;
+        }
+
+        .like-btn.active .heart-icon {
+            fill: #FF5252;
+            stroke: #FF5252;
+        }
+
+        .like-btn:hover .heart-icon {
+            transform: scale(1.1);
+        }
+
+        .fullscreen-btn svg {
+            transition: all 0.3s ease;
+        }
+
+        .fullscreen-btn:hover svg {
+            transform: scale(1.1);
+        }
+
+        /* 页脚样式 - 优化版 */
+        footer {
+            background-color: #111;
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            justify-content: center;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 1.8rem;
+            position: relative;
+            display: inline-block;
+            letter-spacing: 1px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            height: 1px;
+            width: 40px;
+            background-color: #DE2910;
+            bottom: -10px;
+            left: 0;
+        }
+
+        .footer-column p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #ddd;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 1.2rem;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #ddd;
+            transition: color 0.3s ease, letter-spacing 0.3s ease;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 页脚响应式调整 */
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            /* 移动端导航栏样式已移至shared/nav-styles.css */
+
+            .north-title {
+                font-size: 3rem;
+            }
+
+            .lightbox-prev {
+                left: 10px;
+            }
+
+            .lightbox-next {
+                right: 10px;
+            }
+        }
+
+        /* 页面过渡效果 */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        .page-transition.fade-in {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body data-barba="wrapper">
+    <div class="page-transition"></div>
+
+    <!-- 导航栏容器 -->
+    <div id="nav-container"></div>
+
+    <!-- 主体内容，添加barba数据属性 -->
+    <main data-barba="container" data-barba-namespace="north">
+        <!-- North页面内容 -->
+        <div class="north-header">
+            <h1 class="north-title">Northern Journey</h1>
+        </div>
+
+        <div class="gallery-container">
+            <!-- 视频集合展示区 -->
+            <div class="video-grid">
+                <!-- 视频1 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-1" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/北方之旅/1.mp4" type="video/mp4">
+                        <source src="artistweb/images/个人图片作品/北方之旅/1.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <!-- 视频2 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-2" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/北方之旅/2.mp4" type="video/mp4">
+                        <source src="artistweb/images/个人图片作品/北方之旅/2.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <!-- 视频3 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-3" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/北方之旅/3.mp4" type="video/mp4">
+                        <source src="artistweb/images/个人图片作品/北方之旅/3.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <!-- 视频4 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-4" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/北方之旅/4.mp4" type="video/mp4">
+                        <source src="artistweb/images/个人图片作品/北方之旅/4.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <!-- 视频5 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-5" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/北方之旅/5.mp4" type="video/mp4">
+                        <source src="artistweb/images/个人图片作品/北方之旅/5.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <!-- 视频6 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline controls poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-6" disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback" webkit-playsinline>
+                        <!-- Safari优先使用MP4格式 -->
+                        <source src="artistweb/images/个人图片作品/北方之旅/6.mp4" type="video/mp4">
+                        <source src="artistweb/images/个人图片作品/北方之旅/6.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <!-- 视频7 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-7">
+                        <source src="artistweb/images/个人图片作品/北方之旅/7.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <!-- 视频8 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-8">
+                        <source src="artistweb/images/个人图片作品/北方之旅/8.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <!-- 视频9 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-9">
+                        <source src="artistweb/images/个人图片作品/北方之旅/9.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <!-- 视频10 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-10">
+                        <source src="artistweb/images/个人图片作品/北方之旅/10.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <!-- 视频11 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-11">
+                        <source src="artistweb/images/个人图片作品/北方之旅/11.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <!-- 视频12 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-12">
+                        <source src="artistweb/images/个人图片作品/北方之旅/12.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <!-- 视频13 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-13">
+                        <source src="artistweb/images/个人图片作品/北方之旅/13.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <!-- 视频14 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-14">
+                        <source src="artistweb/images/个人图片作品/北方之旅/14.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <!-- 视频15 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-15">
+                        <source src="artistweb/images/个人图片作品/北方之旅/15.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+
+                <!-- 视频19 -->
+                <div class="video-item">
+                    <video muted autoplay playsinline poster="artistweb/images/个人图片作品/北方之旅/poster.jpg" id="north-video-19">
+                        <source src="artistweb/images/个人图片作品/北方之旅/19.webm" type="video/webm">
+                        Your browser does not support HTML5 video.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 灯箱效果 -->
+    <div class="lightbox">
+        <div class="lightbox-content">
+            <div class="lightbox-actions">
+                <div class="lightbox-action-btn like-btn" title="点赞">
+                    <svg class="heart-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                </div>
+                <div class="lightbox-action-btn fullscreen-btn" title="全屏">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+                    </svg>
+                </div>
+            </div>
+            <span class="lightbox-close">&times;</span>
+            <img src="" alt="" class="lightbox-image">
+            <div class="lightbox-caption"></div>
+        </div>
+        <!-- 将导航箭头移到lightbox-content外部 -->
+        <div class="lightbox-nav">
+            <span class="lightbox-prev">&#8249;</span>
+            <span class="lightbox-next">&#8250;</span>
+        </div>
+    </div>
+
+
+    <!-- 加载统一导航栏脚本 -->
+    <script src="shared/load-nav.js"></script>
+    <!-- 加载动画框架脚本 -->
+    <script src="shared/animation.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 页面加载时的淡出效果
+            const transition = document.querySelector('.page-transition');
+            setTimeout(() => {
+                transition.style.visibility = 'hidden';
+                transition.style.opacity = '0';
+            }, 500);
+
+            // 添加视频项滚动浮动效果
+            const videoContainers = document.querySelectorAll('.video-item');
+
+            // 设置初始状态 - 所有视频项初始透明度为0且向下偏移
+            gsap.set(videoContainers, {
+                opacity: 0,
+                y: 20,
+            });
+
+            // 创建IntersectionObserver监听视频项进入视口
+            const animationObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // 视频项进入视口时，执行向上浮动动画
+                        gsap.to(entry.target, {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.8,
+                            ease: "power2.out"
+                        });
+
+                        // 视频项显示后不再监听该元素
+                        animationObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,   // 当元素10%进入视口时触发
+                rootMargin: "0px 0px -100px 0px" // 提前100px触发，使动画更流畅
+            });
+
+            // 开始监听所有视频项
+            videoContainers.forEach(item => {
+                animationObserver.observe(item);
+            });
+
+            // 点击链接时的过渡效果
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.hostname === window.location.hostname && !this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const href = this.getAttribute('href');
+
+                        // 显示过渡层
+                        transition.style.visibility = 'visible';
+                        transition.style.opacity = '1';
+
+                        // 立即记录要跳转的URL，防止被其他事件覆盖
+                        const targetUrl = href;
+
+                        // 延迟导航以等待过渡效果完成，但确保一定会执行
+                        setTimeout(function() {
+                            window.location.href = targetUrl;
+                        }, 300);
+                    }
+                });
+            });
+
+            // 移动端菜单控制
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mobileMenu = document.querySelector('.mobile-menu');
+
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    mobileMenu.classList.toggle('open');
+                    document.body.classList.toggle('menu-open');
+                });
+
+                // 点击移动端菜单项关闭菜单
+                document.querySelectorAll('.mobile-menu a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenuBtn.classList.remove('open');
+                        mobileMenu.classList.remove('open');
+                        document.body.classList.remove('menu-open');
+                    });
+                });
+            }
+
+            // 视频控制 - 增强版，支持Safari兼容性
+            const videoItems = document.querySelectorAll('.video-item');
+
+            // 检测是否是Safari浏览器
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+            // 处理所有视频的播放行为
+            function setupVideoControls(video, container) {
+                if (video) {
+                    // 确保视频控件始终不可见
+                    video.controls = false;
+
+                    // 为每个只有WebM格式的视频添加MP4格式
+                    const sources = video.querySelectorAll('source');
+                    if (sources.length === 1 && sources[0].type === 'video/webm') {
+                        const webmSrc = sources[0].src;
+                        const mp4Src = webmSrc.replace('.webm', '.mp4');
+
+                        // 创建MP4源
+                        const mp4Source = document.createElement('source');
+                        mp4Source.type = 'video/mp4';
+                        mp4Source.src = mp4Src;
+
+                        // 如果是Safari，将MP4源放在第一位
+                        if (isSafari) {
+                            video.insertBefore(mp4Source, sources[0]);
+                        } else {
+                            // 否则将WebM源放在第一位
+                            video.appendChild(mp4Source);
+                        }
+
+                        // 重新加载视频
+                        video.load();
+                    }
+
+                    // 添加错误处理
+                    video.addEventListener('error', function(e) {
+                        console.log('视频加载失败:', e);
+
+                        // 尝试切换到MP4格式
+                        const sources = video.querySelectorAll('source');
+                        sources.forEach(source => {
+                            if (source.type === 'video/webm') {
+                                const mp4Src = source.src.replace('.webm', '.mp4');
+                                const mp4Source = document.createElement('source');
+                                mp4Source.type = 'video/mp4';
+                                mp4Source.src = mp4Src;
+
+                                // 将MP4源放在第一位
+                                video.insertBefore(mp4Source, video.firstChild);
+                                video.load();
+                                video.play().catch(err => console.log('播放失败:', err));
+                            }
+                        });
+                    });
+
+                    // 视频播放结束后暂停在最后一帧
+                    video.addEventListener('ended', function() {
+                        this.pause();
+                    });
+
+                    // 鼠标悬停时重新播放
+                    container.addEventListener('mouseenter', function() {
+                        video.play().catch(err => console.log('播放失败:', err));
+                    });
+
+                    // 尝试播放视频
+                    video.play().catch(err => {
+                        console.log('初始播放失败:', err);
+                        // 如果失败，延迟再试
+                        setTimeout(() => {
+                            video.play().catch(e => console.log('重试播放仍然失败:', e));
+                        }, 1000);
+                    });
+                }
+            }
+
+            // 为所有视频设置控制行为
+            videoItems.forEach((container, index) => {
+                const video = container.querySelector('video');
+                if (video) {
+                    // 添加必要的属性
+                    video.setAttribute('disablePictureInPicture', '');
+                    video.setAttribute('controlsList', 'nodownload nofullscreen noremoteplayback');
+                    video.setAttribute('webkit-playsinline', '');
+
+                    setupVideoControls(video, container);
+                }
+            });
+
+            // 添加CSS样式隐藏视频控件
+            const style = document.createElement('style');
+            style.textContent = `
+                /* Safari 下隐藏 video 控件 */
+                video::-webkit-media-controls,
+                video::-webkit-media-controls-play-button,
+                video::-webkit-media-controls-volume-slider,
+                video::-webkit-media-controls-mute-button,
+                video::-webkit-media-controls-timeline,
+                video::-webkit-media-controls-current-time-display,
+                video::-webkit-full-page-media::-webkit-media-controls-panel,
+                video::-webkit-media-controls-timeline-container,
+                video::-webkit-media-controls-time-remaining-display,
+                video::-webkit-media-controls-toggle-closed-captions-button,
+                video::-webkit-media-controls-enclosure {
+                    display: none !important;
+                    opacity: 0 !important;
+                }
+
+                /* 确保视频元素正确显示 */
+                .video-item video {
+                    -webkit-object-fit: cover;
+                    -webkit-transform: translateZ(0);
+                    transform: translateZ(0);
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+
+    <!-- 页脚容器 -->
+    <div id="footer-container"></div>
+
+    <!-- 在frame.html中不需要导航栏脚本，但需要页脚脚本 -->
+    <script src="shared/js/footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Your rule content
+
+
+### 代码组织
+- 每个页面文件 ≤ 700 行；超过请拆分组件/模块，但一个html最多拆分出一个js和一个css文件
+- 文件夹层级 ≤ 3；不得出现 `components/components` 式嵌套
+
+# 命名规范
+- Use kebab-case for file names, PascalCase for React components, and camelCase for variables.
+- Component names should reflect their purpose and location. For example: `HeroSection`, `Navbar`, `Footer`.
+
+### HTML
+- 先语义标签后 div；必要时用 `role` 注解
+- 图片必须带 `alt`；SVG 优先于 icon-font
+- 引用外部脚本用 `type="module"` 并带 `async`/`defer`
+
+### CSS / SCSS
+- 禁止超过两级嵌套；避免 `!important`
+- 颜色、间距抽成变量；全局变量放 `/styles/_tokens.scss`
+- 动画时长 100–500 ms；禁用 jank 视差
+
+### JS / TS
+- 模块顶端写导入；再常量；再函数；最后导出
+- 函数 ≤ 50 行；超出拆子函数
+- UI 操作走 `data‑*` 或 `ref`，避免硬编码选择器
+
+### 性能
+- 图片用 `<img loading="lazy">`；视频加 `preload="none"`
+- 生产构建启用 tree‑shaking、代码分割 & gzip/br
+- 关键 CSS ≤ 15 KB；其余异步加载
+
+
+#  设计风格（以现代简约风为例）
+- Use a minimalist and clean design style.
+
+
+# 代码注释习惯
+- For each component, add a short comment block at the top explaining its role in the site.
+Use `// TODO:` comments for any unfinished or planned feature sections.
+
+## 重要提示
+不要有任何备用的方案，我必须要严格执行我需要的方案
+任何问题找出根本原因修复，不要乱加!important标记
+请不要通过增添过多的代码来实现我的要求，我要求代码精简
+不要用google字体，必须要用也要下载到本地再引用，或者使用中国用户能够快速访问到的镜像来代替
+不要创建过多的js、css文件，所有文件都放在shared中，js放在shared/js中，css放在shared/css中，一个html最多创建一个js文件和css文件
+所以编辑遵守响应式设计的规则，确保元素在任何屏幕分辨率下都保持一致的视觉比例
+
+
+### Review Checklist（AI 必须逐项自检）
+1. **结构是否清晰、三层以内？**
+2. **类名是否 BEM？**
+3. **函数/组件是否解耦？**
+4. **性能与可访问性提示是否已落实？**
+5. **注释 & Typings 完整？**

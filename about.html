@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Favicon -->
+    <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- GSAP, Lenis, Barba.js 脚本 -->
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
+    <script src="https://unpkg.com/@barba/core"></script>
+
+    <!-- 页面过渡样式 -->
+    <link rel="stylesheet" href="shared/css/page-transitions.css">
+
+    <!-- 路径处理脚本 -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const isGitHubPages = window.location.hostname.includes("github.io");
+        const isCustomDomain = window.location.hostname === "tripley.cn";
+        const isLocalhost = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+        const prefix = isGitHubPages ? "/yyj-gy/" :
+                      (isCustomDomain ? "/" :
+                      (isLocalhost ? "" : "./"));
+
+        console.log("当前环境:", window.location.hostname);
+        console.log("使用前缀:", prefix);
+
+        // 辅助函数：修复路径
+        function fixResourcePath(path) {
+            if (path && !path.startsWith("http")) {
+                // 清理路径
+                const cleanPath = path.replace(/^\.?\/*/, "");
+                // 构建带前缀的路径
+                let fixedPath = prefix + cleanPath;
+                // 移除双斜杠
+                fixedPath = fixedPath.replace(/\/\//g, '/');
+
+                console.log(`资源路径修复: ${path} -> ${fixedPath}`);
+                return fixedPath;
+            }
+            return path;
+        }
+
+        // 替换所有 img 标签路径
+        document.querySelectorAll("img").forEach(img => {
+            if (img.getAttribute("src") && !img.src.startsWith("http")) {
+                const src = img.getAttribute("src");
+                const fixedSrc = fixResourcePath(src);
+                img.setAttribute("src", fixedSrc);
+                console.log(`修复图片: ${src} -> ${fixedSrc}`);
+            }
+        });
+
+        // 替换 favicon
+        const favicon = document.querySelector("link[rel='icon']");
+        if (favicon) {
+            const href = favicon.getAttribute("href");
+            favicon.setAttribute("href", fixResourcePath(href));
+        }
+
+        // 处理其他资源
+        document.querySelectorAll("script[src], link[href]").forEach(el => {
+            const attr = el.tagName === "SCRIPT" ? "src" : "href";
+            const path = el.getAttribute(attr);
+            if (path && !path.startsWith("http")) {
+                el.setAttribute(attr, fixResourcePath(path));
+            }
+        });
+    });
+    </script>
+
+    <title>About - Triple-Y</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            background-color: black;
+            color: white;
+            line-height: 1.6;
+            overflow-y: scroll;
+
+            /* 隐藏滚动条 */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        /* 针对 Chrome、Safari、Opera */
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        /* 隐藏所有可能的滚动容器的滚动条 */
+        ::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        * {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        /* 页面导航指示器 */
+        .page-navigation {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .page-navigation .nav-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: rgba(128, 128, 128, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .page-navigation .nav-dot:hover {
+            background-color: rgba(128, 128, 128, 0.6);
+            transform: scale(1.2);
+        }
+
+        .page-navigation .nav-dot.active {
+            width: 6px;
+            height: 20px;
+            border-radius: 3px;
+            background-color: #666;
+            box-shadow: none;
+            transform: scale(1);
+        }
+
+        /* 增加点击区域 */
+        .page-navigation .nav-dot::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            z-index: -1;
+        }
+
+        /* 根据当前区域调整导航点颜色 */
+        body[data-section="about"] .nav-dot {
+            background-color: rgba(128, 128, 128, 0.3);
+        }
+
+        body[data-section="about"] .nav-dot.active {
+            background-color: #666;
+            width: 6px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        body[data-section="skills"] .nav-dot {
+            background-color: rgba(128, 128, 128, 0.3);
+        }
+
+        body[data-section="skills"] .nav-dot.active {
+            background-color: #666;
+            width: 6px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        body[data-section="footer"] .nav-dot {
+            background-color: rgba(200, 200, 200, 0.3);
+        }
+
+        body[data-section="footer"] .nav-dot.active {
+            background-color: white;
+            width: 6px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        /* 底部滚动指示器 */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 30px;
+            height: 60px;
+            border-radius: 15px;
+            border: 2px solid rgba(100, 100, 100, 0.4);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            padding-top: 8px;
+            transition: opacity 0.5s ease;
+        }
+
+        .scroll-indicator::after {
+            content: '';
+            width: 4px;
+            height: 8px;
+            border-radius: 2px;
+            background-color: #666;
+            animation: scrollAnim 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollAnim {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            70% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+        }
+
+        /* 导航栏样式已移至shared/nav-styles.css */
+
+        /* About 页面特定样式 */
+        .about-page {
+            padding-top: 0;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            margin-bottom: 0; /* 确保无底部边距 */
+        }
+
+        .about-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 150px 5% 100px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .about-image {
+            width: 100%;
+            height: auto;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards;
+        }
+
+        .about-text {
+            font-family: 'Poiret One', sans-serif;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1.5s ease forwards;
+            animation-delay: 0.5s;
+            color: #333;
+        }
+
+        .about-text h1 {
+            font-size: 3.2rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: #222;
+            font-family: 'Noto Serif SC', serif;
+            opacity: 0;
+            filter: blur(15px);
+            transform: translateY(25px);
+        }
+
+        .about-text p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            font-family: 'Noto Serif SC', serif;
+            opacity: 0;
+            filter: blur(15px);
+            transform: translateY(25px);
+        }
+
+        .about-text p.animate {
+            opacity: 0.9;
+            transform: translateY(0);
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 页脚样式由 footer.js 提供 */
+
+        /* 软件技能部分样式 */
+        .skills-section {
+            background-color: #f0f0f0;
+            padding: 5rem 5% 5rem; /* 调整底部内边距 */
+            text-align: center;
+            margin-bottom: 0; /* 确保底部无边距 */
+        }
+
+        .skills-section .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .skills-section h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            margin-bottom: 3rem;
+            color: #333;
+            position: relative;
+            display: inline-block;
+        }
+
+        .skills-category {
+            margin-bottom: 3.5rem;
+        }
+
+        .skills-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .skills-category h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .software-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            justify-content: center;
+        }
+
+        .software-item {
+            text-align: center;
+            opacity: 1;
+        }
+
+        .software-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 0.4rem;
+        }
+
+        .software-item img.smaller-logo {
+            width: 54px;
+            height: 54px;
+            margin-bottom: calc(0.4rem + 6px);
+        }
+
+        .software-item p {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #555;
+            letter-spacing: 0.5px;
+        }
+
+        /* 修改过渡效果 */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000; /* 确保是纯黑色 */
+            z-index: 9999; /* 更高的z-index确保在所有内容之上 */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-out; /* 简化过渡效果 */
+            pointer-events: none; /* 防止过渡层拦截点击事件，直到完全显示 */
+        }
+
+        .page-transition.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all; /* 激活时恢复点击拦截 */
+        }
+
+        /* 移动端适配样式 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            /* 移动端导航栏样式已移至shared/nav-styles.css */
+
+            /* 调整About页面布局 */
+            .about-content {
+                padding: 100px 5% 50px;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .about-text h1 {
+                font-size: 2rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .about-text p {
+                font-size: 0.95rem;
+                margin-bottom: 1.2rem;
+            }
+
+            /* 调整页脚 */
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            /* 调整软件技能部分 - 平板 */
+            .skills-section {
+                padding: 3.5rem 5%;
+            }
+
+            .skills-section h2 {
+                font-size: 1.8rem;
+                margin-bottom: 2rem;
+            }
+
+            .skills-category {
+                margin-bottom: 2.5rem;
+            }
+
+            .skills-category h3 {
+                font-size: 1.1rem;
+                margin-bottom: 1.2rem;
+            }
+
+            .software-grid {
+                grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+                gap: 1.2rem;
+                max-width: 700px;
+            }
+
+            .software-item img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .software-item img.smaller-logo {
+                width: 45px;
+                height: 45px;
+            }
+
+            /* 调整动画效果 - 平板 */
+            .software-item {
+                transform: translateY(15px);
+            }
+        }
+
+        /* 针对更小屏幕的调整 */
+        @media (max-width: 480px) {
+            .about-content {
+                padding: 80px 5% 40px;
+            }
+
+            .about-text h1 {
+                font-size: 1.8rem;
+            }
+
+            .about-text p {
+                font-size: 0.95rem;
+                margin-bottom: 1.2rem;
+            }
+
+            /* 调整软件技能部分 - 小屏幕 */
+            .skills-section {
+                padding: 2.5rem 5%;
+            }
+
+            .skills-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .skills-category {
+                margin-bottom: 2rem;
+            }
+
+            .skills-category h3 {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .software-grid {
+                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+                gap: 1rem;
+                max-width: 400px;
+            }
+
+            .software-item img {
+                width: 45px;
+                height: 45px;
+            }
+
+            .software-item img.smaller-logo {
+                width: 40px;
+                height: 40px;
+                margin-bottom: calc(0.7rem + 4px); /* 补偿高度差 */
+            }
+
+            .software-item p {
+                font-size: 0.7rem;
+            }
+
+            /* 调整动画效果 - 手机 */
+            .software-item {
+                transform: translateY(10px);
+            }
+        }
+
+        /* 菜单打开时的body样式 */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* 技能分类样式 */
+        .skills-category {
+            margin-bottom: 3.5rem;
+        }
+
+        .skills-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .skills-section h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            margin-bottom: 3rem;
+            color: #333;
+            position: relative;
+            display: inline-block;
+        }
+
+        .skills-category h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .software-item {
+            text-align: center;
+        }
+
+        /* 动画类 */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .animate-on-scroll.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .software-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 0.4rem;
+        }
+
+        .software-item img.smaller-logo {
+            width: 54px;
+            height: 54px;
+            margin-bottom: calc(0.4rem + 6px);
+        }
+
+        .software-item p {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #555;
+            letter-spacing: 0.5px;
+        }
+
+        /* 确保页面整体结构无缝衔接 */
+        main {
+            display: block;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 调整整体页面布局 */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* 与内容区背景保持一致 */
+        }
+
+        /* 确保在主内容区和页脚之间没有间隙 */
+        body > * {
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="about-page">
+    <!-- 内容页面不需要导航栏 -->
+
+    <!-- 页面导航指示器 -->
+    <div class="page-navigation">
+        <div class="nav-dot active" data-section="about"></div>
+        <div class="nav-dot" data-section="skills"></div>
+        <div class="nav-dot" data-section="footer"></div>
+    </div>
+
+    <!-- 滚动指示器 -->
+    <div class="scroll-indicator"></div>
+
+    <!-- 主体内容，添加barba数据属性 -->
+    <main data-barba="container" data-barba-namespace="about">
+        <!-- About页面内容 -->
+        <div class="about-page">
+            <div class="about-content">
+                <div class="about-grid">
+                    <img src="artistweb/images/about-portrait.jpg" alt="About" class="about-image" onerror="this.onerror=null; this.src='artistweb/images/portrait2.jpeg'; console.log('Trying fallback portrait2.jpeg');">
+                    <div class="about-text">
+                        <h1>我的片段</h1>
+                        <p>我来自浙江，是一名摄影师，我对视觉艺术有着浓厚的兴趣。闲暇时，我常常沉浸在电影、摄影画册和近代摄影史中，用不同的角度去感受影像的魅力。</p>
+                        <p>我将摄影视为一种观察与记录的方式，希望通过镜头捕捉生活中的微妙之处。平时也喜欢旅游和骑行，在不断的行走与体验中，发现更多美好的瞬间，为创作注入新的活力。</p>
+                        <p>正如十九世纪最有逻辑的唯美主义者马拉美所说："世界上的一切事物的存在，都是为了在一本书里终结。今天，一切事物的存在，都是为了在一张照片中终结。"每一次按下快门，都不仅是留住当下，更是一场与世界的对话，亦是与他人共享这份美好的过程。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 软件技能部分 -->
+    <section class="skills-section">
+        <div class="container">
+            <h2>My Skills</h2>
+
+            <!-- 音视频剪辑与后期制作 -->
+            <div class="skills-category">
+                <h3>Video Editing & Post-production</h3>
+                <div class="software-grid" style="grid-template-columns: repeat(4, 1fr); max-width: 800px;">
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/DaVinci_Resolve_Studio.png" alt="DaVinci Resolve">
+                        <p>DaVinci Resolve</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/adobe-premiere-svgrepo-com.svg" alt="Adobe Premiere Pro">
+                        <p>Premiere Pro</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/adobe-after-effects-svgrepo-com.svg" alt="Adobe After Effects">
+                        <p>After Effects</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/final cut pro.png" alt="Final Cut Pro" class="smaller-logo">
+                        <p>Final Cut Pro</p>
+                    </div>
+                </div>
+                <div class="software-grid" style="grid-template-columns: repeat(3, 1fr); max-width: 600px; margin-top: 20px;">
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/Adobe_Audition_CC_icon_(2020).svg" alt="Adobe Audition" class="smaller-logo">
+                        <p>Adobe Audition</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/OBS_Studio_Logo.svg" alt="OBS Studio" class="smaller-logo">
+                        <p>OBS Studio</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/剪映.png" alt="剪映" class="smaller-logo">
+                        <p>剪映</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 图形与视觉设计 -->
+            <div class="skills-category">
+                <h3>Graphics & Visual Design</h3>
+                <div class="software-grid" style="grid-template-columns: repeat(3, 1fr); max-width: 600px;">
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/adobe-photoshop-svgrepo-com.svg" alt="Adobe Photoshop">
+                        <p>Photoshop</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/adobe-illustrator-svgrepo-com.svg" alt="Adobe Illustrator">
+                        <p>Illustrator</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/adobe-lightroom-svgrepo-com.svg" alt="Adobe Lightroom">
+                        <p>Lightroom</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 三维设计与建模 -->
+            <div class="skills-category">
+                <h3>3D Design & Modeling</h3>
+                <div class="software-grid" style="grid-template-columns: repeat(1, 1fr); max-width: 200px;">
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/blender-svgrepo-com.svg" alt="Blender">
+                        <p>Blender</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI辅助工具 -->
+            <div class="skills-category">
+                <h3>AI Tools</h3>
+                <div class="software-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 400px;">
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/cursor.svg" alt="Cursor">
+                        <p>Cursor</p>
+                    </div>
+                    <div class="software-item">
+                        <img src="artistweb/images/logo/chatgpt-icon.svg" alt="ChatGPT">
+                        <p>ChatGPT</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 内容页面不需要页脚 -->
+
+    <!-- 加载动画框架脚本 -->
+    <script src="shared/animation.js"></script>
+
+    <script>
+        // About页面特定的初始化函数
+        function initAboutPage() {
+            console.log('About页面特定初始化');
+
+            // 移动端菜单控制已由shared/nav.js处理
+
+            // About部分的段落文字动画
+            function animateAboutText() {
+                if (typeof gsap === 'undefined') {
+                    console.warn('GSAP未加载，跳过文字动画');
+                    return;
+                }
+
+                const title = document.querySelector('.about-text h1');
+                const paragraphs = document.querySelectorAll('.about-text p');
+
+                // 检查是否在视口中
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            // 先动画标题
+                            if (title) {
+                                gsap.to(title, {
+                                    opacity: 1,
+                                    filter: "blur(0px)",
+                                    y: 0,
+                                    duration: 1.5,
+                                    ease: "power3.out"
+                                });
+                            }
+
+                            // 然后依次动画段落
+                            paragraphs.forEach((p, index) => {
+                                gsap.to(p, {
+                                    opacity: 0.9,
+                                    filter: "blur(0px)",
+                                    y: 0,
+                                    duration: 1.2,
+                                    delay: 0.6 + index * 0.4, // 标题后延迟，然后每段之间延迟
+                                    ease: "power3.out"
+                                });
+                            });
+                            observer.disconnect(); // 只执行一次
+                        }
+                    });
+                }, { threshold: 0.2 }); // 略微降低触发阈值，使动画更早开始
+
+                // 观察about-text元素
+                const aboutText = document.querySelector('.about-text');
+                if (aboutText) {
+                    observer.observe(aboutText);
+                }
+
+                // 如果用户已经滚动到了about部分，立即显示
+                if (aboutText && aboutText.getBoundingClientRect().top < window.innerHeight) {
+                    if (title) {
+                        gsap.to(title, {
+                            opacity: 1,
+                            filter: "blur(0px)",
+                            y: 0,
+                            duration: 1.5,
+                            ease: "power3.out"
+                        });
+                    }
+
+                    paragraphs.forEach((p, index) => {
+                        gsap.to(p, {
+                            opacity: 0.9,
+                            filter: "blur(0px)",
+                            y: 0,
+                            duration: 1.2,
+                            delay: 0.6 + index * 0.4,
+                            ease: "power3.out"
+                        });
+                    });
+                }
+            }
+
+            // 初始化About文字动画
+            setTimeout(animateAboutText, 500); // 延迟执行以确保GSAP已加载
+
+            // 初始化滚动动画
+            function initScrollAnimations() {
+                // 选择所有需要动画的元素
+                const mainTitle = document.querySelector('.skills-section h2');
+                const subTitles = document.querySelectorAll('.skills-category h3');
+                const items = document.querySelectorAll('.software-item');
+
+                // 添加动画类
+                if (mainTitle) mainTitle.classList.add('animate-on-scroll');
+                subTitles.forEach(title => title.classList.add('animate-on-scroll'));
+                items.forEach(item => item.classList.add('animate-on-scroll'));
+
+                // 创建Intersection Observer
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            // 元素进入视口时添加动画类
+                            setTimeout(() => {
+                                entry.target.classList.add('animate');
+                            }, entry.target.dataset.delay || 0);
+
+                            // 元素已经动画过，不再需要观察
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    root: null, // 使用视口作为根
+                    threshold: 0.05, // 降低阈值，使元素更快被检测到
+                    rootMargin: '0px 0px' // 移除向上偏移，使元素一进入视口就触发
+                });
+
+                // 为标题添加延迟属性并观察
+                if (mainTitle) {
+                    mainTitle.dataset.delay = "0";
+                    observer.observe(mainTitle);
+                }
+
+                // 为子标题添加延迟属性并观察
+                subTitles.forEach((title, index) => {
+                    title.dataset.delay = (300 + index * 150).toString();
+                    observer.observe(title);
+                });
+
+                // 按类别处理，确保每个类别中的标题先出现，然后是图标
+                const categories = document.querySelectorAll('.skills-category');
+
+                categories.forEach((category, categoryIndex) => {
+                    // 获取当前类别的标题和图标
+                    const categoryTitle = category.querySelector('h3');
+                    const categoryItems = category.querySelectorAll('.software-item');
+
+                    // 确保所有类别的标题和图标出现的时间接近
+                    // 但每个类别内部保持从上到下的顺序
+                    const baseCategoryDelay = 200;
+
+                    // 标题先出现
+                    if (categoryTitle && categoryTitle.dataset) {
+                        categoryTitle.dataset.delay = (baseCategoryDelay + 50).toString();
+                        observer.observe(categoryTitle);
+                    }
+
+                    // 然后是该类别的图标
+                    categoryItems.forEach((item, itemIndex) => {
+                        item.dataset.delay = (baseCategoryDelay + 150 + itemIndex * 30).toString();
+                        observer.observe(item);
+                    });
+                });
+            }
+
+            // 初始化滚动动画
+            setTimeout(initScrollAnimations, 500); // 延迟执行以确保页面完全加载
+
+            // 页面导航指示器功能
+            function initPageNavigation() {
+                const sections = [
+                    document.querySelector('.about-page'),
+                    document.querySelector('.skills-section'),
+                    document.querySelector('#footer-container')
+                ];
+
+                const dots = document.querySelectorAll('.nav-dot');
+
+                // 点击导航点时滚动到对应区域
+                dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => {
+                        sections[index].scrollIntoView({ behavior: 'smooth' });
+                    });
+                });
+
+                // 监听滚动更新活动导航点
+                window.addEventListener('scroll', () => {
+                    let current = '';
+
+                    sections.forEach((section, index) => {
+                        const sectionTop = section.offsetTop;
+                        const sectionHeight = section.clientHeight;
+
+                        if (window.scrollY >= (sectionTop - sectionHeight / 3)) {
+                            current = index;
+                        }
+                    });
+
+                    // 更新导航点状态
+                    dots.forEach(dot => dot.classList.remove('active'));
+                    if(current !== '') {
+                        dots[current].classList.add('active');
+                    }
+
+                    // 根据当前区域设置body属性
+                    const sectionNames = ['about', 'skills', 'footer'];
+                    if(current !== '') {
+                        document.body.setAttribute('data-section', sectionNames[current]);
+                        console.log('当前区域更新为:', sectionNames[current]);
+                    }
+
+                    // 控制滚动指示器显示
+                    const scrollIndicator = document.querySelector('.scroll-indicator');
+
+                    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+                        // 接近页面底部，隐藏滚动指示器
+                        scrollIndicator.style.opacity = '0';
+                    } else {
+                        // 显示滚动指示器
+                        scrollIndicator.style.opacity = '1';
+                    }
+                });
+            }
+
+            // 初始化页面导航
+            initPageNavigation();
+        }
+
+        // 页面加载时执行初始化
+        document.addEventListener('DOMContentLoaded', initAboutPage);
+
+        // Barba.js 页面加载事件也执行初始化
+        window.addEventListener('barba-page-loaded', initAboutPage);
+    </script>
+
+    <!-- 页脚容器 -->
+    <div id="footer-container"></div>
+
+    <!-- 加载页脚脚本 -->
+    <script src="shared/js/footer.js"></script>
+</body>
+</html>

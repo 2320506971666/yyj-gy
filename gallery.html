@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gallery - Triple-Y</title>
+
+    <!-- ======== 网站图标 ======== -->
+    <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
+
+    <!-- ======== 性能优化 ======== -->
+    <!-- 预加载首屏关键资源，提高首屏加载速度 -->
+    <link rel="preload" href="artistweb/images/个人图片作品/IMG_0082.jpg" as="image" fetchpriority="high">
+    <!-- 预加载关键CSS -->
+    <link rel="preload" href="shared/css/gallery.css" as="style">
+    <!-- 预加载关键JS -->
+    <link rel="preload" href="shared/js/gallery-main.js" as="script" type="module">
+
+    <!-- 预连接第三方资源域 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://unpkg.com">
+
+    <!-- ======== 样式资源 ======== -->
+    <!-- 主样式表 - 关键CSS立即加载 -->
+    <link rel="stylesheet" href="shared/css/gallery.css">
+    <!-- 移动端优化样式表 -->
+    <link rel="stylesheet" href="shared/css/mobile-gallery.css">
+    <!-- 自定义样式 -->
+
+    <!-- 字体加载 - 使用display=swap保证文本可见性 -->
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Noto+Serif+SC:wght@300;400;500&family=Reenie+Beanie&family=Playfair+Display:wght@400;500;600&family=Jomhuria&family=Jim+Nightshade&family=Josefin+Slab:wght@400;600;700&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Noto+Serif+SC:wght@300;400;500&family=Reenie+Beanie&family=Playfair+Display:wght@400;500;600&family=Jomhuria&family=Jim+Nightshade&family=Josefin+Slab:wght@400;600;700&family=Cinzel:wght@400;500;600&display=swap"></noscript>
+
+    <!-- 非阻塞加载Swiper样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"></noscript>
+
+    <!-- 响应式缩放因子 -->
+    <style>
+        :root {
+            --scale-factor: 1;
+        }
+
+        @media screen and (max-width: 360px) { :root { --scale-factor: 0.22; } }
+        @media screen and (min-width: 361px) and (max-width: 480px) { :root { --scale-factor: 0.3; } }
+        @media screen and (min-width: 481px) and (max-width: 768px) { :root { --scale-factor: 0.4; } }
+
+        /* 移动端浮动动画样式 */
+        @media (min-width: 769px) {
+            /* 仅在非移动端应用这些样式 */
+            .swiper-slide:first-child {
+                opacity: 1;
+                visibility: visible;
+            }
+            .gallery-text {
+                opacity: 1;
+            }
+        }
+    </style>
+
+    <!-- ======== JS库 ======== -->
+    <!-- GSAP动画库和Swiper - 优先加载 -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+
+    <!-- 次要库 -->
+    <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
+</head>
+
+<body class="gallery-page">
+    <!-- 导航栏占位符 -->
+
+    <!-- 内容页面不需要导航栏 -->
+
+    <!-- ======== 主内容区域 ======== -->
+    <main>
+        <div class="gallery-content">
+            <div class="gallery-content">
+                <!-- 幻灯片容器 -->
+                <div class="gallery-title">
+                    <div class="swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            <!-- 第1张幻灯片：Gallery标题 -->
+                            <div class="swiper-slide" style="cursor: pointer;" onclick="window.parent.navigateTo('tibet.html')">
+                    <img src="artistweb/images/个人图片作品/IMG_0082.jpg" alt="Gallery Header Image" fetchpriority="high">
+                    <div id="gallery-text-override" class="gallery-text">
+                        <span class="g">G</span>
+                        <span class="a">a</span>
+                        <span class="l1">l</span>
+                        <span class="l2">l</span>
+                        <span class="e">e</span>
+                        <span class="r">r</span>
+                        <span class="y">y</span>
+                    </div>
+                    <div class="awaits-text">Awaits</div>
+                        </div>
+
+                            <!-- 第2张幻灯片：Northern Journey视频 -->
+                            <div class="swiper-slide" style="cursor: pointer;" onclick="window.parent.navigateTo('north.html')">
+                                <div class="video-container">
+                                    <video preload="metadata" autoplay muted playsinline
+                                           class="hero-image tibet-video"
+                                           disablePictureInPicture
+                                           controlsList="nodownload nofullscreen noremoteplayback"
+                                           loading="lazy"
+                                           width="1920"
+                                           height="1080"
+                                           data-video-id="tibet"
+                                           poster="artistweb/images/tibet-poster.jpg">
+                                        <source src="artistweb/videos/video1.webm" type="video/webm">
+                                        <source src="artistweb/videos/video1.mp4" type="video/mp4">
+                                        Your browser does not support HTML5 video.
+                                    </video>
+                                    <div class="video-placeholder" style="background-color: #000;"></div>
+                                    <div class="video-title">
+                                        <div class="river-text">Northern Journey</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 第3张幻灯片：Summer Sense视频 -->
+                            <div class="swiper-slide" style="cursor: pointer;" onclick="window.parent.navigateTo('film.html')">
+                                <div class="video-container">
+                                    <video preload="metadata" autoplay muted playsinline
+                                           class="hero-image"
+                                           disablePictureInPicture
+                                           controlsList="nodownload nofullscreen noremoteplayback"
+                                           loading="lazy"
+                                           width="1920"
+                                           height="1080"
+                                           data-video-id="summer"
+                                           poster="artistweb/images/summer-poster.jpg">
+                                        <source src="artistweb/videos/video2.webm" type="video/webm">
+                                        <source src="artistweb/videos/video2.mp4" type="video/mp4">
+                                        Your browser does not support HTML5 video.
+                                    </video>
+                                    <div class="video-placeholder" style="background-color: #000;"></div>
+                                </div>
+                            </div>
+
+                            <!-- 第4张幻灯片：Island视频 -->
+                            <div class="swiper-slide" style="cursor: pointer;" onclick="window.parent.navigateTo('sanya.html')">
+                                <div class="video-container">
+                                    <video preload="metadata" autoplay muted playsinline
+                                           class="hero-image tibet-video"
+                                           disablePictureInPicture
+                                           controlsList="nodownload nofullscreen noremoteplayback"
+                                           loading="lazy"
+                                           width="1920"
+                                           height="1080"
+                                           data-video-id="sanya"
+                                           poster="artistweb/images/sanya-poster.jpg">
+                                        <source src="artistweb/videos/video3.webm" type="video/webm">
+                                        <source src="artistweb/videos/video3.mp4" type="video/mp4">
+                                        Your browser does not support HTML5 video.
+                                    </video>
+                                </div>
+                            </div>
+                            </div>
+
+                        <!-- 幻灯片控制器 -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-pagination"></div>
+                            </div>
+                        </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 内容页面不需要页脚 -->
+
+    <!-- ======== 脚本加载 ======== -->
+    <!-- 内容页面不需要导航栏和页脚脚本 -->
+    <!-- 动画脚本 -->
+    <script src="shared/animation.js"></script>
+
+    <!-- 画廊主脚本 - 使用type="module"确保模块加载 -->
+    <script type="module" src="shared/js/gallery-main.js"></script>
+
+    <!-- 移动端视频优化脚本 -->
+    <script type="module">
+        // 导入移动端视频优化器和海报生成器
+        import { initMobileVideoOptimizer } from './shared/js/mobile-video-optimizer.js';
+        import { generateVideoPoster } from './shared/js/generate-posters.js';
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 生成视频海报
+            generateVideoPoster();
+
+            // 初始化移动端视频优化
+            initMobileVideoOptimizer();
+        });
+    </script>
+
+    <!-- Gallery页面特定初始化脚本 -->
+    <script>
+        // Gallery页面特定的初始化函数
+        function initGalleryPage() {
+            console.log('Gallery页面特定初始化');
+
+            // 确保页面样式正确
+            document.body.classList.add('gallery-page');
+
+            // 确保视频正确加载和播放
+            setTimeout(() => {
+                const videos = document.querySelectorAll('video');
+                console.log('找到视频元素:', videos.length);
+
+                videos.forEach((video, index) => {
+                    console.log(`初始化视频 ${index+1}`);
+                    // 重新加载视频以确保它们在页面过渡后正确播放
+                    video.load();
+                    video.muted = true; // 确保视频静音，以便自动播放
+                    video.play().catch(e => console.log('视频自动播放失败:', e));
+                });
+
+                // 在非移动设备上确保所有幻灯片可见
+                if (!isMobileDevice()) {
+                    const slides = document.querySelectorAll('.swiper-slide');
+                    slides.forEach((slide) => {
+                        // 在非移动设备上直接设置可见
+                        slide.style.opacity = '1';
+                        slide.style.transform = 'none';
+                    });
+                }
+
+                // 添加检测移动设备的函数
+                function isMobileDevice() {
+                    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+                        || window.innerWidth < 768;
+                }
+
+                // 确保Gallery文字可见 - 仅在非移动设备上直接设置样式
+                if (!isMobileDevice()) {
+                    const galleryText = document.querySelector('.gallery-text');
+                    if (galleryText) {
+                        galleryText.style.opacity = '1';
+                    }
+
+                    // 确保Northern Journey文字正确显示
+                    const riverText = document.querySelector('.river-text');
+                    if (riverText) {
+                        riverText.style.opacity = '1';
+                    }
+                }
+            }, 100);
+        }
+
+        // 页面加载时执行初始化
+        document.addEventListener('DOMContentLoaded', initGalleryPage);
+
+        // 窗口大小变化时重新初始化
+        window.addEventListener('resize', initGalleryPage);
+    </script>
+</body>
+</html>

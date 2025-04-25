@@ -1,0 +1,68 @@
+/* 本地字体定义文件 */
+
+/* Reenie Beanie 字体 */
+@font-face {
+    font-family: 'Reenie Beanie';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./google-fonts/reenie-beanie/reenie-beanie.woff2') format('woff2');
+    font-display: swap;
+}
+
+/* Poiret One 字体 */
+@font-face {
+    font-family: 'Poiret One';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./google-fonts/poiret-one/poiret-one.woff2') format('woff2');
+    font-display: swap;
+}
+
+/* Noto Serif SC 字体 */
+@font-face {
+    font-family: 'Noto Serif SC';
+    font-style: normal;
+    font-weight: 300;
+    src: url('./google-fonts/noto-serif-sc/noto-serif-sc-300.woff2') format('woff2');
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Noto Serif SC';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./google-fonts/noto-serif-sc/noto-serif-sc-400.woff2') format('woff2');
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Noto Serif SC';
+    font-style: normal;
+    font-weight: 500;
+    src: url('./google-fonts/noto-serif-sc/noto-serif-sc-500.woff2') format('woff2');
+    font-display: swap;
+}
+
+/* Lato 字体 */
+@font-face {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 300;
+    src: url('./google-fonts/lato/lato-300.woff2') format('woff2');
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./google-fonts/lato/lato-400.woff2') format('woff2');
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    src: url('./google-fonts/lato/lato-700.woff2') format('woff2');
+    font-display: swap;
+}
+
+/* 其他字体可以根据需要添加 */
+/* 注意：对于其他字体（如Playfair Display，Inter等），需要先下载对应的字体文件 */ 

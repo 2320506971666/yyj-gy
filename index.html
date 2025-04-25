@@ -300,7 +300,7 @@
     </div>
 
     <!-- 内容框架 -->
-    <iframe id="content-frame" src="model.html" title="页面内容" class="visible"></iframe>
+    <iframe id="content-frame" src="./model.html" title="页面内容" class="visible"></iframe>
 
     <script>
         // 当前页面
@@ -417,8 +417,8 @@
                     iframe.classList.add('visible');
                 };
 
-                // 加载新页面
-                iframe.src = page;
+                // 加载新页面 - 使用相对路径
+                iframe.src = './' + page;
             }, 300);
 
             // 安全措施：如果2秒后页面仍未显示，强制显示

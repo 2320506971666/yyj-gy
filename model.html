@@ -35,13 +35,8 @@
     <!-- 导航栏样式 -->
     <!-- <link rel="stylesheet" href="shared/nav-styles.css"> -->
 
-    <!-- GSAP, Lenis, Barba.js 脚本 -->
+    <!-- 移除冲突的页面过渡脚本 -->
     <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
-    <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
-    <script src="https://unpkg.com/@barba/core"></script>
-
-    <!-- 页面过渡样式 -->
-    <link rel="stylesheet" href="shared/css/page-transitions.css">
 
     <!-- Three.js 库 - 仅使用ES模块版本 -->
     <script type="importmap">
@@ -149,24 +144,7 @@
             transform: translateY(0);
         }
 
-        /* 页面过渡效果 */
-        .page-transition {
-            position: fixed;
-            top: 45px;
-            left: 0;
-            width: 100%;
-            height: calc(100vh - 45px);
-            background-color: #ffffff;
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.5s cubic-bezier(0.7, 0, 0.3, 1);
-        }
-
-        .page-transition.fade-in {
-            opacity: 1;
-            visibility: visible;
-        }
+        /* 移除冲突的页面过渡效果 */
 
         /* 统一的按钮样式 */
         .nav-button {
@@ -193,7 +171,11 @@
             text-align: center;
             white-space: nowrap;
             min-width: 120px;
-            transition: all 0.3s ease;
+            transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1),
+                      transform 0.6s cubic-bezier(0.33, 1, 0.68, 1),
+                      background-color 0.3s ease;
+            transform: translateY(20px);
+            will-change: opacity, transform;
         }
 
         /* 按钮悬停和点击效果 */
@@ -350,7 +332,10 @@
                 width: 150px !important;
             }
 
-            .nav-button.visible { opacity: 1 !important; }
+            .nav-button.visible {
+                opacity: 1 !important;
+                transform: translateY(-50%) !important;
+            }
         }
 
         /* 首页特定汉堡菜单增强样式 */
@@ -392,6 +377,7 @@
         .model-loaded #film-button {
                 opacity: 1;
                 visibility: visible;
+                transform: translateY(0);
         }
     </style>
 
@@ -424,7 +410,7 @@
     <main>
         <div id="model-container">
                 <div id="loader">
-                    <p>加载中...</p>
+                    <p>0%</p>
                     <div class="loader-bar">
                         <div class="loader-progress" id="progress-bar"></div>
                     </div>
@@ -434,20 +420,20 @@
             </div>
         </div>
 
-        <!-- 导航按钮 -->
-        <a href="./gallery.html" class="gallery-button nav-button" id="gallery-button" data-barba="link">
+        <!-- 导航按钮 - 修改为使用parent.navigateTo -->
+        <a onclick="parent.navigateTo('gallery.html')" class="gallery-button nav-button" id="gallery-button">
             <i class="fas fa-images"></i>
             <span>gallery</span>
         </a>
-        <a href="./work.html" class="work-button nav-button" id="work-button" data-barba="link">
+        <a onclick="parent.navigateTo('work.html')" class="work-button nav-button" id="work-button">
             <i class="fas fa-briefcase"></i>
             <span>work</span>
         </a>
-        <a href="./about.html" class="about-button nav-button" id="about-button" data-barba="link">
+        <a onclick="parent.navigateTo('about.html')" class="about-button nav-button" id="about-button">
             <i class="fas fa-user"></i>
             <span>about</span>
         </a>
-        <a href="./film.html" class="film-button nav-button" id="film-button" data-barba="link">
+        <a onclick="parent.navigateTo('film.html')" class="film-button nav-button" id="film-button">
             <i class="fas fa-film"></i>
             <span>film</span>
         </a>
@@ -761,32 +747,57 @@
 
             manager.onProgress = function(item, loaded, total) {
                 console.log(`加载进度: ${loaded}/${total}`);
-                const progress = (loaded / total * 100);
+                const progress = Math.floor(loaded / total * 100);
                 if (progressBar) {
                     progressBar.style.width = progress + '%';
+                    // 更新加载文本
+                    const loaderText = document.querySelector('#loader p');
+                    if (loaderText) {
+                        loaderText.textContent = `${progress}%`;
+                    }
                 }
             };
 
             manager.onLoad = function() {
                 console.log('模型加载完成');
-                loader.style.display = 'none';
-                modelInfo.classList.add('visible');
 
-                // 设置交互
-                setupModelInteraction();
-                setupDeviceOrientation();
+                // 确保进度条显示100%
+                if (progressBar) {
+                    progressBar.style.width = '100%';
+                    // 更新加载文本
+                    const loaderText = document.querySelector('#loader p');
+                    if (loaderText) {
+                        loaderText.textContent = '100%';
+                    }
+                }
 
-                // 设置初始按钮颜色
-                updateButtonColors(modelStyleState);
+                // 延迟隐藏加载器，让父页面有时间捕获100%
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    modelInfo.classList.add('visible');
 
-                // 标记模型已加载完成
-                window.modelLoaded = true;
-                document.body.classList.add('model-loaded');
+                    // 设置交互
+                    setupModelInteraction();
+                    setupDeviceOrientation();
 
-                // 显示按钮
-                Object.values(buttons).forEach(button => {
-                    if (button) button.classList.add('visible');
-                });
+                    // 设置初始按钮颜色
+                    updateButtonColors(modelStyleState);
+
+                    // 标记模型已加载完成
+                    window.modelLoaded = true;
+                    document.body.classList.add('model-loaded');
+
+                    // 直接显示按钮，不等待父页面动画
+                    // 显示按钮
+                    Object.values(buttons).forEach((button, index) => {
+                        if (button) {
+                            // 按顺序显示按钮，每个按钮间隔200ms
+                            setTimeout(() => {
+                                button.classList.add('visible');
+                            }, 200 * index);
+                        }
+                    });
+                }, 300);
             };
 
             manager.onError = function(url) {

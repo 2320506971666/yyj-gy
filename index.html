@@ -242,7 +242,7 @@
             opacity: 0.7;
         }
 
-        /* iframe 样式 - 简单渐隐效果 */
+        /* iframe 样式 - 优雅的模糊转场效果 */
         #content-frame {
             position: fixed;
             top: 45px; /* 导航栏高度 */
@@ -253,14 +253,140 @@
             background-color: #000;
             z-index: 1;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            filter: blur(12px);
+            transform: scale(1.03);
+            transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1),
+                        filter 0.6s cubic-bezier(0.33, 1, 0.68, 1),
+                        transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+            will-change: opacity, filter, transform;
+            transform-origin: center center;
         }
 
         #content-frame.visible {
             opacity: 1;
+            filter: blur(0);
+            transform: scale(1);
         }
 
-        /* 页面过渡效果已简化为简单的渐隐 */
+        /* 页面转场效果 - 优雅的模糊变化 */
+        @keyframes pageTransition {
+            0% {
+                opacity: 0;
+                filter: blur(12px);
+                transform: scale(1.03);
+            }
+            100% {
+                opacity: 1;
+                filter: blur(0);
+                transform: scale(1);
+            }
+        }
+
+        /* 加载动画样式 */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+            transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+            will-change: opacity;
+        }
+
+        .loading-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-logo {
+            font-family: 'Reenie Beanie', cursive;
+            font-size: 3rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #ffffff;
+            opacity: 0;
+            margin-bottom: 20px;
+            filter: blur(12px);
+            transform: scale(1.03);
+            animation: textFadeIn 2s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+            transform-origin: center center;
+        }
+
+        @keyframes textFadeIn {
+            0% {
+                opacity: 0;
+                filter: blur(12px);
+                transform: scale(1.03);
+            }
+            100% {
+                opacity: 1;
+                filter: blur(0);
+                transform: scale(1);
+            }
+        }
+
+        @keyframes textFadeOut {
+            0% {
+                opacity: 1;
+                filter: blur(0);
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                filter: blur(12px);
+                transform: scale(0.97);
+            }
+        }
+
+        .loading-percentage {
+            font-family: 'Poiret One', cursive;
+            font-size: 1.2rem;
+            color: #ffffff;
+            opacity: 0;
+            filter: blur(12px);
+            transform: scale(1.03);
+            animation: textFadeIn 1.5s cubic-bezier(0.33, 1, 0.68, 1) forwards 0.5s;
+            position: absolute;
+            bottom: 50px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            transform-origin: center center;
+        }
+
+        #loading-overlay.loaded .loading-logo,
+        #loading-overlay.loaded .loading-percentage {
+            animation: textFadeOut 0.8s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+        }
+
+        #loading-overlay.loaded {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+
+        @media (max-width: 768px) {
+            .loading-logo {
+                font-size: 2rem;
+            }
+
+            .loading-percentage {
+                font-size: 1rem;
+            }
+
+            #loading-overlay.loaded .loading-logo {
+                left: 5px;
+            }
+        }
+
+        /* 移除重复的modelFadeIn动画定义 */
     </style>
 </head>
 <body>
@@ -297,6 +423,14 @@
         <a onclick="navigateTo('sanya.html')">Sanya</a>
         <a onclick="navigateTo('pictures.html')">Pictures</a>
         <a onclick="navigateTo('videos.html')">Videos</a>
+    </div>
+
+    <!-- 加载动画 -->
+    <div id="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-logo">Triple-Y</div>
+            <div class="loading-percentage">0%</div>
+        </div>
     </div>
 
     <!-- 内容框架 -->
@@ -383,14 +517,19 @@
             }
         }
 
-        // 最简单的渐隐效果
+        // 优雅的模糊转场效果
         function navigateTo(page) {
             if (page === currentPage) return;
 
             // 获取元素
             const iframe = document.getElementById('content-frame');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const loadingPercentage = document.querySelector('.loading-percentage');
 
-            // 淡出当前页面
+            // 判断是否是model页面
+            const isModelPage = (page === 'model.html');
+
+            // 淡出当前页面（带模糊效果）
             iframe.classList.remove('visible');
 
             // 更新当前页面
@@ -406,6 +545,14 @@
             // 设置iframe背景为黑色，避免白色闪烁
             iframe.style.backgroundColor = '#000';
 
+            // 如果是model页面，显示加载界面和百分比
+            if (isModelPage) {
+                // 重置加载百分比
+                loadingPercentage.textContent = '0%';
+                // 显示加载界面
+                loadingOverlay.classList.remove('loaded');
+            }
+
             // 短暂延迟后加载新页面，确保淡出效果完成
             setTimeout(() => {
                 // 设置页面加载完成处理函数
@@ -413,18 +560,137 @@
                     // 隐藏导航栏和页脚
                     hideNavAndFooter(iframe);
 
-                    // 淡入新页面
-                    iframe.classList.add('visible');
+                    // 为所有页面添加优雅的模糊转场效果
+                    try {
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+                        // 添加模糊渐入效果的样式
+                        const blurStyle = iframeDoc.createElement('style');
+
+                        // 为所有页面添加统一的转场动画定义
+                        let transitionCSS = `
+                            @keyframes pageTransition {
+                                0% {
+                                    opacity: 0;
+                                    filter: blur(12px);
+                                    transform: scale(1.03);
+                                }
+                                100% {
+                                    opacity: 1;
+                                    filter: blur(0);
+                                    transform: scale(1);
+                                }
+                            }
+                        `;
+
+                        // 如果是model页面，特殊处理模型和按钮
+                        if (isModelPage) {
+                            blurStyle.textContent = `
+                                ${transitionCSS}
+
+                                #model-container,
+                                #buttons-container,
+                                .model-button {
+                                    opacity: 0;
+                                    filter: blur(12px);
+                                    transform: scale(1.03);
+                                    animation: pageTransition 1.2s cubic-bezier(0.33, 1, 0.68, 1) forwards !important;
+                                    transform-origin: center center;
+                                }
+
+                                /* 隐藏进度条，避免闪烁 */
+                                #progress-bar-container {
+                                    display: none !important;
+                                }
+                            `;
+                        } else {
+                            // 为其他页面添加整体模糊效果
+                            blurStyle.textContent = `
+                                ${transitionCSS}
+
+                                body > * {
+                                    animation: pageTransition 0.8s cubic-bezier(0.33, 1, 0.68, 1) forwards !important;
+                                    transform-origin: center center;
+                                }
+                            `;
+                        }
+
+                        iframeDoc.head.appendChild(blurStyle);
+                    } catch (e) {
+                        console.error('无法添加模糊效果:', e);
+                    }
+
+                    // 如果是model页面，监听模型加载进度
+                    if (isModelPage) {
+                        try {
+                            const iframeWindow = iframe.contentWindow;
+
+                            // 监听模型加载进度
+                            const checkModelLoading = () => {
+                                try {
+                                    if (iframeWindow && iframeWindow.document) {
+                                        const progressBar = iframeWindow.document.getElementById('progress-bar');
+                                        if (progressBar) {
+                                            // 获取当前进度
+                                            const width = progressBar.style.width || '0%';
+                                            const percentage = parseInt(width) || 0;
+
+                                            // 更新加载百分比显示
+                                            loadingPercentage.textContent = `${percentage}%`;
+
+                                            // 检查是否加载完成
+                                            if (percentage >= 100) {
+                                                // 模型加载完成，延迟隐藏加载界面
+                                                setTimeout(() => {
+                                                    loadingOverlay.classList.add('loaded');
+                                                    iframe.classList.add('visible');
+                                                }, 500);
+                                                return;
+                                            }
+
+                                            // 继续检查进度
+                                            setTimeout(checkModelLoading, 100);
+                                        } else {
+                                            // 如果找不到进度条，继续检查
+                                            setTimeout(checkModelLoading, 100);
+                                        }
+                                    }
+                                } catch (e) {
+                                    console.error('检查模型加载进度出错:', e);
+                                    // 出错时也显示页面
+                                    loadingOverlay.classList.add('loaded');
+                                    iframe.classList.add('visible');
+                                }
+                            };
+
+                            // 开始检查模型加载进度
+                            setTimeout(checkModelLoading, 300);
+                        } catch (e) {
+                            console.error('无法监听模型加载进度:', e);
+                            // 出错时也显示页面
+                            loadingOverlay.classList.add('loaded');
+                            iframe.classList.add('visible');
+                        }
+                    } else {
+                        // 非model页面直接显示（带模糊效果）
+                        iframe.classList.add('visible');
+                    }
                 };
 
                 // 加载新页面 - 使用相对路径
                 iframe.src = './' + page;
-            }, 300);
 
-            // 安全措施：如果2秒后页面仍未显示，强制显示
+                // 如果不是model页面，不显示加载条
+                if (!isModelPage) {
+                    loadingOverlay.classList.add('loaded');
+                }
+            }, 350); // 优化延迟时间，使转场效果更加流畅
+
+            // 安全措施：如果4秒后页面仍未显示，强制显示
             setTimeout(function() {
                 iframe.classList.add('visible');
-            }, 2000);
+                loadingOverlay.classList.add('loaded');
+            }, 4000);
         }
 
         // 初始化
@@ -501,8 +767,128 @@
         document.getElementById('content-frame').addEventListener('load', function() {
             // 对于初始加载，隐藏加载指示器
             if (this.getAttribute('data-initial-load') !== 'done') {
-                document.getElementById('loader').classList.remove('active');
                 this.setAttribute('data-initial-load', 'done');
+                const loadingOverlay = document.getElementById('loading-overlay');
+                const loadingPercentage = document.querySelector('.loading-percentage');
+                const iframe = this;
+
+                // 为所有页面添加优雅的模糊转场效果
+                try {
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+                    // 添加模糊渐入效果的样式
+                    const blurStyle = iframeDoc.createElement('style');
+
+                    // 为所有页面添加统一的转场动画定义
+                    let transitionCSS = `
+                        @keyframes pageTransition {
+                            0% {
+                                opacity: 0;
+                                filter: blur(12px);
+                                transform: scale(1.03);
+                            }
+                            100% {
+                                opacity: 1;
+                                filter: blur(0);
+                                transform: scale(1);
+                            }
+                        }
+                    `;
+
+                    // 如果是model页面，特殊处理模型和按钮
+                    if (currentPage === 'model.html') {
+                        blurStyle.textContent = `
+                            ${transitionCSS}
+
+                            #model-container,
+                            #buttons-container,
+                            .model-button {
+                                opacity: 0;
+                                filter: blur(12px);
+                                transform: scale(1.03);
+                                animation: pageTransition 1.2s cubic-bezier(0.33, 1, 0.68, 1) forwards !important;
+                                transform-origin: center center;
+                            }
+
+                            /* 隐藏进度条，避免闪烁 */
+                            #progress-bar-container {
+                                display: none !important;
+                            }
+                        `;
+                    } else {
+                        // 为其他页面添加整体模糊效果
+                        blurStyle.textContent = `
+                            ${transitionCSS}
+
+                            body > * {
+                                opacity: 0;
+                                filter: blur(12px);
+                                transform: scale(1.03);
+                                animation: pageTransition 0.8s cubic-bezier(0.33, 1, 0.68, 1) forwards !important;
+                                transform-origin: center center;
+                            }
+                        `;
+                    }
+
+                    iframeDoc.head.appendChild(blurStyle);
+                } catch (e) {
+                    console.error('无法添加模糊效果:', e);
+                }
+
+                // 如果初始页面是model页面，监听模型加载进度
+                if (currentPage === 'model.html') {
+                    try {
+                        const iframeWindow = iframe.contentWindow;
+
+                        // 监听模型加载进度
+                        const checkModelLoading = () => {
+                            try {
+                                if (iframeWindow && iframeWindow.document) {
+                                    const progressBar = iframeWindow.document.getElementById('progress-bar');
+                                    if (progressBar) {
+                                        // 获取当前进度
+                                        const width = progressBar.style.width || '0%';
+                                        const percentage = parseInt(width) || 0;
+
+                                        // 更新加载百分比显示
+                                        loadingPercentage.textContent = `${percentage}%`;
+
+                                        // 检查是否加载完成
+                                        if (percentage >= 100) {
+                                            // 模型加载完成，延迟隐藏加载界面
+                                            setTimeout(() => {
+                                                loadingOverlay.classList.add('loaded');
+                                            }, 500);
+                                            return;
+                                        }
+
+                                        // 继续检查进度
+                                        setTimeout(checkModelLoading, 100);
+                                    } else {
+                                        // 如果找不到进度条，继续检查
+                                        setTimeout(checkModelLoading, 100);
+                                    }
+                                }
+                            } catch (e) {
+                                console.error('检查模型加载进度出错:', e);
+                                // 出错时也隐藏加载界面
+                                loadingOverlay.classList.add('loaded');
+                            }
+                        };
+
+                        // 开始检查模型加载进度
+                        setTimeout(checkModelLoading, 300);
+                    } catch (e) {
+                        console.error('无法监听模型加载进度:', e);
+                        // 出错时也隐藏加载界面
+                        loadingOverlay.classList.add('loaded');
+                    }
+                } else {
+                    // 如果初始页面不是model页面，则直接隐藏加载界面
+                    setTimeout(() => {
+                        loadingOverlay.classList.add('loaded');
+                    }, 500);
+                }
             }
 
             // 简单修复黑边问题

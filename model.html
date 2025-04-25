@@ -43,7 +43,7 @@
     <!-- 页面过渡样式 -->
     <link rel="stylesheet" href="shared/css/page-transitions.css">
 
-    <!-- Three.js 库 - 使用ES模块版本 -->
+    <!-- Three.js 库 - 仅使用ES模块版本 -->
     <script type="importmap">
     {
         "imports": {
@@ -52,8 +52,6 @@
         }
     }
     </script>
-    <!-- 添加 polyfill 以支持更多浏览器 -->
-    <script async src="https://cdn.jsdelivr.net/npm/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
 
     <style>
         /* 基础样式 */
@@ -471,8 +469,7 @@
         // 初始化Three.js场景
         let scene, camera, renderer, controls, model;
         let clock = new THREE.Clock();
-        // 使用绝对路径确保在 GitHub Pages 上可以正确加载
-        let modelPath = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '') + '/3dLOGOblend_draco.glb';
+        let modelPath = './3dLOGOblend_draco.glb'; // 确保使用相对路径
 
         // 设备检测
         const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -794,14 +791,7 @@
 
             manager.onError = function(url) {
                 console.error('加载出错:', url);
-                loader.innerHTML = `<p>模型加载失败</p><p>错误URL: ${url}</p>
-                <p>尝试刷新页面或检查控制台获取更多信息</p>`;
-
-                // 添加调试信息
-                console.log('模型路径:', modelPath);
-                console.log('当前页面URL:', window.location.href);
-                console.log('当前页面路径:', window.location.pathname);
-                console.log('当前页面源:', window.location.origin);
+                loader.innerHTML = `<p>模型加载失败</p>`;
             };
 
             // 创建GLTF加载器
@@ -809,8 +799,7 @@
 
             // 配置DRACO解压器
             const dracoLoader = new DRACOLoader();
-            // 使用 CDN 路径，确保在 GitHub Pages 上可以访问
-            dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.157.0/examples/jsm/libs/draco/');
+            dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
             dracoLoader.setDecoderConfig({type: 'js'});
             gltfLoader.setDRACOLoader(dracoLoader);
 
@@ -862,26 +851,7 @@
                 },
                 function(error) {
                     console.error(`模型加载错误:`, error);
-                    loader.innerHTML = `<p>模型加载失败</p><p>错误信息: ${error.message || '未知错误'}</p>
-                    <p>尝试刷新页面或检查控制台获取更多信息</p>`;
-
-                    // 添加调试信息
-                    console.log('模型路径:', modelPath);
-                    console.log('当前页面URL:', window.location.href);
-                    console.log('当前页面路径:', window.location.pathname);
-                    console.log('当前页面源:', window.location.origin);
-
-                    // 尝试加载备用模型
-                    console.log('尝试加载备用模型...');
-                    const backupModelPath = window.location.origin + '/3dLOGOblend_draco.glb';
-                    console.log('备用模型路径:', backupModelPath);
-
-                    // 显示导航按钮，即使模型加载失败
-                    window.modelLoaded = true;
-                    document.body.classList.add('model-loaded');
-                    Object.values(buttons).forEach(button => {
-                        if (button) button.classList.add('visible');
-                    });
+                    loader.innerHTML = `<p>模型加载失败</p>`;
                 }
             );
         }

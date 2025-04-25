@@ -1,0 +1,393 @@
+/**
+ * 移动端画廊页面优化样式
+ * 专注于改进移动设备上的视频播放和显示效果
+ */
+
+/* 仅在移动设备上应用这些样式 */
+@media (max-width: 768px) {
+    /* ========== 1. 幻灯片容器优化 ========== */
+    /* 修改Swiper在移动端的行为 */
+    .swiper {
+        height: auto !important;
+        position: relative !important;
+    }
+
+    /* 改为纵向排列 */
+    .swiper-wrapper {
+        flex-direction: column !important;
+        height: auto !important;
+        transform: none !important; /* 完全禁用变换，防止闪烁 */
+    }
+
+    /* 幻灯片调整 - 减小高度以适应手机屏幕，添加浮动动画效果 */
+    .swiper-slide {
+        height: 40vh !important; /* 减小所有幻灯片高度，更适合手机屏幕 */
+        width: 100% !important;
+        margin-bottom: 0 !important; /* 移除间距 */
+        display: block !important; /* 强制显示 */
+        visibility: visible !important;
+        opacity: 0 !important; /* 初始透明度为0，用于浮动动画 */
+        position: relative !important;
+        transform: translateY(30px) !important; /* 初始向下偏移，用于浮动动画 */
+        z-index: 1 !important; /* 确保正确的层叠顺序 */
+        transition: opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1), transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) !important; /* 添加平滑过渡效果 */
+    }
+
+    /* 为每个幻灯片设置不同的延迟，创造连续浮动效果 */
+    .swiper-slide:nth-child(1) {
+        transition-delay: 0.1s !important;
+    }
+
+    .swiper-slide:nth-child(2) {
+        transition-delay: 0.3s !important;
+    }
+
+    .swiper-slide:nth-child(3) {
+        transition-delay: 0.5s !important;
+    }
+
+    .swiper-slide:nth-child(4) {
+        transition-delay: 0.7s !important;
+    }
+
+    /* 添加浮动动画的活动状态 */
+    .swiper-slide.slide-visible {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+
+    /* 隐藏Swiper导航按钮和分页器 */
+    .swiper-button-next,
+    .swiper-button-prev,
+    .swiper-pagination {
+        display: none !important;
+    }
+
+    /* ========== 2. 视频容器优化 ========== */
+    /* 确保视频正确显示 */
+    .video-container {
+        height: 100% !important;
+        position: relative !important;
+        display: block !important;
+        overflow: hidden !important; /* 防止内容溢出 */
+        background-color: #000 !important; /* 确保背景为黑色 */
+        z-index: 1 !important; /* 确保正确的层叠顺序 */
+        transition: none !important; /* 禁用所有过渡效果，防止闪动 */
+        animation: none !important; /* 禁用所有动画，防止闪动 */
+        transform: none !important; /* 防止变换导致的问题 */
+    }
+
+    /* 视频元素优化 */
+    .swiper-slide video {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        position: relative !important; /* 改为相对定位，避免绝对定位导致的问题 */
+        opacity: 1 !important; /* 确保视频可见 */
+        transition: none !important; /* 移除过渡效果，提高性能 */
+        display: block !important; /* 确保正确显示 */
+        z-index: 2 !important; /* 确保视频在最上层 */
+        transform: none !important; /* 防止变换导致的问题 */
+        animation: none !important; /* 禁用所有动画，防止闪动 */
+    }
+
+    /* 图片元素优化 */
+    .swiper-slide img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        position: relative !important;
+        display: block !important; /* 确保正确显示 */
+    }
+
+    /* ========== 3. 文字样式优化 ========== */
+    /* Gallery文字样式 - 移动端专用样式 */
+    .gallery-title .gallery-text,
+    .swiper-slide:first-child #gallery-text-override.gallery-text {
+        position: absolute !important;
+        top: 15% !important; /* 移动端位置调整 */
+        left: 50% !important; /* 居中 */
+        transform: translate(-50%, -50%) scale(0.9) !important; /* 再次减小缩放比例 */
+        width: auto !important; /* 允许自然宽度 */
+        z-index: 9999 !important;
+        color: #FFD900 !important;
+        display: flex !important; /* 使用flex布局 */
+        align-items: baseline !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        line-height: 0.8 !important;
+        white-space: nowrap !important;
+        transition: opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1), transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) !important; /* 使用与网页端一致的过渡效果 */
+        font-size: 0.7rem !important; /* 再次减小基础字体大小 */
+    }
+
+    /* Gallery文字中的每个字母 */
+    .gallery-title .gallery-text span {
+        opacity: 1 !important;
+        transform: none !important;
+        /* 移除动画限制，允许JavaScript控制动画 */
+        will-change: opacity, transform !important;
+    }
+
+    /* Awaits文字样式 - 移动端专用样式 */
+    .gallery-title .welcome,
+    .awaits-text,
+    .swiper-slide:first-child .awaits-text {
+        position: absolute !important;
+        top: 30% !important; /* 移动端位置调整 */
+        left: 50% !important; /* 居中 */
+        transform: translateX(-50%) scale(1.2) !important; /* 固定缩放比例，不使用变量 */
+        color: #c30101 !important;
+        font-family: 'Reenie Beanie', sans-serif !important;
+        font-size: min(55px, 8vw) !important; /* 移动端字体大小 */
+        font-weight: bold !important; /* 加粗显示 */
+        opacity: 1 !important;
+        visibility: visible !important;
+        z-index: 999 !important;
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.25) !important;
+        transition: none !important; /* 禁用过渡效果 */
+        animation: none !important; /* 禁用动画 */
+    }
+
+    /* 确保视频标题显示 */
+    .video-title, .river-text, .sanya-text {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: absolute !important;
+        z-index: 5 !important;
+    }
+
+    /* Northern Journey文字显示优化 */
+    .swiper-slide:nth-child(2) .river-text {
+        display: block !important; /* 显示原始文字 */
+        opacity: 1 !important;
+        visibility: visible !important;
+        position: absolute !important;
+        bottom: 15% !important;
+        left: 10% !important;
+        color: white !important;
+        font-size: 1.6rem !important; /* 再次减小字体大小 */
+        font-weight: 400 !important;
+        letter-spacing: 1px !important; /* 再次减小字母间距 */
+        font-family: 'Cinzel', serif !important;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 0, 0, 0.7) !important;
+        z-index: 9999 !important;
+        white-space: nowrap !important;
+        transition: opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1), transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) !important; /* 使用与网页端一致的过渡效果 */
+        transform: translateY(0) !important; /* 初始状态 */
+    }
+
+    /* 移除after伪元素，使用原始文字 */
+    .swiper-slide:nth-child(2) .video-title:after {
+        content: none !important;
+    }
+
+    /* SANYA文字样式优化 */
+    .sanya-text {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        font-size: 3rem !important;
+        color: rgba(255, 255, 255, 0.8) !important;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9) !important;
+    }
+}
+
+/* 小屏手机适配 */
+@media (max-width: 480px) {
+    /* 进一步减小幻灯片高度 */
+    .swiper-slide {
+        height: 35vh !important;
+    }
+
+    /* 调整Gallery文字 - 小屏幕专用样式 */
+    .gallery-title .gallery-text,
+    .swiper-slide:first-child #gallery-text-override.gallery-text {
+        top: 15% !important;
+        transform: translate(-50%, -50%) scale(0.8) !important; /* 再次减小缩放比例 */
+        font-size: 0.65rem !important; /* 再次减小字体大小 */
+    }
+
+    /* 调整Awaits文字位置 - 小屏幕专用样式 */
+    .gallery-title .welcome,
+    .awaits-text,
+    .swiper-slide:first-child .awaits-text {
+        top: 28% !important;
+        transform: translateX(-50%) scale(1.1) !important; /* 固定缩放比例为1.1倍 */
+        font-size: min(45px, 6.5vw) !important; /* 调整字体大小 */
+    }
+
+    /* 调整Northern Journey文本 */
+    .swiper-slide:nth-child(2) .river-text {
+        font-size: 1.4rem !important; /* 再次减小字体大小 */
+        bottom: 15% !important;
+        letter-spacing: 0.8px !important; /* 再次减小字母间距 */
+    }
+
+    /* 调整SANYA文字大小 */
+    .sanya-text {
+        font-size: 2.5rem !important;
+    }
+}
+
+/* 中小屏幕适配 */
+@media (max-width: 420px) and (min-width: 361px) {
+    /* 调整Gallery文字 - 中小屏幕专用样式 */
+    .gallery-title .gallery-text,
+    .swiper-slide:first-child #gallery-text-override.gallery-text {
+        transform: translate(-50%, -50%) scale(0.7) !important; /* 再次减小缩放比例 */
+        font-size: 0.65rem !important; /* 再次减小字体大小 */
+    }
+
+    /* 调整Northern Journey文本 - 中小屏幕专用样式 */
+    .swiper-slide:nth-child(2) .river-text {
+        font-size: 1.5rem !important; /* 再次减小字体大小 */
+        letter-spacing: 0.8px !important; /* 再次减小字母间距 */
+        left: 9% !important;
+    }
+}
+
+/* 超小屏幕适配 */
+@media (max-width: 360px) {
+    /* 进一步减小幻灯片高度 */
+    .swiper-slide {
+        height: 30vh !important;
+    }
+
+    /* 进一步调整Gallery文字 - 超小屏幕专用样式 */
+    .gallery-title .gallery-text,
+    .swiper-slide:first-child #gallery-text-override.gallery-text {
+        top: 15% !important;
+        transform: translate(-50%, -50%) scale(0.6) !important; /* 再次减小缩放比例 */
+        font-size: 0.6rem !important; /* 再次减小字体大小 */
+    }
+
+    /* 进一步调整Awaits文字位置 - 超小屏幕专用样式 */
+    .gallery-title .welcome,
+    .awaits-text,
+    .swiper-slide:first-child .awaits-text {
+        top: 26% !important;
+        transform: translateX(-50%) scale(1) !important; /* 固定缩放比例为1倍 */
+        font-size: min(40px, 6vw) !important; /* 调整字体大小 */
+    }
+
+    /* 进一步调整Northern Journey文本 */
+    .swiper-slide:nth-child(2) .river-text {
+        font-size: 1.2rem !important; /* 再次减小字体大小 */
+        bottom: 15% !important;
+        letter-spacing: 0.5px !important; /* 再次减小字母间距 */
+        left: 8% !important; /* 调整左侧位置 */
+    }
+
+    /* 调整SANYA文字大小 */
+    .sanya-text {
+        font-size: 2.2rem !important;
+    }
+}
+
+/* 性能优化 - 保留幻灯片动画 */
+@media (max-width: 768px) {
+    /* 仅对视频和文字禁用不必要的动画和过渡效果，保留幻灯片动画 */
+    .swiper-slide video,
+    .video-title,
+    .river-text,
+    .sanya-text {
+        /* 不再禁用幻灯片的过渡效果，以允许浮动动画 */
+        will-change: auto !important;
+    }
+
+    /* 使用硬件加速 */
+    .video-container,
+    .swiper-slide video {
+        will-change: transform !important;
+        -webkit-transform: translateZ(0) !important;
+        transform: translateZ(0) !important;
+        backface-visibility: hidden !important;
+        perspective: 1000px !important;
+    }
+
+    /* 优化视频加载 - 使用HTML属性而非CSS属性 */
+    video {
+        /* preload属性应在HTML标签中设置，而非CSS */
+        background-color: #000 !important; /* 确保视频背景为黑色 */
+    }
+
+    /* 简化版：统一处理所有视频元素，防止闪烁 */
+    .swiper-slide video {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 2 !important;
+        position: static !important; /* 使用静态定位，避免定位问题 */
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        transform: none !important;
+        transition: none !important;
+        animation: none !important;
+        filter: none !important;
+        will-change: auto !important;
+    }
+
+    /* 简化版：统一处理所有视频容器，防止闪烁 */
+    .swiper-slide .video-container {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 1 !important;
+        position: relative !important;
+        width: 100% !important;
+        height: 100% !important;
+        overflow: hidden !important;
+        transform: none !important;
+        transition: none !important;
+        animation: none !important;
+        filter: none !important;
+        will-change: auto !important;
+        background-color: #000 !important;
+    }
+
+    /* 确保视频占位符不遮挡视频 */
+    .video-placeholder {
+        z-index: 1 !important;
+        opacity: 0 !important; /* 默认隐藏占位符 */
+    }
+
+    /* 视频加载失败时显示占位符 */
+    video.error + .video-placeholder {
+        opacity: 1 !important;
+    }
+}
+
+/* 横屏模式适配 */
+@media (max-width: 768px) and (orientation: landscape) {
+    /* 调整幻灯片高度，适应横屏 */
+    .swiper-slide {
+        height: 70vh !important;
+    }
+
+    /* 调整Gallery文字位置和大小 */
+    .gallery-title .gallery-text,
+    .swiper-slide:first-child #gallery-text-override.gallery-text {
+        top: 25% !important;
+        transform: translate(-50%, -50%) scale(0.8) !important; /* 减小缩放比例 */
+        font-size: 0.7rem !important; /* 减小字体大小 */
+    }
+
+    /* 调整Awaits文字位置 */
+    .gallery-title .welcome,
+    .awaits-text,
+    .swiper-slide:first-child .awaits-text {
+        top: 40% !important;
+    }
+
+    /* 调整Northern Journey文字位置和大小 */
+    .swiper-slide:nth-child(2) .river-text {
+        font-size: 1.5rem !important; /* 减小字体大小 */
+        bottom: 20% !important;
+        left: 10% !important;
+        letter-spacing: 0.8px !important; /* 减小字母间距 */
+    }
+}

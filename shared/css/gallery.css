@@ -387,7 +387,8 @@ video::-webkit-media-controls {
     text-shadow: 2px 2px 3px var(--shadow-text);
     z-index: 2;
     opacity: 0;
-    animation: fadeInDown 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.8s; /* 减少延迟时间 */
+    /* 移除CSS动画，统一使用GSAP控制 */
+    transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* ========== 10. Gallery字母动画样式 ========== */

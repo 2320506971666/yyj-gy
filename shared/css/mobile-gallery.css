@@ -141,12 +141,14 @@
         font-family: 'Reenie Beanie', sans-serif !important;
         font-size: min(55px, 8vw) !important; /* 移动端字体大小 */
         font-weight: bold !important; /* 加粗显示 */
-        opacity: 1 !important;
+        /* 初始状态设为不可见，由JS控制动画 */
+        opacity: 0 !important;
         visibility: visible !important;
         z-index: 999 !important;
         text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.25) !important;
-        transition: none !important; /* 禁用过渡效果 */
-        animation: none !important; /* 禁用动画 */
+        /* 允许过渡效果，但禁用CSS动画 */
+        transition: opacity 0.6s ease-out !important;
+        animation: none !important; /* 禁用CSS动画，使用JS控制 */
     }
 
     /* 确保视频标题显示 */

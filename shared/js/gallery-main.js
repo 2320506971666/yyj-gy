@@ -74,8 +74,10 @@ function initializeSwiper() {
                 }, 1000);
             },
             slideChangeTransitionStart: function() {
-                // 在幻灯片开始切换时，为当前幻灯片的 river-text 添加淡出动画
+                // 在幻灯片开始切换时，为当前幻灯片的文字元素添加淡出动画
                 const currentSlide = this.slides[this.activeIndex];
+
+                // 处理 river-text 淡出
                 const riverText = currentSlide.querySelector('.river-text');
                 if (riverText) {
                     // 添加淡出动画，与幻灯片切换同步
@@ -83,6 +85,18 @@ function initializeSwiper() {
                         opacity: 0,
                         y: -20,
                         duration: ANIMATION_DURATION / 2, // 加快淡出速度
+                        ease: "power2.out"
+                    });
+                }
+
+                // 处理 awaits-text 淡出
+                const awaitsText = currentSlide.querySelector('.awaits-text');
+                if (awaitsText) {
+                    // 添加淡出动画，与幻灯片切换同步
+                    gsap.to(awaitsText, {
+                        opacity: 0,
+                        y: -15,
+                        duration: ANIMATION_DURATION / 2,
                         ease: "power2.out"
                     });
                 }
@@ -179,7 +193,9 @@ function createSmoothTransition(swiperInstance) {
             gsap.set(prevSlide, {autoAlpha: 0, zIndex: 0});
             gsap.set(activeSlide, {autoAlpha: 1, zIndex: 1});
 
-            // 重置新幻灯片中的 river-text 动画状态，并添加淡入动画
+            // 重置新幻灯片中的文字元素动画状态，并添加淡入动画
+
+            // 处理 river-text 动画
             const newRiverText = activeSlide.querySelector('.river-text');
             if (newRiverText) {
                 // 先重置位置和透明度
@@ -195,6 +211,26 @@ function createSmoothTransition(swiperInstance) {
                     y: 0,
                     duration: 0.8,
                     delay: 0.3, // 延迟显示，让幻灯片先完成过渡
+                    ease: "power2.out"
+                });
+            }
+
+            // 处理 awaits-text 动画
+            const newAwaitsText = activeSlide.querySelector('.awaits-text');
+            if (newAwaitsText) {
+                // 先重置位置和透明度
+                gsap.set(newAwaitsText, {
+                    opacity: 0,
+                    y: 15,
+                    clearProps: "animation" // 清除之前的动画属性
+                });
+
+                // 添加延迟淡入动画
+                gsap.to(newAwaitsText, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.7,
+                    delay: 0.5, // 比 river-text 稍晚显示
                     ease: "power2.out"
                 });
             }

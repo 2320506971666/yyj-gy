@@ -169,25 +169,42 @@ function triggerSlideAnimations() {
         // 移除可能已存在的可见类
         slide.classList.remove('slide-visible');
 
-        // 重置文字元素的初始状态
+        // 重置文字元素的初始状态 - 使用GSAP确保一致性
         if (index === 0) {
             // 第一个幻灯片：Gallery和Awaits文字
             const galleryText = slide.querySelector('.gallery-text');
             const awaitsText = slide.querySelector('.awaits-text');
 
             if (galleryText) {
-                galleryText.style.opacity = '0';
+                // 使用GSAP重置初始状态
+                gsap.set(galleryText, {
+                    opacity: 0,
+                    clearProps: "animation"
+                });
             }
 
             if (awaitsText) {
-                awaitsText.style.opacity = '0';
+                // 使用GSAP重置初始状态
+                gsap.set(awaitsText, {
+                    opacity: 0,
+                    y: 15,
+                    clearProps: "animation"
+                });
+
+                // 确保元素可见（但透明）
+                awaitsText.style.display = 'block';
+                awaitsText.style.visibility = 'visible';
             }
         } else if (index === 1) {
             // 第二个幻灯片：Northern Journey文字
             const riverText = slide.querySelector('.river-text');
             if (riverText) {
-                riverText.style.opacity = '0';
-                riverText.style.transform = 'translateY(15px)';
+                // 使用GSAP重置初始状态
+                gsap.set(riverText, {
+                    opacity: 0,
+                    y: 15,
+                    clearProps: "animation"
+                });
             }
         }
     });
@@ -238,9 +255,17 @@ function triggerSlideAnimations() {
                     }
 
                     if (awaitsText) {
-                        // 先重置初始状态
-                        awaitsText.style.opacity = '0';
-                        awaitsText.style.transform = 'translateY(10px)';
+                        // 确保元素存在且可见
+                        if (awaitsText.style.display === 'none') {
+                            awaitsText.style.display = 'block';
+                        }
+
+                        // 先重置初始状态 - 强制设置为不可见
+                        gsap.set(awaitsText, {
+                            opacity: 0,
+                            y: 15,
+                            clearProps: "animation" // 清除之前的动画属性
+                        });
 
                         // 使用与网页端一致的动画效果
                         setTimeout(() => {
@@ -248,8 +273,16 @@ function triggerSlideAnimations() {
                             gsap.to(awaitsText, {
                                 opacity: 1,
                                 y: 0,
-                                duration: 0.8,
-                                ease: "power2.out"
+                                duration: 0.7,
+                                ease: "power2.out",
+                                onStart: function() {
+                                    console.log('Awaits 文字动画开始');
+                                },
+                                onComplete: function() {
+                                    console.log('Awaits 文字动画完成');
+                                    // 确保动画完成后元素保持可见
+                                    awaitsText.style.opacity = '1';
+                                }
                             });
                         }, 600);
                     }

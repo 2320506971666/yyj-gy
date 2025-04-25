@@ -8,11 +8,31 @@ document.addEventListener("DOMContentLoaded", function() {
     if (footerContainer) {
         // 注入页脚HTML
         footerContainer.innerHTML = getFooterHTML();
-        
+
         // 注入页脚样式
         injectFooterStyles();
     }
 });
+
+/**
+ * 处理页脚导航链接点击
+ * 检测是否在iframe中，并相应地处理导航
+ */
+function handleFooterNavigation(page) {
+    // 检查是否在iframe中
+    if (window !== window.parent) {
+        // 在iframe中，使用父窗口的navigateTo函数
+        if (typeof window.parent.navigateTo === 'function') {
+            window.parent.navigateTo(page);
+        } else {
+            console.warn('父窗口没有navigateTo函数，使用普通导航');
+            window.parent.location.href = page;
+        }
+    } else {
+        // 不在iframe中，直接导航
+        window.location.href = page;
+    }
+}
 
 // 返回页脚HTML
 function getFooterHTML() {
@@ -26,19 +46,19 @@ function getFooterHTML() {
             <div class="footer-column">
                 <h3>Navigation</h3>
                 <ul class="footer-links">
-                    <li><a href="film.html">Film</a></li>
-                    <li><a href="gallery.html">Gallery</a></li>
-                    <li><a href="work.html">Work</a></li>
-                    <li><a href="about.html">About</a></li>
+                    <li><a href="javascript:void(0)" onclick="handleFooterNavigation('film.html')">Film</a></li>
+                    <li><a href="javascript:void(0)" onclick="handleFooterNavigation('gallery.html')">Gallery</a></li>
+                    <li><a href="javascript:void(0)" onclick="handleFooterNavigation('work.html')">Work</a></li>
+                    <li><a href="javascript:void(0)" onclick="handleFooterNavigation('about.html')">About</a></li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h3>Gallery</h3>
                 <ul class="footer-links">
-                    <li><a href="tibet.html">Tibet</a></li>
-                    <li><a href="north.html">Northern Journey</a></li>
-                    <li><a href="film.html">Summer Sense</a></li>
-                    <li><a href="sanya.html">Island</a></li>
+                    <li><a href="javascript:void(0)" onclick="handleFooterNavigation('tibet.html')">Tibet</a></li>
+                    <li><a href="javascript:void(0)" onclick="handleFooterNavigation('north.html')">Northern Journey</a></li>
+                    <li><a href="javascript:void(0)" onclick="handleFooterNavigation('film.html')">Summer Sense</a></li>
+                    <li><a href="javascript:void(0)" onclick="handleFooterNavigation('sanya.html')">Island</a></li>
                 </ul>
             </div>
         </div>
@@ -60,7 +80,7 @@ function injectFooterStyles() {
             color: white;
             padding: 4rem 5% 2rem;
         }
-        
+
         .footer-content {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -69,7 +89,7 @@ function injectFooterStyles() {
             margin: 0 auto 3rem;
             justify-content: center;
         }
-        
+
         .footer-column h3 {
             font-size: 1.3rem;
             font-weight: 400;
@@ -79,7 +99,7 @@ function injectFooterStyles() {
             letter-spacing: 1px;
             font-family: 'Playfair Display', serif;
         }
-        
+
         .footer-column h3::after {
             content: '';
             position: absolute;
@@ -89,7 +109,7 @@ function injectFooterStyles() {
             bottom: -10px;
             left: 0;
         }
-        
+
         .footer-column p {
             font-size: 1rem;
             line-height: 1.8;
@@ -97,16 +117,16 @@ function injectFooterStyles() {
             margin-bottom: 0.8rem;
             letter-spacing: 0.5px;
         }
-        
+
         .footer-links {
             list-style: none;
             padding: 0;
         }
-        
+
         .footer-links li {
             margin-bottom: 1.2rem;
         }
-        
+
         .footer-links a {
             text-decoration: none;
             color: #ddd;
@@ -114,12 +134,12 @@ function injectFooterStyles() {
             font-size: 1rem;
             letter-spacing: 0.5px;
         }
-        
+
         .footer-links a:hover {
             color: white;
             letter-spacing: 1px;
         }
-        
+
         .copyright {
             text-align: center;
             padding-top: 2rem;
@@ -129,7 +149,7 @@ function injectFooterStyles() {
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+
         /* 响应式样式 */
         @media (max-width: 768px) {
             .footer-content {
@@ -139,4 +159,4 @@ function injectFooterStyles() {
         }`;
         document.head.appendChild(style);
     }
-} 
+}

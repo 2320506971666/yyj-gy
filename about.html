@@ -17,13 +17,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <!-- GSAP, Lenis, Barba.js 脚本 -->
+    <!-- GSAP 脚本 - 移除冲突的Barba.js -->
     <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
-    <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
-    <script src="https://unpkg.com/@barba/core"></script>
-
-    <!-- 页面过渡样式 -->
-    <link rel="stylesheet" href="shared/css/page-transitions.css">
 
     <!-- 路径处理脚本 -->
     <script>
@@ -411,26 +406,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* 修改过渡效果 */
-        .page-transition {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000000; /* 确保是纯黑色 */
-            z-index: 9999; /* 更高的z-index确保在所有内容之上 */
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease-out; /* 简化过渡效果 */
-            pointer-events: none; /* 防止过渡层拦截点击事件，直到完全显示 */
-        }
-
-        .page-transition.active {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: all; /* 激活时恢复点击拦截 */
-        }
+        /* 移除冲突的过渡效果 */
 
         /* 移动端适配样式 */
         @media (max-width: 768px) {
@@ -674,8 +650,8 @@
     <!-- 滚动指示器 -->
     <div class="scroll-indicator"></div>
 
-    <!-- 主体内容，添加barba数据属性 -->
-    <main data-barba="container" data-barba-namespace="about">
+    <!-- 主体内容 -->
+    <main>
         <!-- About页面内容 -->
         <div class="about-page">
             <div class="about-content">
@@ -1002,9 +978,6 @@
 
         // 页面加载时执行初始化
         document.addEventListener('DOMContentLoaded', initAboutPage);
-
-        // Barba.js 页面加载事件也执行初始化
-        window.addEventListener('barba-page-loaded', initAboutPage);
     </script>
 
     <!-- 页脚容器 -->

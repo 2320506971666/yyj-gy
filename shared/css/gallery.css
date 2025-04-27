@@ -88,10 +88,10 @@ body::-webkit-scrollbar,
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* 向下淡入动画 - 用于awaits-text文本 */
+/* 向下淡入动画 - 用于awaits文本 */
 @keyframes fadeInDown {
-    from { opacity: 0; transform: translateX(-50%) translateY(clamp(50px, 6vh, 60px)); }
-    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* 浮入动画 - 用于元素从下方浮入 */
@@ -362,7 +362,7 @@ video::-webkit-media-controls {
 .gallery-title .gallery-text {
     position: absolute;
     top: clamp(15%, 18vh, 20%);
-    left: 49%;
+    left: 50%;
     transform: translate(-50%, -50%) scale(var(--scale-factor, 1));
     display: flex;
     align-items: baseline;
@@ -374,21 +374,19 @@ video::-webkit-media-controls {
     opacity: 1; /* 修改为立即可见 */
 }
 
-/* "Awaits"文本样式 */
-.awaits-text {
-    position: absolute;
-    top: clamp(22%, 27vh, 30%);
-    left: 49%;
-    transform: translateX(-50%) scale(var(--scale-factor, 1));
-    font-family: 'Reenie Beanie', sans-serif;
-    font-size: clamp(2rem, 6vw, 3.125rem); /* 响应式字体大小 */
-    font-weight: 200;
-    color: var(--color-red);
-    text-shadow: 2px 2px 3px var(--shadow-text);
-    z-index: 2;
-    opacity: 0;
-    /* 移除CSS动画，统一使用GSAP控制 */
-    transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+/* 仅用于awaits文字的浮动进入动画 */
+/* 删除这段代码 */
+
+/* 浮动进入动画 - 优化过渡效果 */
+@keyframes floatIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px) scale(var(--scale-factor, 1));
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(var(--scale-factor, 1));
+    }
 }
 
 /* ========== 10. Gallery字母动画样式 ========== */
@@ -471,7 +469,7 @@ video::-webkit-media-controls {
         top: clamp(14%, 16vh, 18%);
     }
 
-    .awaits-text {
+    .awaits {
         top: clamp(21%, 25vh, 28%);
     }
 
@@ -542,17 +540,19 @@ video::-webkit-media-controls {
         opacity: 1;
     }
 
-    /* 第一个幻灯片Awaits文本调整 */
-    .swiper-slide:first-child .awaits-text {
+    /* 第一个幻灯片Awaits文本调整 - 保留动画效果 */
+    .swiper-slide:first-child .awaits {
         position: absolute;
         top: 40%;
         left: 50%;
         transform: translate(-50%, -50%);
         z-index: 9999;
-        opacity: 1;
+        /* 移除 opacity: 1，保留动画效果 */
         color: var(--color-red);
         font-weight: bold;
         font-size: clamp(2.5rem, 8vw, 3.5rem);
+        /* 保留动画效果 - 统一延迟时间为0.8秒 */
+        animation: floatIn 0.6s ease-out forwards 0.8s;
     }
 
     /* 第二个幻灯片隐藏河流文本 */
@@ -581,6 +581,12 @@ video::-webkit-media-controls {
         grid-template-columns: 1fr;
         gap: 3rem;
     }
+
+    .awaits {
+        font-size: min(55px, 8vw);
+        top: 30%;
+        font-weight: bold;
+    }
 }
 
 /* 小型手机设备 - 480px及以下 */
@@ -596,7 +602,7 @@ video::-webkit-media-controls {
     }
 
     /* 调整Awaits文本位置 */
-    .swiper-slide:first-child .awaits-text {
+    .swiper-slide:first-child .awaits {
         top: 38%;
     }
 
@@ -604,6 +610,11 @@ video::-webkit-media-controls {
     .swiper-slide:nth-child(2) .video-title:after {
         font-size: clamp(1.6rem, 5vw, 2.16rem);
         bottom: 12%;
+    }
+
+    .awaits {
+        top: 28%;
+        font-size: min(45px, 6.5vw);
     }
 }
 
@@ -620,7 +631,7 @@ video::-webkit-media-controls {
     }
 
     /* 进一步调整Awaits文本位置 */
-    .swiper-slide:first-child .awaits-text {
+    .swiper-slide:first-child .awaits {
         top: 35%;
     }
 
@@ -628,6 +639,11 @@ video::-webkit-media-controls {
     .swiper-slide:nth-child(2) .video-title:after {
         font-size: clamp(1.4rem, 4.5vw, 1.8rem);
         bottom: 10%;
+    }
+
+    .awaits {
+        top: 26%;
+        font-size: min(40px, 6vw);
     }
 }
 
@@ -638,4 +654,20 @@ video::-webkit-media-controls {
         top: 20%;
         transform: translate(-50%, -50%) scale(var(--scale-factor, 0.7));
     }
+}
+
+/* ========== 10. 画廊页面Awaits文本样式 ========== */
+.awaits {
+    position: absolute;
+    top: clamp(22%, 27vh, 30%);
+    left: 46% !important; /* 向左移动4% */
+    transform: translate(-50%, 0) scale(var(--scale-factor, 1));
+    font-family: 'Reenie Beanie', sans-serif;
+    font-size: clamp(2rem, 6vw, 3.125rem);
+    font-weight: 200;
+    color: var(--color-red);
+    text-shadow: 2px 2px 3px var(--shadow-text);
+    z-index: 2;
+    opacity: 0;
+    animation: fadeInDown 0.6s ease-out forwards 0.8s;
 }

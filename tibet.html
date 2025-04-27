@@ -7,19 +7,11 @@
     <!-- Favicon -->
     <link rel="icon" href="artistweb/images/灰蓝渐变-噪点.jpg">
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- 本地字体 -->
+    <link rel="stylesheet" href="shared/css/fonts.css">
 
-    <!-- GSAP, Lenis 脚本 -->
+    <!-- GSAP 脚本 -->
     <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
-    <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
-    <script src="https://unpkg.com/@barba/core"></script>
 
     <!-- 导航栏和页脚样式已移至shared/js目录 -->
 
@@ -463,34 +455,16 @@
             }
         }
 
-        /* 页面过渡效果 */
-        .page-transition {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: black;
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
-        }
-
-        .page-transition.fade-in {
-            opacity: 1;
-            visibility: visible;
-        }
+        /* 页面过渡效果 - 使用统一过渡效果 */
+        /* 移除自定义页面过渡效果，使用simple-transition.js中的统一过渡效果 */
     </style>
 </head>
-<body data-barba="wrapper">
-    <div class="page-transition"></div>
-
+<body >
     <!-- 导航栏容器 -->
     <div id="nav-container"></div>
 
     <!-- 主体内容，添加barba数据属性 -->
-    <main data-barba="container" data-barba-namespace="tibet">
+    <main >
         <!-- Tibet页面内容 -->
         <div class="tibet-header">
             <h1 class="tibet-title">Tibet</h1>
@@ -594,7 +568,7 @@
 
 
     <!-- 加载统一导航栏脚本 -->
-    <script src="shared/load-nav.js"></script>
+    <script src="shared/js/navigation.js"></script>
     <!-- 加载动画框架脚本 -->
     <script src="shared/animation.js"></script>
     <script>

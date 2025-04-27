@@ -51,10 +51,3 @@ Use `// TODO:` comments for any unfinished or planned feature sections.
 不要创建过多的js、css文件，所有文件都放在shared中，js放在shared/js中，css放在shared/css中，一个html最多创建一个js文件和css文件
 所以编辑遵守响应式设计的规则，确保元素在任何屏幕分辨率下都保持一致的视觉比例
 
-
-### Review Checklist（AI 必须逐项自检）
-1. **结构是否清晰、三层以内？**
-2. **类名是否 BEM？**
-3. **函数/组件是否解耦？**
-4. **性能与可访问性提示是否已落实？**
-5. **注释 & Typings 完整？**

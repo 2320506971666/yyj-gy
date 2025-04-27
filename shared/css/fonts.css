@@ -1,0 +1,14 @@
+/**
+ * 本地字体文件
+ * 替代 Google Fonts，提高加载速度
+ */
+
+/* 使用 @import 方式引入字体，确保字体正确加载 */
+/* 基础字体 */
+@import url('https://fonts.font.im/css2?family=Poiret+One&family=Noto+Serif+SC:wght@300;400;500&family=Lato:wght@300;400;700&family=Reenie+Beanie&family=Playfair+Display:wght@400;500;600&display=swap');
+
+/* 特殊字体 - 用于 Gallery 页面 */
+@import url('https://fonts.font.im/css2?family=Jomhuria&family=Jim+Nightshade&family=Josefin+Slab:wght@400;600;700&family=Cinzel:wght@400;500;600&display=swap');
+
+/* 其他字体 */
+@import url('https://fonts.font.im/css2?family=Poppins:wght@200;400;500;600&family=Inter:wght@300;400;500;600&display=swap');

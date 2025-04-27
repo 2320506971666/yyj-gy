@@ -59,24 +59,7 @@
 
         /* 导航栏样式已移至shared/nav-styles.css */
 
-        /* 页面过渡效果 */
-        .page-transition {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: black;
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
-        }
-
-        .page-transition.fade-in {
-            opacity: 1;
-            visibility: visible;
-        }
+        /* 页面过渡效果已移至shared/transition.js */
 
         /* 动画效果 */
         @keyframes fadeIn {
@@ -497,8 +480,6 @@
     </style>
 </head>
 <body>
-    <div class="page-transition"></div>
-
     <!-- 导航栏容器 -->
     <div id="nav-container"></div>
 
@@ -564,17 +545,13 @@
         </div>
     </div>
 
+    <!-- 引入简化版转场效果管理器 -->
+    <script src="shared/simple-transition.js"></script>
+
     <!-- 加载统一导航栏脚本 -->
-    <script src="shared/load-nav.js"></script>
+    <script src="shared/js/navigation.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 页面加载时的淡出效果
-            const transition = document.querySelector('.page-transition');
-            setTimeout(() => {
-                transition.style.visibility = 'hidden';
-                transition.style.opacity = '0';
-            }, 500);
-
             // 使用IntersectionObserver实现滚动浮动效果
             const photoItems = document.querySelectorAll('.photo-item');
 
@@ -608,28 +585,6 @@
             // 开始监听所有图片项
             photoItems.forEach(item => {
                 observer.observe(item);
-            });
-
-            // 点击链接时的过渡效果
-            document.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    if (this.hostname === window.location.hostname && !this.getAttribute('href').startsWith('#')) {
-                        e.preventDefault();
-                        const href = this.getAttribute('href');
-
-                        // 显示过渡层
-                        transition.style.visibility = 'visible';
-                        transition.style.opacity = '1';
-
-                        // 立即记录要跳转的URL，防止被其他事件覆盖
-                        const targetUrl = href;
-
-                        // 延迟导航以等待过渡效果完成，但确保一定会执行
-                        setTimeout(function() {
-                            window.location.href = targetUrl;
-                        }, 300);
-                    }
-                });
             });
 
             // 移动端菜单控制已由shared/nav.js处理

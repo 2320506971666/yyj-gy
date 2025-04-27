@@ -89,6 +89,20 @@
             background: #ffffff;
             overflow: hidden;
             cursor: pointer;
+            will-change: opacity, filter, transform;
+            opacity: 0; /* 初始状态隐藏 */
+            filter: blur(12px);
+            transform: scale(1.03);
+            transition: opacity 1.2s cubic-bezier(0.33, 1, 0.68, 1),
+                        filter 1.2s cubic-bezier(0.33, 1, 0.68, 1),
+                        transform 1.2s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+
+        /* 模型容器显示状态 */
+        #model-container.visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: scale(1);
         }
 
         /* 加载进度指示器 */
@@ -146,66 +160,7 @@
 
         /* 移除冲突的页面过渡效果 */
 
-        /* 统一的按钮样式 */
-        .nav-button {
-            position: fixed;
-            background-color: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-family: 'Poiret One', cursive !important;
-            font-size: 0.9rem;
-            font-weight: 300;
-            letter-spacing: 3px;
-            text-transform: capitalize;
-            text-decoration: none;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1),
-                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-            opacity: 0;
-            z-index: 1000;
-            cursor: pointer;
-            pointer-events: auto;
-            text-align: center;
-            white-space: nowrap;
-            min-width: 120px;
-            transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1),
-                      transform 0.6s cubic-bezier(0.33, 1, 0.68, 1),
-                      background-color 0.3s ease;
-            transform: translateY(20px);
-            will-change: opacity, transform;
-        }
-
-        /* 按钮悬停和点击效果 */
-        .nav-button:hover {
-            background-color: rgba(255, 255, 255, 0.25);
-        }
-
-        .nav-button:active {
-            transform: scale(0.95);
-            background-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
-                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-        }
-
-        .nav-button.clicked {
-            animation: buttonPulse 0.3s forwards;
-        }
-
-        /* 桌面端按钮位置 */
-        .gallery-button { top: 40%; right: 80px; }
-        .work-button { top: 50%; right: 80px; }
-        .about-button { top: 60%; right: 80px; }
-        .film-button { top: 70%; right: 80px; }
-
-        /* 按钮动画 */
-        @keyframes buttonPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.95); }
-            100% { transform: scale(1); }
-        }
+        /* 导航按钮样式已移除 */
 
         /* 响应式设计 - 统一媒体查询 */
         @media (max-width: 768px) {
@@ -214,21 +169,7 @@
                 bottom: 20px;
             }
 
-            /* 移动端按钮基本样式 */
-            .nav-button {
-                position: fixed !important;
-                width: 60% !important;
-                left: 50% !important;
-                transform: translateX(-50%) !important;
-                right: auto !important;
-                opacity: 1 !important;
-        }
-
-            /* 移动端按钮位置 */
-            .gallery-button { bottom: 320px !important; top: auto !important; }
-            .work-button { bottom: 240px !important; top: auto !important; }
-            .about-button { bottom: 160px !important; top: auto !important; }
-            .film-button { bottom: 80px !important; top: auto !important; }
+            /* 移动端按钮样式已移除 */
 
             #model-container {
                 height: 100vh;
@@ -240,16 +181,7 @@
                 width: 100%;
         }
 
-            /* 移动端按钮动画 */
-            @keyframes mobileButtonPulse {
-                0% { transform: translateX(-50%) scale(1); }
-                50% { transform: translateX(-50%) scale(1.05); }
-                100% { transform: translateX(-50%) scale(1); }
-            }
-
-        .nav-button:active {
-                animation: mobileButtonPulse 0.3s ease;
-            }
+            /* 移动端按钮动画已移除 */
 
             nav { padding: 0 10px; }
             header { padding: 0; }
@@ -257,48 +189,19 @@
 
         /* 小型手机屏幕适配 (小于375px) */
         @media (max-width: 375px) {
-            .nav-button {
-                width: 75% !important;
-                height: 40px !important;
-                font-size: 0.85rem !important;
-        }
-
-            .nav-button i {
-                font-size: 1rem !important;
-                margin-right: 8px !important;
-        }
-
-            /* 小屏幕按钮布局位置 */
-            .gallery-button { bottom: 290px !important; }
-            .work-button { bottom: 220px !important; }
-            .about-button { bottom: 150px !important; }
-            .film-button { bottom: 80px !important; }
+            /* 小型手机屏幕按钮适配已移除 */
 
             .logo, .logo a { font-size: 1.4rem !important; }
         }
 
         /* 大型手机屏幕适配 (大于420px小于768px) */
         @media (min-width: 420px) and (max-width: 768px) {
-            .nav-button {
-                width: 55% !important;
-                height: 48px !important;
-                font-size: 1rem !important;
-        }
-
-            /* 大屏手机按钮布局位置 */
-            .gallery-button { bottom: 300px !important; }
-            .work-button { bottom: 230px !important; }
-            .about-button { bottom: 160px !important; }
-            .film-button { bottom: 90px !important; }
+            /* 大型手机屏幕按钮适配已移除 */
         }
 
         /* 平板设备适配 */
         @media (min-width: 768px) and (max-width: 1024px) {
-            .nav-button {
-                right: 60px !important;
-                min-width: 140px;
-                transform: translateY(-50%) !important;
-            }
+            /* 平板设备按钮适配已移除 */
 
             #model-container { height: 90vh; }
 
@@ -325,17 +228,7 @@
 
         /* 桌面端样式 */
         @media (min-width: 769px) {
-            .nav-button {
-                right: 80px !important;
-                left: auto !important;
-                transform: translateY(-50%) !important;
-                width: 150px !important;
-            }
-
-            .nav-button.visible {
-                opacity: 1 !important;
-                transform: translateY(-50%) !important;
-            }
+            /* 桌面端按钮样式已移除 */
         }
 
         /* 首页特定汉堡菜单增强样式 */
@@ -366,15 +259,9 @@
             }
             }
 
-        /* 加载完成样式类 */
-            .model-loaded .nav-button,
-            .model-loaded .cta-button,
+        /* 加载完成样式类 - 按钮相关样式已移除 */
             .model-loaded .section-scroll-indicator,
-            .model-loaded .model-controls,
-            .model-loaded #gallery-button,
-            .model-loaded #work-button,
-            .model-loaded #about-button,
-        .model-loaded #film-button {
+            .model-loaded .model-controls {
                 opacity: 1;
                 visibility: visible;
                 transform: translateY(0);
@@ -409,34 +296,19 @@
     <!-- 主体内容 - 移除导航栏 -->
     <main>
         <div id="model-container">
+                <div class="model-info" id="model-info">
+                    <p></p>
+                </div>
+                <!-- 加载进度指示器 -->
                 <div id="loader">
                     <p>0%</p>
                     <div class="loader-bar">
                         <div class="loader-progress" id="progress-bar"></div>
                     </div>
                 </div>
-                <div class="model-info" id="model-info">
-                    <p></p>
-            </div>
         </div>
 
-        <!-- 导航按钮 - 修改为使用parent.navigateTo -->
-        <a onclick="parent.navigateTo('gallery.html')" class="gallery-button nav-button" id="gallery-button">
-            <i class="fas fa-images"></i>
-            <span>gallery</span>
-        </a>
-        <a onclick="parent.navigateTo('work.html')" class="work-button nav-button" id="work-button">
-            <i class="fas fa-briefcase"></i>
-            <span>work</span>
-        </a>
-        <a onclick="parent.navigateTo('about.html')" class="about-button nav-button" id="about-button">
-            <i class="fas fa-user"></i>
-            <span>about</span>
-        </a>
-        <a onclick="parent.navigateTo('film.html')" class="film-button nav-button" id="film-button">
-            <i class="fas fa-film"></i>
-            <span>film</span>
-        </a>
+        <!-- 导航按钮已移除 -->
     </main>
 
     <!-- 页脚容器 -->
@@ -488,12 +360,6 @@
         const progressBar = document.getElementById('progress-bar');
         const modelInfo = document.getElementById('model-info');
         const container = document.getElementById('model-container');
-        const buttons = {
-            gallery: document.getElementById('gallery-button'),
-            work: document.getElementById('work-button'),
-            about: document.getElementById('about-button'),
-            film: document.getElementById('film-button')
-        };
 
         // 模型状态
         let modelStyleState = 0;
@@ -606,9 +472,7 @@
         function setupEventListeners() {
             window.addEventListener('resize', onWindowResize, false);
             container.addEventListener('click', function(e) {
-                if (!e.target.closest('.nav-button')) {
-                    toggleWireframe();
-                }
+                toggleWireframe();
             });
 
             // 禁用滚轮缩放
@@ -724,19 +588,10 @@
                 });
             }
 
-            // 更新按钮颜色
-            updateButtonColors(styleIndex);
+            // 按钮颜色更新已移除
                 }
 
-        // 更新按钮颜色
-        function updateButtonColors(styleIndex) {
-            const buttonColor = colorSchemes[styleIndex].buttonColor;
-            Object.values(buttons).forEach(button => {
-                if (button) {
-                    button.style.color = buttonColor;
-                }
-            });
-        }
+        // 更新按钮颜色函数已移除
 
         // 加载模型函数
         function loadModel() {
@@ -755,6 +610,11 @@
                     if (loaderText) {
                         loaderText.textContent = `${progress}%`;
                     }
+
+                    // 通知父页面更新加载进度
+                    if (window.parent && typeof window.parent.updateLoadingProgress === 'function') {
+                        window.parent.updateLoadingProgress(progress);
+                    }
                 }
             };
 
@@ -769,9 +629,15 @@
                     if (loaderText) {
                         loaderText.textContent = '100%';
                     }
+
+                    // 通知父页面更新到100%
+                    if (window.parent && typeof window.parent.updateLoadingProgress === 'function') {
+                        console.log('通知父页面加载完成 (100%)');
+                        window.parent.updateLoadingProgress(100);
+                    }
                 }
 
-                // 延迟隐藏加载器，让父页面有时间捕获100%
+                // 延迟隐藏加载器
                 setTimeout(() => {
                     loader.style.display = 'none';
                     modelInfo.classList.add('visible');
@@ -780,24 +646,30 @@
                     setupModelInteraction();
                     setupDeviceOrientation();
 
-                    // 设置初始按钮颜色
-                    updateButtonColors(modelStyleState);
+                    // 按钮颜色设置已移除
 
                     // 标记模型已加载完成
                     window.modelLoaded = true;
                     document.body.classList.add('model-loaded');
 
-                    // 直接显示按钮，不等待父页面动画
-                    // 显示按钮
-                    Object.values(buttons).forEach((button, index) => {
-                        if (button) {
-                            // 按顺序显示按钮，每个按钮间隔200ms
-                            setTimeout(() => {
-                                button.classList.add('visible');
-                            }, 200 * index);
-                        }
-                    });
-                }, 300);
+                    // 应用模糊渐入效果到模型容器
+                    const modelContainer = document.getElementById('model-container');
+                    if (modelContainer) {
+                        // 立即显示模型容器
+                        modelContainer.classList.add('visible');
+                        console.log('模型容器添加visible类，触发渐入效果');
+                    }
+
+                    // 通知父页面模型已加载完成
+                    if (window.parent && typeof window.parent.onModelLoaded === 'function') {
+                        console.log('通知父页面模型已加载完成');
+                        window.parent.onModelLoaded();
+                    } else {
+                        console.log('父页面未定义onModelLoaded函数');
+                    }
+
+                    // 按钮显示代码已移除
+                }, 100);
             };
 
             manager.onError = function(url) {
@@ -856,8 +728,20 @@
                 function(xhr) {
                     // 更新加载进度
                     if (xhr.lengthComputable && progressBar) {
-                        const progress = (xhr.loaded / xhr.total * 100);
+                        const progress = Math.floor(xhr.loaded / xhr.total * 100);
                         progressBar.style.width = progress + '%';
+
+                        // 更新加载文本
+                        const loaderText = document.querySelector('#loader p');
+                        if (loaderText) {
+                            loaderText.textContent = `${progress}%`;
+                        }
+
+                        // 通知父页面更新加载进度
+                        if (window.parent && typeof window.parent.updateLoadingProgress === 'function') {
+                            console.log('更新父页面加载进度:', progress);
+                            window.parent.updateLoadingProgress(progress);
+                        }
                     }
                 },
                 function(error) {
@@ -1034,12 +918,7 @@
                 positionAndScaleModel();
             }
 
-            // 确保按钮在移动设备上可见
-            if (isMobile) {
-                Object.values(buttons).forEach(button => {
-                    if (button) button.classList.add('visible');
-            });
-            }
+            // 移动设备按钮显示代码已移除
         }
 
         // 设备方向控制
@@ -1282,47 +1161,6 @@
         });
     </script>
 
-    <!-- 首页特定的脚本 -->
-    <script>
-        // 首页特定的初始化函数
-        function initIndexPage() {
-            console.log('首页特定初始化');
-
-            // 导航按钮集合
-            const navButtons = {
-                gallery: document.getElementById('gallery-button'),
-                work: document.getElementById('work-button'),
-                about: document.getElementById('about-button'),
-                film: document.getElementById('film-button')
-            };
-
-            // 确保按钮可见
-            Object.values(navButtons).forEach(button => {
-                if (button) {
-                    button.classList.add('visible');
-                }
-            });
-
-            // 设置当前页面的导航按钮激活状态
-            const currentPath = window.location.pathname;
-            const pageName = currentPath.split('/').pop().split('.')[0] || 'index';
-
-            // 移除所有按钮的激活状态
-            document.querySelectorAll('.nav-button').forEach(btn => {
-                btn.classList.remove('active-nav');
-            });
-
-            // 设置当前页面对应按钮的激活状态
-            if (pageName !== 'index' && navButtons[pageName]) {
-                navButtons[pageName].classList.add('active-nav');
-            }
-        }
-
-        // 页面加载时执行初始化
-        document.addEventListener('DOMContentLoaded', initIndexPage);
-
-        // Barba.js 页面加载事件也执行初始化
-        window.addEventListener('barba-page-loaded', initIndexPage);
-    </script>
+    <!-- 首页特定的脚本已移除 -->
 </body>
 </html>

@@ -59,45 +59,7 @@
 
         /* 导航栏样式已移至shared/nav-styles.css */
 
-        /* 页面过渡效果 */
-        .page-transition {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: black;
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
-        }
-
-        .page-transition.fade-in {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* 动画效果 */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        /* 页面过渡效果和动画效果已移至shared/blur-transition.js */
 
         /* 移动端适配 */
         @media (max-width: 768px) {
@@ -138,8 +100,8 @@
             max-width: 1800px;
             margin: 0 auto 100px;
             padding: 0 15px;
-            opacity: 0;
-            animation: fadeInUp 1s ease forwards;
+            /* 移除可能与模糊转场冲突的动画 */
+            opacity: 1;
         }
 
         .section-title {
@@ -499,8 +461,6 @@
     </style>
 </head>
 <body>
-    <div class="page-transition"></div>
-
     <!-- 导航栏容器 -->
     <div id="nav-container"></div>
 
@@ -558,17 +518,13 @@
         </div>
     </div>
 
+    <!-- 引入简化版转场效果管理器 -->
+    <script src="shared/simple-transition.js"></script>
+
     <!-- 加载统一导航栏脚本 -->
-    <script src="shared/load-nav.js"></script>
+    <script src="shared/js/navigation.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 页面加载时的淡出效果
-            const transition = document.querySelector('.page-transition');
-            setTimeout(() => {
-                transition.style.visibility = 'hidden';
-                transition.style.opacity = '0';
-            }, 500);
-
             // 使用IntersectionObserver实现滚动浮动效果
             const photoItems = document.querySelectorAll('.photo-item');
 
@@ -602,49 +558,6 @@
             // 开始监听所有图片项
             photoItems.forEach(item => {
                 observer.observe(item);
-            });
-
-            // 点击链接时的过渡效果
-            document.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    if (this.hostname === window.location.hostname && !this.getAttribute('href').startsWith('#')) {
-                        e.preventDefault();
-                        const href = this.getAttribute('href');
-
-                        // 显示过渡层
-                        transition.style.visibility = 'visible';
-                        transition.style.opacity = '1';
-
-                        // 立即记录要跳转的URL，防止被其他事件覆盖
-                        const targetUrl = href;
-
-                        // 延迟导航以等待过渡效果完成，但确保一定会执行
-                        setTimeout(function() {
-                            window.location.href = targetUrl;
-                        }, 300);
-                    }
-                });
-            });
-
-            // 移动端菜单控制
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-            const mobileMenu = document.querySelector('.mobile-menu');
-
-            if (mobileMenuBtn) {
-                mobileMenuBtn.addEventListener('click', function() {
-                    this.classList.toggle('open');
-                    mobileMenu.classList.toggle('open');
-                    document.body.classList.toggle('menu-open');
-                });
-            }
-
-            // 点击移动端菜单项关闭菜单
-            document.querySelectorAll('.mobile-menu a').forEach(link => {
-                link.addEventListener('click', function() {
-                    mobileMenuBtn.classList.remove('open');
-                    mobileMenu.classList.remove('open');
-                    document.body.classList.remove('menu-open');
-                });
             });
 
             const lightbox = document.getElementById('imageLightbox');
@@ -745,5 +658,7 @@
     <!-- 页脚容器 -->
     <div id="footer-container"></div>
 
+    <!-- 加载页脚脚本 -->
+    <script src="shared/js/footer.js"></script>
 </body>
 </html>

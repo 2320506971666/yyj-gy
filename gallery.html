@@ -17,21 +17,22 @@
     <link rel="preload" href="shared/js/gallery-main.js" as="script" type="module">
 
     <!-- 预连接第三方资源域 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://fonts.font.im" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- ======== 样式资源 ======== -->
     <!-- 主样式表 - 关键CSS立即加载 -->
     <link rel="stylesheet" href="shared/css/gallery.css">
     <!-- 移动端优化样式表 -->
     <link rel="stylesheet" href="shared/css/mobile-gallery.css">
-    <!-- 自定义样式 -->
+    <!-- 本地字体 -->
+    <link rel="stylesheet" href="shared/css/fonts.css">
 
-    <!-- 字体加载 - 使用display=swap保证文本可见性 -->
-    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Noto+Serif+SC:wght@300;400;500&family=Reenie+Beanie&family=Playfair+Display:wght@400;500;600&family=Jomhuria&family=Jim+Nightshade&family=Josefin+Slab:wght@400;600;700&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Noto+Serif+SC:wght@300;400;500&family=Reenie+Beanie&family=Playfair+Display:wght@400;500;600&family=Jomhuria&family=Jim+Nightshade&family=Josefin+Slab:wght@400;600;700&family=Cinzel:wght@400;500;600&display=swap"></noscript>
+    <!-- 直接引入 Gallery 页面需要的字体 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jomhuria&family=Jim+Nightshade&family=Josefin+Slab:wght@400;600;700&family=Cinzel:wght@400;500;600&family=Reenie+Beanie&display=swap">
 
     <!-- 非阻塞加载Swiper样式 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" media="print" onload="this.media='all'">
@@ -65,8 +66,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
 
-    <!-- 次要库 -->
-    <script src="https://unpkg.com/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
+
 </head>
 
 <body class="gallery-page">
@@ -84,18 +84,18 @@
                         <div class="swiper-wrapper">
                             <!-- 第1张幻灯片：Gallery标题 -->
                             <div class="swiper-slide" style="cursor: pointer;" onclick="window.parent.navigateTo('tibet.html')">
-                    <img src="artistweb/images/个人图片作品/IMG_0082.jpg" alt="Gallery Header Image" fetchpriority="high">
-                    <div id="gallery-text-override" class="gallery-text">
-                        <span class="g">G</span>
-                        <span class="a">a</span>
-                        <span class="l1">l</span>
-                        <span class="l2">l</span>
-                        <span class="e">e</span>
-                        <span class="r">r</span>
-                        <span class="y">y</span>
-                    </div>
-                    <div class="awaits-text">Awaits</div>
-                        </div>
+                                <img src="artistweb/images/个人图片作品/IMG_0082.jpg" alt="Gallery Header Image" fetchpriority="high">
+                                <div id="gallery-text-override" class="gallery-text">
+                                    <span class="g">G</span>
+                                    <span class="a">a</span>
+                                    <span class="l1">l</span>
+                                    <span class="l2">l</span>
+                                    <span class="e">e</span>
+                                    <span class="r">r</span>
+                                    <span class="y">y</span>
+                                </div>
+                                <div class="awaits" style="left: 46% !important; transform: translate(-50%, 0) scale(var(--scale-factor, 1)) !important;">Awaits</div>
+                            </div>
 
                             <!-- 第2张幻灯片：Northern Journey视频 -->
                             <div class="swiper-slide" style="cursor: pointer;" onclick="window.parent.navigateTo('north.html')">
@@ -198,63 +198,12 @@
 
     <!-- Gallery页面特定初始化脚本 -->
     <script>
-        // Gallery页面特定的初始化函数
-        function initGalleryPage() {
-            console.log('Gallery页面特定初始化');
-
+        // 只添加gallery-page类，其他初始化由gallery-main.js处理
+        document.addEventListener('DOMContentLoaded', function() {
             // 确保页面样式正确
             document.body.classList.add('gallery-page');
-
-            // 确保视频正确加载和播放
-            setTimeout(() => {
-                const videos = document.querySelectorAll('video');
-                console.log('找到视频元素:', videos.length);
-
-                videos.forEach((video, index) => {
-                    console.log(`初始化视频 ${index+1}`);
-                    // 重新加载视频以确保它们在页面过渡后正确播放
-                    video.load();
-                    video.muted = true; // 确保视频静音，以便自动播放
-                    video.play().catch(e => console.log('视频自动播放失败:', e));
-                });
-
-                // 在非移动设备上确保所有幻灯片可见
-                if (!isMobileDevice()) {
-                    const slides = document.querySelectorAll('.swiper-slide');
-                    slides.forEach((slide) => {
-                        // 在非移动设备上直接设置可见
-                        slide.style.opacity = '1';
-                        slide.style.transform = 'none';
-                    });
-                }
-
-                // 添加检测移动设备的函数
-                function isMobileDevice() {
-                    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-                        || window.innerWidth < 768;
-                }
-
-                // 确保Gallery文字可见 - 仅在非移动设备上直接设置样式
-                if (!isMobileDevice()) {
-                    const galleryText = document.querySelector('.gallery-text');
-                    if (galleryText) {
-                        galleryText.style.opacity = '1';
-                    }
-
-                    // 确保Northern Journey文字正确显示
-                    const riverText = document.querySelector('.river-text');
-                    if (riverText) {
-                        riverText.style.opacity = '1';
-                    }
-                }
-            }, 100);
-        }
-
-        // 页面加载时执行初始化
-        document.addEventListener('DOMContentLoaded', initGalleryPage);
-
-        // 窗口大小变化时重新初始化
-        window.addEventListener('resize', initGalleryPage);
+            console.log('Gallery页面类添加完成');
+        });
     </script>
 </body>
 </html>

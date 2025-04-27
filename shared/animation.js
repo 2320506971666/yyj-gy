@@ -36,19 +36,19 @@ function createScrollAnimation(selector, animProps, options = {}) {
     duration: ANIMATION.duration.medium,
     ease: ANIMATION.ease.standard
   };
-  
+
   const settings = { ...defaults, ...options };
   const elements = document.querySelectorAll(selector);
-  
+
   if (elements.length === 0) return;
-  
+
   // 设置初始状态
   gsap.set(elements, {
     opacity: 0,
     y: 20,
     ...options.initialState
   });
-  
+
   // 创建观察器
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -67,7 +67,7 @@ function createScrollAnimation(selector, animProps, options = {}) {
   }, {
     threshold: settings.threshold
   });
-  
+
   // 观察所有元素
   elements.forEach((el, index) => {
     // 如果有stagger，为每个元素添加不同的延迟
@@ -91,19 +91,19 @@ function createPageLoadAnimation(selector, animProps, options = {}) {
     duration: ANIMATION.duration.medium,
     ease: ANIMATION.ease.standard
   };
-  
+
   const settings = { ...defaults, ...options };
   const elements = document.querySelectorAll(selector);
-  
+
   if (elements.length === 0) return;
-  
+
   // 设置初始状态
   gsap.set(elements, {
     opacity: 0,
     y: 20,
     ...options.initialState
   });
-  
+
   // 创建动画
   gsap.to(elements, {
     opacity: 1,
@@ -128,12 +128,12 @@ function createHoverAnimation(selector, hoverProps, leaveProps, options = {}) {
     duration: ANIMATION.duration.short,
     ease: ANIMATION.ease.standard
   };
-  
+
   const settings = { ...defaults, ...options };
   const elements = document.querySelectorAll(selector);
-  
+
   if (elements.length === 0) return;
-  
+
   elements.forEach(el => {
     el.addEventListener('mouseenter', () => {
       gsap.to(el, {
@@ -142,7 +142,7 @@ function createHoverAnimation(selector, hoverProps, leaveProps, options = {}) {
         ...hoverProps
       });
     });
-    
+
     el.addEventListener('mouseleave', () => {
       gsap.to(el, {
         duration: settings.duration,
@@ -155,20 +155,20 @@ function createHoverAnimation(selector, hoverProps, leaveProps, options = {}) {
 
 /**
  * 禁用所有页面自定义过渡效果
- * 确保只使用Barba.js的过渡效果
+ * 使用统一的过渡效果
  */
 function disableCustomPageTransitions() {
   // 查找并移除所有页面自定义过渡代码
   document.querySelectorAll('script').forEach(script => {
-    if (script.textContent.includes('transition.style.visibility') && 
+    if (script.textContent.includes('transition.style.visibility') &&
         script.textContent.includes('transition.style.opacity')) {
       console.log('禁用自定义页面过渡代码');
       // 不直接移除脚本，而是替换其内容中的过渡代码
       const newContent = script.textContent.replace(
-        /const transition[\s\S]*?setTimeout[\s\S]*?}\);/g, 
-        '// 页面过渡由Barba.js统一处理'
+        /const transition[\s\S]*?setTimeout[\s\S]*?}\);/g,
+        '// 页面过渡由统一过渡效果管理器处理'
       );
-      
+
       // 创建新脚本替换旧脚本
       const newScript = document.createElement('script');
       newScript.textContent = newContent;
@@ -179,11 +179,6 @@ function disableCustomPageTransitions() {
 
 // 在页面加载时禁用所有自定义过渡效果
 document.addEventListener('DOMContentLoaded', disableCustomPageTransitions);
-
-// 在Barba.js页面加载后也禁用自定义过渡效果
-if (typeof window !== 'undefined') {
-  window.addEventListener('barba-page-loaded', disableCustomPageTransitions);
-}
 
 // 导出动画函数
 window.ANIMATION = ANIMATION;

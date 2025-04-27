@@ -89,17 +89,7 @@ function initializeSwiper() {
                     });
                 }
 
-                // 处理 awaits-text 淡出
-                const awaitsText = currentSlide.querySelector('.awaits-text');
-                if (awaitsText) {
-                    // 添加淡出动画，与幻灯片切换同步
-                    gsap.to(awaitsText, {
-                        opacity: 0,
-                        y: -15,
-                        duration: ANIMATION_DURATION / 2,
-                        ease: "power2.out"
-                    });
-                }
+                // 不需要处理 awaits 淡出，使用 CSS 动画
 
                 createSmoothTransition(this);
             }
@@ -215,25 +205,7 @@ function createSmoothTransition(swiperInstance) {
                 });
             }
 
-            // 处理 awaits-text 动画
-            const newAwaitsText = activeSlide.querySelector('.awaits-text');
-            if (newAwaitsText) {
-                // 先重置位置和透明度
-                gsap.set(newAwaitsText, {
-                    opacity: 0,
-                    y: 15,
-                    clearProps: "animation" // 清除之前的动画属性
-                });
-
-                // 添加延迟淡入动画
-                gsap.to(newAwaitsText, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.7,
-                    delay: 0.5, // 比 river-text 稍晚显示
-                    ease: "power2.out"
-                });
-            }
+            // 不需要处理 awaits 动画，使用 CSS 动画
 
             // 重新启用导航按钮
             navButtons.forEach(btn => btn.style.pointerEvents = 'auto');
@@ -303,18 +275,18 @@ function setupGalleryFeatures() {
     // 使用现有的页面过渡元素
     pageTransitionEl = document.querySelector('.page-transition');
 
-    // 确保视频在页面过渡后正确播放
-    document.addEventListener('barba-page-loaded', function() {
-        console.log('Gallery: Barba页面加载完成，重新初始化视频');
+    // 确保视频在页面加载后正确播放
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Gallery: 页面加载完成，初始化视频');
 
-        // 重新初始化视频
+        // 初始化视频
         const videos = document.querySelectorAll('.swiper-slide video');
         videos.forEach(video => {
             video.load();
             video.play().catch(e => console.log('视频自动播放失败:', e));
         });
 
-        // 重新初始化Swiper
+        // 初始化Swiper
         if (swiper && typeof swiper.update === 'function') {
             swiper.update();
         }
@@ -326,27 +298,41 @@ function setupGalleryFeatures() {
  */
 async function init() {
     try {
-        // 预先设置第一张幻灯片立即可见
-        const firstSlide = document.querySelector('.swiper-slide:first-child');
-        if (firstSlide) {
-            gsap.set(firstSlide, {opacity: 1, visibility: 'visible'});
-        }
+        // 等待页面过渡完成后再初始化
+        setTimeout(async () => {
+            console.log('Gallery: 延迟初始化，等待过渡动画完成');
 
-        // 初始化Gallery页面特定功能
-        setupGalleryFeatures();
+            // 预先设置第一张幻灯片立即可见
+            const firstSlide = document.querySelector('.swiper-slide:first-child');
+            if (firstSlide) {
+                gsap.set(firstSlide, {opacity: 1, visibility: 'visible'});
 
-        // 初始化Swiper
-        initializeSwiper();
+                // 确保awaits元素向左移动4%
+                const awaitsElement = firstSlide.querySelector('.awaits');
+                if (awaitsElement) {
+                    gsap.set(awaitsElement, {
+                        left: '46%',
+                        xPercent: -50,
+                        clearProps: 'transform' // 清除可能冲突的transform属性
+                    });
+                }
+            }
 
-        // 初始化视频
-        await initializeVideos();
+            // 初始化Gallery页面特定功能
+            setupGalleryFeatures();
 
-        // 设置视频观察器
-        videoObserver = setupVideoObserver();
+            // 初始化Swiper
+            initializeSwiper();
 
-        // 设置页面可见性处理
-        setupVisibilityChangeHandler();
+            // 初始化视频
+            await initializeVideos();
 
+            // 设置视频观察器
+            videoObserver = setupVideoObserver();
+
+            // 设置页面可见性处理
+            setupVisibilityChangeHandler();
+        }, 300); // 延迟300ms，等待过渡动画完成
     } catch (error) {
         console.error('初始化失败:', error);
     }
@@ -355,37 +341,40 @@ async function init() {
 // 页面加载完成后立即执行初始化，无需延迟
 document.addEventListener("DOMContentLoaded", init);
 
-// Barba.js页面加载事件也执行初始化
-window.addEventListener('barba-page-loaded', function() {
+// 窗口加载事件也执行初始化，但不重复初始化
+window.addEventListener('load', function() {
     if (document.querySelector('.gallery-page')) {
-        console.log('Gallery页面通过Barba.js加载，重新初始化');
+        console.log('Gallery页面完全加载，检查初始化状态');
 
-        // 确保只初始化Gallery功能，不重新初始化Barba.js
-        try {
-            // 预先设置第一张幻灯片立即可见
-            const firstSlide = document.querySelector('.swiper-slide:first-child');
-            if (firstSlide) {
-                gsap.set(firstSlide, {opacity: 1, visibility: 'visible'});
+        // 只有在视频没有正确初始化的情况下才重新初始化
+        const videos = document.querySelectorAll('.swiper-slide video');
+        let needsReinitialization = false;
+
+        videos.forEach(video => {
+            if (video.paused && video.currentTime === 0) {
+                needsReinitialization = true;
             }
+        });
 
-            // 初始化Swiper
-            initializeSwiper();
+        if (needsReinitialization) {
+            console.log('Gallery页面视频未正确初始化，执行重新初始化');
 
-            // 初始化视频
-            initializeVideos().then(() => {
-                // 设置视频观察器
-                if (videoObserver) {
-                    videoObserver.disconnect();
-                }
-                videoObserver = setupVideoObserver();
-
-                // 设置页面可见性处理
-                setupVisibilityChangeHandler();
-            }).catch(error => {
-                console.error('视频初始化失败:', error);
-            });
-        } catch (error) {
-            console.error('Gallery重新初始化失败:', error);
+            try {
+                // 初始化视频
+                initializeVideos().then(() => {
+                    // 设置视频观察器
+                    if (videoObserver) {
+                        videoObserver.disconnect();
+                    }
+                    videoObserver = setupVideoObserver();
+                }).catch(error => {
+                    console.error('视频初始化失败:', error);
+                });
+            } catch (error) {
+                console.error('Gallery重新初始化失败:', error);
+            }
+        } else {
+            console.log('Gallery页面已正确初始化，无需重新初始化');
         }
     }
 });

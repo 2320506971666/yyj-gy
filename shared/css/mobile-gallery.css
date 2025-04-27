@@ -121,7 +121,7 @@
         font-size: 0.7rem !important; /* 再次减小基础字体大小 */
     }
 
-    /* Gallery文字中的每个字母 */
+    /* 确保Gallery文字中的每个字母 */
     .gallery-title .gallery-text span {
         opacity: 1 !important;
         transform: none !important;
@@ -129,29 +129,21 @@
         will-change: opacity, transform !important;
     }
 
-    /* Awaits文字样式 - 移动端专用样式 */
-    .gallery-title .welcome,
-    .awaits-text,
-    .swiper-slide:first-child .awaits-text {
+    /* 统一Awaits文字样式 - 移动端专用 */
+    .awaits {
         position: absolute !important;
-        top: 30% !important; /* 移动端位置调整 */
-        left: 50% !important; /* 居中 */
-        transform: translateX(-50%) scale(1.2) !important; /* 固定缩放比例，不使用变量 */
+        top: 30% !important;
+        left: 46% !important; /* 向左移动4% */
+        transform: translateX(-50%) !important;
         color: #c30101 !important;
         font-family: 'Reenie Beanie', sans-serif !important;
-        font-size: min(55px, 8vw) !important; /* 移动端字体大小 */
-        font-weight: bold !important; /* 加粗显示 */
-        /* 初始状态设为不可见，由JS控制动画 */
-        opacity: 0 !important;
-        visibility: visible !important;
+        font-size: min(55px, 8vw) !important;
+        font-weight: bold !important;
         z-index: 999 !important;
         text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.25) !important;
-        /* 允许过渡效果，但禁用CSS动画 */
-        transition: opacity 0.6s ease-out !important;
-        animation: none !important; /* 禁用CSS动画，使用JS控制 */
     }
 
-    /* 确保视频标题显示 */
+    /* 确保其他元素显示 */
     .video-title, .river-text, .sanya-text {
         display: block !important;
         visibility: visible !important;
@@ -208,17 +200,14 @@
     .gallery-title .gallery-text,
     .swiper-slide:first-child #gallery-text-override.gallery-text {
         top: 15% !important;
-        transform: translate(-50%, -50%) scale(0.8) !important; /* 再次减小缩放比例 */
-        font-size: 0.65rem !important; /* 再次减小字体大小 */
+        transform: translate(-50%, -50%) scale(0.8) !important;
+        font-size: 0.65rem !important;
     }
 
     /* 调整Awaits文字位置 - 小屏幕专用样式 */
-    .gallery-title .welcome,
-    .awaits-text,
-    .swiper-slide:first-child .awaits-text {
+    .awaits {
         top: 28% !important;
-        transform: translateX(-50%) scale(1.1) !important; /* 固定缩放比例为1.1倍 */
-        font-size: min(45px, 6.5vw) !important; /* 调整字体大小 */
+        font-size: min(45px, 6.5vw) !important;
     }
 
     /* 调整Northern Journey文本 */
@@ -266,13 +255,10 @@
         font-size: 0.6rem !important; /* 再次减小字体大小 */
     }
 
-    /* 进一步调整Awaits文字位置 - 超小屏幕专用样式 */
-    .gallery-title .welcome,
-    .awaits-text,
-    .swiper-slide:first-child .awaits-text {
+    /* 调整Awaits文字位置 - 超小屏幕专用样式 */
+    .awaits {
         top: 26% !important;
-        transform: translateX(-50%) scale(1) !important; /* 固定缩放比例为1倍 */
-        font-size: min(40px, 6vw) !important; /* 调整字体大小 */
+        font-size: min(40px, 6vw) !important;
     }
 
     /* 进一步调整Northern Journey文本 */
@@ -378,10 +364,8 @@
         font-size: 0.7rem !important; /* 减小字体大小 */
     }
 
-    /* 调整Awaits文字位置 */
-    .gallery-title .welcome,
-    .awaits-text,
-    .swiper-slide:first-child .awaits-text {
+    /* 调整Awaits文字位置 - 横屏模式专用样式 */
+    .awaits {
         top: 40% !important;
     }
 

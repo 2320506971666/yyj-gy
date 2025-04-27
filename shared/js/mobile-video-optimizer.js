@@ -173,7 +173,7 @@ function triggerSlideAnimations() {
         if (index === 0) {
             // 第一个幻灯片：Gallery和Awaits文字
             const galleryText = slide.querySelector('.gallery-text');
-            const awaitsText = slide.querySelector('.awaits-text');
+            const awaitsText = slide.querySelector('.awaits');
 
             if (galleryText) {
                 // 使用GSAP重置初始状态
@@ -184,16 +184,8 @@ function triggerSlideAnimations() {
             }
 
             if (awaitsText) {
-                // 使用GSAP重置初始状态
-                gsap.set(awaitsText, {
-                    opacity: 0,
-                    y: 15,
-                    clearProps: "animation"
-                });
-
-                // 确保元素可见（但透明）
-                awaitsText.style.display = 'block';
-                awaitsText.style.visibility = 'visible';
+                // 确保awaits仅由CSS控制，完全不干预动画效果
+                console.log('移动端初始化: Awaits文字完全由CSS动画控制');
             }
         } else if (index === 1) {
             // 第二个幻灯片：Northern Journey文字
@@ -222,7 +214,7 @@ function triggerSlideAnimations() {
                 if (index === 0) {
                     // 第一个幻灯片：Gallery和Awaits文字
                     const galleryText = slide.querySelector('.gallery-text');
-                    const awaitsText = slide.querySelector('.awaits-text');
+                    const awaitsText = slide.querySelector('.awaits');
 
                     if (galleryText) {
                         // 先重置初始状态
@@ -255,36 +247,8 @@ function triggerSlideAnimations() {
                     }
 
                     if (awaitsText) {
-                        // 确保元素存在且可见
-                        if (awaitsText.style.display === 'none') {
-                            awaitsText.style.display = 'block';
-                        }
-
-                        // 先重置初始状态 - 强制设置为不可见
-                        gsap.set(awaitsText, {
-                            opacity: 0,
-                            y: 15,
-                            clearProps: "animation" // 清除之前的动画属性
-                        });
-
-                        // 使用与网页端一致的动画效果
-                        setTimeout(() => {
-                            // 使用GSAP动画，确保与网页端效果一致
-                            gsap.to(awaitsText, {
-                                opacity: 1,
-                                y: 0,
-                                duration: 0.7,
-                                ease: "power2.out",
-                                onStart: function() {
-                                    console.log('Awaits 文字动画开始');
-                                },
-                                onComplete: function() {
-                                    console.log('Awaits 文字动画完成');
-                                    // 确保动画完成后元素保持可见
-                                    awaitsText.style.opacity = '1';
-                                }
-                            });
-                        }, 600);
+                        // 确保awaits仅由CSS控制，不在JS中添加任何额外样式或动画
+                        console.log('移动端: Awaits文字完全由CSS动画控制');
                     }
                 } else if (index === 1) {
                     // 第二个幻灯片：Northern Journey文字

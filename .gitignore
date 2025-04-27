@@ -47,6 +47,3 @@ Icon
 # IDE 和编辑器文件
 *.sublime-project
 *.sublime-workspace
-
-# 特定文件忽略
-model.html 

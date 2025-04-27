@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Noto+Serif+SC:wght@300;400;500&family=Reenie+Beanie&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
+    <!-- 导航栏样式 -->
     <style>
         /* 基础样式 */
         * {
@@ -223,65 +224,10 @@
             color: #DE2910;
             opacity: 1;
         }
+    </style>
 
-        /* 页脚样式 */
-        .footer-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            padding: 10px 0;
-            text-align: center;
-        }
-
-        .footer-text {
-            color: #ffffff;
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-
-        /* iframe 样式 - 优雅的模糊转场效果 */
-        #content-frame {
-            position: fixed;
-            top: 45px; /* 导航栏高度 */
-            left: 0;
-            width: 100%;
-            height: calc(100% - 45px);
-            border: none;
-            background-color: #000;
-            z-index: 1;
-            opacity: 0;
-            filter: blur(12px);
-            transform: scale(1.03);
-            transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1),
-                        filter 0.6s cubic-bezier(0.33, 1, 0.68, 1),
-                        transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
-            will-change: opacity, filter, transform;
-            transform-origin: center center;
-        }
-
-        #content-frame.visible {
-            opacity: 1;
-            filter: blur(0);
-            transform: scale(1);
-        }
-
-        /* 页面转场效果 - 优雅的模糊变化 */
-        @keyframes pageTransition {
-            0% {
-                opacity: 0;
-                filter: blur(12px);
-                transform: scale(1.03);
-            }
-            100% {
-                opacity: 1;
-                filter: blur(0);
-                transform: scale(1);
-            }
-        }
-
+    <!-- 加载动画样式 -->
+    <style>
         /* 加载动画样式 */
         #loading-overlay {
             position: fixed;
@@ -293,8 +239,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 10001;
-            transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+            z-index: 100000;
+            transition: opacity 0.8s cubic-bezier(0.33, 1, 0.68, 1);
             will-change: opacity;
         }
 
@@ -315,7 +261,7 @@
             margin-bottom: 20px;
             filter: blur(12px);
             transform: scale(1.03);
-            animation: textFadeIn 2s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+            animation: textFadeIn 3s cubic-bezier(0.33, 1, 0.68, 1) forwards;
             transform-origin: center center;
         }
 
@@ -369,7 +315,7 @@
         #loading-overlay.loaded {
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+            transition: opacity 0.8s cubic-bezier(0.33, 1, 0.68, 1);
         }
 
         @media (max-width: 768px) {
@@ -380,14 +326,38 @@
             .loading-percentage {
                 font-size: 1rem;
             }
-
-            #loading-overlay.loaded .loading-logo {
-                left: 5px;
-            }
         }
 
-        /* 移除重复的modelFadeIn动画定义 */
+        /* iframe 样式 - 与simple-transition.js保持一致 */
+        #content-frame {
+            position: fixed;
+            top: 45px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 45px);
+            border: none;
+            background-color: #000;
+            z-index: 1;
+            opacity: 0;
+            filter: blur(12px);
+            transform: scale(1.03);
+            transition: opacity 0.8s cubic-bezier(0.33, 1, 0.68, 1),
+                        filter 0.8s cubic-bezier(0.33, 1, 0.68, 1),
+                        transform 0.8s cubic-bezier(0.33, 1, 0.68, 1);
+            will-change: opacity, filter, transform;
+            pointer-events: none; /* 加载时禁止交互 */
+        }
+
+        #content-frame.visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: scale(1);
+            pointer-events: auto; /* 显示后允许交互 */
+        }
     </style>
+
+    <!-- 引入简化版转场效果管理器 -->
+    <script src="shared/simple-transition.js"></script>
 </head>
 <body>
     <!-- 导航栏 -->
@@ -434,596 +404,96 @@
     </div>
 
     <!-- 内容框架 -->
-    <iframe id="content-frame" src="./model.html" title="页面内容" class="visible"></iframe>
+    <iframe id="content-frame" src="./model.html" title="页面内容" allow="autoplay" allowfullscreen></iframe>
+
+    <!-- 页面转场效果由 simple-transition.js 管理，首次加载动画由 index.html 直接管理 -->
 
     <script>
-        // 当前页面
-        let currentPage = 'model.html';
-
-        // 修改后的函数：只隐藏导航栏，确保页脚正常显示
-        function hideNavAndFooter(iframe) {
-            try {
-                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                const iframeWin = iframe.contentWindow;
-
-                // 1. 添加样式只隐藏导航栏，保留页脚
-                const style = document.createElement('style');
-                style.textContent = `
-                    /* 只隐藏导航栏，保留页脚 */
-                    #nav-container, .header-container, header, nav, .navbar {
-                        display: none !important;
-                    }
-
-                    /* 移除body上的padding-top */
-                    body {
-                        padding-top: 0 !important;
-                    }
-
-                    /* 确保页脚正常显示 */
-                    #footer-container, footer, .footer {
-                        display: block !important;
-                        visibility: visible !important;
-                        opacity: 1 !important;
-                    }
-                `;
-                iframeDoc.head.appendChild(style);
-
-                // 2. 只移除导航栏元素，保留页脚
-                const elementsToRemove = [
-                    iframeDoc.getElementById('nav-container'),
-                    iframeDoc.querySelector('.header-container'),
-                    iframeDoc.querySelector('header'),
-                    iframeDoc.querySelector('nav')
-                ];
-
-                elementsToRemove.forEach(el => {
-                    if (el && el.parentNode) {
-                        el.parentNode.removeChild(el);
-                    }
-                });
-
-                // 3. 只移除导航栏脚本，保留页脚脚本
-                const scripts = iframeDoc.querySelectorAll('script[src*="navigation.js"]');
-                scripts.forEach(script => {
-                    if (script.parentNode) {
-                        script.parentNode.removeChild(script);
-                    }
-                });
-
-                // 4. 确保页脚脚本正常执行
-                const footerContainer = iframeDoc.getElementById('footer-container');
-                if (footerContainer) {
-                    // 如果页面中有页脚容器但没有页脚脚本，添加页脚脚本
-                    if (!iframeDoc.querySelector('script[src*="footer.js"]')) {
-                        const footerScript = iframeDoc.createElement('script');
-                        footerScript.src = 'shared/js/footer.js';
-                        iframeDoc.body.appendChild(footerScript);
-                    }
-
-                    // 确保页脚容器可见
-                    footerContainer.style.display = 'block';
-                    footerContainer.style.visibility = 'visible';
-                    footerContainer.style.opacity = '1';
-
-                    // 手动触发页脚脚本执行
-                    setTimeout(() => {
-                        if (typeof iframeWin.initFooter === 'function') {
-                            iframeWin.initFooter();
-                        }
-                    }, 100);
-                }
-            } catch (e) {
-                console.error('无法隐藏导航栏:', e);
-            }
-        }
-
-        // 优雅的模糊转场效果
-        function navigateTo(page) {
-            if (page === currentPage) return;
-
-            // 获取元素
-            const iframe = document.getElementById('content-frame');
-            const loadingOverlay = document.getElementById('loading-overlay');
-            const loadingPercentage = document.querySelector('.loading-percentage');
-
-            // 判断是否是model页面
-            const isModelPage = (page === 'model.html');
-
-            // 淡出当前页面（带模糊效果）
-            iframe.classList.remove('visible');
-
-            // 更新当前页面
-            currentPage = page;
-
-            // 更新导航链接激活状态和页面标题
-            updateActiveNavLink(page);
-            updatePageTitle(page);
-
-            // 关闭移动菜单（如果打开）
-            closeMobileMenu();
-
-            // 设置iframe背景为黑色，避免白色闪烁
-            iframe.style.backgroundColor = '#000';
-
-            // 如果是model页面，显示加载界面和百分比
-            if (isModelPage) {
-                // 重置加载百分比
-                loadingPercentage.textContent = '0%';
-                // 显示加载界面
-                loadingOverlay.classList.remove('loaded');
-            }
-
-            // 短暂延迟后加载新页面，确保淡出效果完成
-            setTimeout(() => {
-                // 设置页面加载完成处理函数
-                iframe.onload = function() {
-                    // 隐藏导航栏和页脚
-                    hideNavAndFooter(iframe);
-
-                    // 为所有页面添加优雅的模糊转场效果
-                    try {
-                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-
-                        // 添加模糊渐入效果的样式
-                        const blurStyle = iframeDoc.createElement('style');
-
-                        // 为所有页面添加统一的转场动画定义
-                        let transitionCSS = `
-                            @keyframes pageTransition {
-                                0% {
-                                    opacity: 0;
-                                    filter: blur(12px);
-                                    transform: scale(1.03);
-                                }
-                                100% {
-                                    opacity: 1;
-                                    filter: blur(0);
-                                    transform: scale(1);
-                                }
-                            }
-                        `;
-
-                        // 如果是model页面，特殊处理模型和按钮
-                        if (isModelPage) {
-                            blurStyle.textContent = `
-                                ${transitionCSS}
-
-                                #model-container,
-                                #buttons-container,
-                                .model-button {
-                                    opacity: 0;
-                                    filter: blur(12px);
-                                    transform: scale(1.03);
-                                    animation: pageTransition 1.2s cubic-bezier(0.33, 1, 0.68, 1) forwards !important;
-                                    transform-origin: center center;
-                                }
-
-                                /* 隐藏进度条，避免闪烁 */
-                                #progress-bar-container {
-                                    display: none !important;
-                                }
-                            `;
-                        } else {
-                            // 为其他页面添加整体模糊效果
-                            blurStyle.textContent = `
-                                ${transitionCSS}
-
-                                body > * {
-                                    animation: pageTransition 0.8s cubic-bezier(0.33, 1, 0.68, 1) forwards !important;
-                                    transform-origin: center center;
-                                }
-                            `;
-                        }
-
-                        iframeDoc.head.appendChild(blurStyle);
-                    } catch (e) {
-                        console.error('无法添加模糊效果:', e);
-                    }
-
-                    // 如果是model页面，监听模型加载进度
-                    if (isModelPage) {
-                        try {
-                            const iframeWindow = iframe.contentWindow;
-
-                            // 监听模型加载进度
-                            const checkModelLoading = () => {
-                                try {
-                                    if (iframeWindow && iframeWindow.document) {
-                                        const progressBar = iframeWindow.document.getElementById('progress-bar');
-                                        if (progressBar) {
-                                            // 获取当前进度
-                                            const width = progressBar.style.width || '0%';
-                                            const percentage = parseInt(width) || 0;
-
-                                            // 更新加载百分比显示
-                                            loadingPercentage.textContent = `${percentage}%`;
-
-                                            // 检查是否加载完成
-                                            if (percentage >= 100) {
-                                                // 模型加载完成，延迟隐藏加载界面
-                                                setTimeout(() => {
-                                                    loadingOverlay.classList.add('loaded');
-                                                    iframe.classList.add('visible');
-                                                }, 500);
-                                                return;
-                                            }
-
-                                            // 继续检查进度
-                                            setTimeout(checkModelLoading, 100);
-                                        } else {
-                                            // 如果找不到进度条，继续检查
-                                            setTimeout(checkModelLoading, 100);
-                                        }
-                                    }
-                                } catch (e) {
-                                    console.error('检查模型加载进度出错:', e);
-                                    // 出错时也显示页面
-                                    loadingOverlay.classList.add('loaded');
-                                    iframe.classList.add('visible');
-                                }
-                            };
-
-                            // 开始检查模型加载进度
-                            setTimeout(checkModelLoading, 300);
-                        } catch (e) {
-                            console.error('无法监听模型加载进度:', e);
-                            // 出错时也显示页面
-                            loadingOverlay.classList.add('loaded');
-                            iframe.classList.add('visible');
-                        }
-                    } else {
-                        // 非model页面直接显示（带模糊效果）
-                        iframe.classList.add('visible');
-                    }
-                };
-
-                // 加载新页面 - 使用相对路径
-                iframe.src = './' + page;
-
-                // 如果不是model页面，不显示加载条
-                if (!isModelPage) {
-                    loadingOverlay.classList.add('loaded');
-                }
-            }, 350); // 优化延迟时间，使转场效果更加流畅
-
-            // 安全措施：如果4秒后页面仍未显示，强制显示
-            setTimeout(function() {
-                iframe.classList.add('visible');
-                loadingOverlay.classList.add('loaded');
-            }, 4000);
-        }
-
-        // 初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            const iframe = document.getElementById('content-frame');
-
-            // 在iframe加载完成后隐藏导航栏和页脚
-            iframe.addEventListener('load', function() {
-                hideNavAndFooter(this);
-            });
-        });
-
-        // 更新导航链接激活状态
-        function updateActiveNavLink(page) {
-            // 重置所有链接
-            document.querySelectorAll('.nav-link, .mobile-panel a').forEach(link => {
-                link.classList.remove('active');
-                link.style.color = '';
-            });
-
-            // 设置当前页面链接为激活状态
-            const linkMap = {
-                'index.html': null,
-                'model.html': null, // 3D模型页面
-                'gallery.html': 'gallery-link',
-                'film.html': 'film-link',
-                'work.html': 'work-link',
-                'about.html': 'about-link',
-                'tibet.html': null,
-                'north.html': null,
-                'sanya.html': null,
-                'pictures.html': null,
-                'videos.html': null
-            };
-
-            const linkId = linkMap[page];
-            if (linkId) {
-                const link = document.getElementById(linkId);
-                if (link) {
-                    link.classList.add('active');
-                    link.style.color = '#DE2910';
-                }
-
-                // 同时更新移动菜单中的链接
-                document.querySelectorAll(`.mobile-panel a`).forEach(mobileLink => {
-                    if (mobileLink.textContent.toLowerCase() === linkId.split('-')[0]) {
-                        mobileLink.classList.add('active');
-                        mobileLink.style.color = '#DE2910';
-                    }
-                });
-            }
-        }
-
-        // 更新页面标题
-        function updatePageTitle(page) {
-            const titleMap = {
-                'index.html': 'Triple-Y',
-                'model.html': 'Triple-Y - 3D Model',
-                'gallery.html': 'Gallery - Triple-Y',
-                'film.html': 'Film - Triple-Y',
-                'work.html': 'Work - Triple-Y',
-                'about.html': 'About - Triple-Y',
-                'tibet.html': 'Tibet - Triple-Y',
-                'north.html': 'Northern Journey - Triple-Y',
-                'sanya.html': 'Island Gallery - Triple-Y',
-                'pictures.html': 'Pictures - Triple-Y',
-                'videos.html': '3D卡片展示 - Triple-Y'
-            };
-
-            document.title = titleMap[page] || 'Triple-Y';
-        }
-
-        // iframe 初始加载完成事件（仅用于初始页面加载）
-        document.getElementById('content-frame').addEventListener('load', function() {
-            // 对于初始加载，隐藏加载指示器
-            if (this.getAttribute('data-initial-load') !== 'done') {
-                this.setAttribute('data-initial-load', 'done');
-                const loadingOverlay = document.getElementById('loading-overlay');
-                const loadingPercentage = document.querySelector('.loading-percentage');
-                const iframe = this;
-
-                // 为所有页面添加优雅的模糊转场效果
-                try {
-                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-
-                    // 添加模糊渐入效果的样式
-                    const blurStyle = iframeDoc.createElement('style');
-
-                    // 为所有页面添加统一的转场动画定义
-                    let transitionCSS = `
-                        @keyframes pageTransition {
-                            0% {
-                                opacity: 0;
-                                filter: blur(12px);
-                                transform: scale(1.03);
-                            }
-                            100% {
-                                opacity: 1;
-                                filter: blur(0);
-                                transform: scale(1);
-                            }
-                        }
-                    `;
-
-                    // 如果是model页面，特殊处理模型和按钮
-                    if (currentPage === 'model.html') {
-                        blurStyle.textContent = `
-                            ${transitionCSS}
-
-                            #model-container,
-                            #buttons-container,
-                            .model-button {
-                                opacity: 0;
-                                filter: blur(12px);
-                                transform: scale(1.03);
-                                animation: pageTransition 1.2s cubic-bezier(0.33, 1, 0.68, 1) forwards !important;
-                                transform-origin: center center;
-                            }
-
-                            /* 隐藏进度条，避免闪烁 */
-                            #progress-bar-container {
-                                display: none !important;
-                            }
-                        `;
-                    } else {
-                        // 为其他页面添加整体模糊效果
-                        blurStyle.textContent = `
-                            ${transitionCSS}
-
-                            body > * {
-                                opacity: 0;
-                                filter: blur(12px);
-                                transform: scale(1.03);
-                                animation: pageTransition 0.8s cubic-bezier(0.33, 1, 0.68, 1) forwards !important;
-                                transform-origin: center center;
-                            }
-                        `;
-                    }
-
-                    iframeDoc.head.appendChild(blurStyle);
-                } catch (e) {
-                    console.error('无法添加模糊效果:', e);
-                }
-
-                // 如果初始页面是model页面，监听模型加载进度
-                if (currentPage === 'model.html') {
-                    try {
-                        const iframeWindow = iframe.contentWindow;
-
-                        // 监听模型加载进度
-                        const checkModelLoading = () => {
-                            try {
-                                if (iframeWindow && iframeWindow.document) {
-                                    const progressBar = iframeWindow.document.getElementById('progress-bar');
-                                    if (progressBar) {
-                                        // 获取当前进度
-                                        const width = progressBar.style.width || '0%';
-                                        const percentage = parseInt(width) || 0;
-
-                                        // 更新加载百分比显示
-                                        loadingPercentage.textContent = `${percentage}%`;
-
-                                        // 检查是否加载完成
-                                        if (percentage >= 100) {
-                                            // 模型加载完成，延迟隐藏加载界面
-                                            setTimeout(() => {
-                                                loadingOverlay.classList.add('loaded');
-                                            }, 500);
-                                            return;
-                                        }
-
-                                        // 继续检查进度
-                                        setTimeout(checkModelLoading, 100);
-                                    } else {
-                                        // 如果找不到进度条，继续检查
-                                        setTimeout(checkModelLoading, 100);
-                                    }
-                                }
-                            } catch (e) {
-                                console.error('检查模型加载进度出错:', e);
-                                // 出错时也隐藏加载界面
-                                loadingOverlay.classList.add('loaded');
-                            }
-                        };
-
-                        // 开始检查模型加载进度
-                        setTimeout(checkModelLoading, 300);
-                    } catch (e) {
-                        console.error('无法监听模型加载进度:', e);
-                        // 出错时也隐藏加载界面
-                        loadingOverlay.classList.add('loaded');
-                    }
-                } else {
-                    // 如果初始页面不是model页面，则直接隐藏加载界面
-                    setTimeout(() => {
-                        loadingOverlay.classList.add('loaded');
-                    }, 500);
-                }
-            }
-
-            // 简单修复黑边问题
-            try {
-                const iframe = this;
-                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-
-                // 添加一个更强大的样式来修复黑边
-                const fixStyle = iframeDoc.createElement('style');
-                fixStyle.textContent = `
-                    /* 修复黑边问题 - 强制应用于所有元素 */
-                    html, body {
-                        background-color: #000 !important;
-                        margin: 0 !important;
-                        padding: 0 !important;
-                        overflow-x: hidden !important;
-                        min-height: 100% !important;
-                        overflow-y: auto !important; /* 允许垂直滚动 */
-                    }
-
-                    /* 确保内容区域从顶部开始 */
-                    body > * {
-                        margin-top: 0 !important;
-                        padding-top: 0 !important;
-                    }
-
-                    /* 确保内容区域到底部结束 */
-                    body::after, body::before {
-                        display: none !important;
-                    }
-
-                    /* 只隐藏所有可能的导航栏，保留页脚 */
-                    header, nav, .header, .nav, .navbar,
-                    .header-container, .nav-container,
-                    #header, #nav, #navbar, #header-container, #nav-container {
-                        display: none !important;
-                    }
-
-                    /* 确保页脚正常显示 */
-                    #footer-container, footer, .footer, .footer-container, #footer-container {
-                        display: block !important;
-                        visibility: visible !important;
-                        opacity: 1 !important;
-                        height: auto !important;
-                        min-height: auto !important;
-                        max-height: none !important;
-                        overflow: visible !important;
-                        position: static !important;
-                    }
-
-                    /* 修复特定页面的问题 */
-                    .tibet-page, .north-page, .sanya-page, .pictures-page, .videos-page {
-                        padding-top: 0 !important;
-                        margin-top: 0 !important;
-                    }
-                `;
-                iframeDoc.head.appendChild(fixStyle);
-
-                // 确保iframe内容可以正常滚动
-                iframe.style.overflow = 'auto';
-
-                // 确保iframe内容的body可以滚动
-                iframeDoc.body.style.overflow = 'auto';
-                iframeDoc.documentElement.style.overflow = 'auto';
-
-                // 移除可能阻止滚动的样式
-                const scrollFix = iframeDoc.createElement('style');
-                scrollFix.textContent = `
-                    /* 确保内容可以滚动 */
-                    html, body {
-                        overflow-y: auto !important;
-                        height: auto !important;
-                        min-height: 100% !important;
-                    }
-
-                    /* 确保内容区域可以正常显示 */
-                    main, .main-content, .content, section, article, .container {
-                        overflow: visible !important;
-                        height: auto !important;
-                    }
-                `;
-                iframeDoc.head.appendChild(scrollFix);
-            } catch (e) {
-                console.error('无法修复黑边问题:', e);
-            }
-        });
-
         // 汉堡菜单点击事件
         document.getElementById('burger-menu').addEventListener('click', function() {
             this.classList.toggle('active');
             document.getElementById('mobile-panel').classList.toggle('active');
         });
 
-        // 关闭移动菜单
-        function closeMobileMenu() {
-            document.getElementById('burger-menu').classList.remove('active');
-            document.getElementById('mobile-panel').classList.remove('active');
-        }
-
-        // 初始化
-        function init() {
-            // 从 URL 参数获取页面
-            const urlParams = new URLSearchParams(window.location.search);
-            const page = urlParams.get('page');
-
-            // 获取 iframe 元素
+        // 首次加载动画
+        document.addEventListener('DOMContentLoaded', function() {
             const iframe = document.getElementById('content-frame');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const loadingPercentage = document.querySelector('.loading-percentage');
+            let modelLoaded = false;
 
-            // 尝试在初始加载时就隐藏导航栏
-            try {
-                hideNavAndFooter(iframe);
-            } catch (e) {
-                console.error('无法在初始加载时隐藏导航栏:', e);
+            // 初始化加载进度
+            if (loadingPercentage) {
+                loadingPercentage.textContent = '0%';
             }
 
-            if (page) {
-                navigateTo(page);
-            } else {
-                // 默认页面
-                updateActiveNavLink(currentPage);
-                updatePageTitle(currentPage);
-            }
+            // 设置更新加载进度的回调函数
+            window.updateLoadingProgress = function(percent) {
+                if (loadingPercentage) {
+                    loadingPercentage.textContent = `${Math.round(percent)}%`;
+                }
 
-            // 在 DOMContentLoaded 后再次尝试隐藏导航栏（双重保险）
-            document.addEventListener('DOMContentLoaded', function() {
-                try {
-                    hideNavAndFooter(iframe);
-                } catch (e) {
-                    console.error('DOMContentLoaded 后无法隐藏导航栏:', e);
+                // 如果加载完成，标记模型已加载但不立即显示内容
+                if (percent >= 100) {
+                    modelLoaded = true;
+                }
+            };
+
+            // 添加模型加载完成的回调函数 - 简化版，无延迟
+            window.onModelLoaded = function() {
+                modelLoaded = true;
+
+                // 隐藏加载动画
+                loadingOverlay.classList.add('loaded');
+
+                // 显示iframe内容，应用模糊渐入效果
+                iframe.classList.add('visible');
+            };
+
+            // 处理iframe加载完成事件
+            iframe.addEventListener('load', function() {
+                // 获取当前加载的页面URL
+                const currentSrc = iframe.src;
+                const isModelPage = currentSrc.includes('model.html');
+
+                if (isModelPage) {
+                    // 如果是模型页面，等待模型加载完成
+                    console.log('Model page loaded, waiting for model to load');
+
+                    // 确保加载覆盖层可见
+                    loadingOverlay.classList.remove('loaded');
+
+                    // 检查iframe内的模型是否已加载
+                    try {
+                        const checkModelLoaded = setInterval(function() {
+                            // 尝试访问iframe内的modelLoaded变量
+                            if (iframe.contentWindow && iframe.contentWindow.modelLoaded) {
+                                clearInterval(checkModelLoaded);
+                                window.onModelLoaded();
+                            }
+                        }, 100);
+
+                        // 设置超时保护，防止无限等待
+                        setTimeout(function() {
+                            clearInterval(checkModelLoaded);
+                            if (!modelLoaded) {
+                                console.log('Model load timeout, showing content anyway');
+                                window.onModelLoaded();
+                            }
+                        }, 15000); // 15秒超时
+                    } catch (e) {
+                        console.error('Error checking model load status:', e);
+                        // 出错时也显示内容
+                        window.onModelLoaded();
+                    }
+                } else {
+                    // 如果不是模型页面，直接显示内容
+                    console.log('Non-model page loaded, showing content immediately');
+                    loadingOverlay.classList.add('loaded');
+                    iframe.classList.add('visible');
                 }
             });
-        }
-
-        // 页面加载完成后初始化
-        window.addEventListener('DOMContentLoaded', init);
+        });
     </script>
 </body>
 </html>

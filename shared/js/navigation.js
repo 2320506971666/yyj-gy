@@ -362,7 +362,7 @@ function createMobileMenu() {
         const isActive = currentPage === item.href ||
             (item.href === 'gallery.html' && ['tibet.html', 'north.html', 'sanya.html'].includes(currentPage));
 
-        return `<a href="${item.href}" class="${isActive ? 'active' : ''}" ${isActive ? 'style="color: #DE2910"' : ''} data-barba="link">
+        return `<a href="${item.href}" class="${isActive ? 'active' : ''}" ${isActive ? 'style="color: #DE2910"' : ''}>
             ${item.text}
         </a>`;
     }).join('');
@@ -383,20 +383,17 @@ function createMobileMenu() {
     // 处理菜单链接点击事件
     mobilePanel.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', function(e) {
-            // 不再阻止默认行为，让 Barba.js 处理导航
-            // 但仍然关闭菜单
+            // 关闭菜单
             burgerMenu.classList.remove('active');
             mobilePanel.classList.remove('active');
             document.body.classList.remove('menu-open');
 
-            // 如果 Barba.js 不可用，则使用传统导航
-            if (typeof barba === 'undefined') {
-                e.preventDefault();
-                const href = this.getAttribute('href');
-                setTimeout(() => {
-                    window.location.href = href;
-                }, 100);
-            }
+            // 使用传统导航
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            setTimeout(() => {
+                window.location.href = href;
+            }, 100);
         });
     });
 
